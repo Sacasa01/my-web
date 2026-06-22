@@ -137,30 +137,26 @@
       </span>
 
       <!-- 📐 LIENZO DE CURVAS BEZIER Y CHEVRONS MINIMALISTAS (RESPONSIVE VIEWBOX) -->
-      <svg class="absolute inset-0 w-full h-full pointer-events-none text-[var(--border-subtle)] fill-none transition-colors duration-500" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <svg class="absolute inset-0 w-full h-full pointer-events-none fill-none transition-colors duration-500" viewBox="0 0 100 100" preserveAspectRatio="none">
         <defs>
-          <!-- Definición de punta de flecha fina de alta precisión -->
-          <marker id="arrow-head" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 1.5 L 8 5 L 0 8.5 z" class="fill-[var(--accent)] transition-colors duration-500" />
+          <marker id="arrow-grey" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M 0 2 L 8 5 L 0 8 z" fill="#9ca3af" />
           </marker>
         </defs>
         
-        <!-- 1. Línea: Bachillerato (86, 60) -> Web App Developer (57, 58) -->
+        <!-- 1. Línea: Bachillerato -> Web App Developer -->
         <path d="M 86 60 C 80 61, 74 57, 68 58" 
-              stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 2"
-              class="hover:stroke-[var(--accent)] transition-colors duration-500" />
+              stroke="#9ca3af" stroke-width="1" />
               
-        <!-- 2. Bifurcación Rama Principal: Web App Dev (57, 58) -> Canterbury (18, 52) -->
+        <!-- 2. Rama Principal: Web App Dev -> Canterbury -->
         <path d="M 57 58 C 44 58, 30 52, 18 52" 
-              stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 2"
-              marker-end="url(#arrow-head)"
-              class="hover:stroke-[var(--accent)] transition-colors duration-500" />
+              stroke="#9ca3af" stroke-width="1"
+              marker-end="url(#arrow-grey)" />
               
-        <!-- 3. Bifurcación Rama Certificación: Web App Dev (57, 58) -> AWS Practitioner (43.5, 30) -->
+        <!-- 3. Rama Certificación: Web App Dev -> AWS Practitioner -->
         <path d="M 57 58 C 52 46, 48 34, 43.5 30" 
-              stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 2"
-              marker-end="url(#arrow-head)"
-              class="hover:stroke-[var(--accent)] transition-colors duration-500" />
+              stroke="#9ca3af" stroke-width="1"
+              marker-end="url(#arrow-grey)" />
       </svg>
 
       <!-- 🎓 NODOS DE LA TRAYECTORIA ACADÉMICA -->
@@ -227,10 +223,8 @@
     @if (win.isOpen) {
       <div [style.zIndex]="win.zIndex"
            (mousedown)="focusModal(win.id)"
-           [class.fixed]="true"
            [ngClass]="win.isMaximized ? 'inset-12' : 'w-[680px] h-[480px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'"
-           [class.modal-enter]="true"
-           class="bg-[var(--bg-card)]/90 backdrop-blur-md border border-[var(--border-subtle)] rounded-2xl premium-shadow flex flex-col overflow-hidden z-50 window-transition">
+           class="fixed modal-enter bg-[var(--bg-card)]/90 backdrop-blur-md border border-[var(--border-subtle)] rounded-2xl premium-shadow flex flex-col overflow-hidden z-50 window-transition">
         
         <!-- Header de Ventana (A la izquierda título, a la derecha botones) -->
         <div class="h-12 border-b border-[var(--border-subtle)] px-5 flex items-center justify-between bg-[var(--bg-main)]/30 select-none">
