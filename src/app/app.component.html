@@ -407,46 +407,217 @@
           }
 
           @if (win.id === 'fitforge') {
-            <p class="text-xs text-[var(--text-muted)] uppercase tracking-wider font-mono">TFG // Full-Stack Fitness SPA</p>
-            <h3 class="text-lg font-display font-bold text-[var(--text-main)]">
-              {{ translations[currentLang].fitforge_title }}
-            </h3>
-            <div class="grid grid-cols-2 gap-4">
-              <div class="space-y-2">
-                <span class="text-[10px] font-mono text-[var(--text-muted)]">BACKEND STACK</span>
-                <ul class="text-xs font-mono space-y-1">
-                  <li>• PHP 8.2 & Symfony 7</li>
-                  <li>• MySQL Database (14 Tables)</li>
-                  <li>• JWT Auth & Role Access</li>
-                </ul>
+            <div class="space-y-6 font-sans text-[var(--text-main)] max-h-[80vh] overflow-y-auto pr-2 scrollbar-thin">
+              
+              <!-- Cabecera del Proyecto -->
+              <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[var(--border-subtle)] pb-4 gap-2">
+                <div>
+                  <span class="text-[9px] font-mono text-[var(--text-muted)] uppercase tracking-widest block">TFG // Full-Stack Fitness SPA</span>
+                  <h3 class="text-lg font-display font-bold">Fit Forge</h3>
+                </div>
+                
+                <!-- Tech Stack con Colores Representativos -->
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-md bg-[#dd0031]/10 text-[#dd0031] border border-[#dd0031]/20">Angular</span>
+                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-md bg-[#777bb4]/10 text-[#777bb4] border border-[#777bb4]/20">PHP 8.2</span>
+                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-md bg-[#4f46e5]/10 text-[#4f46e5] border border-[#4f46e5]/20">Symfony 7</span>
+                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-md bg-[#f7df1e]/10 text-[#a39103] dark:text-[#f7df1e] border border-[#f7df1e]/20">JavaScript</span>
+                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-md bg-[#f29111]/10 text-[#f29111] border border-[#f29111]/20">MySQL</span>
+                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-md bg-[#2496ed]/10 text-[#2496ed] border border-[#2496ed]/20">Docker</span>
+                </div>
               </div>
-              <div class="space-y-2">
-                <span class="text-[10px] font-mono text-[var(--text-muted)]">FRONTEND STACK</span>
-                <ul class="text-xs font-mono space-y-1">
-                  <li>• Angular Standalone</li>
-                  <li>• Reactive Forms & Interceptors</li>
-                  <li>• Tailwind CSS & Canvas Charts</li>
-                </ul>
+
+              <!-- Layout de Dos Columnas: Carrusel e Info -->
+              <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                
+                <!-- Columna 1: Carrusel de Capturas (3/5 del ancho) -->
+                <div class="lg:col-span-3 space-y-3">
+                  <div class="relative aspect-video w-full overflow-hidden rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] premium-shadow flex items-center justify-center">
+                    
+                    <!-- Imagen de Slide con Fallback a Template Visual -->
+                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-[var(--bg-main)] to-[var(--bg-card)]">
+                      <svg class="w-12 h-12 text-[var(--accent)]/40 mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21 15 16 10 5 21"/>
+                      </svg>
+                      <span class="text-xs font-mono font-bold text-[var(--text-main)]">{{ fitForgeSlides[fitForgeIndex].title }}</span>
+                      <span class="text-[10px] text-[var(--text-muted)] mt-1 max-w-xs">{{ fitForgeSlides[fitForgeIndex].desc }}</span>
+                    </div>
+
+                    <!-- Flechas de Navegación del Carrusel -->
+                    <button (click)="prevFitForge()" class="absolute left-3 p-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)]/80 text-[var(--text-main)] hover:scale-105 active:scale-95 transition-all cursor-pointer z-10">
+                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                    </button>
+                    <button (click)="nextFitForge()" class="absolute right-3 p-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)]/80 text-[var(--text-main)] hover:scale-105 active:scale-95 transition-all cursor-pointer z-10">
+                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                  </div>
+
+                  <!-- Puntos Indicadores del Carrusel -->
+                  <div class="flex justify-center gap-1.5">
+                    @for (slide of fitForgeSlides; track $index) {
+                      <button (click)="setFitForgeSlide($index)" 
+                              [class.bg-[var(--accent)]]="fitForgeIndex === $index" 
+                              [class.w-4]="fitForgeIndex === $index"
+                              class="w-1.5 h-1.5 rounded-full bg-[var(--border-subtle)] transition-all cursor-pointer"></button>
+                    }
+                  </div>
+                </div>
+
+                <!-- Columna 2: Ficha Técnica Completa (2/5 del ancho) -->
+                <div class="lg:col-span-2 space-y-4 text-xs">
+                  
+                  <!-- Bloque: ¿Por qué se hizo? -->
+                  <div class="bg-[var(--bg-main)]/40 p-3.5 rounded-xl border border-[var(--border-subtle)] space-y-1.5">
+                    <h4 class="font-display font-bold text-[var(--accent)] uppercase tracking-wider text-[10px]">
+                      {{ translations[currentLang].whyMade }}
+                    </h4>
+                    <p class="text-[var(--text-muted)] leading-relaxed">
+                      {{ currentLang === 'en' 
+                        ? 'Created to address training and nutrition fragmentation. Fit Forge provides a unified portal featuring customized workout catalogues alongside diet planning systems, powered by an intelligent star-rating (1-5) feedback evaluation mechanism.'
+                        : 'Desarrollado para resolver la dispersión de entrenamientos y dietas en múltiples plataformas. Fit Forge provee un portal unificado con rutinas dinámicas, planes nutricionales a medida y un motor evaluativo de recomendaciones.' }}
+                    </p>
+                  </div>
+
+                  <!-- Bloque: Detalle Técnico Deep Dive -->
+                  <div class="bg-[var(--bg-main)]/40 p-3.5 rounded-xl border border-[var(--border-subtle)] space-y-1.5">
+                    <h4 class="font-display font-bold text-[var(--accent)] uppercase tracking-wider text-[10px]">
+                      {{ translations[currentLang].techDepth }}
+                    </h4>
+                    <p class="text-[var(--text-muted)] leading-relaxed">
+                      {{ currentLang === 'en' 
+                        ? 'Architected with a decoupled model: a robust Symfony 7 backend exposing a secure REST API of 33 endpoints with JWT authentication and custom security voting, coupled with an Angular standalone SPA with HTTP interceptors, reactive forms, and Docker deployment orchestration.'
+                        : 'Construido mediante desacoplamiento robusto: backend con Symfony 7 exponiendo una API REST de 33 endpoints con seguridad JWT y votantes de acceso, conectado a un cliente SPA con Angular Standalone, interceptores HTTP, formularios reactivos y orquestación con Docker.' }}
+                    </p>
+                  </div>
+
+                  <!-- Bloque: Colaboradores -->
+                  <div class="bg-[var(--bg-main)]/40 p-3.5 rounded-xl border border-[var(--border-subtle)] flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-[var(--accent)]/5 flex items-center justify-center text-[var(--accent)]">
+                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 class="font-display font-bold text-[var(--text-main)] text-[10px] uppercase tracking-wider">
+                        {{ translations[currentLang].collabTitle }}
+                      </h4>
+                      <p class="text-[10px] text-[var(--text-muted)]">
+                        {{ translations[currentLang].soleAuthor }}
+                      </p>
+                    </div>
+                  </div>
+
+                </div>
               </div>
             </div>
           }
 
           @if (win.id === 'mapper') {
-            <p class="text-xs text-[var(--text-muted)] uppercase tracking-wider font-mono">Geospatial Automation Tool</p>
-            <h3 class="text-lg font-display font-bold text-[var(--text-main)]">
-              {{ translations[currentLang].mapper_title }}
-            </h3>
-            <p class="text-xs text-[var(--text-muted)]">
-              {{ translations[currentLang].mapper_desc }}
-            </p>
-            <div class="h-36 bg-[var(--bg-main)]/40 rounded-xl border border-[var(--border-subtle)] relative overflow-hidden flex items-center justify-center">
-              <span class="absolute top-2 left-3 text-[9px] font-mono text-[var(--text-muted)]">CADASTRAL GRID SIMULATION</span>
-              <svg class="w-32 h-32 text-[var(--accent)] stroke-current fill-none" viewBox="0 0 100 100">
-                <polygon points="10,20 40,10 80,30 90,80 30,90 10,60" class="stroke-1.5 opacity-40" />
-                <polygon points="40,10 80,30 60,60 30,50" class="stroke-1.5 fill-[var(--accent)]/10" />
-                <circle cx="60" cy="60" r="3" class="fill-red-500" />
-                <path d="M10,20 L30,50 L30,90" class="stroke-dashed stroke-1" />
-              </svg>
+            <div class="space-y-6 font-sans text-[var(--text-main)] max-h-[80vh] overflow-y-auto pr-2 scrollbar-thin">
+              
+              <!-- Cabecera del Proyecto -->
+              <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[var(--border-subtle)] pb-4 gap-2">
+                <div>
+                  <span class="text-[9px] font-mono text-[var(--text-muted)] uppercase tracking-widest block">Geospatial Automation Tool</span>
+                  <h3 class="text-lg font-display font-bold">Legacy Land Mapper</h3>
+                </div>
+                
+                <!-- Tech Stack con Colores Representativos -->
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-md bg-[#3776ab]/10 text-[#215a8b] dark:text-[#5fa2dd] border border-[#3776ab]/20">Python 3</span>
+                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-md bg-[#150458]/10 text-[#7154fa] dark:text-[#a08aff] border border-[#150458]/20">Pandas</span>
+                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-md bg-[#42b883]/10 text-[#28845a] dark:text-[#42b883] border border-[#42b883]/20">Leaflet.js</span>
+                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-md bg-[#3178c6]/10 text-[#3178c6] border border-[#3178c6]/20">TypeScript</span>
+                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-md bg-[#f7df1e]/10 text-[#a39103] dark:text-[#f7df1e] border border-[#f7df1e]/20">GeoJSON</span>
+                </div>
+              </div>
+
+              <!-- Layout de Dos Columnas: Carrusel e Info -->
+              <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                
+                <!-- Columna 1: Carrusel de Capturas (3/5 del ancho) -->
+                <div class="lg:col-span-3 space-y-3">
+                  <div class="relative aspect-video w-full overflow-hidden rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] premium-shadow flex items-center justify-center">
+                    
+                    <!-- Imagen de Slide con Fallback a Template Visual -->
+                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-[var(--bg-main)] to-[var(--bg-card)]">
+                      <svg class="w-12 h-12 text-[var(--accent)]/40 mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                        <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
+                        <line x1="9" y1="3" x2="9" y2="18"/>
+                        <line x1="15" y1="6" x2="15" y2="21"/>
+                      </svg>
+                      <span class="text-xs font-mono font-bold text-[var(--text-main)]">{{ mapperSlides[mapperIndex].title }}</span>
+                      <span class="text-[10px] text-[var(--text-muted)] mt-1 max-w-xs">{{ mapperSlides[mapperIndex].desc }}</span>
+                    </div>
+
+                    <!-- Flechas de Navegación del Carrusel -->
+                    <button (click)="prevMapper()" class="absolute left-3 p-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)]/80 text-[var(--text-main)] hover:scale-105 active:scale-95 transition-all cursor-pointer z-10">
+                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                    </button>
+                    <button (click)="nextMapper()" class="absolute right-3 p-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)]/80 text-[var(--text-main)] hover:scale-105 active:scale-95 transition-all cursor-pointer z-10">
+                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                  </div>
+
+                  <!-- Puntos Indicadores del Carrusel -->
+                  <div class="flex justify-center gap-1.5">
+                    @for (slide of mapperSlides; track $index) {
+                      <button (click)="setMapperSlide($index)" 
+                              [class.bg-[var(--accent)]]="mapperIndex === $index" 
+                              [class.w-4]="mapperIndex === $index"
+                              class="w-1.5 h-1.5 rounded-full bg-[var(--border-subtle)] transition-all cursor-pointer"></button>
+                    }
+                  </div>
+                </div>
+
+                <!-- Columna 2: Ficha Técnica Completa (2/5 del ancho) -->
+                <div class="lg:col-span-2 space-y-4 text-xs">
+                  
+                  <!-- Bloque: ¿Por qué se hizo? -->
+                  <div class="bg-[var(--bg-main)]/40 p-3.5 rounded-xl border border-[var(--border-subtle)] space-y-1.5">
+                    <h4 class="font-display font-bold text-[var(--accent)] uppercase tracking-wider text-[10px]">
+                      {{ translations[currentLang].whyMade }}
+                    </h4>
+                    <p class="text-[var(--text-muted)] leading-relaxed">
+                      {{ currentLang === 'en' 
+                        ? 'Developed to automate geospatial intelligence on Spanish land registry data. It enables non-technical stakeholders to input Excel or CSV files and instantly receive dynamic maps with complete real estate statistics.'
+                        : 'Desarrollado para automatizar la obtención de datos catastrales en España. Permite a usuarios sin conocimientos técnicos ingresar archivos Excel/CSV y convertirlos inmediatamente en mapas visuales interactivos con todas las estadísticas.' }}
+                    </p>
+                  </div>
+
+                  <!-- Bloque: Detalle Técnico Deep Dive -->
+                  <div class="bg-[var(--bg-main)]/40 p-3.5 rounded-xl border border-[var(--border-subtle)] space-y-1.5">
+                    <h4 class="font-display font-bold text-[var(--accent)] uppercase tracking-wider text-[10px]">
+                      {{ translations[currentLang].techDepth }}
+                    </h4>
+                    <p class="text-[var(--text-muted)] leading-relaxed">
+                      {{ currentLang === 'en' 
+                        ? 'Features a multi-threaded Python backend leveraging a thread pool of 20 concurrent workers to query the Spanish Cadastre WFS API, achieving an execution optimization of over 90%. Data is processed via Pandas into clean GeoJSON layers and rendered as an interactive standalone Leaflet map.'
+                        : 'Implementa un script multi-hilo en Python con un pool de 20 workers concurrentes que consulta la API WFS del Catastro oficial, optimizando tiempos de descarga en un 90%. Procesa los polígonos con Pandas en capas GeoJSON e interactúa sobre un visor Leaflet.js.' }}
+                    </p>
+                  </div>
+
+                  <!-- Bloque: Colaboradores -->
+                  <div class="bg-[var(--bg-main)]/40 p-3.5 rounded-xl border border-[var(--border-subtle)] flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-[var(--accent)]/5 flex items-center justify-center text-[var(--accent)]">
+                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 class="font-display font-bold text-[var(--text-main)] text-[10px] uppercase tracking-wider">
+                        {{ translations[currentLang].collabTitle }}
+                      </h4>
+                      <p class="text-[10px] text-[var(--text-muted)]">
+                        {{ translations[currentLang].soleAuthor }}
+                      </p>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
             </div>
           }
 

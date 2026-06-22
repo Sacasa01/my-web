@@ -32,6 +32,28 @@ export class AppComponent implements OnInit, AfterViewInit {
   activeSlice = 12;
   segmentationPoints = '';
 
+  // --- CONFIGURACIÓN DE CARRUSELES ---
+  // Índices activos para los carruseles de imágenes
+  fitForgeIndex = 0;
+  mapperIndex = 0;
+
+  // Listado de capturas de Fit Forge
+  fitForgeSlides = [
+    { title: 'Cover Page', desc: 'Main interface of the Fitness SPA application.' },
+    { title: 'Personalised Catalogue', desc: 'Interactive exercise & workout directory.' },
+    { title: 'Diet Planner', desc: 'Custom nutrition parameters generator.' },
+    { title: 'User Dashboard', desc: 'Progress tracking analytics.' },
+    { title: 'Admin Panel', desc: 'Content curation and database management tools.' }
+  ];
+
+  // Listado de capturas de Legacy Land Mapper
+  mapperSlides = [
+    { title: 'Cover Page', desc: 'Input screen for bulk cadastral reference upload.' },
+    { title: 'Interactive Map View', desc: 'Rendered parcels visualised with Leaflet.js.' },
+    { title: 'Real-time Stats', desc: 'Area calculation and property metadata cards.' },
+    { title: 'Search & Filtering', desc: 'Advanced search system with satellite toggles.' }
+  ];
+
   // Referencias a los contenedores
   @ViewChild('q1Container') q1Container!: ElementRef<HTMLElement>;
   @ViewChild('q4Container') q4Container!: ElementRef<HTMLElement>;
@@ -94,6 +116,10 @@ export class AppComponent implements OnInit, AfterViewInit {
       mapper_desc: 'Multi-threaded tool fetching parcel geometry data directly from Spanish Cadastre WFS API. Formats data with Pandas into custom GeoJSON maps.',
       sports_title: 'Rock Climbing & Sports',
       sports_desc: 'Interactive track of boulder difficulty levels (V4 to V8). Tracks sessions, hold-types, and physical metrics over time.',
+      collabTitle: 'Collaborators',
+      soleAuthor: 'Sole Author / Academic Project',
+      whyMade: 'Why it was created',
+      techDepth: 'Technical Deep-Dive',
       txt_hire_node: 'WHY HIRE ME?',
       why_title: '01 // WHY HIRE SANTIAGO?',
       why_heading: 'Why should you hire me?',
@@ -122,6 +148,10 @@ export class AppComponent implements OnInit, AfterViewInit {
       mapper_desc: 'Herramienta multi-hilo para la extracción y renderizado de geometrías catastrales directamente desde las APIs oficiales del Catastro de España.',
       sports_title: 'Escalada en Roca y Deportes',
       sports_desc: 'Registro interactivo de ascensiones y grados de dificultad en bloque. Monitorización de tipos de presas y métricas de rendimiento.',
+      collabTitle: 'Colaboradores',
+      soleAuthor: 'Autor Único / Proyecto Académico',
+      whyMade: 'Propósito del proyecto',
+      techDepth: 'Detalle Técnico',
       txt_hire_node: '¿POR QUÉ YO?',
       why_title: '01 // ¿POR QUÉ CONTRATAR A SANTIAGO?',
       why_heading: '¿Por qué contratarme?',
@@ -393,5 +423,31 @@ export class AppComponent implements OnInit, AfterViewInit {
     // Reiniciar segmentación al cambiar de slide para dar feedback interactivo
     this.segmentationPoints = '';
     this.diceScore = 0;
+  }
+
+  // Métodos del Carrusel de Fit Forge
+  prevFitForge() {
+    this.fitForgeIndex = (this.fitForgeIndex === 0) ? this.fitForgeSlides.length - 1 : this.fitForgeIndex - 1;
+  }
+
+  nextFitForge() {
+    this.fitForgeIndex = (this.fitForgeIndex === this.fitForgeSlides.length - 1) ? 0 : this.fitForgeIndex + 1;
+  }
+
+  setFitForgeSlide(index: number) {
+    this.fitForgeIndex = index;
+  }
+
+  // Métodos del Carrusel de Legacy Land Mapper
+  prevMapper() {
+    this.mapperIndex = (this.mapperIndex === 0) ? this.mapperSlides.length - 1 : this.mapperIndex - 1;
+  }
+
+  nextMapper() {
+    this.mapperIndex = (this.mapperIndex === this.mapperSlides.length - 1) ? 0 : this.mapperIndex + 1;
+  }
+
+  setMapperSlide(index: number) {
+    this.mapperIndex = index;
   }
 }
