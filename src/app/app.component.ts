@@ -25,6 +25,9 @@ export class AppComponent implements OnInit {
   isDarkMode = false;
   currentLang: 'en' | 'es' = 'en';
   private maxZIndex = 100;
+  
+  // Define el hito activo de la educación
+  activeEduNode = signal<string>('canterbury');
 
   // Signal para manejar las ventanas de forma ultra-reactiva
   windows = signal<WindowState[]>([
@@ -45,7 +48,14 @@ export class AppComponent implements OnInit {
       q4: '04 // EDUCATION AND CERTIFICATES',
       close: 'Close',
       maximize: 'Maximize',
-      minimize: 'Minimize'
+      minimize: 'Minimize',
+      edu_bach_title: 'Scientific Baccalaureate',
+      edu_bach_desc: 'Focused on advanced mathematics, physics, and introductory programming concepts. Graduated with honors.',
+      edu_daw_title: 'HND in Web Application Development',
+      edu_daw_desc: 'Specialised in full-stack architectures. Completed 20-hour Cloud Computing Taller at Florida Universitària. Obtained AWS Certified Cloud Practitioner credential.',
+      edu_cs_title: 'BSc (Hons) in Computer Science',
+      edu_cs_desc: 'Focus on Artificial Intelligence systems, Advanced Cybersecurity Risk Audits (NIST), and Cloud Infrastructure deployment on AWS/Docker.',
+      hover_hint: 'Hover over the nodes to explore the trajectory'
     },
     es: {
       subtitle: 'Ingeniero Full-Stack & Desarrollador de IA',
@@ -55,7 +65,14 @@ export class AppComponent implements OnInit {
       q4: '04 // EDUCACIÓN Y CERTIFICACIONES',
       close: 'Cerrar',
       maximize: 'Maximizar',
-      minimize: 'Minimizar'
+      minimize: 'Minimizar',
+      edu_bach_title: 'Bachillerato Científico-Tecnológico',
+      edu_bach_desc: 'Enfoque en matemáticas avanzadas, física y fundamentos de programación. Graduado con honores.',
+      edu_daw_title: 'Grado Superior en Desarrollo de Aplicaciones Web',
+      edu_daw_desc: 'Especialización en arquitecturas full-stack. Completado el Taller de Cloud Computing (20h) en Florida Universitària. Certificación certificada de AWS Cloud Practitioner.',
+      edu_cs_title: 'BSc (Hons) en Ingeniería Informática',
+      edu_cs_desc: 'Enfoque en sistemas de Inteligencia Artificial, auditorías de ciberseguridad avanzada bajo el marco NIST, y despliegue de infraestructura cloud.',
+      hover_hint: 'Pasa el cursor por los nodos para explorar la trayectoria'
     }
   };
 
