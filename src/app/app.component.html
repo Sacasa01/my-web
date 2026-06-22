@@ -1,41 +1,58 @@
 <main class="w-screen h-screen overflow-hidden relative transition-colors duration-500">
 
-  <!-- 📏 LÍNEAS DIVISORIAS TIPO BOCETO (DRAFT LINES) -->
-  <div class="absolute left-1/2 top-[8%] bottom-[8%] w-[1px] bg-[var(--border-subtle)] -translate-x-1/2 pointer-events-none transition-colors duration-500 z-0"></div>
-  <div class="absolute top-1/2 left-[8%] right-[8%] h-[1px] bg-[var(--border-subtle)] -translate-y-1/2 pointer-events-none transition-colors duration-500 z-0"></div>
+  <!-- 📏 LÍNEAS DIVISORIAS TIPO BOCETO (DRAFT LINES) REFINADAS -->
+  <!-- Línea Vertical: de extremo a extremo, se ocultará detrás del fondo de la cabecera -->
+  <div class="absolute left-1/2 top-[4%] bottom-[4%] w-[1px] bg-[var(--border-subtle)] -translate-x-1/2 pointer-events-none transition-colors duration-500 z-10"></div>
+  <!-- Línea Horizontal: más cerca de los bordes laterales (margen del 4%) -->
+  <div class="absolute top-1/2 left-[4%] right-[4%] h-[1px] bg-[var(--border-subtle)] -translate-y-1/2 pointer-events-none transition-colors duration-500 z-10"></div>
 
-  <!-- CABECERA PRINCIPAL -->
-  <header class="absolute top-6 left-1/2 -translate-x-1/2 z-50 text-center pointer-events-none">
-    <h1 class="font-display font-bold text-lg tracking-wider text-[var(--text-main)] uppercase transition-colors duration-500">SANTIAGO CASTRO SALT</h1>
-    <p class="text-xs text-[var(--text-muted)] tracking-widest uppercase mt-1 transition-colors duration-500">Full-Stack Engineer & AI Developer</p>
+  <!-- CABECERA PRINCIPAL SIMÉTRICA (MÁSCARA DE FONDO PARA TAPAR LÍNEA VERTICAL) -->
+  <header class="absolute top-6 left-1/2 -translate-x-1/2 z-50 flex items-center justify-center gap-6 bg-[var(--bg-main)] px-8 py-2.5 rounded-2xl border border-[var(--border-subtle)]/50 transition-all duration-500 premium-shadow">
+    
+    <!-- 🌐 BOTÓN DE CAMBIO DE IDIOMA (AL LADO IZQUIERDO DEL NOMBRE, DISEÑO GEMELO) -->
+    <button (click)="toggleLanguage()" 
+            class="w-9 h-9 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] text-[var(--text-main)] premium-shadow hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer flex items-center justify-center font-display text-[10px] font-bold tracking-widest uppercase">
+      {{ currentLang === 'en' ? 'ES' : 'EN' }}
+    </button>
+
+    <!-- NOMBRE Y SUBTÍTULO TRADUCIDO (CENTRO) -->
+    <div class="text-center pointer-events-none min-w-[250px]">
+      <h1 class="font-display font-bold text-lg tracking-wider text-[var(--text-main)] uppercase transition-colors duration-500">SANTIAGO CASTRO SALT</h1>
+      <p class="text-[9px] text-[var(--text-muted)] tracking-widest uppercase mt-0.5 transition-colors duration-500">
+        {{ translations[currentLang].subtitle }}
+      </p>
+    </div>
+
+    <!-- ☀️/🌙 BOTÓN DE TEMA PREMIUM (AL LADO DERECHO DEL NOMBRE) -->
+    <button (click)="toggleTheme()" 
+            class="w-9 h-9 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] text-[var(--text-main)] premium-shadow hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer flex items-center justify-center">
+      @if (!isDarkMode) {
+        <!-- Icono Sol (Light Mode) -->
+        <svg class="w-4.5 h-4.5 text-[var(--accent)] transition-transform duration-500 rotate-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+        </svg>
+      } @else {
+        <!-- Icono Luna (Dark Mode) -->
+        <svg class="w-4.5 h-4.5 text-[var(--accent)] transition-transform duration-500 rotate-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+        </svg>
+      }
+    </button>
+
   </header>
 
-  <!-- ☀️/🌙 BOTÓN DE TEMA PREMIUM (SUPERIOR DERECHA) -->
-  <button (click)="toggleTheme()" 
-          class="absolute top-6 right-8 z-50 p-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] text-[var(--text-main)] premium-shadow hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer">
-    <!-- Icono Sol (Visible en Light Mode) -->
-    @if (!isDarkMode) {
-      <svg class="w-5 h-5 text-[var(--accent)] transition-transform duration-500 rotate-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="4"/>
-        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
-      </svg>
-    } @else {
-      <!-- Icono Luna (Visible en Dark Mode) -->
-      <svg class="w-5 h-5 text-[var(--accent)] transition-transform duration-500 rotate-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
-      </svg>
-    }
-  </button>
+  <!-- GRID DE CUADRANTES CON SECCIONES TRADUCIDAS -->
+  <div class="grid grid-cols-2 grid-rows-2 w-full h-full p-8 gap-8 relative z-20">
 
-  <!-- GRID DE CUADRANTES INVISIBLES -->
-  <div class="grid grid-cols-2 grid-rows-2 w-full h-full p-8 gap-8 relative z-10">
-
-    <!-- Q1: EXPERIENCIA LABORAL -->
+    <!-- Q1: UP-LEFT (WORK EXPERIENCE) -->
     <section class="relative flex items-center justify-center">
-      <span class="absolute top-4 left-4 font-display font-medium text-xs tracking-widest text-[var(--text-muted)] opacity-60 uppercase transition-colors duration-500">01 // LAB DE IA</span>
+      <span class="absolute top-4 left-4 font-display font-medium text-xs tracking-widest text-[var(--text-muted)]/60 uppercase transition-colors duration-500">
+        {{ translations[currentLang].q1 }}
+      </span>
       
       <!-- Satélite 1 (Arriba Izquierda) -->
-      <div appBoundFloating class="absolute top-12 left-16 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
+      <div appBoundFloating class="absolute top-16 left-20 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
         <svg class="w-6 h-6 text-[var(--accent)] transition-colors duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
         </svg>
@@ -53,19 +70,21 @@
       </div>
 
       <!-- Satélite 2 (Abajo Derecha) -->
-      <div appBoundFloating class="absolute bottom-12 right-20 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
+      <div appBoundFloating class="absolute bottom-16 right-24 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
         <svg class="w-6 h-6 text-[var(--accent)] transition-colors duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" />
         </svg>
       </div>
     </section>
 
-    <!-- Q2: PROYECTOS -->
+    <!-- Q2: UP-RIGHT (PROJECTS) -->
     <section class="relative flex items-center justify-center">
-      <span class="absolute top-4 right-4 font-display font-medium text-xs tracking-widest text-[var(--text-muted)] opacity-60 uppercase transition-colors duration-500">02 // CORE PROJECTS</span>
+      <span class="absolute top-4 right-4 font-display font-medium text-xs tracking-widest text-[var(--text-muted)]/60 uppercase transition-colors duration-500">
+        {{ translations[currentLang].q2 }}
+      </span>
 
       <!-- Satélite 1 (Arriba Derecha - QC Automation Platform) -->
-      <div appBoundFloating class="absolute top-8 right-24 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
+      <div appBoundFloating class="absolute top-12 right-28 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
         <!-- Logo SVG para QC Automation Platform (Check circle de Feather Icons) -->
         <svg class="w-6 h-6 text-[var(--accent)] transition-colors duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
@@ -84,7 +103,7 @@
       </div>
 
       <!-- Satélite 2 (Abajo Izquierda - Legacy Land Mapper) -->
-      <div appBoundFloating class="absolute bottom-10 left-16 w-20 h-20 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex flex-col items-center justify-center cursor-pointer transition-all duration-300 p-2">
+      <div appBoundFloating class="absolute bottom-12 left-20 w-20 h-20 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex flex-col items-center justify-center cursor-pointer transition-all duration-300 p-2">
         <!-- Logo SVG para Legacy Land Mapper (Retícula catastral poligonal) -->
         <svg class="w-6 h-6 text-[var(--accent)] mb-1 transition-colors duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M3 3h18v18H3z" />
@@ -94,12 +113,14 @@
       </div>
     </section>
 
-    <!-- Q3: HOBBIES -->
+    <!-- Q3: DOWN-LEFT (ME & HOBBIES) -->
     <section class="relative flex items-center justify-center">
-      <span class="absolute bottom-4 left-4 font-display font-medium text-xs tracking-widest text-[var(--text-muted)] opacity-60 uppercase transition-colors duration-500">03 // LIFE & SPORTS</span>
+      <span class="absolute bottom-4 left-4 font-display font-medium text-xs tracking-widest text-[var(--text-muted)]/60 uppercase transition-colors duration-500">
+        {{ translations[currentLang].q3 }}
+      </span>
 
       <!-- Satélite 1 (Centro-Izquierda) -->
-      <div appBoundFloating class="absolute left-10 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
+      <div appBoundFloating class="absolute left-16 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
         <svg class="w-6 h-6 text-[var(--accent)] transition-colors duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
         </svg>
@@ -117,19 +138,21 @@
       </div>
 
       <!-- Satélite 2 (Derecha Arriba) -->
-      <div appBoundFloating class="absolute right-12 top-6 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
+      <div appBoundFloating class="absolute right-20 top-12 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
         <svg class="w-6 h-6 text-[var(--accent)] transition-colors duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
         </svg>
       </div>
     </section>
 
-    <!-- Q4: EDUCACIÓN -->
+    <!-- Q4: DOWN-RIGHT (EDUCATION AND CERTIFICATES) -->
     <section class="relative flex items-center justify-center">
-      <span class="absolute bottom-4 right-4 font-display font-medium text-xs tracking-widest text-[var(--text-muted)] opacity-60 uppercase transition-colors duration-500">04 // EDUCATION</span>
+      <span class="absolute bottom-4 right-4 font-display font-medium text-xs tracking-widest text-[var(--text-muted)]/60 uppercase transition-colors duration-500">
+        {{ translations[currentLang].q4 }}
+      </span>
 
       <!-- Satélite 1 (Abajo Izquierda) -->
-      <div appBoundFloating class="absolute bottom-6 left-12 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
+      <div appBoundFloating class="absolute bottom-12 left-20 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
         <svg class="w-6 h-6 text-[var(--accent)] transition-colors duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
         </svg>
@@ -146,7 +169,7 @@
       </div>
 
       <!-- Satélite 2 (Arriba Derecha) -->
-      <div appBoundFloating class="absolute top-10 right-16 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
+      <div appBoundFloating class="absolute top-12 right-24 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
         <svg class="w-6 h-6 text-[var(--accent)] transition-colors duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
           <line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" />
@@ -155,4 +178,5 @@
     </section>
 
   </div>
+
 </main>
