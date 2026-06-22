@@ -3,15 +3,15 @@
 @source "./src/index.html";
 
 @theme {
-  --color-cream-bg: #faf6f0;
-  --color-cream-card: #ffffff;
-  --color-cream-border: #e3dfd5;
-  --color-charcoal: #1a1a1a;
-  --color-muted: #706e68;
-  --color-accent: #2d4a43;
+  --color-cream-bg: #faf6f0;         /* Crema cálido premium */
+  --color-cream-card: #ffffff;       /* Blanco puro para tarjetas */
+  --color-cream-border: #e3dfd5;     /* Tono gris papel de boceto */
+  --color-charcoal: #1a1a1a;         /* Carbón de alta legibilidad */
+  --color-muted: #706e68;            /* Gris medio para metadatos */
+  --color-accent: #2d4a43;           /* Verde bosque profundo alpino */
 }
 
-/* Variables de tema dinámico (Light/Dark) */
+/* Variables semánticas mutables por la clase .dark */
 :root {
   --bg-main: var(--color-cream-bg);
   --bg-card: var(--color-cream-card);
@@ -19,15 +19,17 @@
   --text-main: var(--color-charcoal);
   --text-muted: var(--color-muted);
   --accent: var(--color-accent);
+  --accent-glow: rgba(45, 74, 67, 0.15);
 }
 
 .dark {
-  --bg-main: #141312;         /* Carbón analógico ultra-premium */
-  --bg-card: #1c1a18;         /* Tarjeta oscura con matiz cálido */
-  --border-subtle: #2d2a27;   /* Bordes sutiles oscuros */
+  --bg-main: #141312;         /* Carbón oscuro analógico */
+  --bg-card: #1c1a18;         /* Fondo de tarjetas con matiz cálido */
+  --border-subtle: #2d2a27;   /* Bordes oscuros ultra sutiles */
   --text-main: #f4efe6;       /* Crema suave para textos */
   --text-muted: #8c857b;      /* Muted analógico */
-  --accent: #8fb3a9;          /* Verde salvia claro para realces */
+  --accent: #8fb3a9;          /* Verde salvia claro premium */
+  --accent-glow: rgba(143, 179, 169, 0.15);
 }
 
 body {
@@ -35,63 +37,68 @@ body {
   background-image: radial-gradient(var(--border-subtle) 1.5px, transparent 1.5px);
   background-size: 24px 24px;
   color: var(--text-main);
-  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
-              color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-              background-image 0.5s ease;
+  font-family: 'Inter', sans-serif;
+  transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+              color 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.5s ease;
   overflow: hidden;
   user-select: none;
 }
 
-/* Sombras premium que reaccionan al tema */
+.font-display {
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Sombras finas adaptables */
 .premium-shadow {
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04), 
-              0 2px 8px -1px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 4px 20px -2px rgba(112, 110, 104, 0.08), 
+              0 2px 8px -1px rgba(112, 110, 104, 0.04);
+  transition: box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .dark .premium-shadow {
-  box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.3), 
-              0 2px 8px -1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.45), 
+              0 4px 12px -2px rgba(0, 0, 0, 0.3);
 }
 
-.premium-shadow-hover {
-  transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.premium-shadow-hover:hover {
-  box-shadow: 0 12px 30px -4px rgba(112, 110, 104, 0.15), 
-              0 4px 12px -2px rgba(112, 110, 104, 0.08);
-}
-
-.dark .premium-shadow-hover:hover {
-  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.5), 
-              0 4px 16px -2px rgba(0, 0, 0, 0.3);
-}
-
-/* Animación de entrada con curva de rebote sutil */
-@keyframes windowEntrance {
+/* Animaciones fluidas para ventanas modales */
+@keyframes modalEntrance {
   from {
     opacity: 0;
-    scale: 0.95;
+    transform: translate(-50%, -46%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
   }
 }
 
-.animate-window-enter {
-  animation: windowEntrance 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+@keyframes modalExit {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -54%) scale(0.95);
+  }
 }
 
-/* Transición suave para redimensionar (Maximizar) */
+.modal-enter {
+  animation: modalEntrance 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.modal-exit {
+  animation: modalExit 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Transición de redimensionado de ventana */
 .window-transition {
   transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               height 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               top 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               left 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              right 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              bottom 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              inset 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              translate 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              scale 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               background-color 0.5s ease,
               border-color 0.5s ease;
 }
-
