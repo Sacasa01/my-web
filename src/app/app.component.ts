@@ -38,9 +38,9 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   // Coordenadas físicas en escalera diagonal de Q4
   private q4Nodes: Record<string, { x: number; y: number; ampX: number; ampY: number; speedX: number; speedY: number; phaseX: number; phaseY: number; targetScale: number; currentScale: number; basePctX: number; basePctY: number }> = {
-    bach: { x: 0, y: 0, ampX: 6, ampY: 6, speedX: 0.0010, speedY: 0.0012, phaseX: 1.2, phaseY: 3.4, targetScale: 1, currentScale: 1, basePctX: 0.82, basePctY: 0.75 },
-    daw:  { x: 0, y: 0, ampX: 7, ampY: 7, speedX: 0.0008, speedY: 0.0009, phaseX: 2.5, phaseY: 0.8, targetScale: 1, currentScale: 1, basePctX: 0.50, basePctY: 0.52 },
-    cant: { x: 0, y: 0, ampX: 8, ampY: 8, speedX: 0.0007, speedY: 0.0008, phaseX: 4.7, phaseY: 2.1, targetScale: 1, currentScale: 1, basePctX: 0.18, basePctY: 0.28 },
+    bach: { x: 0, y: 0, ampX: 6, ampY: 6, speedX: 0.0010, speedY: 0.0012, phaseX: 1.2, phaseY: 3.4, targetScale: 1, currentScale: 1, basePctX: 0.88, basePctY: 0.68 },
+    daw:  { x: 0, y: 0, ampX: 7, ampY: 7, speedX: 0.0008, speedY: 0.0009, phaseX: 2.5, phaseY: 0.8, targetScale: 1, currentScale: 1, basePctX: 0.50, basePctY: 0.58 },
+    cant: { x: 0, y: 0, ampX: 8, ampY: 8, speedX: 0.0007, speedY: 0.0008, phaseX: 4.7, phaseY: 2.1, targetScale: 1, currentScale: 1, basePctX: 0.12, basePctY: 0.28 },
     aws:  { x: 0, y: 0, ampX: 5, ampY: 5, speedX: 0.0014, speedY: 0.0011, phaseX: 0.3, phaseY: 4.1, targetScale: 1, currentScale: 1, basePctX: 0.45, basePctY: 0.22 }
   };
 
