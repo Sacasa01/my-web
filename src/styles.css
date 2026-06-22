@@ -3,32 +3,54 @@
 @source "./src/index.html";
 
 @theme {
-  --color-cream-bg: #faf6f0;      /* Fondo crema cálido premium */
-  --color-cream-card: #ffffff;    /* Tarjetas/cubículos en blanco puro */
-  --color-cream-border: #e3dfd5;  /* Bordes ultra suaves */
-  --color-charcoal: #1a1a1a;      /* Texto principal de alta legibilidad */
-  --color-muted: #706e68;         /* Textos secundarios y metadatos */
-  --color-accent: #2d4a43;        /* Acento verde bosque profundo / premium slate */
-  
-  --font-display: 'Outfit', sans-serif;
-  --font-sans: 'Inter', sans-serif;
+  --color-cream-bg: #faf6f0;
+  --color-cream-card: #ffffff;
+  --color-cream-border: #e3dfd5;
+  --color-charcoal: #1a1a1a;
+  --color-muted: #706e68;
+  --color-accent: #2d4a43;
 }
 
-/* Base de la aplicación con micropuntos finos de la imagen */
+/* Variables de tema dinámico (Light/Dark) */
+:root {
+  --bg-main: var(--color-cream-bg);
+  --bg-card: var(--color-cream-card);
+  --border-subtle: var(--color-cream-border);
+  --text-main: var(--color-charcoal);
+  --text-muted: var(--color-muted);
+  --accent: var(--color-accent);
+}
+
+.dark {
+  --bg-main: #141312;         /* Carbón analógico ultra-premium */
+  --bg-card: #1c1a18;         /* Tarjeta oscura con matiz cálido */
+  --border-subtle: #2d2a27;   /* Bordes sutiles oscuros */
+  --text-main: #f4efe6;       /* Crema suave para textos */
+  --text-muted: #8c857b;      /* Muted analógico */
+  --accent: #8fb3a9;          /* Verde salvia claro para realces */
+}
+
 body {
-  background-color: var(--color-cream-bg);
-  background-image: radial-gradient(var(--color-cream-border) 1.5px, transparent 1.5px);
+  background-color: var(--bg-main);
+  background-image: radial-gradient(var(--border-subtle) 1.5px, transparent 1.5px);
   background-size: 24px 24px;
-  color: var(--color-charcoal);
-  font-family: var(--font-sans);
+  color: var(--text-main);
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+              color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              background-image 0.5s ease;
   overflow: hidden;
   user-select: none;
 }
 
-/* Transición suave para desenfoques y hovers */
+/* Sombras premium que reaccionan al tema */
 .premium-shadow {
-  box-shadow: 0 4px 20px -2px rgba(112, 110, 104, 0.08), 
-              0 2px 8px -1px rgba(112, 110, 104, 0.04);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04), 
+              0 2px 8px -1px rgba(0, 0, 0, 0.02);
+}
+
+.dark .premium-shadow {
+  box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.3), 
+              0 2px 8px -1px rgba(0, 0, 0, 0.2);
 }
 
 .premium-shadow-hover {
@@ -38,4 +60,9 @@ body {
 .premium-shadow-hover:hover {
   box-shadow: 0 12px 30px -4px rgba(112, 110, 104, 0.15), 
               0 4px 12px -2px rgba(112, 110, 104, 0.08);
+}
+
+.dark .premium-shadow-hover:hover {
+  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.5), 
+              0 4px 16px -2px rgba(0, 0, 0, 0.3);
 }
