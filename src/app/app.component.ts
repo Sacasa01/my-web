@@ -74,6 +74,29 @@ export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild('nodeHire') nodeHire!: ElementRef<HTMLElement>;
   @ViewChild('pathLafeHire') pathLafeHire!: ElementRef<SVGPathElement>;
 
+  // Referencias a elementos de Q3 (Hobbies & Deportes - Pirámide)
+  @ViewChild('q3Container') q3Container!: ElementRef<HTMLElement>;
+  @ViewChild('nodeMe') nodeMe!: ElementRef<HTMLElement>;
+  @ViewChild('nodeTennis') nodeTennis!: ElementRef<HTMLElement>;
+  @ViewChild('nodeFutbol') nodeFutbol!: ElementRef<HTMLElement>;
+  @ViewChild('nodeClimbing') nodeClimbing!: ElementRef<HTMLElement>;
+  @ViewChild('nodeSub1') nodeSub1!: ElementRef<HTMLElement>;
+  @ViewChild('nodeSub2') nodeSub2!: ElementRef<HTMLElement>;
+  @ViewChild('nodeSub3') nodeSub3!: ElementRef<HTMLElement>;
+  @ViewChild('nodeSub4') nodeSub4!: ElementRef<HTMLElement>;
+  @ViewChild('nodeSub5') nodeSub5!: ElementRef<HTMLElement>;
+  @ViewChild('nodeSub6') nodeSub6!: ElementRef<HTMLElement>;
+
+  @ViewChild('pathMeTennis') pathMeTennis!: ElementRef<SVGPathElement>;
+  @ViewChild('pathMeFutbol') pathMeFutbol!: ElementRef<SVGPathElement>;
+  @ViewChild('pathMeClimbing') pathMeClimbing!: ElementRef<SVGPathElement>;
+  @ViewChild('pathTennisSub1') pathTennisSub1!: ElementRef<SVGPathElement>;
+  @ViewChild('pathTennisSub2') pathTennisSub2!: ElementRef<SVGPathElement>;
+  @ViewChild('pathFutbolSub3') pathFutbolSub3!: ElementRef<SVGPathElement>;
+  @ViewChild('pathFutbolSub4') pathFutbolSub4!: ElementRef<SVGPathElement>;
+  @ViewChild('pathClimbingSub5') pathClimbingSub5!: ElementRef<SVGPathElement>;
+  @ViewChild('pathClimbingSub6') pathClimbingSub6!: ElementRef<SVGPathElement>;
+
   // Coordenadas físicas en escalera diagonal de Q4
   private q4Nodes: Record<string, { x: number; y: number; ampX: number; ampY: number; speedX: number; speedY: number; phaseX: number; phaseY: number; targetScale: number; currentScale: number; basePctX: number; basePctY: number }> = {
     bach: { x: 0, y: 0, ampX: 6, ampY: 6, speedX: 0.0010, speedY: 0.0012, phaseX: 1.2, phaseY: 3.4, targetScale: 1, currentScale: 1, basePctX: 0.88, basePctY: 0.68 },
@@ -88,6 +111,20 @@ export class AppComponent implements OnInit, AfterViewInit {
     hire: { x: 0, y: 0, ampX: 6, ampY: 6, speedX: 0.0011, speedY: 0.0008, phaseX: 2.2, phaseY: 0.3, targetScale: 1, currentScale: 1, basePctX: 0.70, basePctY: 0.50 }
   };
 
+  // Coordenadas físicas de la Pirámide de Q3 (ME -> DEPORTES -> EXPANSIONES)
+  private q3Nodes: Record<string, { x: number; y: number; ampX: number; ampY: number; speedX: number; speedY: number; phaseX: number; phaseY: number; targetScale: number; currentScale: number; basePctX: number; basePctY: number }> = {
+    me:       { x: 0, y: 0, ampX: 7, ampY: 7, speedX: 0.0009, speedY: 0.0008, phaseX: 0.3, phaseY: 1.5, targetScale: 1, currentScale: 1, basePctX: 0.50, basePctY: 0.22 },
+    tennis:   { x: 0, y: 0, ampX: 5, ampY: 5, speedX: 0.0012, speedY: 0.0010, phaseX: 1.1, phaseY: 3.4, targetScale: 1, currentScale: 1, basePctX: 0.22, basePctY: 0.50 },
+    futbol:   { x: 0, y: 0, ampX: 6, ampY: 6, speedX: 0.0010, speedY: 0.0013, phaseX: 2.5, phaseY: 0.7, targetScale: 1, currentScale: 1, basePctX: 0.50, basePctY: 0.50 },
+    climbing: { x: 0, y: 0, ampX: 5, ampY: 5, speedX: 0.0011, speedY: 0.0009, phaseX: 4.1, phaseY: 2.2, targetScale: 1, currentScale: 1, basePctX: 0.78, basePctY: 0.50 },
+    sub1:     { x: 0, y: 0, ampX: 3, ampY: 3, speedX: 0.0015, speedY: 0.0016, phaseX: 0.1, phaseY: 4.2, targetScale: 1, currentScale: 1, basePctX: 0.12, basePctY: 0.78 },
+    sub2:     { x: 0, y: 0, ampX: 3, ampY: 3, speedX: 0.0014, speedY: 0.0015, phaseX: 1.2, phaseY: 3.1, targetScale: 1, currentScale: 1, basePctX: 0.27, basePctY: 0.78 },
+    sub3:     { x: 0, y: 0, ampX: 3, ampY: 3, speedX: 0.0016, speedY: 0.0014, phaseX: 2.3, phaseY: 1.8, targetScale: 1, currentScale: 1, basePctX: 0.42, basePctY: 0.78 },
+    sub4:     { x: 0, y: 0, ampX: 3, ampY: 3, speedX: 0.0013, speedY: 0.0015, phaseX: 3.5, phaseY: 0.5, targetScale: 1, currentScale: 1, basePctX: 0.58, basePctY: 0.78 },
+    sub5:     { x: 0, y: 0, ampX: 3, ampY: 3, speedX: 0.0015, speedY: 0.0013, phaseX: 4.8, phaseY: 2.9, targetScale: 1, currentScale: 1, basePctX: 0.73, basePctY: 0.78 },
+    sub6:     { x: 0, y: 0, ampX: 3, ampY: 3, speedX: 0.0012, speedY: 0.0014, phaseX: 5.9, phaseY: 1.2, targetScale: 1, currentScale: 1, basePctX: 0.88, basePctY: 0.78 }
+  };
+
   // Modales interactivos
   windows = signal<WindowState[]>([
     { id: 'lafe', isOpen: false, isMaximized: false, zIndex: 100 },
@@ -95,7 +132,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     { id: 'mapper', isOpen: false, isMaximized: false, zIndex: 100 },
     { id: 'climbing', isOpen: false, isMaximized: false, zIndex: 100 },
     { id: 'canterbury', isOpen: false, isMaximized: false, zIndex: 100 },
-    { id: 'whyhireme', isOpen: false, isMaximized: false, zIndex: 100 }
+    { id: 'whyhireme', isOpen: false, isMaximized: false, zIndex: 100 },
+    { id: 'me-bio', isOpen: false, isMaximized: false, zIndex: 100 },
+    { id: 'tennis-log', isOpen: false, isMaximized: false, zIndex: 100 },
+    { id: 'futbol-log', isOpen: false, isMaximized: false, zIndex: 100 },
+    { id: 'climbing-log', isOpen: false, isMaximized: false, zIndex: 100 }
   ]);
 
   translations = {
@@ -209,6 +250,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       const updateLoop = (time: number) => {
         this.renderSynchronizedTimeline(time);
         this.renderWorkTrajectory(time);
+        this.renderHobbiesPyramid(time);
         requestAnimationFrame(updateLoop);
       };
       requestAnimationFrame(updateLoop);
@@ -389,8 +431,18 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onNodeHover(key: string, isHovering: boolean, quadrant: 'q1' | 'q4' = 'q4') {
-    const collection = quadrant === 'q1' ? this.q1Nodes : this.q4Nodes;
+  openWindow(id: string) {
+    if (id === 'me-bio') {
+      this.openModal('whyhireme');
+    } else if (id === 'climbing-log' || id === 'tennis-log' || id === 'futbol-log') {
+      this.openModal('climbing');
+    } else {
+      this.openModal(id);
+    }
+  }
+
+  onNodeHover(key: string, isHovering: boolean, quadrant: 'q1' | 'q3' | 'q4' = 'q4') {
+    const collection = quadrant === 'q1' ? this.q1Nodes : (quadrant === 'q3' ? this.q3Nodes : this.q4Nodes);
     if (collection[key]) {
       collection[key].targetScale = isHovering ? 0.05 : 1;
     }
@@ -479,5 +531,64 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   setMapperSlide(index: number) {
     this.mapperIndex = index;
+  }
+
+  private renderHobbiesPyramid(time: number) {
+    const container = this.q3Container?.nativeElement;
+    if (!container) return;
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+
+    const coords: Record<string, { x: number; y: number }> = {};
+    const refs: Record<string, HTMLElement | undefined> = {
+      me: this.nodeMe?.nativeElement,
+      tennis: this.nodeTennis?.nativeElement,
+      futbol: this.nodeFutbol?.nativeElement,
+      climbing: this.nodeClimbing?.nativeElement,
+      sub1: this.nodeSub1?.nativeElement,
+      sub2: this.nodeSub2?.nativeElement,
+      sub3: this.nodeSub3?.nativeElement,
+      sub4: this.nodeSub4?.nativeElement,
+      sub5: this.nodeSub5?.nativeElement,
+      sub6: this.nodeSub6?.nativeElement
+    };
+
+    if (!refs['me'] || !refs['tennis'] || !refs['futbol'] || !refs['climbing'] ||
+        !refs['sub1'] || !refs['sub2'] || !refs['sub3'] || !refs['sub4'] || !refs['sub5'] || !refs['sub6']) return;
+
+    // Calcular oscilación individual y desplazar por GPU
+    Object.keys(this.q3Nodes).forEach(key => {
+      const node = this.q3Nodes[key];
+      const el = refs[key];
+      if (!el) return;
+
+      node.currentScale += (node.targetScale - node.currentScale) * 0.1;
+      node.x = Math.sin(time * node.speedX + node.phaseX) * node.ampX * node.currentScale;
+      node.y = Math.cos(time * node.speedY + node.phaseY) * node.ampY * node.currentScale;
+
+      el.style.left = `calc(${node.basePctX * 100}% - ${el.clientWidth / 2}px)`;
+      el.style.top = `calc(${node.basePctY * 100}% - ${el.clientHeight / 2}px)`;
+      el.style.transform = `translate3d(${node.x}px, ${node.y}px, 0)`;
+
+      coords[key] = { x: (w * node.basePctX) + node.x, y: (h * node.basePctY) + node.y };
+    });
+
+    // Redibujar las cuerdas elásticas de la pirámide
+    if (coords['me'] && coords['tennis'] && coords['futbol'] && coords['climbing']) {
+      const pMe = coords['me'], pTen = coords['tennis'], pFut = coords['futbol'], pCli = coords['climbing'];
+
+      // Conexiones nivel 1 -> nivel 2
+      this.pathMeTennis?.nativeElement?.setAttribute('d', `M ${pMe.x} ${pMe.y} C ${pMe.x - w*0.1} ${pMe.y}, ${pTen.x} ${pTen.y - h*0.05}, ${pTen.x} ${pTen.y}`);
+      this.pathMeFutbol?.nativeElement?.setAttribute('d', `M ${pMe.x} ${pMe.y} L ${pFut.x} ${pFut.y}`);
+      this.pathMeClimbing?.nativeElement?.setAttribute('d', `M ${pMe.x} ${pMe.y} C ${pMe.x + w*0.1} ${pMe.y}, ${pCli.x} ${pCli.y - h*0.05}, ${pCli.x} ${pCli.y}`);
+
+      // Conexiones nivel 2 -> nivel 3 (Sub-nodos de expansión)
+      this.pathTennisSub1?.nativeElement?.setAttribute('d', `M ${pTen.x} ${pTen.y} L ${coords['sub1'].x} ${coords['sub1'].y}`);
+      this.pathTennisSub2?.nativeElement?.setAttribute('d', `M ${pTen.x} ${pTen.y} L ${coords['sub2'].x} ${coords['sub2'].y}`);
+      this.pathFutbolSub3?.nativeElement?.setAttribute('d', `M ${pFut.x} ${pFut.y} L ${coords['sub3'].x} ${coords['sub3'].y}`);
+      this.pathFutbolSub4?.nativeElement?.setAttribute('d', `M ${pFut.x} ${pFut.y} L ${coords['sub4'].x} ${coords['sub4'].y}`);
+      this.pathClimbingSub5?.nativeElement?.setAttribute('d', `M ${pCli.x} ${pCli.y} L ${coords['sub5'].x} ${coords['sub5'].y}`);
+      this.pathClimbingSub6?.nativeElement?.setAttribute('d', `M ${pCli.x} ${pCli.y} L ${coords['sub6'].x} ${coords['sub6'].y}`);
+    }
   }
 }
