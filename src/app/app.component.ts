@@ -50,12 +50,13 @@ export class AppComponent implements OnInit {
       maximize: 'Maximize',
       minimize: 'Minimize',
       edu_bach_title: 'Scientific Baccalaureate',
-      edu_bach_desc: 'Focused on advanced mathematics, physics, and introductory programming concepts. Graduated with honors.',
-      edu_daw_title: 'HND in Web Application Development',
-      edu_daw_desc: 'Specialised in full-stack architectures. Completed 20-hour Cloud Computing Taller at Florida Universitària. Obtained AWS Certified Cloud Practitioner credential.',
-      edu_cs_title: 'BSc (Hons) in Computer Science',
-      edu_cs_desc: 'Focus on Artificial Intelligence systems, Advanced Cybersecurity Risk Audits (NIST), and Cloud Infrastructure deployment on AWS/Docker.',
-      hover_hint: 'Hover over the nodes to explore the trajectory'
+      edu_bach_desc: 'Valencia, Spain // 2021 — 2022',
+      edu_daw_title: 'Web App Developer',
+      edu_daw_desc: 'Florida Universitària // 2024 — 2026',
+      edu_aws_title: 'AWS Practitioner',
+      edu_aws_desc: 'AWS Certified // 2025',
+      edu_cs_title: 'Canterbury',
+      edu_cs_desc: 'BSc Computer Science // 2026 — 2027'
     },
     es: {
       subtitle: 'Ingeniero Full-Stack & Desarrollador de IA',
@@ -66,13 +67,14 @@ export class AppComponent implements OnInit {
       close: 'Cerrar',
       maximize: 'Maximizar',
       minimize: 'Minimizar',
-      edu_bach_title: 'Bachillerato Científico-Tecnológico',
-      edu_bach_desc: 'Enfoque en matemáticas avanzadas, física y fundamentos de programación. Graduado con honores.',
-      edu_daw_title: 'Grado Superior en Desarrollo de Aplicaciones Web',
-      edu_daw_desc: 'Especialización en arquitecturas full-stack. Completado el Taller de Cloud Computing (20h) en Florida Universitària. Certificación certificada de AWS Cloud Practitioner.',
-      edu_cs_title: 'BSc (Hons) en Ingeniería Informática',
-      edu_cs_desc: 'Enfoque en sistemas de Inteligencia Artificial, auditorías de ciberseguridad avanzada bajo el marco NIST, y despliegue de infraestructura cloud.',
-      hover_hint: 'Pasa el cursor por los nodos para explorar la trayectoria'
+      edu_bach_title: 'Bachillerato Científico',
+      edu_bach_desc: 'Valencia, España // 2021 — 2022',
+      edu_daw_title: 'Desarrollador Web (DAW)',
+      edu_daw_desc: 'Florida Universitària // 2024 — 2026',
+      edu_aws_title: 'Certificación AWS',
+      edu_aws_desc: 'AWS Certified // 2025',
+      edu_cs_title: 'Canterbury',
+      edu_cs_desc: 'Ing. Informática // 2026 — 2027'
     }
   };
 
