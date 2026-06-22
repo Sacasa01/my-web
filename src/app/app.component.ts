@@ -28,18 +28,20 @@ export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild('q4Container') q4Container!: ElementRef<HTMLElement>;
   @ViewChild('nodeBach') nodeBach!: ElementRef<HTMLElement>;
   @ViewChild('nodeDaw') nodeDaw!: ElementRef<HTMLElement>;
-  @ViewChild('nodeAws') nodeAws!: ElementRef<HTMLElement>;
   @ViewChild('nodeCant') nodeCant!: ElementRef<HTMLElement>;
+  @ViewChild('nodeAws') nodeAws!: ElementRef<HTMLElement>;
+
   @ViewChild('pathBachDaw') pathBachDaw!: ElementRef<SVGPathElement>;
   @ViewChild('pathDawCant') pathDawCant!: ElementRef<SVGPathElement>;
-  @ViewChild('pathDawAws') pathDawAws!: ElementRef<SVGPathElement>;
+  @ViewChild('pathJunctionAws') pathJunctionAws!: ElementRef<SVGPathElement>;
+  @ViewChild('junctionNodeCircle') junctionNodeCircle!: ElementRef<SVGCircleElement>;
 
-  // Coeficientes físicos de oscilación para los nodos de Q4
+  // Coordenadas físicas en escalera diagonal de Q4
   private q4Nodes: Record<string, { x: number; y: number; ampX: number; ampY: number; speedX: number; speedY: number; phaseX: number; phaseY: number; targetScale: number; currentScale: number; basePctX: number; basePctY: number }> = {
-    bach: { x: 0, y: 0, ampX: 6, ampY: 6, speedX: 0.0010, speedY: 0.0012, phaseX: 1.2, phaseY: 3.4, targetScale: 1, currentScale: 1, basePctX: 0.86, basePctY: 0.60 },
-    daw:  { x: 0, y: 0, ampX: 7, ampY: 7, speedX: 0.0008, speedY: 0.0009, phaseX: 2.5, phaseY: 0.8, targetScale: 1, currentScale: 1, basePctX: 0.57, basePctY: 0.58 },
-    aws:  { x: 0, y: 0, ampX: 5, ampY: 5, speedX: 0.0014, speedY: 0.0011, phaseX: 0.3, phaseY: 4.1, targetScale: 1, currentScale: 1, basePctX: 0.435, basePctY: 0.30 },
-    cant: { x: 0, y: 0, ampX: 8, ampY: 8, speedX: 0.0007, speedY: 0.0008, phaseX: 4.7, phaseY: 2.1, targetScale: 1, currentScale: 1, basePctX: 0.18, basePctY: 0.52 }
+    bach: { x: 0, y: 0, ampX: 6, ampY: 6, speedX: 0.0010, speedY: 0.0012, phaseX: 1.2, phaseY: 3.4, targetScale: 1, currentScale: 1, basePctX: 0.82, basePctY: 0.75 },
+    daw:  { x: 0, y: 0, ampX: 7, ampY: 7, speedX: 0.0008, speedY: 0.0009, phaseX: 2.5, phaseY: 0.8, targetScale: 1, currentScale: 1, basePctX: 0.50, basePctY: 0.52 },
+    cant: { x: 0, y: 0, ampX: 8, ampY: 8, speedX: 0.0007, speedY: 0.0008, phaseX: 4.7, phaseY: 2.1, targetScale: 1, currentScale: 1, basePctX: 0.18, basePctY: 0.28 },
+    aws:  { x: 0, y: 0, ampX: 5, ampY: 5, speedX: 0.0014, speedY: 0.0011, phaseX: 0.3, phaseY: 4.1, targetScale: 1, currentScale: 1, basePctX: 0.45, basePctY: 0.22 }
   };
 
   // Modales interactivos
@@ -171,10 +173,13 @@ export class AppComponent implements OnInit, AfterViewInit {
     const refs: Record<string, HTMLElement | undefined> = {
       bach: this.nodeBach?.nativeElement,
       daw:  this.nodeDaw?.nativeElement,
-      aws:  this.nodeAws?.nativeElement,
-      cant: this.nodeCant?.nativeElement
+      cant: this.nodeCant?.nativeElement,
+      aws:  this.nodeAws?.nativeElement
     };
 
+    if (!refs['bach'] || !refs['daw'] || !refs['cant'] || !refs['aws']) return;
+
+    // 1. Calcular oscilaciones de cada nodo y aplicar traslación GPU
     Object.keys(this.q4Nodes).forEach(key => {
       const node = this.q4Nodes[key];
       const el = refs[key];
@@ -185,30 +190,54 @@ export class AppComponent implements OnInit, AfterViewInit {
       node.x = Math.sin(time * node.speedX + node.phaseX) * node.ampX * node.currentScale;
       node.y = Math.cos(time * node.speedY + node.phaseY) * node.ampY * node.currentScale;
 
+      const basePxX = w * node.basePctX;
+      const basePxY = h * node.basePctY;
+
+      // Centrado absoluto fluido
       el.style.left = `calc(${node.basePctX * 100}% - ${el.clientWidth / 2}px)`;
       el.style.top = `calc(${node.basePctY * 100}% - ${el.clientHeight / 2}px)`;
       el.style.transform = `translate3d(${node.x}px, ${node.y}px, 0)`;
 
       coords[key] = {
-        x: w * node.basePctX + node.x,
-        y: h * node.basePctY + node.y
+        x: basePxX + node.x,
+        y: basePxY + node.y
       };
     });
 
-    if (coords['bach'] && coords['daw'] && coords['aws'] && coords['cant']) {
+    // 2. Redibujar curvas de conexión y calcular nodo físico de bifurcación
+    if (coords['bach'] && coords['daw'] && coords['cant'] && coords['aws']) {
       const pBach = coords['bach'];
       const pDaw = coords['daw'];
-      const pAws = coords['aws'];
       const pCant = coords['cant'];
+      const pAws = coords['aws'];
 
+      // Curva 1: Bachillerato (abajo-derecha) -> Web App Developer (centro)
       const d1 = `M ${pBach.x} ${pBach.y} C ${pBach.x - w * 0.08} ${pBach.y}, ${pDaw.x + w * 0.08} ${pDaw.y}, ${pDaw.x} ${pDaw.y}`;
       this.pathBachDaw?.nativeElement?.setAttribute('d', d1);
 
+      // Curva 2: Web App Developer (centro) -> Canterbury (arriba-izq)
       const d2 = `M ${pDaw.x} ${pDaw.y} C ${pDaw.x - w * 0.12} ${pDaw.y}, ${pCant.x + w * 0.12} ${pCant.y}, ${pCant.x} ${pCant.y}`;
       this.pathDawCant?.nativeElement?.setAttribute('d', d2);
 
-      const d3 = `M ${pDaw.x} ${pDaw.y} C ${pDaw.x - w * 0.03} ${pDaw.y - h * 0.12}, ${pAws.x + w * 0.03} ${pAws.y + h * 0.12}, ${pAws.x} ${pAws.y}`;
-      this.pathDawAws?.nativeElement?.setAttribute('d', d3);
+      // 📐 CÁLCULO DEL NODO DE DERIVACIÓN DINÁMICO (At t = 0.45 en la Curva Bezier 2)
+      const p0x = pDaw.x, p0y = pDaw.y;
+      const p1x = pDaw.x - w * 0.12, p1y = pDaw.y;
+      const p2x = pCant.x + w * 0.12, p2y = pCant.y;
+      const p3x = pCant.x, p3y = pCant.y;
+
+      const t = 0.45; // Posicionamiento equilibrado del nodo sobre el cable
+      const mt = 1 - t;
+
+      const jX = mt*mt*mt*p0x + 3*mt*mt*t*p1x + 3*mt*t*t*p2x + t*t*t*p3x;
+      const jY = mt*mt*mt*p0y + 3*mt*mt*t*p1y + 3*mt*t*t*p2y + t*t*t*p3y;
+
+      // Colocar círculo de unión física del cable
+      this.junctionNodeCircle?.nativeElement?.setAttribute('cx', jX.toString());
+      this.junctionNodeCircle?.nativeElement?.setAttribute('cy', jY.toString());
+
+      // Curva 3: Derivación desde el nodo calculated (jX, jY) -> AWS Practitioner (pAws)
+      const d3 = `M ${jX} ${jY} C ${jX + w * 0.02} ${jY - h * 0.08}, ${pAws.x - w * 0.04} ${pAws.y + h * 0.08}, ${pAws.x} ${pAws.y}`;
+      this.pathJunctionAws?.nativeElement?.setAttribute('d', d3);
     }
   }
 

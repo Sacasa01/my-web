@@ -131,12 +131,13 @@
     </section>
 
     <!-- Q4: DOWN-RIGHT (EDUCATION AND CERTIFICATES) -->
-    <section #q4Container class="relative w-full h-full flex items-center justify-center overflow-hidden">
+    <section #q4Container class="q4-container relative w-full h-full flex items-center justify-center overflow-hidden">
+      
       <span class="absolute bottom-4 right-4 font-display font-medium text-[10px] tracking-widest text-[var(--text-muted)]/60 uppercase transition-colors duration-500">
         {{ translations[currentLang].q4 }}
       </span>
 
-      <!-- 📐 LIENZO SVG DINÁMICO (SIN VIEWBOX PARA OPERAR CON PÍXELES REALES) -->
+      <!-- 📐 LIENZO SVG DINÁMICO CON ARROW-HEAD Y NODO FÍSICO DE DERIVACIÓN -->
       <svg class="absolute inset-0 w-full h-full pointer-events-none text-[var(--border-subtle)] fill-none transition-colors duration-500 z-10">
         <defs>
           <marker id="arrow-head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
@@ -144,14 +145,22 @@
           </marker>
         </defs>
         
-        <path #pathBachDaw stroke="currentColor" stroke-width="1.2" />
-        <path #pathDawCant stroke="currentColor" stroke-width="1.2" marker-end="url(#arrow-head)" />
-        <path #pathDawAws  stroke="currentColor" stroke-width="1.2" marker-end="url(#arrow-head)" />
+        <!-- Línea 1: Bachillerato -> Web App Developer -->
+        <path #pathBachDaw stroke="currentColor" stroke-width="1.2" class="hover:stroke-[var(--accent)] transition-colors duration-500" />
+        
+        <!-- Línea 2: Web App Developer -> Canterbury -->
+        <path #pathDawCant stroke="currentColor" stroke-width="1.2" class="hover:stroke-[var(--accent)] transition-colors duration-500" />
+        
+        <!-- Línea 3: Derivación desde el cable intermedio -> AWS Practitioner -->
+        <path #pathJunctionAws stroke="currentColor" stroke-width="1.2" marker-end="url(#arrow-head)" class="hover:stroke-[var(--accent)] transition-colors duration-500" />
+        
+        <!-- Círculo de empalme / derivación física calculated en TS -->
+        <circle #junctionNodeCircle r="3.5" class="fill-[var(--accent)] transition-colors duration-500" />
       </svg>
 
-      <!-- 🎓 NODOS ACADÉMICOS DE PRECISIÓN -->
+      <!-- 🎓 NODOS ACADÉMICOS EN DIAGONAL -->
 
-      <!-- 1. BACHILLERATO CIENTÍFICO (Nodo Pequeño) -->
+      <!-- 1. BACHILLERATO CIENTÍFICO (Abajo-Derecha, Nodo Pequeño) -->
       <div #nodeBach 
            (mouseenter)="onNodeHover('bach', true)" 
            (mouseleave)="onNodeHover('bach', false)"
@@ -164,10 +173,10 @@
         <span class="font-display font-bold text-[9px] text-[var(--text-main)] mt-2 uppercase tracking-wider text-center max-w-[100px]">
           {{ translations[currentLang].edu_bach }}
         </span>
-        <span class="text-[8px] text-[var(--text-muted)] font-mono mt-0.5">2021 — 2022</span>
+        <span class="text-[8px] text-[var(--text-muted)] font-mono mt-0.5">2022</span>
       </div>
 
-      <!-- 2. WEB APP DEVELOPER (Nodo Mediano) -->
+      <!-- 2. WEB APP DEVELOPER (Centro, Nodo Mediano) -->
       <div #nodeDaw 
            (mouseenter)="onNodeHover('daw', true)" 
            (mouseleave)="onNodeHover('daw', false)"
@@ -180,10 +189,26 @@
         <span class="font-display font-bold text-[10px] text-[var(--text-main)] mt-2 uppercase tracking-wider text-center max-w-[120px]">
           {{ translations[currentLang].edu_daw }}
         </span>
-        <span class="text-[8px] text-[var(--text-muted)] font-mono mt-0.5">2024 — 2026</span>
+        <span class="text-[8px] text-[var(--text-muted)] font-mono mt-0.5">2026</span>
       </div>
 
-      <!-- 3. AWS CLOUD PRACTITIONER (Nodo Especializado) -->
+      <!-- 3. CANTERBURY (Arriba-Izquierda, Nodo Grande) -->
+      <div #nodeCant 
+           (mouseenter)="onNodeHover('cant', true)" 
+           (mouseleave)="onNodeHover('cant', false)"
+           class="absolute flex flex-col items-center z-20 group cursor-pointer">
+        <div class="w-20 h-20 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-3xl premium-shadow flex items-center justify-center transition-all duration-300 hover:scale-105">
+          <svg class="w-9 h-9 text-[var(--text-main)] group-hover:text-[var(--accent)] transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z" /><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5" />
+          </svg>
+        </div>
+        <span class="font-display font-bold text-[11px] text-[var(--text-main)] mt-2.5 uppercase tracking-widest text-center max-w-[130px]">
+          {{ translations[currentLang].edu_cs }}
+        </span>
+        <span class="text-[8px] text-[var(--text-muted)] font-mono mt-0.5">2027</span>
+      </div>
+
+      <!-- 4. AWS CLOUD PRACTITIONER (Nodo Superior Perpendicular) -->
       <div #nodeAws 
            (mouseenter)="onNodeHover('aws', true)" 
            (mouseleave)="onNodeHover('aws', false)"
@@ -199,22 +224,6 @@
           {{ translations[currentLang].edu_aws }}
         </span>
         <span class="text-[8px] text-[var(--text-muted)] font-mono mt-0.5">2025</span>
-      </div>
-
-      <!-- 4. CANTERBURY (Nodo Grande) -->
-      <div #nodeCant 
-           (mouseenter)="onNodeHover('cant', true)" 
-           (mouseleave)="onNodeHover('cant', false)"
-           class="absolute flex flex-col items-center z-20 group cursor-pointer">
-        <div class="w-20 h-20 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-3xl premium-shadow flex items-center justify-center transition-all duration-300 hover:scale-105">
-          <svg class="w-9 h-9 text-[var(--text-main)] group-hover:text-[var(--accent)] transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M22 10v6M2 10l10-5 10 5-10 5z" /><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5" />
-          </svg>
-        </div>
-        <span class="font-display font-bold text-[11px] text-[var(--text-main)] mt-2.5 uppercase tracking-widest text-center max-w-[130px]">
-          {{ translations[currentLang].edu_cs }}
-        </span>
-        <span class="text-[8px] text-[var(--text-muted)] font-mono mt-0.5">2026 — 2027</span>
       </div>
 
     </section>
