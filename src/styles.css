@@ -87,3 +87,42 @@ body {
               background-color 0.5s ease,
               border-color 0.5s ease;
 }
+
+/* ==========================================
+   MINIMALIST CUSTOM SCROLLBARS (GLOBAL)
+   ========================================== */
+
+/* Estilo para navegadores Webkit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 5px; /* Barra extremadamente fina */
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Fondo completamente invisible */
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle); /* Se camufla con la cuadrícula de puntos */
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted); /* Destaca levemente al hacer hover */
+}
+
+/* Soporte para Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-subtle) transparent;
+}
+
+/* Clase de utilidad por si deseas ocultar el scroll por completo en zonas específicas */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
