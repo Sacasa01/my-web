@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cyber-bg: #0b0c10;
+  --color-cyber-border: #1f2833;
+  --color-cyber-text: #ffffff;
+  --color-cyber-muted: #c5c6c7;
+  --color-cyber-neon: #66fcf1;
+  --color-cyber-neon-dim: rgba(102, 252, 241, 0.15);
+  
+  --font-outfit: "Outfit", sans-serif;
+  --font-inter: "Inter", sans-serif;
+}
+
+body {
+  background-color: #0b0c10;
+  /* Patrón de cuadrícula tecnológica sutil */
+  background-image: 
+    linear-gradient(rgba(31, 40, 51, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(31, 40, 51, 0.15) 1px, transparent 1px),
+    radial-gradient(circle at 50% 50%, rgba(102, 252, 241, 0.04) 0%, transparent 80%);
+  background-size: 40px 40px, 40px 40px, 100% 100%;
+  background-position: center;
+  margin: 0;
+  padding: 0;
+}
