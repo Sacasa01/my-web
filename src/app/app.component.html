@@ -52,14 +52,14 @@
       </span>
       
       <!-- Satélite 1 (Arriba Izquierda) -->
-      <div appBoundFloating class="absolute top-16 left-20 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
+      <div (click)="openWindow('lafe')" appBoundFloating class="absolute top-16 left-20 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
         <svg class="w-6 h-6 text-[var(--accent)] transition-colors duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
         </svg>
       </div>
 
       <!-- HUB CENTRAL (La Fe AI - Más grande) -->
-      <div appBoundFloating class="w-32 h-32 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-2xl premium-shadow premium-shadow-hover flex flex-col items-center justify-center p-4 cursor-pointer transition-all duration-300 group z-10">
+      <div (click)="openWindow('lafe')" appBoundFloating class="w-32 h-32 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-2xl premium-shadow premium-shadow-hover flex flex-col items-center justify-center p-4 cursor-pointer transition-all duration-300 group z-10">
         <div class="w-14 h-14 bg-[var(--accent)]/5 rounded-xl flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
           <svg class="w-8 h-8 text-[var(--accent)] transition-colors duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.25c-4.556 0-8.25-3.694-8.25-8.25V9.5h16.5V10c0 4.556-3.694 8.25-8.25 8.25z" />
@@ -70,7 +70,7 @@
       </div>
 
       <!-- Satélite 2 (Abajo Derecha) -->
-      <div appBoundFloating class="absolute bottom-16 right-24 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
+      <div (click)="openWindow('lafe')" appBoundFloating class="absolute bottom-16 right-24 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
         <svg class="w-6 h-6 text-[var(--accent)] transition-colors duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" />
         </svg>
@@ -84,7 +84,7 @@
       </span>
 
       <!-- Satélite 1 (Arriba Derecha - QC Automation Platform) -->
-      <div appBoundFloating class="absolute top-12 right-28 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
+      <div (click)="openWindow('fitforge')" appBoundFloating class="absolute top-12 right-28 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
         <!-- Logo SVG para QC Automation Platform (Check circle de Feather Icons) -->
         <svg class="w-6 h-6 text-[var(--accent)] transition-colors duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
@@ -93,7 +93,7 @@
       </div>
 
       <!-- HUB CENTRAL (Fit Forge - Más grande) -->
-      <div appBoundFloating class="w-32 h-32 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-2xl premium-shadow premium-shadow-hover flex flex-col items-center justify-center p-4 cursor-pointer transition-all duration-300 group z-10">
+      <div (click)="openWindow('fitforge')" appBoundFloating class="w-32 h-32 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-2xl premium-shadow premium-shadow-hover flex flex-col items-center justify-center p-4 cursor-pointer transition-all duration-300 group z-10">
         <div class="w-14 h-14 bg-[var(--accent)]/5 rounded-xl flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
           <svg class="w-8 h-8 text-[var(--accent)] transition-colors duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
@@ -103,7 +103,7 @@
       </div>
 
       <!-- Satélite 2 (Abajo Izquierda - Legacy Land Mapper) -->
-      <div appBoundFloating class="absolute bottom-12 left-20 w-20 h-20 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex flex-col items-center justify-center cursor-pointer transition-all duration-300 p-2">
+      <div (click)="openWindow('mapper')" appBoundFloating class="absolute bottom-12 left-20 w-20 h-20 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex flex-col items-center justify-center cursor-pointer transition-all duration-300 p-2">
         <!-- Logo SVG para Legacy Land Mapper (Retícula catastral poligonal) -->
         <svg class="w-6 h-6 text-[var(--accent)] mb-1 transition-colors duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M3 3h18v18H3z" />
@@ -120,14 +120,14 @@
       </span>
 
       <!-- Satélite 1 (Centro-Izquierda) -->
-      <div appBoundFloating class="absolute left-16 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
+      <div (click)="openWindow('climbing')" appBoundFloating class="absolute left-16 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
         <svg class="w-6 h-6 text-[var(--accent)] transition-colors duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
         </svg>
       </div>
 
       <!-- HUB CENTRAL (Climbing - Más grande) -->
-      <div appBoundFloating class="w-32 h-32 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-2xl premium-shadow premium-shadow-hover flex flex-col items-center justify-center p-4 cursor-pointer transition-all duration-300 group z-10">
+      <div (click)="openWindow('climbing')" appBoundFloating class="w-32 h-32 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-2xl premium-shadow premium-shadow-hover flex flex-col items-center justify-center p-4 cursor-pointer transition-all duration-300 group z-10">
         <div class="w-14 h-14 bg-[var(--accent)]/5 rounded-xl flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
           <svg class="w-8 h-8 text-[var(--accent)] transition-colors duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <circle cx="12" cy="12" r="10" />
@@ -138,7 +138,7 @@
       </div>
 
       <!-- Satélite 2 (Derecha Arriba) -->
-      <div appBoundFloating class="absolute right-20 top-12 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
+      <div (click)="openWindow('climbing')" appBoundFloating class="absolute right-20 top-12 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
         <svg class="w-6 h-6 text-[var(--accent)] transition-colors duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
         </svg>
@@ -152,14 +152,14 @@
       </span>
 
       <!-- Satélite 1 (Abajo Izquierda) -->
-      <div appBoundFloating class="absolute bottom-12 left-20 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
+      <div (click)="openWindow('canterbury')" appBoundFloating class="absolute bottom-12 left-20 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
         <svg class="w-6 h-6 text-[var(--accent)] transition-colors duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
         </svg>
       </div>
 
       <!-- HUB CENTRAL (Canterbury - Más grande) -->
-      <div appBoundFloating class="w-32 h-32 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-2xl premium-shadow premium-shadow-hover flex flex-col items-center justify-center p-4 cursor-pointer transition-all duration-300 group z-10">
+      <div (click)="openWindow('canterbury')" appBoundFloating class="w-32 h-32 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-2xl premium-shadow premium-shadow-hover flex flex-col items-center justify-center p-4 cursor-pointer transition-all duration-300 group z-10">
         <div class="w-14 h-14 bg-[var(--accent)]/5 rounded-xl flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
           <svg class="w-8 h-8 text-[var(--accent)] transition-colors duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <path d="M22 10v6M2 10l10-5 10 5-10 5z" /><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5" />
@@ -169,7 +169,7 @@
       </div>
 
       <!-- Satélite 2 (Arriba Derecha) -->
-      <div appBoundFloating class="absolute top-12 right-24 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
+      <div (click)="openWindow('canterbury')" appBoundFloating class="absolute top-12 right-24 w-14 h-14 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
         <svg class="w-6 h-6 text-[var(--accent)] transition-colors duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
           <line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" />
@@ -178,5 +178,185 @@
     </section>
 
   </div>
+
+  <!-- ========================================== -->
+  <!-- REPETIDOR DE VENTANAS ACTIVAS (FASE 3 & 4) -->
+  <!-- ========================================== -->
+  @for (win of windows(); track win.id) {
+    @if (win.isOpen) {
+      <div [style.zIndex]="win.zIndex"
+           (mousedown)="focusWindow(win.id)"
+           class="fixed bg-[var(--bg-card)]/95 backdrop-blur-md border border-[var(--border-subtle)] rounded-2xl premium-shadow flex flex-col overflow-hidden transition-all duration-300 ease-out z-50"
+           [class.inset-12]="win.isMaximized"
+           [ngClass]="win.isMaximized ? '' : 'w-[640px] h-[460px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'">
+        
+        <!-- CABECERA DE LA VENTANA -->
+        <div class="h-11 border-b border-[var(--border-subtle)] px-4 flex items-center justify-between bg-[var(--bg-main)]/50 select-none">
+          <!-- Controles estilo sistema operativo clásico -->
+          <div class="flex items-center gap-2">
+            <!-- Cerrar -->
+            <button (click)="closeWindow(win.id, $event)" 
+                    class="w-3.5 h-3.5 rounded-full bg-red-500/20 hover:bg-red-500 border border-red-500/30 flex items-center justify-center transition-colors group cursor-pointer">
+              <span class="text-[8px] text-red-800 font-bold opacity-0 group-hover:opacity-100">×</span>
+            </button>
+            <!-- Minimizar / Cerrar rápido -->
+            <button (click)="closeWindow(win.id, $event)" 
+                    class="w-3.5 h-3.5 rounded-full bg-amber-500/20 hover:bg-amber-500 border border-amber-500/30 flex items-center justify-center transition-colors group cursor-pointer">
+              <span class="text-[8px] text-amber-800 font-bold opacity-0 group-hover:opacity-100">-</span>
+            </button>
+            <!-- Maximizar -->
+            <button (click)="toggleMaximize(win.id, $event)" 
+                    class="w-3.5 h-3.5 rounded-full bg-emerald-500/20 hover:bg-emerald-500 border border-emerald-500/30 flex items-center justify-center transition-colors group cursor-pointer">
+              <span class="text-[6px] text-emerald-800 font-bold opacity-0 group-hover:opacity-100">⤢</span>
+            </button>
+          </div>
+
+          <!-- Título Traducido -->
+          <span class="font-display font-bold text-xs tracking-wider text-[var(--text-main)] uppercase">
+            {{ currentLang === 'en' ? win.titleEn : win.titleEs }}
+          </span>
+
+          <!-- Separador simulado o indicador -->
+          <div class="w-10"></div>
+        </div>
+
+        <!-- CONTENIDO DINÁMICO DE CADA APLICACIÓN -->
+        <div class="flex-1 overflow-y-auto p-6 text-sm text-[var(--text-main)] font-sans">
+          
+          <!-- === CONTENIDO: FERT00LITY AI LAB === -->
+          @if (win.id === 'lafe') {
+            <div class="space-y-4">
+              <p class="text-xs text-[var(--text-muted)] uppercase tracking-wider font-mono">Hospital Universitari i Politècnic La Fe // AI Division</p>
+              <h3 class="text-lg font-display font-bold">Deep Learning for Gynaecological Imaging</h3>
+              <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+                {{ currentLang === 'en' 
+                  ? 'Developed custom neural networks for medical dataset segmentation using PyTorch and MONAI. Optimised workflows for clinicians to detect anomalies automatically with high diagnostic parameters.'
+                  : 'Desarrollo de modelos neuronales de segmentación en datasets médicos utilizando PyTorch y MONAI. Optimización de workflows clínicos para la detección automatizada de anomalías anatómicas.' }}
+              </p>
+              
+              <!-- Simulador de Segmentación Interactivo -->
+              <div class="relative w-full h-44 bg-[var(--bg-main)] rounded-xl border border-[var(--border-subtle)] overflow-hidden flex flex-col items-center justify-center p-4">
+                <span class="text-[10px] font-mono text-[var(--text-muted)] absolute top-2 left-3">MONAI Ecosystem // Inference Model Simulator</span>
+                
+                <!-- Un Canvas o Grid interactivo simulando segmentación médica -->
+                <div class="w-28 h-28 border border-[var(--accent)]/30 rounded-full flex items-center justify-center relative animate-pulse">
+                  <div class="absolute inset-2 border border-dashed border-[var(--accent)]/50 rounded-full"></div>
+                  <!-- Puntos de anclaje de segmentación -->
+                  <span class="absolute w-2 h-2 bg-red-500 rounded-full top-4 left-6"></span>
+                  <span class="absolute w-2 h-2 bg-emerald-500 rounded-full bottom-4 right-10"></span>
+                  <span class="absolute w-2 h-2 bg-blue-500 rounded-full top-1/2 right-2"></span>
+                  <span class="text-[10px] font-mono text-[var(--accent)]">SEGMENTING...</span>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- === CONTENIDO: FIT FORGE === -->
+          @if (win.id === 'fitforge') {
+            <div class="space-y-4">
+              <p class="text-xs text-[var(--text-muted)] uppercase tracking-wider font-mono font-bold">TFG // Full-Stack Fitness SPA</p>
+              <h3 class="text-lg font-display font-bold">Fit Forge // Angular & Symfony 7</h3>
+              <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+                {{ currentLang === 'en'
+                  ? 'A workout and nutrition tracking system with JWT Authentication. Deploys custom routines and evaluates food ratings dynamically.'
+                  : 'Sistema de tracking de entrenamientos y nutrición con autenticación JWT. Despliega rutinas personalizadas y evalúa la calidad de comidas dinámicamente.' }}
+              </p>
+              <div class="grid grid-cols-2 gap-4 mt-2">
+                <div class="space-y-2 bg-[var(--bg-main)]/50 p-3 rounded-xl border border-[var(--border-subtle)]">
+                  <span class="text-[10px] font-mono text-[var(--text-muted)] font-bold">BACKEND STACK</span>
+                  <ul class="text-[11px] font-mono space-y-1">
+                    <li>• PHP 8.2 & Symfony 7</li>
+                    <li>• MySQL DB (14 Tables)</li>
+                    <li>• JWT Auth & Route Guards</li>
+                  </ul>
+                </div>
+                <div class="space-y-2 bg-[var(--bg-main)]/50 p-3 rounded-xl border border-[var(--border-subtle)]">
+                  <span class="text-[10px] font-mono text-[var(--text-muted)] font-bold">FRONTEND STACK</span>
+                  <ul class="text-[11px] font-mono space-y-1">
+                    <li>• Angular Standalone</li>
+                    <li>• Reactive Forms & RxJS</li>
+                    <li>• Tailwind CSS v4</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- === CONTENIDO: MAPPER === -->
+          @if (win.id === 'mapper') {
+            <div class="space-y-4">
+              <p class="text-xs text-[var(--text-muted)] uppercase tracking-wider font-mono">Geospatial Automation Tool</p>
+              <h3 class="text-lg font-display font-bold">Legacy Land Mapper</h3>
+              <p class="text-xs text-[var(--text-muted)]">
+                {{ currentLang === 'en'
+                  ? 'Multi-threaded tool fetching parcel geometry data directly from Spanish Cadastre WFS API. Formats data with Pandas into custom GeoJSON maps.'
+                  : 'Herramienta multi-hilo para la extracción y renderizado de geometrías catastrales directamente desde las APIs oficiales del Catastro de España.' }}
+              </p>
+              <!-- Simulador de Polígonos de Catastro -->
+              <div class="h-36 bg-[var(--bg-main)] rounded-xl border border-[var(--border-subtle)] relative overflow-hidden flex items-center justify-center">
+                <span class="absolute top-2 left-3 text-[9px] font-mono text-[var(--text-muted)]">CADASTRAL GRID SIMULATION</span>
+                <svg class="w-32 h-32 text-[var(--accent)] stroke-current fill-none" viewBox="0 0 100 100">
+                  <polygon points="10,20 40,10 80,30 90,80 30,90 10,60" class="stroke-1.5 opacity-40" />
+                  <polygon points="40,10 80,30 60,60 30,50" class="stroke-1.5 fill-[var(--accent)]/10" />
+                  <circle cx="60" cy="60" r="3" class="fill-red-500" />
+                  <path d="M10,20 L30,50 L30,90" class="stroke-dashed stroke-1" />
+                </svg>
+              </div>
+            </div>
+          }
+
+          <!-- === CONTENIDO: CLIMBING TRACKER === -->
+          @if (win.id === 'climbing') {
+            <div class="space-y-4">
+              <h3 class="text-lg font-display font-bold">Rock Climbing & Sports</h3>
+              <p class="text-xs text-[var(--text-muted)]">
+                {{ currentLang === 'en'
+                  ? 'Interactive track of boulder difficulty levels (V4 to V8). Tracks sessions, hold-types, and physical metrics over time.'
+                  : 'Registro interactivo de ascensiones y grados de dificultad en bloque. Monitorización de tipos de presas y métricas de rendimiento.' }}
+              </p>
+              <div class="grid grid-cols-2 gap-4">
+                <!-- Visualización de pared de escalada simplificada -->
+                <div class="h-36 bg-[var(--bg-main)] rounded-xl border border-[var(--border-subtle)] p-4 flex flex-col justify-between">
+                  <span class="text-[9px] font-mono text-[var(--text-muted)]">WALL SIMULATOR</span>
+                  <div class="flex flex-wrap gap-2">
+                    <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">V4 (Slab)</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/10 text-amber-600 border border-amber-500/20">V6 (Overhang)</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-red-500/10 text-red-600 border border-red-500/20">V8 (Roof)</span>
+                  </div>
+                </div>
+                <div class="space-y-3">
+                  <span class="text-[10px] font-mono text-[var(--text-muted)] block uppercase">Other activities</span>
+                  <div class="flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)]"></span>
+                    <span class="text-xs font-mono">Tennis Club Valencia</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)]"></span>
+                    <span class="text-xs font-mono">Amateur Football League</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- === CONTENIDO: CANTERBURY TERMINAL === -->
+          @if (win.id === 'canterbury') {
+            <div class="bg-black/95 text-green-400 p-4 rounded-xl font-mono text-[11px] h-[300px] overflow-y-auto space-y-2 border border-green-500/20">
+              <p class="text-green-600">$ cat education.txt</p>
+              <p class="text-white">BSc (Hons) in Computer Science</p>
+              <p class="text-white">Canterbury Christ Church University // 2024 - 2026</p>
+              <p class="text-green-600 mt-2">$ scan --system cybersecurity</p>
+              <p class="text-green-300">• Specialised in AI Model Integration & Cybersecurity Audits.</p>
+              <p class="text-green-300">• Deployed ML models on AWS (EC2, Lambda, S3, RDS).</p>
+              <p class="text-green-300">• Managed Docker containers in cloud production environments.</p>
+              <p class="text-green-600 mt-2">$ status</p>
+              <p class="text-yellow-500 animate-pulse">[READY TO DEPLOY]</p>
+            </div>
+          }
+
+        </div>
+      </div>
+    }
+  }
 
 </main>
