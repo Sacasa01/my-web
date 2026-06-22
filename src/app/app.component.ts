@@ -32,8 +32,11 @@ export class AppComponent implements OnInit, AfterViewInit {
   activeSlice = 12;
   segmentationPoints = '';
 
-  // Referencias a los elementos del timeline en Q4
+  // Referencias a los contenedores
+  @ViewChild('q1Container') q1Container!: ElementRef<HTMLElement>;
   @ViewChild('q4Container') q4Container!: ElementRef<HTMLElement>;
+
+  // Referencias a elementos del timeline en Q4 (Educación)
   @ViewChild('nodeBach') nodeBach!: ElementRef<HTMLElement>;
   @ViewChild('nodeDaw') nodeDaw!: ElementRef<HTMLElement>;
   @ViewChild('nodeCant') nodeCant!: ElementRef<HTMLElement>;
@@ -44,6 +47,11 @@ export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild('pathJunctionAws') pathJunctionAws!: ElementRef<SVGPathElement>;
   @ViewChild('junctionNodeCircle') junctionNodeCircle!: ElementRef<SVGCircleElement>;
 
+  // Referencias a elementos de Q1 (Experiencia Laboral)
+  @ViewChild('nodeLafe') nodeLafe!: ElementRef<HTMLElement>;
+  @ViewChild('nodeHire') nodeHire!: ElementRef<HTMLElement>;
+  @ViewChild('pathLafeHire') pathLafeHire!: ElementRef<SVGPathElement>;
+
   // Coordenadas físicas en escalera diagonal de Q4
   private q4Nodes: Record<string, { x: number; y: number; ampX: number; ampY: number; speedX: number; speedY: number; phaseX: number; phaseY: number; targetScale: number; currentScale: number; basePctX: number; basePctY: number }> = {
     bach: { x: 0, y: 0, ampX: 6, ampY: 6, speedX: 0.0010, speedY: 0.0012, phaseX: 1.2, phaseY: 3.4, targetScale: 1, currentScale: 1, basePctX: 0.88, basePctY: 0.68 },
@@ -52,13 +60,20 @@ export class AppComponent implements OnInit, AfterViewInit {
     aws:  { x: 0, y: 0, ampX: 5, ampY: 5, speedX: 0.0014, speedY: 0.0011, phaseX: 0.3, phaseY: 4.1, targetScale: 1, currentScale: 1, basePctX: 0.45, basePctY: 0.22 }
   };
 
+  // Coordenadas síncronas del cuadrante Q1 (Experiencia & Pitch)
+  private q1Nodes: Record<string, { x: number; y: number; ampX: number; ampY: number; speedX: number; speedY: number; phaseX: number; phaseY: number; targetScale: number; currentScale: number; basePctX: number; basePctY: number }> = {
+    lafe: { x: 0, y: 0, ampX: 7, ampY: 7, speedX: 0.0009, speedY: 0.0011, phaseX: 0.5, phaseY: 1.8, targetScale: 1, currentScale: 1, basePctX: 0.30, basePctY: 0.50 },
+    hire: { x: 0, y: 0, ampX: 6, ampY: 6, speedX: 0.0011, speedY: 0.0008, phaseX: 2.2, phaseY: 0.3, targetScale: 1, currentScale: 1, basePctX: 0.70, basePctY: 0.50 }
+  };
+
   // Modales interactivos
   windows = signal<WindowState[]>([
     { id: 'lafe', isOpen: false, isMaximized: false, zIndex: 100 },
     { id: 'fitforge', isOpen: false, isMaximized: false, zIndex: 100 },
     { id: 'mapper', isOpen: false, isMaximized: false, zIndex: 100 },
     { id: 'climbing', isOpen: false, isMaximized: false, zIndex: 100 },
-    { id: 'canterbury', isOpen: false, isMaximized: false, zIndex: 100 }
+    { id: 'canterbury', isOpen: false, isMaximized: false, zIndex: 100 },
+    { id: 'whyhireme', isOpen: false, isMaximized: false, zIndex: 100 }
   ]);
 
   translations = {
@@ -78,7 +93,17 @@ export class AppComponent implements OnInit, AfterViewInit {
       mapper_title: 'Legacy Land Mapper',
       mapper_desc: 'Multi-threaded tool fetching parcel geometry data directly from Spanish Cadastre WFS API. Formats data with Pandas into custom GeoJSON maps.',
       sports_title: 'Rock Climbing & Sports',
-      sports_desc: 'Interactive track of boulder difficulty levels (V4 to V8). Tracks sessions, hold-types, and physical metrics over time.'
+      sports_desc: 'Interactive track of boulder difficulty levels (V4 to V8). Tracks sessions, hold-types, and physical metrics over time.',
+      txt_hire_node: 'WHY HIRE ME?',
+      why_title: '01 // WHY HIRE SANTIAGO?',
+      why_heading: 'Why should you hire me?',
+      why_sub: 'Final-Year Computer Science Student & Full-Stack Architect',
+      pitch_text: 'I am a Full-Stack Engineer and AI developer who bridges the gap between complex Deep Learning architectures and robust, clean backend systems. My experience at Hospital La Fe implementing medical image segmentations demonstrates my ability to deliver secure, production-grade solutions in highly demanding environments.',
+      competency1: 'Production-grade deployment of deep learning models with PyTorch and MONAI (AWS integration, Docker containerisation).',
+      competency2: 'Designed secure API architectures using Symfony 7 (PHP 8.2) and FastAPI (Python), utilizing complex SQL relational designs.',
+      competency3: 'Building fluid SPA applications in Angular utilizing modern Reactive Forms, lazy-loaded routing, and optimized interceptors.',
+      txt_download_cv: 'Download CV',
+      tech_stack_label: 'Primary Technology Stack'
     },
     es: {
       subtitle: 'Ingeniero Full-Stack & Desarrollador de IA',
@@ -96,7 +121,17 @@ export class AppComponent implements OnInit, AfterViewInit {
       mapper_title: 'Mapeador de Parcelas',
       mapper_desc: 'Herramienta multi-hilo para la extracción y renderizado de geometrías catastrales directamente desde las APIs oficiales del Catastro de España.',
       sports_title: 'Escalada en Roca y Deportes',
-      sports_desc: 'Registro interactivo de ascensiones y grados de dificultad en bloque. Monitorización de tipos de presas y métricas de rendimiento.'
+      sports_desc: 'Registro interactivo de ascensiones y grados de dificultad en bloque. Monitorización de tipos de presas y métricas de rendimiento.',
+      txt_hire_node: '¿POR QUÉ YO?',
+      why_title: '01 // ¿POR QUÉ CONTRATAR A SANTIAGO?',
+      why_heading: '¿Por qué contratarme?',
+      why_sub: 'Estudiante de Último Año de Ingeniería Informática & Arquitecto Full-Stack',
+      pitch_text: 'Soy un ingeniero de software Full-Stack y desarrollador de IA capaz de conectar arquitecturas complejas de Deep Learning con sistemas backend robustos y limpios. Mi trayectoria en el Hospital La Fe implementando segmentaciones de imagen demuestra mi madurez para desplegar software seguro y de alta fidelidad en entornos demandantes.',
+      competency1: 'Despliegue y optimización de modelos de Deep Learning con PyTorch y MONAI (integración en AWS, contenedores Docker).',
+      competency2: 'Diseño de APIs seguras y escalables en Symfony 7 (PHP 8.2) y FastAPI (Python) con complejas bases de datos relacionales SQL.',
+      competency3: 'Construcción de aplicaciones SPA fluidas en Angular haciendo uso de componentes standalone, interceptores y enrutamiento perezoso.',
+      txt_download_cv: 'Descargar CV',
+      tech_stack_label: 'Stack Tecnológico Principal'
     }
   };
 
@@ -113,6 +148,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.ngZone.runOutsideAngular(() => {
       const updateLoop = (time: number) => {
         this.renderSynchronizedTimeline(time);
+        this.renderWorkTrajectory(time);
         requestAnimationFrame(updateLoop);
       };
       requestAnimationFrame(updateLoop);
@@ -249,9 +285,54 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onNodeHover(key: string, isHovering: boolean) {
-    if (this.q4Nodes[key]) {
-      this.q4Nodes[key].targetScale = isHovering ? 0.05 : 1;
+  // 📐 NUEVO RENDERIZADOR SÍNCRONO EN Q1 (Trayectoria Laboral + Pitch)
+  private renderWorkTrajectory(time: number) {
+    const container = this.q1Container?.nativeElement;
+    if (!container) return;
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+
+    const coords: Record<string, { x: number; y: number }> = {};
+    const refs: Record<string, HTMLElement | undefined> = {
+      lafe: this.nodeLafe?.nativeElement,
+      hire: this.nodeHire?.nativeElement
+    };
+
+    if (!refs['lafe'] || !refs['hire']) return;
+
+    Object.keys(this.q1Nodes).forEach(key => {
+      const node = this.q1Nodes[key];
+      const el = refs[key];
+      if (!el) return;
+
+      node.currentScale += (node.targetScale - node.currentScale) * 0.1;
+      node.x = Math.sin(time * node.speedX + node.phaseX) * node.ampX * node.currentScale;
+      node.y = Math.cos(time * node.speedY + node.phaseY) * node.ampY * node.currentScale;
+
+      const basePxX = w * node.basePctX;
+      const basePxY = h * node.basePctY;
+
+      el.style.left = `calc(${node.basePctX * 100}% - ${el.clientWidth / 2}px)`;
+      el.style.top = `calc(${node.basePctY * 100}% - ${el.clientHeight / 2}px)`;
+      el.style.transform = `translate3d(${node.x}px, ${node.y}px, 0)`;
+
+      coords[key] = { x: basePxX + node.x, y: basePxY + node.y };
+    });
+
+    if (coords['lafe'] && coords['hire']) {
+      const pLafe = coords['lafe'];
+      const pHire = coords['hire'];
+
+      // Dibujar la curva Bezier elástica uniendo Fertoolity con Why Hire Me
+      const dQ1 = `M ${pLafe.x} ${pLafe.y} C ${pLafe.x + w * 0.10} ${pLafe.y}, ${pHire.x - w * 0.10} ${pHire.y}, ${pHire.x} ${pHire.y}`;
+      this.pathLafeHire?.nativeElement?.setAttribute('d', dQ1);
+    }
+  }
+
+  onNodeHover(key: string, isHovering: boolean, quadrant: 'q1' | 'q4' = 'q4') {
+    const collection = quadrant === 'q1' ? this.q1Nodes : this.q4Nodes;
+    if (collection[key]) {
+      collection[key].targetScale = isHovering ? 0.05 : 1;
     }
   }
 

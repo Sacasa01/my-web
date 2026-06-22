@@ -43,32 +43,57 @@
   <div class="grid grid-cols-2 grid-rows-2 w-full h-full p-8 gap-8 relative z-20">
 
     <!-- Q1: UP-LEFT (WORK EXPERIENCE) -->
-    <section class="relative flex items-center justify-center">
+    <section #q1Container class="q1-container relative w-full h-full flex items-center justify-center overflow-hidden">
+      
       <span class="absolute top-4 left-4 font-display font-medium text-[10px] tracking-widest text-[var(--text-muted)]/60 uppercase transition-colors duration-500">
         {{ translations[currentLang].q1 }}
       </span>
-      
-      <div appBoundFloating class="absolute top-12 left-20 w-12 h-12 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow flex items-center justify-center cursor-pointer hover:border-[var(--accent)]" (click)="openModal('lafe')">
-        <svg class="w-5 h-5 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-        </svg>
-      </div>
 
-      <div appBoundFloating class="w-32 h-32 bg-[var(--bg-card)] border border-[var(--border-subtle)]/80 rounded-2xl premium-shadow flex flex-col items-center justify-center p-4 cursor-pointer group" (click)="openModal('lafe')">
-        <div class="w-14 h-14 bg-[var(--accent)]/5 rounded-xl flex items-center justify-center mb-2 group-hover:scale-105 transition-transform duration-300">
-          <svg class="w-8 h-8 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <!-- 📐 LIENZO CON ARROW-HEAD Y CURVA DE TRAYECTORIA ELÁSTICA -->
+      <svg class="absolute inset-0 w-full h-full pointer-events-none text-[var(--border-subtle)] fill-none transition-colors duration-500 z-10">
+        <defs>
+          <marker id="arrow-q1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" class="fill-[var(--accent)] transition-colors duration-500" />
+          </marker>
+        </defs>
+        <path #pathLafeHire stroke="currentColor" stroke-width="1.2" marker-end="url(#arrow-q1)" class="hover:stroke-[var(--accent)] transition-colors duration-500" />
+      </svg>
+
+      <!-- 1. FERT00LITY AI LAB (Nodo Origen) -->
+      <div #nodeLafe 
+           (mouseenter)="onNodeHover('lafe', true, 'q1')" 
+           (mouseleave)="onNodeHover('lafe', false, 'q1')"
+           class="absolute flex flex-col items-center z-20 group cursor-pointer"
+           (click)="openModal('lafe')">
+        <div class="w-16 h-16 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-2xl premium-shadow flex items-center justify-center transition-all duration-300 hover:scale-105">
+          <svg class="w-7 h-7 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.25c-4.556 0-8.25-3.694-8.25-8.25V9.5h16.5V10c0 4.556-3.694 8.25-8.25 8.25z" />
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2.25M6 4h12M12 18.25V22" />
           </svg>
         </div>
-        <span class="font-display font-bold text-[10px] text-[var(--text-main)] text-center tracking-wider uppercase">FERTOOLITY AI</span>
+        <span class="font-display font-bold text-[10px] text-[var(--text-main)] mt-2 uppercase tracking-wider text-center max-w-[120px]">FERTOOLITY AI</span>
+        <span class="text-[8px] text-[var(--text-muted)] font-mono mt-0.5">2026</span>
       </div>
 
-      <div appBoundFloating class="absolute bottom-12 right-24 w-12 h-12 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow flex items-center justify-center cursor-pointer hover:border-[var(--accent)]" (click)="openModal('lafe')">
-        <svg class="w-5 h-5 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" />
-        </svg>
+      <!-- 2. WHY HIRE ME? (Nodo Destacado con Radar de Pulso) -->
+      <div #nodeHire 
+           (mouseenter)="onNodeHover('hire', true, 'q1')" 
+           (mouseleave)="onNodeHover('hire', false, 'q1')"
+           class="absolute flex flex-col items-center z-20 group cursor-pointer"
+           (click)="openModal('whyhireme')">
+        <div class="w-20 h-20 bg-[var(--bg-card)] border border-[var(--accent)]/30 rounded-3xl premium-shadow flex items-center justify-center transition-all duration-300 hover:scale-105 relative">
+          <!-- Radar de pulso de diseño para captar la atención del reclutador -->
+          <span class="absolute inset-0 rounded-3xl bg-[var(--accent)]/5 animate-ping pointer-events-none"></span>
+          <svg class="w-9 h-9 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.637 10.637z" />
+          </svg>
+        </div>
+        <span class="font-display font-bold text-[11px] text-[var(--text-main)] mt-2.5 uppercase tracking-widest text-center max-w-[130px]">
+          {{ translations[currentLang].txt_hire_node }}
+        </span>
+        <span class="text-[8px] bg-[var(--accent)]/10 text-[var(--accent)] px-2 py-0.5 rounded-full font-mono mt-1 font-bold">READY TO DEPLOY</span>
       </div>
+
     </section>
 
     <!-- Q2: UP-RIGHT (PROJECTS) -->
@@ -466,6 +491,77 @@
               <p class="text-green-300">• Managed Docker containers in cloud production environments.</p>
               <p class="text-green-600 mt-2">$ status</p>
               <p class="text-yellow-500 animate-pulse">[READY TO DEPLOY]</p>
+            </div>
+          }
+
+          <!-- === MODAL INTERACTIVO: WHY HIRE ME === -->
+          @if (win.id === 'whyhireme') {
+            <div class="flex flex-col h-full font-sans text-[var(--text-main)] space-y-4">
+              
+              <!-- Encabezado de Modal -->
+              <div class="flex items-start justify-between">
+                <div>
+                  <h3 class="text-lg font-display font-bold uppercase tracking-wide">
+                    {{ translations[currentLang].why_heading }}
+                  </h3>
+                  <p class="text-xs text-[var(--text-muted)] font-mono mt-0.5">
+                    {{ translations[currentLang].why_sub }}
+                  </p>
+                </div>
+                <!-- Botón de Descarga del CV -->
+                <a href="assets/CASTRO_SALT_SANTIAGO_CV.pdf" download="Santiago_Castro_Salt_CV.pdf"
+                   class="px-4 py-2 bg-[var(--accent)] hover:opacity-90 text-[var(--bg-card)] rounded-xl font-display font-bold text-[11px] tracking-wider uppercase transition-all flex items-center gap-1.5 shadow-md cursor-pointer">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                  </svg>
+                  <span>{{ translations[currentLang].txt_download_cv }}</span>
+                </a>
+              </div>
+
+              <!-- Pitch Text -->
+              <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+                {{ translations[currentLang].pitch_text }}
+              </p>
+
+              <!-- Caja de Competencias Clave -->
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
+                <div class="bg-[var(--bg-main)]/50 p-3 rounded-xl border border-[var(--border-subtle)] space-y-1.5">
+                  <span class="text-[9px] font-mono font-bold uppercase tracking-wider text-[var(--accent)]">01 // AI & Cloud</span>
+                  <p class="text-[10px] text-[var(--text-muted)] leading-relaxed">
+                    {{ translations[currentLang].competency1 }}
+                  </p>
+                </div>
+                <div class="bg-[var(--bg-main)]/50 p-3 rounded-xl border border-[var(--border-subtle)] space-y-1.5">
+                  <span class="text-[9px] font-mono font-bold uppercase tracking-wider text-[var(--accent)]">02 // Backend Engineering</span>
+                  <p class="text-[10px] text-[var(--text-muted)] leading-relaxed">
+                    {{ translations[currentLang].competency2 }}
+                  </p>
+                </div>
+                <div class="bg-[var(--bg-main)]/50 p-3 rounded-xl border border-[var(--border-subtle)] space-y-1.5">
+                  <span class="text-[9px] font-mono font-bold uppercase tracking-wider text-[var(--accent)]">03 // Modern Frontend</span>
+                  <p class="text-[10px] text-[var(--text-muted)] leading-relaxed">
+                    {{ translations[currentLang].competency3 }}
+                  </p>
+                </div>
+              </div>
+
+              <!-- Stack de Tecnologías Organizado -->
+              <div class="space-y-2 pt-2 border-t border-[var(--border-subtle)]">
+                <span class="text-[9px] font-mono text-[var(--text-muted)] uppercase tracking-widest block">
+                  {{ translations[currentLang].tech_stack_label }}
+                </span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="px-2.5 py-1 bg-[var(--bg-main)] border border-[var(--border-subtle)] rounded-lg text-[10px] font-mono font-bold">Angular 19</span>
+                  <span class="px-2.5 py-1 bg-[var(--bg-main)] border border-[var(--border-subtle)] rounded-lg text-[10px] font-mono font-bold">Symfony 7</span>
+                  <span class="px-2.5 py-1 bg-[var(--bg-main)] border border-[var(--border-subtle)] rounded-lg text-[10px] font-mono font-bold">FastAPI</span>
+                  <span class="px-2.5 py-1 bg-[var(--bg-main)] border border-[var(--border-subtle)] rounded-lg text-[10px] font-mono font-bold">Python</span>
+                  <span class="px-2.5 py-1 bg-[var(--bg-main)] border border-[var(--border-subtle)] rounded-lg text-[10px] font-mono font-bold">PyTorch</span>
+                  <span class="px-2.5 py-1 bg-[var(--bg-main)] border border-[var(--border-subtle)] rounded-lg text-[10px] font-mono font-bold">AWS Certified</span>
+                  <span class="px-2.5 py-1 bg-[var(--bg-main)] border border-[var(--border-subtle)] rounded-lg text-[10px] font-mono font-bold">Docker</span>
+                  <span class="px-2.5 py-1 bg-[var(--bg-main)] border border-[var(--border-subtle)] rounded-lg text-[10px] font-mono font-bold">PostgreSQL</span>
+                </div>
+              </div>
+
             </div>
           }
 
