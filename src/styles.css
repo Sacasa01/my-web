@@ -1,26 +1,41 @@
 @import "tailwindcss";
+@source "./src/app/**/*.{html,ts}";
+@source "./src/index.html";
 
 @theme {
-  --color-cyber-bg: #0b0c10;
-  --color-cyber-border: #1f2833;
-  --color-cyber-text: #ffffff;
-  --color-cyber-muted: #c5c6c7;
-  --color-cyber-neon: #66fcf1;
-  --color-cyber-neon-dim: rgba(102, 252, 241, 0.15);
+  --color-cream-bg: #faf6f0;      /* Fondo crema cálido premium */
+  --color-cream-card: #ffffff;    /* Tarjetas/cubículos en blanco puro */
+  --color-cream-border: #e3dfd5;  /* Bordes ultra suaves */
+  --color-charcoal: #1a1a1a;      /* Texto principal de alta legibilidad */
+  --color-muted: #706e68;         /* Textos secundarios y metadatos */
+  --color-accent: #2d4a43;        /* Acento verde bosque profundo / premium slate */
   
-  --font-outfit: "Outfit", sans-serif;
-  --font-inter: "Inter", sans-serif;
+  --font-display: 'Outfit', sans-serif;
+  --font-sans: 'Inter', sans-serif;
 }
 
+/* Base de la aplicación con micropuntos finos de la imagen */
 body {
-  background-color: #0b0c10;
-  /* Patrón de cuadrícula tecnológica sutil */
-  background-image: 
-    linear-gradient(rgba(31, 40, 51, 0.15) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(31, 40, 51, 0.15) 1px, transparent 1px),
-    radial-gradient(circle at 50% 50%, rgba(102, 252, 241, 0.04) 0%, transparent 80%);
-  background-size: 40px 40px, 40px 40px, 100% 100%;
-  background-position: center;
-  margin: 0;
-  padding: 0;
+  background-color: var(--color-cream-bg);
+  background-image: radial-gradient(var(--color-cream-border) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  color: var(--color-charcoal);
+  font-family: var(--font-sans);
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Transición suave para desenfoques y hovers */
+.premium-shadow {
+  box-shadow: 0 4px 20px -2px rgba(112, 110, 104, 0.08), 
+              0 2px 8px -1px rgba(112, 110, 104, 0.04);
+}
+
+.premium-shadow-hover {
+  transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.premium-shadow-hover:hover {
+  box-shadow: 0 12px 30px -4px rgba(112, 110, 104, 0.15), 
+              0 4px 12px -2px rgba(112, 110, 104, 0.08);
 }

@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { BoundFloatingDirective } from './shared/directives/bound-floating.directive';
 
 @Component({
   selector: 'app-root',
-  imports: [],
+  imports: [BoundFloatingDirective],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

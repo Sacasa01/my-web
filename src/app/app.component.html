@@ -1,165 +1,134 @@
-<main class="w-screen h-screen overflow-hidden bg-cyber-bg p-6 flex flex-col md:grid md:grid-cols-2 md:grid-rows-2 gap-6 relative select-none">
-  <!-- Glowing subtle ambient light in center -->
-  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyber-neon/5 rounded-full blur-[120px] pointer-events-none z-0"></div>
+<main class="w-screen h-screen overflow-hidden relative">
 
-  <!-- Q1: Experiencia Laboral (La Fe AI) -->
-  <section class="border border-cyber-border bg-cyber-bg/30 backdrop-blur-md rounded-2xl p-6 relative flex flex-col justify-between overflow-hidden group hover:border-cyber-neon/40 transition-all duration-500 z-10 shadow-[0_0_15px_rgba(31,40,51,0.2)]">
-    <!-- Grid corner markings -->
-    <div class="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-cyber-border group-hover:border-cyber-neon transition-colors duration-500"></div>
-    <div class="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-cyber-border group-hover:border-cyber-neon transition-colors duration-500"></div>
-    <div class="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-cyber-border group-hover:border-cyber-neon transition-colors duration-500"></div>
-    <div class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-cyber-border group-hover:border-cyber-neon transition-colors duration-500"></div>
+  <!-- CABECERA DE MARCA SUTIL -->
+  <header class="absolute top-6 left-1/2 -translate-x-1/2 z-50 text-center pointer-events-none">
+    <h1 class="font-display font-bold text-lg tracking-wider text-charcoal uppercase">SANTIAGO CASTRO SALT</h1>
+    <p class="text-xs text-muted tracking-widest uppercase mt-1">Full-Stack Engineer & AI Developer</p>
+  </header>
 
-    <div class="flex justify-between items-start z-10">
-      <div>
-        <span class="font-outfit text-xs font-bold tracking-widest text-cyber-neon uppercase opacity-80">[ SEC-01 // LA FE AI ]</span>
-        <h2 class="font-outfit text-xl font-bold text-cyber-text mt-1">Laboratorio de IA</h2>
-      </div>
-      <span class="font-outfit text-xs font-bold text-cyber-muted/40 tracking-wider">Q1</span>
-    </div>
+  <!-- GRID DE CUADRANTES INVISIBLES -->
+  <div class="grid grid-cols-2 grid-rows-2 w-full h-full p-8 gap-8">
 
-    <!-- Central Floating App Launcher Mockup -->
-    <div class="flex-1 flex flex-col items-center justify-center relative my-4">
-      <div class="w-24 h-24 rounded-2xl bg-gradient-to-br from-cyber-border to-cyber-bg border border-cyber-border flex items-center justify-center cursor-pointer shadow-lg hover:shadow-[0_0_30px_rgba(102,252,241,0.3)] hover:border-cyber-neon transition-all duration-300 transform hover:scale-105 active:scale-95 group/app">
-        <!-- SVG Icon Simulating Fertoolity AI Lab -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-cyber-neon group-hover/app:scale-110 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v1.244c0 .892-.724 1.617-1.617 1.617H7.133a1.617 1.617 0 0 1-1.617-1.617V3.104m10.5 0v1.244c0 .892.724 1.617 1.617 1.617h1.017a1.617 1.617 0 0 0 1.617-1.617V3.104m-12 7.492c0-2.433 1.972-4.405 4.405-4.405h3.19c2.433 0 4.405 1.972 4.405 4.405V18a3 3 0 0 1-3 3h-6a3 3 0 0 1-3-3v-7.404z" />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 3h6" />
+    <!-- Q1: EXPERIENCIA LABORAL -->
+    <section class="relative flex items-center justify-center">
+      <span class="absolute top-4 left-4 font-display font-medium text-xs tracking-widest text-muted/60 uppercase">01 // LAB DE IA</span>
+      
+      <!-- Satélite 1 (Arriba Izquierda) -->
+      <div appBoundFloating class="absolute top-12 left-16 w-14 h-14 bg-cream-card border border-cream-border rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
+        <svg class="w-6 h-6 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
         </svg>
       </div>
-      <p class="font-outfit text-xs text-cyber-muted mt-3 tracking-widest uppercase">Fertoolity AI Lab</p>
-    </div>
 
-    <div class="z-10">
-      <p class="font-inter text-sm text-cyber-muted leading-relaxed">
-        Investigación y desarrollo de modelos de inteligencia artificial y redes neuronales aplicadas.
-      </p>
-    </div>
-  </section>
-
-  <!-- Q2: Proyectos Destacados -->
-  <section class="border border-cyber-border bg-cyber-bg/30 backdrop-blur-md rounded-2xl p-6 relative flex flex-col justify-between overflow-hidden group hover:border-cyber-neon/40 transition-all duration-500 z-10 shadow-[0_0_15px_rgba(31,40,51,0.2)]">
-    <!-- Grid corner markings -->
-    <div class="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-cyber-border group-hover:border-cyber-neon transition-colors duration-500"></div>
-    <div class="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-cyber-border group-hover:border-cyber-neon transition-colors duration-500"></div>
-    <div class="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-cyber-border group-hover:border-cyber-neon transition-colors duration-500"></div>
-    <div class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-cyber-border group-hover:border-cyber-neon transition-colors duration-500"></div>
-
-    <div class="flex justify-between items-start z-10">
-      <div>
-        <span class="font-outfit text-xs font-bold tracking-widest text-cyber-neon uppercase opacity-80">[ SEC-02 // CORE PROJECTS ]</span>
-        <h2 class="font-outfit text-xl font-bold text-cyber-text mt-1">Proyectos Principales</h2>
-      </div>
-      <span class="font-outfit text-xs font-bold text-cyber-muted/40 tracking-wider">Q2</span>
-    </div>
-
-    <!-- Central Floating App Launcher Mockup with 2 Apps -->
-    <div class="flex-1 flex items-center justify-around relative my-4">
-      <div class="flex flex-col items-center">
-        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-cyber-border to-cyber-bg border border-cyber-border flex items-center justify-center cursor-pointer shadow-lg hover:shadow-[0_0_30px_rgba(102,252,241,0.3)] hover:border-cyber-neon transition-all duration-300 transform hover:scale-105 active:scale-95 group/app">
-          <!-- Fit Forge Icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-cyber-neon group-hover/app:scale-110 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+      <!-- HUB CENTRAL (La Fe AI - Más grande) -->
+      <div appBoundFloating class="w-32 h-32 bg-cream-card border border-cream-border/80 rounded-2xl premium-shadow premium-shadow-hover flex flex-col items-center justify-center p-4 cursor-pointer transition-all duration-300 group z-10">
+        <div class="w-14 h-14 bg-accent/5 rounded-xl flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
+          <svg class="w-8 h-8 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.25c-4.556 0-8.25-3.694-8.25-8.25V9.5h16.5V10c0 4.556-3.694 8.25-8.25 8.25z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2.25M6 4h12M12 18.25V22" />
           </svg>
         </div>
-        <p class="font-outfit text-[10px] text-cyber-muted mt-2 tracking-widest uppercase">Fit Forge</p>
+        <span class="font-display font-bold text-xs text-charcoal text-center tracking-wide">FERTOOLITY AI</span>
       </div>
 
-      <div class="flex flex-col items-center">
-        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-cyber-border to-cyber-bg border border-cyber-border flex items-center justify-center cursor-pointer shadow-lg hover:shadow-[0_0_30px_rgba(102,252,241,0.3)] hover:border-cyber-neon transition-all duration-300 transform hover:scale-105 active:scale-95 group/app">
-          <!-- Legacy Land Mapper Icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-cyber-neon group-hover/app:scale-110 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
-          </svg>
-        </div>
-        <p class="font-outfit text-[10px] text-cyber-muted mt-2 tracking-widest uppercase">Land Mapper</p>
-      </div>
-    </div>
-
-    <div class="z-10">
-      <p class="font-inter text-sm text-cyber-muted leading-relaxed">
-        Soluciones fullstack combinando arquitecturas robustas y visualizaciones cartográficas de precisión.
-      </p>
-    </div>
-  </section>
-
-  <!-- Q3: Bio & Hobbies -->
-  <section class="border border-cyber-border bg-cyber-bg/30 backdrop-blur-md rounded-2xl p-6 relative flex flex-col justify-between overflow-hidden group hover:border-cyber-neon/40 transition-all duration-500 z-10 shadow-[0_0_15px_rgba(31,40,51,0.2)]">
-    <!-- Grid corner markings -->
-    <div class="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-cyber-border group-hover:border-cyber-neon transition-colors duration-500"></div>
-    <div class="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-cyber-border group-hover:border-cyber-neon transition-colors duration-500"></div>
-    <div class="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-cyber-border group-hover:border-cyber-neon transition-colors duration-500"></div>
-    <div class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-cyber-border group-hover:border-cyber-neon transition-colors duration-500"></div>
-
-    <div class="flex justify-between items-start z-10">
-      <div>
-        <span class="font-outfit text-xs font-bold tracking-widest text-cyber-neon uppercase opacity-80">[ SEC-03 // LIFE & SPORTS ]</span>
-        <h2 class="font-outfit text-xl font-bold text-cyber-text mt-1">Hobbies y Deporte</h2>
-      </div>
-      <span class="font-outfit text-xs font-bold text-cyber-muted/40 tracking-wider">Q3</span>
-    </div>
-
-    <!-- Central Floating App Launcher Mockup with 2 Apps -->
-    <div class="flex-1 flex items-center justify-around relative my-4">
-      <div class="flex flex-col items-center">
-        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-cyber-border to-cyber-bg border border-cyber-border flex items-center justify-center cursor-pointer shadow-lg hover:shadow-[0_0_30px_rgba(102,252,241,0.3)] hover:border-cyber-neon transition-all duration-300 transform hover:scale-105 active:scale-95 group/app">
-          <!-- Climbing Tracker Icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-cyber-neon group-hover/app:scale-110 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 0A7.5 7.5 0 1 1 4.243 19.757a7.5 7.5 0 0 1 10.586-10.586m0 0L20.25 4.5" />
-          </svg>
-        </div>
-        <p class="font-outfit text-[10px] text-cyber-muted mt-2 tracking-widest uppercase">Climbing</p>
-      </div>
-
-      <div class="flex flex-col items-center">
-        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-cyber-border to-cyber-bg border border-cyber-border flex items-center justify-center cursor-pointer shadow-lg hover:shadow-[0_0_30px_rgba(102,252,241,0.3)] hover:border-cyber-neon transition-all duration-300 transform hover:scale-105 active:scale-95 group/app">
-          <!-- Sport Hub Icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-cyber-neon group-hover/app:scale-110 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
-          </svg>
-        </div>
-        <p class="font-outfit text-[10px] text-cyber-muted mt-2 tracking-widest uppercase">Sport Hub</p>
-      </div>
-    </div>
-
-    <div class="z-10">
-      <p class="font-inter text-sm text-cyber-muted leading-relaxed">
-        Pasión por la escalada, el fútbol, el tenis y el seguimiento analítico del rendimiento físico.
-      </p>
-    </div>
-  </section>
-
-  <!-- Q4: Educación y Terminal -->
-  <section class="border border-cyber-border bg-cyber-bg/30 backdrop-blur-md rounded-2xl p-6 relative flex flex-col justify-between overflow-hidden group hover:border-cyber-neon/40 transition-all duration-500 z-10 shadow-[0_0_15px_rgba(31,40,51,0.2)]">
-    <!-- Grid corner markings -->
-    <div class="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-cyber-border group-hover:border-cyber-neon transition-colors duration-500"></div>
-    <div class="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-cyber-border group-hover:border-cyber-neon transition-colors duration-500"></div>
-    <div class="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-cyber-border group-hover:border-cyber-neon transition-colors duration-500"></div>
-    <div class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-cyber-border group-hover:border-cyber-neon transition-colors duration-500"></div>
-
-    <div class="flex justify-between items-start z-10">
-      <div>
-        <span class="font-outfit text-xs font-bold tracking-widest text-cyber-neon uppercase opacity-80">[ SEC-04 // CANTERBURY CORE ]</span>
-        <h2 class="font-outfit text-xl font-bold text-cyber-text mt-1">Educación y Diagnóstico</h2>
-      </div>
-      <span class="font-outfit text-xs font-bold text-cyber-muted/40 tracking-wider">Q4</span>
-    </div>
-
-    <!-- Central Floating App Launcher Mockup -->
-    <div class="flex-1 flex flex-col items-center justify-center relative my-4">
-      <div class="w-24 h-24 rounded-2xl bg-gradient-to-br from-cyber-border to-cyber-bg border border-cyber-border flex items-center justify-center cursor-pointer shadow-lg hover:shadow-[0_0_30px_rgba(102,252,241,0.3)] hover:border-cyber-neon transition-all duration-300 transform hover:scale-105 active:scale-95 group/app">
-        <!-- SVG Icon Simulating Canterbury Core Terminal -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-cyber-neon group-hover/app:scale-110 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+      <!-- Satélite 2 (Abajo Derecha) -->
+      <div appBoundFloating class="absolute bottom-12 right-20 w-14 h-14 bg-cream-card border border-cream-border rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
+        <svg class="w-6 h-6 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" />
         </svg>
       </div>
-      <p class="font-outfit text-xs text-cyber-muted mt-3 tracking-widest uppercase">Canterbury Core</p>
-    </div>
+    </section>
 
-    <div class="z-10">
-      <p class="font-inter text-sm text-cyber-muted leading-relaxed">
-        Estudios en Computer Science, hackathons y auditoría de sistemas bajo estándares NIST.
-      </p>
-    </div>
-  </section>
+    <!-- Q2: PROYECTOS -->
+    <section class="relative flex items-center justify-center">
+      <span class="absolute top-4 right-4 font-display font-medium text-xs tracking-widest text-muted/60 uppercase">02 // CORE PROJECTS</span>
+
+      <!-- Satélite 1 (Arriba Derecha) -->
+      <div appBoundFloating class="absolute top-8 right-24 w-14 h-14 bg-cream-card border border-cream-border rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
+        <svg class="w-6 h-6 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+        </svg>
+      </div>
+
+      <!-- HUB CENTRAL (Fit Forge - Más grande) -->
+      <div appBoundFloating class="w-32 h-32 bg-cream-card border border-cream-border/80 rounded-2xl premium-shadow premium-shadow-hover flex flex-col items-center justify-center p-4 cursor-pointer transition-all duration-300 group z-10">
+        <div class="w-14 h-14 bg-accent/5 rounded-xl flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
+          <svg class="w-8 h-8 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+          </svg>
+        </div>
+        <span class="font-display font-bold text-xs text-charcoal text-center tracking-wide">FIT FORGE</span>
+      </div>
+
+      <!-- Satélite 2 (Abajo Izquierda - Land Mapper) -->
+      <div appBoundFloating class="absolute bottom-10 left-16 w-20 h-20 bg-cream-card border border-cream-border rounded-xl premium-shadow premium-shadow-hover flex flex-col items-center justify-center cursor-pointer transition-all duration-300 p-2">
+        <svg class="w-6 h-6 text-accent mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" />
+          <line x1="9" y1="3" x2="9" y2="18" /><line x1="15" y1="6" x2="15" y2="21" />
+        </svg>
+        <span class="text-[10px] font-bold text-muted uppercase">MAPPER</span>
+      </div>
+    </section>
+
+    <!-- Q3: HOBBIES -->
+    <section class="relative flex items-center justify-center">
+      <span class="absolute bottom-4 left-4 font-display font-medium text-xs tracking-widest text-muted/60 uppercase">03 // LIFE & SPORTS</span>
+
+      <!-- Satélite 1 (Centro-Izquierda) -->
+      <div appBoundFloating class="absolute left-10 w-14 h-14 bg-cream-card border border-cream-border rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
+        <svg class="w-6 h-6 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
+        </svg>
+      </div>
+
+      <!-- HUB CENTRAL (Climbing - Más grande) -->
+      <div appBoundFloating class="w-32 h-32 bg-cream-card border border-cream-border/80 rounded-2xl premium-shadow premium-shadow-hover flex flex-col items-center justify-center p-4 cursor-pointer transition-all duration-300 group z-10">
+        <div class="w-14 h-14 bg-accent/5 rounded-xl flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
+          <svg class="w-8 h-8 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M8 12h8M12 8v8" />
+          </svg>
+        </div>
+        <span class="font-display font-bold text-xs text-charcoal text-center tracking-wide">CLIMBING</span>
+      </div>
+
+      <!-- Satélite 2 (Derecha Arriba) -->
+      <div appBoundFloating class="absolute right-12 top-6 w-14 h-14 bg-cream-card border border-cream-border rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
+        <svg class="w-6 h-6 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+      </div>
+    </section>
+
+    <!-- Q4: EDUCACIÓN -->
+    <section class="relative flex items-center justify-center">
+      <span class="absolute bottom-4 right-4 font-display font-medium text-xs tracking-widest text-muted/60 uppercase">04 // EDUCATION</span>
+
+      <!-- Satélite 1 (Abajo Izquierda) -->
+      <div appBoundFloating class="absolute bottom-6 left-12 w-14 h-14 bg-cream-card border border-cream-border rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
+        <svg class="w-6 h-6 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+        </svg>
+      </div>
+
+      <!-- HUB CENTRAL (Canterbury - Más grande) -->
+      <div appBoundFloating class="w-32 h-32 bg-cream-card border border-cream-border/80 rounded-2xl premium-shadow premium-shadow-hover flex flex-col items-center justify-center p-4 cursor-pointer transition-all duration-300 group z-10">
+        <div class="w-14 h-14 bg-accent/5 rounded-xl flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
+          <svg class="w-8 h-8 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z" /><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5" />
+          </svg>
+        </div>
+        <span class="font-display font-bold text-xs text-charcoal text-center tracking-wide">CANTERBURY</span>
+      </div>
+
+      <!-- Satélite 2 (Arriba Derecha) -->
+      <div appBoundFloating class="absolute top-10 right-16 w-14 h-14 bg-cream-card border border-cream-border rounded-xl premium-shadow premium-shadow-hover flex items-center justify-center cursor-pointer transition-all duration-300">
+        <svg class="w-6 h-6 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+          <line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" />
+        </svg>
+      </div>
+    </section>
+
+  </div>
 </main>
