@@ -622,31 +622,120 @@
           }
 
           @if (win.id === 'climbing') {
-            <h3 class="text-lg font-display font-bold text-[var(--text-main)]">
-              {{ translations[currentLang].sports_title }}
-            </h3>
-            <p class="text-xs text-[var(--text-muted)]">
-              {{ translations[currentLang].sports_desc }}
-            </p>
-            <div class="grid grid-cols-2 gap-4">
-              <div class="h-36 bg-[var(--bg-main)]/40 rounded-xl border border-[var(--border-subtle)] p-4 flex flex-col justify-between">
-                <span class="text-[9px] font-mono text-[var(--text-muted)]">WALL SIMULATOR</span>
-                <div class="flex flex-wrap gap-2">
-                  <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">V4 (Slab)</span>
-                  <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/10 text-amber-600 border border-amber-500/20">V6 (Overhang)</span>
-                  <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-red-500/10 text-red-600 border border-red-500/20">V8 (Roof)</span>
-                </div>
+            <div class="space-y-6 font-sans text-[var(--text-main)] pr-1">
+              
+              <!-- Cabecera del Modal -->
+              <div class="border-b border-[var(--border-subtle)] pb-4">
+                <span class="text-[9px] font-mono text-[var(--text-muted)] uppercase tracking-widest block">
+                  {{ translations[currentLang].hobbiesTitle }}
+                </span>
+                <h3 class="text-lg font-display font-bold">
+                  {{ currentLang === 'en' ? 'Me & Hobbies' : 'Sobre mí y Hobbies' }}
+                </h3>
               </div>
-              <div class="space-y-3">
-                <span class="text-[10px] font-mono text-[var(--text-muted)] block uppercase">Other activities</span>
-                <div class="flex items-center gap-2">
-                  <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)]"></span>
-                  <span class="text-xs font-mono">Tennis Club Valencia</span>
+
+              <!-- Layout de Dos Columnas -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+                
+                <!-- Columna 1: Escalada en Roca (Estilo Diario de Entrenamiento) -->
+                <div class="space-y-4">
+                  <div class="bg-[var(--bg-main)]/40 p-4 rounded-xl border border-[var(--border-subtle)] space-y-3">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-7 h-7 rounded-lg bg-[var(--accent)]/5 flex items-center justify-center text-[var(--accent)]">
+                        <!-- Icono de Montaña/Roca -->
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                          <path d="m8 3-6 16h20L16 5l-3 4z"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <h4 class="font-display font-bold text-[11px] uppercase tracking-wider">
+                          {{ translations[currentLang].climbingTitle }}
+                        </h4>
+                        <p class="text-[9px] text-[var(--text-muted)] font-mono">
+                          {{ translations[currentLang].climbingSub }}
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- Tipos de presas favoritas -->
+                    <div class="space-y-1.5 pt-1">
+                      <span class="text-[9px] font-mono font-bold text-[var(--accent)] uppercase tracking-wider block">
+                        {{ translations[currentLang].favHolds }}
+                      </span>
+                      <div class="flex flex-wrap gap-1.5">
+                        <span class="px-2 py-0.5 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded text-[10px] font-mono">
+                          🧗‍♂️ {{ translations[currentLang].crimps }}
+                        </span>
+                        <span class="px-2 py-0.5 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded text-[10px] font-mono">
+                          🤚 {{ translations[currentLang].slopers }}
+                        </span>
+                        <span class="px-2 py-0.5 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded text-[10px] font-mono">
+                          ✌️ {{ translations[currentLang].pockets }}
+                        </span>
+                      </div>
+                    </div>
+
+                    <!-- Métricas de rendimiento -->
+                    <div class="pt-2 border-t border-[var(--border-subtle)] space-y-1">
+                      <span class="text-[9px] font-mono font-bold text-[var(--accent)] uppercase tracking-wider block">
+                        {{ translations[currentLang].climbingStats }}
+                      </span>
+                      <div class="flex justify-between text-[10px]">
+                        <span class="text-[var(--text-muted)]">{{ translations[currentLang].avgGrade }}:</span>
+                        <span class="font-mono font-bold text-[var(--text-main)]">V6 (7A Fontainebleau)</span>
+                      </div>
+                      <div class="flex justify-between text-[10px]">
+                        <span class="text-[var(--text-muted)]">{{ translations[currentLang].weeklySessions }}:</span>
+                        <span class="font-mono font-bold text-[var(--text-main)]">3 Sessions // Rock & Indoor</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="flex items-center gap-2">
-                  <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)]"></span>
-                  <span class="text-xs font-mono">Amateur Football League</span>
+
+                <!-- Columna 2: Deportes de Club (Tenis y Fútbol) -->
+                <div class="space-y-4">
+                  <div class="bg-[var(--bg-main)]/40 p-4 rounded-xl border border-[var(--border-subtle)] space-y-3">
+                    
+                    <div class="flex items-center gap-2.5 border-b border-[var(--border-subtle)] pb-2.5">
+                      <div class="w-7 h-7 rounded-lg bg-[var(--accent)]/5 flex items-center justify-center text-[var(--accent)]">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                          <circle cx="12" cy="12" r="10"/><path d="M6 12c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6-6-2.7-6-6Z"/>
+                        </svg>
+                      </div>
+                      <h4 class="font-display font-bold text-[11px] uppercase tracking-wider">
+                        {{ translations[currentLang].otherSportsTitle }}
+                      </h4>
+                    </div>
+
+                    <!-- Tenis -->
+                    <div class="space-y-1">
+                      <div class="flex justify-between items-center">
+                        <span class="font-display font-bold text-[10px] text-[var(--text-main)] uppercase">
+                          🎾 {{ translations[currentLang].tennisClub }}
+                        </span>
+                        <span class="text-[8px] font-mono bg-[var(--accent)]/10 text-[var(--accent)] px-1.5 py-0.2 rounded">Singles League</span>
+                      </div>
+                      <p class="text-[10px] text-[var(--text-muted)] leading-relaxed">
+                        {{ translations[currentLang].tennisDesc }}
+                      </p>
+                    </div>
+
+                    <!-- Fútbol -->
+                    <div class="space-y-1 pt-2 border-t border-[var(--border-subtle)]">
+                      <div class="flex justify-between items-center">
+                        <span class="font-display font-bold text-[10px] text-[var(--text-main)] uppercase">
+                          ⚽ {{ translations[currentLang].footballClub }}
+                        </span>
+                        <span class="text-[8px] font-mono bg-[var(--accent)]/10 text-[var(--accent)] px-1.5 py-0.2 rounded">Midfielder</span>
+                      </div>
+                      <p class="text-[10px] text-[var(--text-muted)] leading-relaxed">
+                        {{ translations[currentLang].footballDesc }}
+                      </p>
+                    </div>
+
+                  </div>
                 </div>
+
               </div>
             </div>
           }

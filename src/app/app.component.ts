@@ -129,7 +129,22 @@ export class AppComponent implements OnInit, AfterViewInit {
       competency2: 'Designed secure API architectures using Symfony 7 (PHP 8.2) and FastAPI (Python), utilizing complex SQL relational designs.',
       competency3: 'Building fluid SPA applications in Angular utilizing modern Reactive Forms, lazy-loaded routing, and optimized interceptors.',
       txt_download_cv: 'Download CV',
-      tech_stack_label: 'Primary Technology Stack'
+      tech_stack_label: 'Primary Technology Stack',
+      hobbiesTitle: 'Personal Log // Hobbies & Sports',
+      climbingTitle: 'Rock Climbing & Boulder',
+      climbingSub: 'Difficulty Levels V4 to V8',
+      favHolds: 'Favorite Hold Types',
+      crimps: 'Crimps',
+      slopers: 'Slopers',
+      pockets: 'Pockets',
+      climbingStats: 'Session Metrics',
+      avgGrade: 'Avg. Project Grade',
+      weeklySessions: 'Weekly Sessions',
+      otherSportsTitle: 'Club Sports & Teamplay',
+      tennisClub: 'Valencia Tennis Club',
+      tennisDesc: 'Singles amateur ladder player. Focus on strategy, fast footwork, and precise baseline execution.',
+      footballClub: 'Amateur Football League',
+      footballDesc: 'Midfielder / Winger. Emphasising fast transitions, team coordination, and physical stamina.'
     },
     es: {
       subtitle: 'Ingeniero Full-Stack & Desarrollador de IA',
@@ -161,7 +176,22 @@ export class AppComponent implements OnInit, AfterViewInit {
       competency2: 'Diseño de APIs seguras y escalables en Symfony 7 (PHP 8.2) y FastAPI (Python) con complejas bases de datos relacionales SQL.',
       competency3: 'Construcción de aplicaciones SPA fluidas en Angular haciendo uso de componentes standalone, interceptores y enrutamiento perezoso.',
       txt_download_cv: 'Descargar CV',
-      tech_stack_label: 'Stack Tecnológico Principal'
+      tech_stack_label: 'Stack Tecnológico Principal',
+      hobbiesTitle: 'Registro Personal // Hobbies y Deporte',
+      climbingTitle: 'Escalada en Roca y Bloque',
+      climbingSub: 'Niveles de dificultad V4 a V8',
+      favHolds: 'Tipos de Presas Favoritas',
+      crimps: 'Regletas',
+      slopers: 'Romos',
+      pockets: 'Bidedos/Monodedos',
+      climbingStats: 'Métricas de Sesión',
+      avgGrade: 'Grado Medio de Proyecto',
+      weeklySessions: 'Sesiones Semanales',
+      otherSportsTitle: 'Deportes de Club y Equipo',
+      tennisClub: 'Club de Tenis Valencia',
+      tennisDesc: 'Jugador de liga social individual. Enfoque en estrategia de fondo, juego de pies y precisión en golpes paralelos.',
+      footballClub: 'Liga de Fútbol Amateur',
+      footballDesc: 'Mediocampista / Extremo. Enfocado en transiciones rápidas, coordinación táctica y resistencia aeróbica.'
     }
   };
 
