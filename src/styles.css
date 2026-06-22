@@ -71,31 +71,12 @@ body {
 @keyframes windowEntrance {
   from {
     opacity: 0;
-    transform: translate3d(-50%, -46%, 0) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(-50%, -50%, 0) scale(1);
-  }
-}
-
-@keyframes windowEntranceMaximized {
-  from {
-    opacity: 0;
-    transform: scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
+    scale: 0.95;
   }
 }
 
 .animate-window-enter {
-  animation: windowEntrance 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.animate-window-enter-max {
-  animation: windowEntranceMaximized 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: windowEntrance 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Transición suave para redimensionar (Maximizar) */
@@ -104,8 +85,12 @@ body {
               height 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               top 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               left 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              right 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              bottom 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               inset 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              translate 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              scale 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               background-color 0.5s ease,
               border-color 0.5s ease;
 }

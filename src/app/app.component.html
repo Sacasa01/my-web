@@ -186,8 +186,8 @@
     @if (win.isOpen) {
       <div [style.zIndex]="win.zIndex"
            (mousedown)="focusWindow(win.id)"
-           [ngClass]="win.isMaximized ? 'inset-12 animate-window-enter-max' : 'w-[680px] h-[480px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-window-enter'"
-           class="fixed bg-[var(--bg-card)]/90 backdrop-blur-md border border-[var(--border-subtle)] rounded-2xl premium-shadow flex flex-col overflow-hidden window-transition z-50">
+           [ngClass]="win.isMaximized ? 'inset-12' : 'w-[680px] h-[480px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'"
+           class="fixed bg-[var(--bg-card)]/90 backdrop-blur-md border border-[var(--border-subtle)] rounded-2xl premium-shadow flex flex-col overflow-hidden window-transition z-50 animate-window-enter">
         
         <!-- CABECERA DE LA VENTANA (TÍTULO A LA IZQUIERDA, CONTROLES A LA DERECHA) -->
         <div class="h-12 border-b border-[var(--border-subtle)] px-5 flex items-center justify-between bg-[var(--bg-main)]/30 select-none">
