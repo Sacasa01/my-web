@@ -1,11 +1,9 @@
 import { Component, OnInit, Renderer2, inject, signal } from '@angular/core';
-import { BoundFloatingDirective } from './shared/directives/bound-floating.directive';
 import { CommonModule } from '@angular/common';
+import { BoundFloatingDirective } from './shared/directives/bound-floating.directive';
 
 interface WindowState {
   id: string;
-  titleEn: string;
-  titleEs: string;
   isOpen: boolean;
   isMaximized: boolean;
   zIndex: number;
@@ -14,31 +12,26 @@ interface WindowState {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [BoundFloatingDirective, CommonModule],
+  imports: [CommonModule, BoundFloatingDirective],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
   private renderer = inject(Renderer2);
 
-  // Estados Globales
   isDarkMode = false;
   currentLang: 'en' | 'es' = 'en';
   private maxZIndex = 100;
-  
-  // Define el hito activo de la educación
-  activeEduNode = signal<string>('canterbury');
 
-  // Signal para manejar las ventanas de forma ultra-reactiva
+  // Modales interactivos
   windows = signal<WindowState[]>([
-    { id: 'lafe', titleEn: 'Fertoolity AI Lab', titleEs: 'Lab Fertoolity IA', isOpen: false, isMaximized: false, zIndex: 100 },
-    { id: 'fitforge', titleEn: 'Fit Forge SPA', titleEs: 'Fit Forge SPA', isOpen: false, isMaximized: false, zIndex: 100 },
-    { id: 'mapper', titleEn: 'Legacy Land Mapper', titleEs: 'Mapeador de Parcelas', isOpen: false, isMaximized: false, zIndex: 100 },
-    { id: 'climbing', titleEn: 'Climbing Wall Tracker', titleEs: 'Rutas de Escalada', isOpen: false, isMaximized: false, zIndex: 100 },
-    { id: 'canterbury', titleEn: 'Canterbury Terminal', titleEs: 'Terminal Canterbury', isOpen: false, isMaximized: false, zIndex: 100 }
+    { id: 'lafe', isOpen: false, isMaximized: false, zIndex: 100 },
+    { id: 'fitforge', isOpen: false, isMaximized: false, zIndex: 100 },
+    { id: 'mapper', isOpen: false, isMaximized: false, zIndex: 100 },
+    { id: 'climbing', isOpen: false, isMaximized: false, zIndex: 100 },
+    { id: 'canterbury', isOpen: false, isMaximized: false, zIndex: 100 }
   ]);
 
-  // Diccionario general de traducciones de cabecera
   translations = {
     en: {
       subtitle: 'Full-Stack Engineer & AI Developer',
@@ -46,17 +39,17 @@ export class AppComponent implements OnInit {
       q2: '02 // PROJECTS',
       q3: '03 // ME & HOBBIES',
       q4: '04 // EDUCATION AND CERTIFICATES',
-      close: 'Close',
-      maximize: 'Maximize',
-      minimize: 'Minimize',
-      edu_bach_title: 'Scientific Baccalaureate',
-      edu_bach_desc: 'Valencia, Spain // 2021 — 2022',
-      edu_daw_title: 'Web App Developer',
-      edu_daw_desc: 'Florida Universitària // 2024 — 2026',
-      edu_aws_title: 'AWS Practitioner',
-      edu_aws_desc: 'AWS Certified // 2025',
-      edu_cs_title: 'Canterbury',
-      edu_cs_desc: 'BSc Computer Science // 2026 — 2027'
+      edu_bach: 'Scientific Baccalaureate',
+      edu_daw: 'Web App Developer',
+      edu_aws: 'AWS Practitioner',
+      edu_cs: 'Canterbury',
+      lafe_title: 'Deep Learning for Gynaecological Imaging',
+      lafe_desc: 'Developed custom neural networks for medical dataset segmentation using PyTorch and MONAI. Optimised workflows for clinicians to detect anomalies automatically with high diagnostic parameters.',
+      fitforge_title: 'Fit Forge // Angular & Symfony 7',
+      mapper_title: 'Legacy Land Mapper',
+      mapper_desc: 'Multi-threaded tool fetching parcel geometry data directly from Spanish Cadastre WFS API. Formats data with Pandas into custom GeoJSON maps.',
+      sports_title: 'Rock Climbing & Sports',
+      sports_desc: 'Interactive track of boulder difficulty levels (V4 to V8). Tracks sessions, hold-types, and physical metrics over time.'
     },
     es: {
       subtitle: 'Ingeniero Full-Stack & Desarrollador de IA',
@@ -64,33 +57,30 @@ export class AppComponent implements OnInit {
       q2: '02 // PROYECTOS',
       q3: '03 // SOBRE MÍ Y HOBBIES',
       q4: '04 // EDUCACIÓN Y CERTIFICACIONES',
-      close: 'Cerrar',
-      maximize: 'Maximizar',
-      minimize: 'Minimizar',
-      edu_bach_title: 'Bachillerato Científico',
-      edu_bach_desc: 'Valencia, España // 2021 — 2022',
-      edu_daw_title: 'Desarrollador Web (DAW)',
-      edu_daw_desc: 'Florida Universitària // 2024 — 2026',
-      edu_aws_title: 'Certificación AWS',
-      edu_aws_desc: 'AWS Certified // 2025',
-      edu_cs_title: 'Canterbury',
-      edu_cs_desc: 'Ing. Informática // 2026 — 2027'
+      edu_bach: 'Bachillerato Científico',
+      edu_daw: 'Desarrollador Web (DAW)',
+      edu_aws: 'Certificación AWS',
+      edu_cs: 'Canterbury',
+      lafe_title: 'Deep Learning para Imágenes Ginecológicas',
+      lafe_desc: 'Desarrollo de modelos neuronales de segmentación en datasets médicos utilizando PyTorch y MONAI. Optimización de workflows clínicos para la detección automatizada de anomalías anatómicas.',
+      fitforge_title: 'Fit Forge // Angular y Symfony 7',
+      mapper_title: 'Mapeador de Parcelas',
+      mapper_desc: 'Herramienta multi-hilo para la extracción y renderizado de geometrías catastrales directamente desde las APIs oficiales del Catastro de España.',
+      sports_title: 'Escalada en Roca y Deportes',
+      sports_desc: 'Registro interactivo de ascensiones y grados de dificultad en bloque. Monitorización de tipos de presas y métricas de rendimiento.'
     }
   };
 
   ngOnInit() {
-    // Inicialización de Tema e Idioma
     const preferredTheme = localStorage.getItem('theme');
     if (preferredTheme === 'dark' || (!preferredTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
       this.enableDarkMode();
     }
     const preferredLang = localStorage.getItem('lang') as 'en' | 'es';
-    if (preferredLang) {
-      this.currentLang = preferredLang;
-    }
+    if (preferredLang) this.currentLang = preferredLang;
   }
 
-  toggleLanguage() {
+  toggleLang() {
     this.currentLang = this.currentLang === 'en' ? 'es' : 'en';
     localStorage.setItem('lang', this.currentLang);
   }
@@ -115,32 +105,29 @@ export class AppComponent implements OnInit {
     localStorage.setItem('theme', 'light');
   }
 
-  // --- CONTROLADOR DE VENTANAS ---
-  openWindow(id: string) {
+  openModal(id: string) {
     this.maxZIndex++;
-    this.windows.update(items => 
-      items.map(w => w.id === id ? { ...w, isOpen: true, zIndex: this.maxZIndex } : w)
+    this.windows.update(list => 
+      list.map(w => w.id === id ? { ...w, isOpen: true, zIndex: this.maxZIndex } : w)
     );
   }
 
-  closeWindow(id: string, event?: Event) {
-    if (event) event.stopPropagation();
-    this.windows.update(items => 
-      items.map(w => w.id === id ? { ...w, isOpen: false } : w)
+  closeModal(id: string) {
+    this.windows.update(list => 
+      list.map(w => w.id === id ? { ...w, isOpen: false } : w)
     );
   }
 
-  toggleMaximize(id: string, event?: Event) {
-    if (event) event.stopPropagation();
-    this.windows.update(items => 
-      items.map(w => w.id === id ? { ...w, isMaximized: !w.isMaximized } : w)
+  toggleMaximize(id: string) {
+    this.windows.update(list => 
+      list.map(w => w.id === id ? { ...w, isMaximized: !w.isMaximized } : w)
     );
   }
 
-  focusWindow(id: string) {
+  focusModal(id: string) {
     this.maxZIndex++;
-    this.windows.update(items => 
-      items.map(w => w.id === id ? { ...w, zIndex: this.maxZIndex } : w)
+    this.windows.update(list => 
+      list.map(w => w.id === id ? { ...w, zIndex: this.maxZIndex } : w)
     );
   }
 }
