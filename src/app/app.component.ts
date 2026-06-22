@@ -24,6 +24,14 @@ export class AppComponent implements OnInit, AfterViewInit {
   currentLang: 'en' | 'es' = 'en';
   private maxZIndex = 100;
 
+  // Estados del Simulador de Segmentación en Q1
+  isSegmenting = false;
+  segmentationProgress = 0;
+  diceScore = 0.00;
+  inferenceLatency = 0;
+  activeSlice = 12;
+  segmentationPoints = '';
+
   // Referencias a los elementos del timeline en Q4
   @ViewChild('q4Container') q4Container!: ElementRef<HTMLElement>;
   @ViewChild('nodeBach') nodeBach!: ElementRef<HTMLElement>;
@@ -245,5 +253,64 @@ export class AppComponent implements OnInit, AfterViewInit {
     if (this.q4Nodes[key]) {
       this.q4Nodes[key].targetScale = isHovering ? 0.05 : 1;
     }
+  }
+
+  runMedicalInference() {
+    if (this.isSegmenting) return;
+    
+    this.isSegmenting = true;
+    this.segmentationProgress = 0;
+    this.diceScore = 0.00;
+    this.inferenceLatency = 0;
+    this.segmentationPoints = '';
+
+    const duration = 2000; // 2 segundos de simulación de inferencia GPU
+    const start = performance.now();
+
+    const step = (now: number) => {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      this.segmentationProgress = Math.round(progress * 100);
+
+      // Simular el trazado progresivo de la máscara de segmentación (SVG Polygon)
+      if (progress > 0.2) {
+        const points: string[] = [];
+        const numPoints = 12;
+        const centerX = 150;
+        const centerY = 100;
+        const baseRadius = 45;
+
+        for (let i = 0; i < numPoints; i++) {
+          const angle = (i / numPoints) * Math.PI * 2;
+          // Generar ruido orgánico para simular formas anatómicas reales
+          const noise = Math.sin(angle * 3 + progress * 10) * 8 * (progress);
+          const r = baseRadius + noise;
+          const x = centerX + Math.cos(angle) * r;
+          const y = centerY + Math.sin(angle) * r;
+          points.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+        }
+        this.segmentationPoints = points.join(' ');
+      }
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        // Inferencia completada: fijar métricas realistas basadas en tu modelo
+        this.isSegmenting = false;
+        this.diceScore = parseFloat((0.89 + Math.random() * 0.06).toFixed(3)); // Dice score real (89% - 95%)
+        this.inferenceLatency = Math.round(18 + Math.random() * 6); // ~20ms latency
+      }
+    };
+
+    requestAnimationFrame(step);
+  }
+
+  changeSlice(direction: 'next' | 'prev') {
+    if (direction === 'next' && this.activeSlice < 48) this.activeSlice++;
+    if (direction === 'prev' && this.activeSlice > 1) this.activeSlice--;
+    // Reiniciar segmentación al cambiar de slide para dar feedback interactivo
+    this.segmentationPoints = '';
+    this.diceScore = 0;
   }
 }

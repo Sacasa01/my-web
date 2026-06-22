@@ -268,24 +268,115 @@
         <!-- Contenido de Ventana -->
         <div class="flex-1 overflow-y-auto p-6 text-sm text-[var(--text-main)] space-y-4">
           
+          <!-- === CONTENIDO ACTUALIZADO: FERT00LITY AI LAB === -->
           @if (win.id === 'lafe') {
-            <p class="text-xs text-[var(--text-muted)] uppercase tracking-wider font-mono">Hospital Universitari i Politècnic La Fe // AI Division</p>
-            <h3 class="text-lg font-display font-bold text-[var(--text-main)]">
-              {{ translations[currentLang].lafe_title }}
-            </h3>
-            <p class="text-xs text-[var(--text-muted)] leading-relaxed">
-              {{ translations[currentLang].lafe_desc }}
-            </p>
-            
-            <!-- Simulador de Segmentación Interactivo -->
-            <div class="relative w-full h-44 bg-[var(--bg-main)]/40 rounded-xl border border-[var(--border-subtle)] overflow-hidden flex flex-col items-center justify-center p-4">
-              <span class="text-[10px] font-mono text-[var(--text-muted)] absolute top-2 left-3">MONAI Ecosystem // Inference Model Simulator</span>
-              <div class="w-28 h-28 border border-[var(--accent)]/30 rounded-full flex items-center justify-center relative animate-pulse">
-                <div class="absolute inset-2 border border-dashed border-[var(--accent)]/50 rounded-full"></div>
-                <span class="absolute w-2 h-2 bg-red-500 rounded-full top-4 left-6"></span>
-                <span class="absolute w-2 h-2 bg-emerald-500 rounded-full bottom-4 right-10"></span>
-                <span class="absolute w-2 h-2 bg-blue-500 rounded-full top-1/2 right-2"></span>
-                <span class="text-[10px] font-mono text-[var(--accent)]">SEGMENTING...</span>
+            <div class="space-y-4 font-sans">
+              <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[var(--border-subtle)] pb-3 gap-2">
+                <div>
+                  <p class="text-[10px] text-[var(--text-muted)] uppercase tracking-wider font-mono">Hospital Universitari i Politècnic La Fe // AI Division</p>
+                  <h3 class="text-base font-display font-bold text-[var(--text-main)]">
+                    {{ currentLang === 'en' ? 'Deep Learning for Gynaecological Imaging' : 'Deep Learning para Imágenes Ginecológicas' }}
+                  </h3>
+                </div>
+                <!-- Stack Badge -->
+                <span class="px-2.5 py-1 text-[9px] font-mono rounded-md bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20 font-bold uppercase">
+                  MONAI • PyTorch • FastAPI
+                </span>
+              </div>
+
+              <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+                {{ currentLang === 'en' 
+                  ? 'Developed custom neural networks for medical dataset segmentation using PyTorch and MONAI. Optimised workflows for clinicians to detect anomalies automatically with high diagnostic parameters.'
+                  : 'Desarrollo de modelos neuronales de segmentación en datasets médicos utilizando PyTorch y MONAI. Optimización de workflows clínicos para la detección automatizada de anomalías anatómicas.' }}
+              </p>
+
+              <!-- MONITOR MÉDICO INTERACTIVO -->
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-[var(--bg-main)]/50 p-4 rounded-xl border border-[var(--border-subtle)]">
+                
+                <!-- Panel de Control e Indicadores (Izquierda/Arriba) -->
+                <div class="md:col-span-1 space-y-3 flex flex-col justify-between">
+                  <div class="space-y-2">
+                    <span class="text-[9px] font-mono text-[var(--text-muted)] tracking-wider block uppercase">Model Controller</span>
+                    
+                    <!-- Control de Rodajas (Slice) -->
+                    <div class="flex items-center justify-between bg-[var(--bg-card)] px-3 py-1.5 rounded-lg border border-[var(--border-subtle)]">
+                      <span class="text-[10px] font-mono text-[var(--text-main)]">Slice: {{activeSlice}} / 48</span>
+                      <div class="flex gap-1">
+                        <button (click)="changeSlice('prev')" class="px-1.5 py-0.5 rounded bg-[var(--bg-main)] border border-[var(--border-subtle)] text-[10px] hover:bg-[var(--accent)]/10 hover:text-[var(--accent)] cursor-pointer transition-colors font-mono">&lt;</button>
+                        <button (click)="changeSlice('next')" class="px-1.5 py-0.5 rounded bg-[var(--bg-main)] border border-[var(--border-subtle)] text-[10px] hover:bg-[var(--accent)]/10 hover:text-[var(--accent)] cursor-pointer transition-colors font-mono">&gt;</button>
+                      </div>
+                    </div>
+
+                    <!-- Botón de Inferencia -->
+                    <button (click)="runMedicalInference()"
+                            [disabled]="isSegmenting"
+                            class="w-full py-2 rounded-lg text-xs font-semibold tracking-wider font-display uppercase border text-center cursor-pointer transition-all duration-300"
+                            [ngClass]="isSegmenting 
+                              ? 'bg-[var(--bg-card)] border-[var(--border-subtle)] text-[var(--text-muted)] cursor-not-allowed' 
+                              : 'bg-[var(--accent)] border-[var(--accent)] text-[var(--bg-card)] hover:opacity-90'">
+                      {{ isSegmenting ? (currentLang === 'en' ? 'Segmenting...' : 'Segmentando...') : (currentLang === 'en' ? 'Run Inference' : 'Ejecutar Inferencia') }}
+                    </button>
+                  </div>
+
+                  <!-- Panel de Métricas Diagnósticas -->
+                  <div class="space-y-1.5 bg-[var(--bg-card)] p-2.5 rounded-lg border border-[var(--border-subtle)] font-mono text-[10px]">
+                    <span class="text-[8px] text-[var(--text-muted)] tracking-widest block uppercase mb-1">Diagnostis Metrics</span>
+                    <div class="flex justify-between">
+                      <span class="text-[var(--text-muted)]">Dice Coefficient:</span>
+                      <span class="font-bold" [ngClass]="diceScore > 0.9 ? 'text-emerald-600' : 'text-[var(--text-main)]'">
+                        {{ diceScore > 0 ? (diceScore | number:'1.3-3') : '---' }}
+                      </span>
+                    </div>
+                    <div class="flex justify-between">
+                      <span class="text-[var(--text-muted)]">GPU Latency:</span>
+                      <span class="font-bold text-[var(--text-main)]">
+                        {{ inferenceLatency > 0 ? inferenceLatency + ' ms' : '---' }}
+                      </span>
+                    </div>
+                    <div class="flex justify-between">
+                      <span class="text-[var(--text-muted)]">Engine Status:</span>
+                      <span class="font-bold" [ngClass]="isSegmenting ? 'text-amber-500 animate-pulse' : 'text-emerald-500'">
+                        {{ isSegmenting ? 'PROCESSING' : 'STANDBY' }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Visor de Imagen Médica (Derecha/Abajo) -->
+                <div class="md:col-span-2 h-44 bg-black rounded-xl border border-neutral-900 overflow-hidden relative flex items-center justify-center select-none shadow-inner">
+                  <!-- Rejilla de calibración de imagen -->
+                  <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:10px_10px] pointer-events-none"></div>
+                  <span class="absolute top-2 left-3 text-[8px] font-mono text-neutral-500 uppercase tracking-widest">Medical Scan Slice // CCU-48</span>
+
+                  <!-- SVG de Visualización Médica -->
+                  <svg class="w-full h-full text-neutral-800" viewBox="0 0 300 180">
+                    <!-- Silueta esquemática del órgano -->
+                    <path d="M 60 90 C 60 40, 240 40, 240 90 C 240 140, 60 140, 60 90" 
+                          fill="none" stroke="#222" stroke-width="2" />
+                    
+                    <!-- Puntos calientes simulados (Anomalías detectadas) -->
+                    <circle cx="130" cy="85" [attr.r]="isSegmenting ? '4' : '3'" fill="#ef4444" class="opacity-60" [ngClass]="isSegmenting ? 'animate-ping' : ''" />
+                    <circle cx="170" cy="115" r="2.5" fill="#3b82f6" class="opacity-40" />
+
+                    <!-- Polígono de máscara de segmentación calculada en TS -->
+                    @if (segmentationPoints) {
+                      <polygon [attr.points]="segmentationPoints" 
+                               fill="rgba(16, 185, 129, 0.15)" 
+                               stroke="#10b981" 
+                               stroke-width="1.5" 
+                               stroke-dasharray="3 2" />
+                    }
+                  </svg>
+
+                  <!-- Barra de progreso superpuesta en Inferencia -->
+                  @if (isSegmenting) {
+                    <div class="absolute bottom-3 left-3 right-3 bg-neutral-950/80 border border-neutral-800/80 px-3 py-1.5 rounded-lg flex items-center justify-between font-mono text-[9px] text-emerald-400">
+                      <span>COMPUTING MASKS...</span>
+                      <span>{{segmentationProgress}}%</span>
+                    </div>
+                  }
+                </div>
+
               </div>
             </div>
           }
