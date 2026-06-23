@@ -185,7 +185,19 @@ export class AppComponent implements OnInit, AfterViewInit {
       tennisClub: 'Valencia Tennis Club',
       tennisDesc: 'Singles amateur ladder player. Focus on strategy, fast footwork, and precise baseline execution.',
       footballClub: 'Amateur Football League',
-      footballDesc: 'Midfielder / Winger. Emphasising fast transitions, team coordination, and physical stamina.'
+      footballDesc: 'Midfielder / Winger. Emphasising fast transitions, team coordination, and physical stamina.',
+      eduModalTitle: 'Academic Path // Canterbury Christ Church University',
+      eduModalSub: 'BSc (Hons) in Computer Science • London, UK',
+      pillsTitle: 'Areas of Specialisation',
+      cyberTitle: 'Cybersecurity & Risk Audits',
+      cyberDesc: 'Conducted rigorous security and risk audits implementing the NIST framework. Active participant in defensive cybersecurity hackathons.',
+      aiTitle: 'Artificial Intelligence & ML',
+      aiDesc: 'Designed and deployed distributed Machine Learning models. Built predictive architectures using Python, PyTorch, and TensorFlow.',
+      cloudTitle: 'Cloud Native Systems',
+      cloudDesc: 'Deployed enterprise-level architectures on Amazon Web Services (AWS) using EC2, Lambda, S3, and containerised microservices with Docker.',
+      techBreadthTitle: 'Academic Technologies & Tools',
+      javaDesc: 'Object-Oriented Programming (OOP) architectures and clean software design patterns.',
+      sqlDesc: 'Relational database designs, complex queries, and PostgreSQL performance optimisation.'
     },
     es: {
       subtitle: 'Ingeniero Full-Stack & Desarrollador de IA',
@@ -232,7 +244,19 @@ export class AppComponent implements OnInit, AfterViewInit {
       tennisClub: 'Club de Tenis Valencia',
       tennisDesc: 'Jugador de liga social individual. Enfoque en estrategia de fondo, juego de pies y precisión en golpes paralelos.',
       footballClub: 'Liga de Fútbol Amateur',
-      footballDesc: 'Mediocampista / Extremo. Enfocado en transiciones rápidas, coordinación táctica y resistencia aeróbica.'
+      footballDesc: 'Mediocampista / Extremo. Enfocado en transiciones rápidas, coordinación táctica y resistencia aeróbica.',
+      eduModalTitle: 'Trayectoria Académica // Canterbury Christ Church University',
+      eduModalSub: 'Grado Universitario en Ingeniería Informática (BSc Hons) • Londres, Reino Unido',
+      pillsTitle: 'Áreas de Especialización',
+      cyberTitle: 'Ciberseguridad y Auditorías de Riesgo',
+      cyberDesc: 'Análisis y auditorías de vulnerabilidades estructuradas bajo el marco de trabajo de ciberseguridad de la NIST. Participación activa en hackathons defensivos.',
+      aiTitle: 'Inteligencia Artificial y ML',
+      aiDesc: 'Diseño e integración de modelos de Machine Learning distribuidos. Creación de arquitecturas inteligentes optimizadas con Python, PyTorch y TensorFlow.',
+      cloudTitle: 'Sistemas Nativos en la Nube',
+      cloudDesc: 'Despliegue y orquestación de aplicaciones en Amazon Web Services (AWS) haciendo uso de servicios clave (EC2, Lambda, S3, RDS) y contenedores Docker.',
+      techBreadthTitle: 'Tecnologías Académicas Clave',
+      javaDesc: 'Programación orientada a objetos (POO), patrones de diseño de software limpios y estructuras de datos.',
+      sqlDesc: 'Diseño relacional de bases de datos, consultas SQL complejas y optimización de rendimiento en PostgreSQL.'
     }
   };
 
