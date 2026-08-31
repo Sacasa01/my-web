@@ -1,1002 +1,978 @@
-<main class="w-screen h-screen overflow-hidden relative transition-colors duration-500">
+<main class="min-h-screen w-full bg-[#d6d6d6] text-[#0f172a] font-space relative overflow-x-hidden selection:bg-[#d97706] selection:text-white">
 
-  <!-- 📏 LÍNEAS DE BOCETO DEL TABLERO (DRAFT LINES) -->
-  <!-- Línea Vertical central (pasa por debajo de la cabecera debido al z-index) -->
-  <div class="absolute left-1/2 top-[4%] bottom-[4%] w-[1px] bg-[var(--border-subtle)] -translate-x-1/2 pointer-events-none transition-colors duration-500 z-10"></div>
-  <!-- Línea Horizontal central (con un margen fino a los lados) -->
-  <div class="absolute top-1/2 left-[4%] right-[4%] h-[1px] bg-[var(--border-subtle)] -translate-y-1/2 pointer-events-none transition-colors duration-500 z-10"></div>
+  <!-- ========================================================================= -->
+  <!-- 🎬 SLIDE 00: STUDIO POSTER HERO ("PORT [AVATAR PLAYER] FOLIO")            -->
+  <!-- ========================================================================= -->
+  <section class="min-h-screen w-full relative flex flex-col justify-between p-6 sm:p-8 lg:p-10 overflow-hidden bg-[#d6d6d6]">
 
-  <!-- CABECERA PRINCIPAL SIMÉTRICA -->
-  <header class="absolute top-6 left-1/2 -translate-x-1/2 z-30 flex items-center justify-center gap-6 bg-[var(--bg-main)] px-8 py-2 rounded-2xl transition-all duration-500 border border-[var(--border-subtle)] premium-shadow">
-    
-    <!-- Botón de Idioma (Izquierda) -->
-    <button (click)="toggleLang()" 
-            class="w-9 h-9 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] text-[var(--text-main)] premium-shadow hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer flex items-center justify-center font-display text-[11px] font-bold tracking-widest uppercase">
-      {{ currentLang === 'en' ? 'ES' : 'EN' }}
-    </button>
-
-    <!-- Marca de Santiago (Centro) -->
-    <div class="text-center pointer-events-none min-w-[260px]">
-      <h1 class="font-display font-bold text-lg tracking-wider text-[var(--text-main)] uppercase transition-colors duration-500">SANTIAGO CASTRO SALT</h1>
-      <p class="text-[9px] text-[var(--text-muted)] tracking-widest uppercase mt-0.5 transition-colors duration-500">
-        {{ translations[currentLang].subtitle }}
-      </p>
+    <!-- 🌫️ SUBTLE LIGHT STUDIO RADIAL BACKDROP (Blends with Video Seamlessly) -->
+    <div class="absolute inset-0 pointer-events-none z-0">
+      <div class="absolute left-1/2 top-[45%] -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full bg-radial from-[#e4e4e4] via-[#d7d7d7] to-[#cecece] blur-3xl opacity-80"></div>
     </div>
 
-    <!-- Botón de Modo Noche (Derecha) -->
-    <button (click)="toggleTheme()" 
-            class="w-9 h-9 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] text-[var(--text-main)] premium-shadow hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer flex items-center justify-center">
-      @if (!isDarkMode) {
-        <svg class="w-4.5 h-4.5 text-[var(--accent)] transition-all duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="4"/>
-          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
-        </svg>
-      } @else {
-        <svg class="w-4.5 h-4.5 text-[var(--accent)] transition-all duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
-        </svg>
-      }
-    </button>
-  </header>
+    <!-- 🧭 TOP MINIMALIST NAV BAR -->
+    <header class="relative z-30 w-full flex items-center justify-between">
+      <!-- Left: Signature Mark -->
+      <div class="flex items-center gap-3">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#d97706] shadow-[0_0_10px_rgba(217,119,6,0.5)]"></span>
+        <div class="leading-tight">
+          <h1 class="font-syne font-bold text-xs sm:text-sm tracking-widest uppercase text-[#0f172a]">Santiago Castro Salt</h1>
+          <p class="text-[9px] sm:text-[10px] text-[#475569] tracking-widest uppercase font-mono font-semibold">
+            {{ currentLang === 'en' ? 'Portfolio 2026 // Backend & AI Systems' : 'Portfolio 2026 // Backend & Sistemas IA' }}
+          </p>
+        </div>
+      </div>
 
-  <!-- GRID DE CUADRANTES DE INFORMACIÓN -->
-  <div class="grid grid-cols-2 grid-rows-2 w-full h-full p-8 gap-8 relative z-20">
+      <!-- Right: Action Buttons -->
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <button (click)="toggleLang()"
+                class="px-3.5 py-1.5 rounded-full border border-black/15 bg-white/80 hover:bg-white text-[11px] font-bold uppercase tracking-wider text-[#0f172a] transition-all cursor-pointer shadow-xs">
+          {{ currentLang === 'en' ? 'ES' : 'EN' }}
+        </button>
 
-    <!-- Q1: UP-LEFT (WORK EXPERIENCE) -->
-    <section #q1Container class="q1-container relative w-full h-full flex items-center justify-center overflow-hidden">
+        <button (click)="openChatModal()"
+                class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1e293b] text-white font-bold text-[11px] uppercase tracking-wider hover:bg-[#0f172a] active:scale-95 transition-all shadow-md cursor-pointer">
+          <span>AI Twin</span>
+          <span class="text-xs">💬</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 🏛️ MONUMENTAL STUDIO POSTER CENTER: "PORT [AVATAR PLAYER] FOLIO" -->
+    <div class="relative z-20 w-full flex-1 flex items-center justify-center my-auto py-6">
+
+      <!-- BACKGROUND TYPOGRAPHY LAYER ("PORT" on Left, "FOLIO" on Right) -->
+      <div class="absolute inset-0 flex items-center justify-between pointer-events-none select-none px-2 sm:px-6 md:px-12 lg:px-16">
+
+        <!-- LEFT: "PORT" -->
+        <div class="w-1/2 flex flex-col items-end text-right pr-4 sm:pr-8 md:pr-14 lg:pr-20">
+          <div class="relative flex items-center">
+            <h2 class="font-bebas text-[18vw] sm:text-[16vw] md:text-[14vw] lg:text-[13vw] leading-[0.82] tracking-normal text-[#1e293b]/90 drop-shadow-sm">
+              PORT
+            </h2>
+            <!-- Connecting horizontal top bar extending towards center -->
+            <div class="hidden sm:block absolute -right-6 md:-right-12 top-[12%] h-[1.2vw] w-10 md:w-16 bg-[#1e293b]/90 rounded-l-none"></div>
+          </div>
+          <p class="font-space text-[9px] sm:text-xs md:text-sm tracking-[0.35em] text-[#334155] uppercase font-bold mt-2 mr-1">
+            {{ translations[currentLang].heroSubLeft }}
+          </p>
+        </div>
+
+        <!-- RIGHT: "FOLIO" -->
+        <div class="w-1/2 flex flex-col items-start text-left pl-4 sm:pl-8 md:pl-14 lg:pl-20">
+          <div class="relative flex items-center">
+            <!-- Connecting horizontal top bar extending from left -->
+            <div class="hidden sm:block absolute -left-6 md:-left-12 top-[12%] h-[1.2vw] w-10 md:w-16 bg-[#1e293b]/90 rounded-r-none"></div>
+            <h2 class="font-bebas text-[18vw] sm:text-[16vw] md:text-[14vw] lg:text-[13vw] leading-[0.82] tracking-normal text-[#1e293b]/90 drop-shadow-sm">
+              FOLIO
+            </h2>
+          </div>
+          <p class="font-space text-[9px] sm:text-xs md:text-sm tracking-[0.35em] text-[#334155] uppercase font-bold mt-2 ml-1">
+            {{ translations[currentLang].heroSubRight }}
+          </p>
+        </div>
+
+      </div>
+
+      <!-- 🎬 AVATAR PLAYER COMPONENT (5-STATE SYNCED VIDEO MACHINE) -->
+      <div class="relative z-30 w-full max-w-[540px] sm:max-w-[600px] md:max-w-[640px] flex items-center justify-center pointer-events-auto">
+        <app-avatar-player
+          [state]="avatarState()"
+          [lang]="currentLang"
+          (avatarClick)="onAvatarClicked()"
+          (stateChange)="onAvatarStateChange($event)">
+        </app-avatar-player>
+      </div>
+
+    </div>
+
+    <!-- 📍 BOTTOM BAR WITH DUBLIN AVAILABILITY BADGE & SCROLL INDICATOR -->
+    <footer class="relative z-30 w-full flex flex-col sm:flex-row items-center justify-between text-[10px] sm:text-[11px] font-space text-[#334155] uppercase tracking-widest gap-2 pt-2">
+      <!-- Dublin Availability Pill -->
+      <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-black/10 text-[#0f172a] shadow-xs">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span class="font-mono text-[9px] sm:text-[10px] tracking-wider font-semibold">{{ translations[currentLang].dublinBadge }}</span>
+      </div>
+
+      <!-- Scroll Action Button -->
+      <a href="#section-introduction"
+         class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white hover:bg-white/90 border border-black/15 text-[#0f172a] transition-all cursor-pointer shadow-xs group font-semibold">
+        <span>{{ currentLang === 'en' ? 'Explore Presentation' : 'Ver Presentación' }}</span>
+        <span class="group-hover:translate-y-0.5 transition-transform font-mono text-xs">↓</span>
+      </a>
+
+      <!-- Academic Mark -->
+      <div class="flex items-center gap-2 text-[#475569] font-mono text-[10px] font-semibold">
+        <span>CANTERBURY CHRIST CHURCH UNIV. (UK)</span>
+      </div>
+    </footer>
+
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 📑 SLIDES CONTAINER: 12-SLIDE EDITORIAL PRESENTATION SHOWCASE             -->
+  <!-- ========================================================================= -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 space-y-16 relative z-10">
+
+    <!-- ======================================================================= -->
+    <!-- 📄 SLIDE 01: INTRODUCTION & EXECUTIVE PROFILE                           -->
+    <!-- ======================================================================= -->
+    <section id="section-introduction" class="slide-frame p-6 sm:p-10 lg:p-12 space-y-8">
       
-      <span class="absolute top-4 left-4 font-display font-medium text-[10px] tracking-widest text-[var(--text-muted)]/60 uppercase transition-colors duration-500">
-        {{ translations[currentLang].q1 }}
-      </span>
-
-      <!-- 📐 LIENZO CON ARROW-HEAD Y CURVA DE TRAYECTORIA ELÁSTICA -->
-      <svg class="absolute inset-0 w-full h-full pointer-events-none text-[var(--border-subtle)] fill-none transition-colors duration-500 z-10">
-        <defs>
-          <marker id="arrow-q1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 1.5 L 8 5 L 0 8.5 z" class="fill-[var(--accent)] transition-colors duration-500" />
-          </marker>
-        </defs>
-        <path #pathLafeHire stroke="currentColor" stroke-width="1.2" marker-end="url(#arrow-q1)" class="hover:stroke-[var(--accent)] transition-colors duration-500" />
-      </svg>
-
-      <!-- 1. FERT00LITY AI LAB (Nodo Origen) -->
-      <div #nodeLafe 
-           (mouseenter)="onNodeHover('lafe', true, 'q1')" 
-           (mouseleave)="onNodeHover('lafe', false, 'q1')"
-           class="absolute flex flex-col items-center z-20 group cursor-pointer"
-           (click)="openModal('lafe')">
-        <div class="w-16 h-16 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-2xl premium-shadow flex items-center justify-center transition-all duration-300 hover:scale-105">
-          <svg class="w-7 h-7 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.25c-4.556 0-8.25-3.694-8.25-8.25V9.5h16.5V10c0 4.556-3.694 8.25-8.25 8.25z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2.25M6 4h12M12 18.25V22" />
-          </svg>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-black/10 pb-4 gap-2">
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 rounded-lg bg-[#d97706]/15 text-[#d97706] border border-[#d97706]/30 font-mono text-xs font-bold">SLIDE 01</span>
+          <h3 class="font-shoulders font-bold text-2xl sm:text-3xl text-[#0f172a] uppercase tracking-wider">
+            {{ currentLang === 'en' ? 'INTRODUCTION & EXECUTIVE PROFILE' : 'INTRODUCCIÓN Y PERFIL EJECUTIVO' }}
+          </h3>
         </div>
-        <span class="font-display font-bold text-[10px] text-[var(--text-main)] mt-2 uppercase tracking-wider text-center max-w-[120px]">FERTOOLITY AI</span>
-        <span class="text-[8px] text-[var(--text-muted)] font-mono mt-0.5">2026</span>
+        <span class="editorial-tag bg-black/5 text-[#334155] border-black/10">DUBLIN 2026 // ON-SITE TARGET</span>
       </div>
 
-      <!-- 2. WHY HIRE ME? (Nodo Destacado con Radar de Pulso) -->
-      <div #nodeHire 
-           (mouseenter)="onNodeHover('hire', true, 'q1')" 
-           (mouseleave)="onNodeHover('hire', false, 'q1')"
-           class="absolute flex flex-col items-center z-20 group cursor-pointer"
-           (click)="openModal('whyhireme')">
-        <div class="w-20 h-20 bg-[var(--bg-card)] border border-[var(--accent)]/30 rounded-3xl premium-shadow flex items-center justify-center transition-all duration-300 hover:scale-105 relative">
-          <!-- Radar de pulso de diseño para captar la atención del reclutador -->
-          <span class="absolute inset-0 rounded-3xl bg-[var(--accent)]/5 animate-ping pointer-events-none"></span>
-          <svg class="w-9 h-9 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.637 10.637z" />
-          </svg>
-        </div>
-        <span class="font-display font-bold text-[11px] text-[var(--text-main)] mt-2.5 uppercase tracking-widest text-center max-w-[130px]">
-          {{ translations[currentLang].txt_hire_node }}
-        </span>
-        <span class="text-[8px] bg-[var(--accent)]/10 text-[var(--accent)] px-2 py-0.5 rounded-full font-mono mt-1 font-bold">READY TO DEPLOY</span>
-      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Profile Identity Card -->
+        <div class="lg:col-span-5 editorial-card p-6 flex flex-col justify-between space-y-6">
+          <div class="space-y-4">
+            <div class="flex items-center gap-4">
+              <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-[#e2e8f0] to-[#cbd5e1] border-2 border-[#d97706]/60 overflow-hidden flex items-center justify-center p-0.5 shadow-md">
+                <img src="/assets/avatar_headshot.png" alt="Santiago" class="w-full h-full object-cover rounded-xl" />
+              </div>
+              <div>
+                <h4 class="font-syne font-bold text-lg text-[#0f172a]">Santiago Castro Salt</h4>
+                <p class="text-xs text-[#d97706] font-mono font-semibold">{{ currentLang === 'en' ? 'Age: 23 • Valencia, Spain' : 'Edad: 23 años • Valencia, España' }}</p>
+                <p class="text-[10px] text-emerald-600 font-mono font-bold">📍 {{ currentLang === 'en' ? 'Dublin On-Site from 30 Sep 2026' : 'Dublín Presencial desde 30 Sep 2026' }}</p>
+              </div>
+            </div>
 
+            <!-- Target Roles -->
+            <div class="space-y-2 pt-2 border-t border-black/10">
+              <span class="text-[10px] font-mono text-[#64748b] uppercase tracking-wider block font-bold">
+                {{ currentLang === 'en' ? 'Target Roles (2026-2027)' : 'Roles Objetivo (2026-2027)' }}
+              </span>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="editorial-tag bg-[#0284c7]/10 text-[#0284c7] border-[#0284c7]/30">AI Systems Integration</span>
+                <span class="editorial-tag bg-[#d97706]/10 text-[#d97706] border-[#d97706]/30">Backend (Python / Go / PHP)</span>
+                <span class="editorial-tag">Cloud & MLOps</span>
+                <span class="editorial-tag">Data Pipelines</span>
+              </div>
+            </div>
+
+            <!-- Languages -->
+            <div class="space-y-1.5 pt-2 border-t border-black/10 text-xs font-mono">
+              <div class="flex justify-between text-[#334155]">
+                <span>{{ translations[currentLang].langEn }}</span>
+                <span class="text-[#0284c7] font-bold">C1 Goal</span>
+              </div>
+              <div class="flex justify-between text-[#475569]">
+                <span>{{ translations[currentLang].langEs }}</span>
+                <span class="text-emerald-600 font-bold">Native</span>
+              </div>
+              <div class="flex justify-between text-[#475569]">
+                <span>{{ translations[currentLang].langCa }}</span>
+                <span class="text-emerald-600 font-bold">Bilingual</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Direct Actions -->
+          <div class="flex flex-wrap gap-2 pt-2">
+            <button (click)="openWindow('whyhireme')"
+                    class="flex-1 py-2.5 rounded-xl bg-[#1e293b] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#0f172a] active:scale-95 transition-all text-center cursor-pointer shadow-sm">
+              {{ currentLang === 'en' ? 'Why Hire Santiago?' : '¿Por qué contratarme?' }}
+            </button>
+            <button (click)="openChatModal()"
+                    class="px-4 py-2.5 rounded-xl bg-black/5 hover:bg-black/10 border border-black/10 text-xs font-bold uppercase tracking-wider text-[#0f172a] transition-all cursor-pointer">
+              💬 AI Twin
+            </button>
+          </div>
+        </div>
+
+        <!-- Executive Narrative & Competencies -->
+        <div class="lg:col-span-7 editorial-card p-6 sm:p-8 flex flex-col justify-between space-y-6">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between border-b border-black/10 pb-3">
+              <span class="font-mono text-xs text-[#d97706] font-bold">NARRATIVE & SYSTEM VISION</span>
+              <span class="font-mono text-[10px] text-[#64748b]">SOLID • CLEAN CODE • PRODUCTION</span>
+            </div>
+            
+            <p class="text-xs sm:text-sm text-[#334155] leading-relaxed font-sans font-normal">
+              {{ translations[currentLang].pitchText }}
+            </p>
+
+            <div class="space-y-2.5 pt-2">
+              <div class="p-3 rounded-xl bg-black/5 border border-black/5 flex items-start gap-3">
+                <span class="text-[#0284c7] font-bold text-sm">✓</span>
+                <p class="text-xs text-[#334155]">{{ translations[currentLang].competency1 }}</p>
+              </div>
+              <div class="p-3 rounded-xl bg-black/5 border border-black/5 flex items-start gap-3">
+                <span class="text-[#d97706] font-bold text-sm">✓</span>
+                <p class="text-xs text-[#334155]">{{ translations[currentLang].competency2 }}</p>
+              </div>
+              <div class="p-3 rounded-xl bg-black/5 border border-black/5 flex items-start gap-3">
+                <span class="text-[#0284c7] font-bold text-sm">✓</span>
+                <p class="text-xs text-[#334155]">{{ translations[currentLang].competency3 }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Academic Footer Mark -->
+          <div class="flex items-center justify-between border-t border-black/10 pt-3 text-[11px] font-mono text-[#64748b]">
+            <span>{{ translations[currentLang].educationTitle }}</span>
+            <span class="text-[#d97706] font-bold">2026-2027</span>
+          </div>
+        </div>
+
+      </div>
     </section>
 
-    <!-- Q2: UP-RIGHT (PROJECTS) -->
-    <section class="relative flex items-center justify-center">
-      <span class="absolute top-4 right-4 font-display font-medium text-[10px] tracking-widest text-[var(--text-muted)]/60 uppercase transition-colors duration-500">
-        {{ translations[currentLang].q2 }}
-      </span>
-
-      <div appBoundFloating class="absolute top-8 right-24 w-12 h-12 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow flex items-center justify-center cursor-pointer hover:border-[var(--accent)]" (click)="openModal('fitforge')">
-        <svg class="w-5 h-5 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
-        </svg>
-      </div>
-
-      <div appBoundFloating class="w-32 h-32 bg-[var(--bg-card)] border border-[var(--border-subtle)]/80 rounded-2xl premium-shadow flex flex-col items-center justify-center p-4 cursor-pointer group" (click)="openModal('fitforge')">
-        <div class="w-14 h-14 bg-[var(--accent)]/5 rounded-xl flex items-center justify-center mb-2 group-hover:scale-105 transition-transform duration-300">
-          <svg class="w-8 h-8 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-          </svg>
+    <!-- ======================================================================= -->
+    <!-- 📄 SLIDE 02: TABLE OF CONTENTS (INDEX)                                  -->
+    <!-- ======================================================================= -->
+    <section id="section-contents" class="slide-frame p-6 sm:p-10 lg:p-12 space-y-8">
+      <div class="flex items-center justify-between border-b border-black/10 pb-4">
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 rounded-lg bg-[#0284c7]/15 text-[#0284c7] border border-[#0284c7]/30 font-mono text-xs font-bold">SLIDE 02</span>
+          <h3 class="font-shoulders font-bold text-2xl sm:text-3xl text-[#0f172a] uppercase tracking-wider">
+            {{ currentLang === 'en' ? 'TABLE OF CONTENTS // FLAGSHIP INDEX' : 'ÍNDICE DE CONTENIDOS // PROYECTOS' }}
+          </h3>
         </div>
-        <span class="font-display font-bold text-[10px] text-[var(--text-main)] text-center tracking-wider uppercase">FIT FORGE</span>
+        <span class="font-mono text-xs text-[#64748b] font-semibold">01 — 06</span>
       </div>
 
-      <div appBoundFloating class="absolute bottom-12 left-16 w-16 h-16 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow flex flex-col items-center justify-center cursor-pointer p-2 hover:border-[var(--accent)]" (click)="openModal('mapper')">
-        <svg class="w-5 h-5 text-[var(--accent)] mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" />
-          <line x1="9" y1="3" x2="9" y2="18" /><line x1="15" y1="6" x2="15" y2="21" />
-        </svg>
-        <span class="text-[8px] font-bold text-[var(--text-muted)] uppercase tracking-wide">MAPPER</span>
+      <!-- 6-Grid Content Index from Reference Image -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        
+        <a href="#section-lafe" class="editorial-card p-5 text-center group cursor-pointer hover:border-[#0284c7]/60 flex flex-col justify-between h-40">
+          <span class="font-bebas text-4xl text-[#0284c7] group-hover:scale-110 transition-transform block">01</span>
+          <div class="space-y-1">
+            <h4 class="font-syne font-bold text-xs text-[#0f172a] uppercase">Medical AI</h4>
+            <p class="text-[9px] text-[#64748b] font-mono">Hospital La Fe</p>
+          </div>
+          <span class="text-[9px] text-[#0284c7] font-mono group-hover:underline">Explore &rarr;</span>
+        </a>
+
+        <a href="#section-fitforge" class="editorial-card p-5 text-center group cursor-pointer hover:border-[#d97706]/60 flex flex-col justify-between h-40">
+          <span class="font-bebas text-4xl text-[#d97706] group-hover:scale-110 transition-transform block">02</span>
+          <div class="space-y-1">
+            <h4 class="font-syne font-bold text-xs text-[#0f172a] uppercase">FitForge SPA</h4>
+            <p class="text-[9px] text-[#64748b] font-mono">Symfony 7 API</p>
+          </div>
+          <span class="text-[9px] text-[#d97706] font-mono group-hover:underline">Explore &rarr;</span>
+        </a>
+
+        <a href="#section-mapper" class="editorial-card p-5 text-center group cursor-pointer hover:border-[#0284c7]/60 flex flex-col justify-between h-40">
+          <span class="font-bebas text-4xl text-[#0284c7] group-hover:scale-110 transition-transform block">03</span>
+          <div class="space-y-1">
+            <h4 class="font-syne font-bold text-xs text-[#0f172a] uppercase">Land Mapper</h4>
+            <p class="text-[9px] text-[#64748b] font-mono">WFS Geospatial</p>
+          </div>
+          <span class="text-[9px] text-[#0284c7] font-mono group-hover:underline">Explore &rarr;</span>
+        </a>
+
+        <a href="#section-ai-systems" class="editorial-card p-5 text-center group cursor-pointer hover:border-[#d97706]/60 flex flex-col justify-between h-40">
+          <span class="font-bebas text-4xl text-[#d97706] group-hover:scale-110 transition-transform block">04</span>
+          <div class="space-y-1">
+            <h4 class="font-syne font-bold text-xs text-[#0f172a] uppercase">MCP & Agents</h4>
+            <p class="text-[9px] text-[#64748b] font-mono">Vector DBs</p>
+          </div>
+          <span class="text-[9px] text-[#d97706] font-mono group-hover:underline">Explore &rarr;</span>
+        </a>
+
+        <a href="#section-devops" class="editorial-card p-5 text-center group cursor-pointer hover:border-[#0284c7]/60 flex flex-col justify-between h-40">
+          <span class="font-bebas text-4xl text-[#0284c7] group-hover:scale-110 transition-transform block">05</span>
+          <div class="space-y-1">
+            <h4 class="font-syne font-bold text-xs text-[#0f172a] uppercase">Cloud & DevOps</h4>
+            <p class="text-[9px] text-[#64748b] font-mono">AWS & Docker</p>
+          </div>
+          <span class="text-[9px] text-[#0284c7] font-mono group-hover:underline">Explore &rarr;</span>
+        </a>
+
+        <a href="#section-roadmap" class="editorial-card p-5 text-center group cursor-pointer hover:border-[#d97706]/60 flex flex-col justify-between h-40">
+          <span class="font-bebas text-4xl text-[#d97706] group-hover:scale-110 transition-transform block">06</span>
+          <div class="space-y-1">
+            <h4 class="font-syne font-bold text-xs text-[#0f172a] uppercase">Roadmap 2026</h4>
+            <p class="text-[9px] text-[#64748b] font-mono">Dublin Strategy</p>
+          </div>
+          <span class="text-[9px] text-[#d97706] font-mono group-hover:underline">Explore &rarr;</span>
+        </a>
+
       </div>
     </section>
 
-    <!-- Q3: DOWN-LEFT (ME & HOBBIES - PIRÁMIDE INTERACTIVA) -->
-    <section #q3Container class="q3-container relative w-full h-full flex items-center justify-center overflow-hidden">
+    <!-- ======================================================================= -->
+    <!-- 📄 SLIDE 03: 01 // FERTOOLITY AI LAB (HOSPITAL LA FE)                   -->
+    <!-- ======================================================================= -->
+    <section id="section-lafe" class="slide-frame p-6 sm:p-10 lg:p-12 space-y-8">
       
-      <span class="absolute bottom-4 left-4 font-display font-medium text-[10px] tracking-widest text-[var(--text-muted)]/60 uppercase transition-colors duration-500">
-        {{ translations[currentLang].q3 }}
-      </span>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-black/10 pb-4 gap-2">
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 rounded-lg bg-[#0284c7]/15 text-[#0284c7] border border-[#0284c7]/30 font-mono text-xs font-bold">SLIDE 03 // 01</span>
+          <h3 class="font-shoulders font-bold text-2xl sm:text-3xl text-[#0f172a] uppercase tracking-wider">
+            FERTOOLITY AI LAB // HOSPITAL LA FE
+          </h3>
+        </div>
+        <div class="flex gap-2">
+          <span class="editorial-tag bg-[#0284c7]/15 text-[#0284c7] border-[#0284c7]/30">PYTORCH</span>
+          <span class="editorial-tag">MONAI</span>
+          <span class="editorial-tag">FASTAPI</span>
+        </div>
+      </div>
 
-      <!-- 📐 LIENZO SVG PARA DIBUJAR LAS LÍNEAS DE CONEXIÓN DE LA PIRÁMIDE -->
-      <svg class="absolute inset-0 w-full h-full pointer-events-none text-[var(--border-subtle)] fill-none transition-colors duration-500 z-10">
-        <!-- Nivel 1 a Nivel 2 -->
-        <path #pathMeTennis stroke="currentColor" stroke-width="1.2" class="hover:stroke-[var(--accent)] transition-colors duration-500" />
-        <path #pathMeFutbol stroke="currentColor" stroke-width="1.2" class="hover:stroke-[var(--accent)] transition-colors duration-500" />
-        <path #pathMeClimbing stroke="currentColor" stroke-width="1.2" class="hover:stroke-[var(--accent)] transition-colors duration-500" />
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        <!-- Nivel 2 a Nivel 3 (Líneas de trazo fino para expansiones) -->
-        <path #pathTennisSub1 stroke="currentColor" stroke-width="1" stroke-dasharray="2 2" />
-        <path #pathTennisSub2 stroke="currentColor" stroke-width="1" stroke-dasharray="2 2" />
-        <path #pathFutbolSub3 stroke="currentColor" stroke-width="1" stroke-dasharray="2 2" />
-        <path #pathFutbolSub4 stroke="currentColor" stroke-width="1" stroke-dasharray="2 2" />
-        <path #pathClimbingSub5 stroke="currentColor" stroke-width="1" stroke-dasharray="2 2" />
-        <path #pathClimbingSub6 stroke="currentColor" stroke-width="1" stroke-dasharray="2 2" />
-      </svg>
+        <!-- Description & Architecture Specs -->
+        <div class="lg:col-span-5 space-y-5">
+          <div class="space-y-3">
+            <h4 class="font-syne font-bold text-base text-[#0f172a]">
+              {{ currentLang === 'en' ? 'Clinical Medical Image Segmentation Pipeline' : 'Pipeline Clínico de Segmentación de Imagen Médica' }}
+            </h4>
+            <p class="text-xs text-[#334155] leading-relaxed font-sans">
+              {{ currentLang === 'en'
+                ? 'Engineering deep learning neural architectures for gynaecological medical scan segmentation in clinical production at Hospital La Fe. Built automated preprocessing and low-latency inference pipelines with PyTorch and MONAI.'
+                : 'Desarrollo de redes neuronales de Deep Learning para segmentación de imagen médica ginecológica en entorno clínico del Hospital La Fe. Pipeline de preprocesamiento e inferencia de baja latencia con PyTorch y MONAI.' }}
+            </p>
+          </div>
 
-      <!-- NODO CÚSPIDE: ME (Grande, Abre la Bio de Santiago) -->
-      <div #nodeMe 
-           (mouseenter)="onNodeHover('me', true, 'q3')" 
-           (mouseleave)="onNodeHover('me', false, 'q3')"
-           class="absolute flex flex-col items-center z-20 group cursor-pointer"
-           (click)="openWindow('me-bio')">
-        <div class="w-16 h-16 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-2xl premium-shadow flex items-center justify-center transition-all duration-300 hover:scale-105">
-          <svg class="w-7 h-7 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.5 0 11-7.5 0 3.75 3.5 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-          </svg>
+          <div class="grid grid-cols-2 gap-3 font-mono text-[11px]">
+            <div class="p-3 rounded-xl bg-black/5 border border-black/10">
+              <span class="text-[#64748b] block text-[9px] uppercase font-bold">Validation Metric</span>
+              <span class="text-emerald-600 font-bold text-base">Dice: 0.942</span>
+            </div>
+            <div class="p-3 rounded-xl bg-black/5 border border-black/10">
+              <span class="text-[#64748b] block text-[9px] uppercase font-bold">Inference Speed</span>
+              <span class="text-[#0284c7] font-bold text-base">16 ms / slice</span>
+            </div>
+          </div>
+
+          <button (click)="openWindow('lafe')"
+                  class="w-full py-2.5 rounded-xl bg-[#0284c7]/15 hover:bg-[#0284c7]/25 border border-[#0284c7]/40 text-[#0284c7] font-bold text-xs uppercase tracking-wider transition-all cursor-pointer">
+            {{ currentLang === 'en' ? 'Open Medical Console Window ↗' : 'Abrir Consola Médica en Ventana ↗' }}
+          </button>
         </div>
-        <span class="font-display font-bold text-[10px] text-[var(--text-main)] mt-1.5 uppercase tracking-widest text-center">ME</span>
-      </div>
 
-      <!-- NODO INTERMEDIO 1: TENNIS (Mediano) -->
-      <div #nodeTennis 
-           (mouseenter)="onNodeHover('tennis', true, 'q3')" 
-           (mouseleave)="onNodeHover('tennis', false, 'q3')"
-           class="absolute flex flex-col items-center z-20 group cursor-pointer"
-           (click)="openWindow('tennis-log')">
-        <div class="w-12 h-12 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow flex items-center justify-center transition-all duration-300 hover:scale-105">
-          <span class="text-xl">🎾</span>
+        <!-- Live Interactive Simulation Sandbox -->
+        <div class="lg:col-span-7 editorial-card p-6 flex flex-col justify-between space-y-4">
+          <div class="flex justify-between items-center border-b border-black/10 pb-3">
+            <span class="text-[10px] font-mono text-[#0284c7] font-bold">● LIVE INFERENCE SIMULATOR</span>
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] font-mono text-[#475569]">Slice: {{activeSlice}} / 48</span>
+              <button (click)="changeSlice('prev')" class="px-2 py-0.5 rounded bg-black/5 hover:bg-black/10 text-[10px] font-mono cursor-pointer">&lt;</button>
+              <button (click)="changeSlice('next')" class="px-2 py-0.5 rounded bg-black/5 hover:bg-black/10 text-[10px] font-mono cursor-pointer">&gt;</button>
+            </div>
+          </div>
+
+          <!-- SVG Visualizer Screen -->
+          <div class="h-48 bg-[#0f172a] rounded-xl border border-black/10 overflow-hidden relative flex items-center justify-center">
+            <svg class="w-full h-full text-neutral-800" viewBox="0 0 300 180">
+              <path d="M 60 90 C 60 40, 240 40, 240 90 C 240 140, 60 140, 60 90" fill="none" stroke="#334155" stroke-width="2" />
+              <circle cx="130" cy="85" [attr.r]="isSegmenting ? '4' : '3'" fill="#ef4444" class="opacity-70" [ngClass]="isSegmenting ? 'animate-ping' : ''" />
+              <circle cx="170" cy="115" r="2.5" fill="#38bdf8" class="opacity-50" />
+              @if (segmentationPoints) {
+                <polygon [attr.points]="segmentationPoints" fill="rgba(56, 189, 248, 0.25)" stroke="#38bdf8" stroke-width="1.8" stroke-dasharray="3 2" />
+              }
+            </svg>
+            @if (isSegmenting) {
+              <div class="absolute bottom-3 left-3 right-3 bg-black/80 border border-white/10 px-3 py-1.5 rounded-lg flex items-center justify-between font-mono text-[9px] text-[#38bdf8]">
+                <span>COMPUTING MONAI NEURAL MASKS...</span>
+                <span>{{segmentationProgress}}%</span>
+              </div>
+            }
+          </div>
+
+          <div class="flex items-center justify-between gap-3 pt-1">
+            <button (click)="runMedicalInference()"
+                    [disabled]="isSegmenting"
+                    class="flex-1 py-2.5 rounded-xl bg-[#0284c7] text-white font-bold text-xs uppercase tracking-wider hover:opacity-90 active:scale-95 disabled:opacity-50 transition-all cursor-pointer shadow-xs">
+              {{ isSegmenting ? (currentLang === 'en' ? 'Segmenting Scan...' : 'Segmentando Exploración...') : (currentLang === 'en' ? '⚡ Run Live Inference' : '⚡ Ejecutar Inferencia') }}
+            </button>
+            <div class="text-[10px] font-mono text-[#334155]">
+              <span>Dice: </span>
+              <span class="text-emerald-600 font-bold">{{ diceScore > 0 ? (diceScore | number:'1.3-3') : '---' }}</span>
+            </div>
+          </div>
         </div>
-        <span class="font-display font-bold text-[8px] text-[var(--text-muted)] mt-1 uppercase tracking-wider text-center">TENNIS</span>
+
       </div>
-
-      <!-- NODO INTERMEDIO 2: FOOTBALL (Mediano) -->
-      <div #nodeFutbol 
-           (mouseenter)="onNodeHover('futbol', true, 'q3')" 
-           (mouseleave)="onNodeHover('futbol', false, 'q3')"
-           class="absolute flex flex-col items-center z-20 group cursor-pointer"
-           (click)="openWindow('futbol-log')">
-        <div class="w-12 h-12 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow flex items-center justify-center transition-all duration-300 hover:scale-105">
-          <span class="text-xl">⚽</span>
-        </div>
-        <span class="font-display font-bold text-[8px] text-[var(--text-muted)] mt-1 uppercase tracking-wider text-center">FOOTBALL</span>
-      </div>
-
-      <!-- NODO INTERMEDIO 3: CLIMBING (Mediano) -->
-      <div #nodeClimbing 
-           (mouseenter)="onNodeHover('climbing', true, 'q3')" 
-           (mouseleave)="onNodeHover('climbing', false, 'q3')"
-           class="absolute flex flex-col items-center z-20 group cursor-pointer"
-           (click)="openWindow('climbing-log')">
-        <div class="w-12 h-12 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow flex items-center justify-center transition-all duration-300 hover:scale-105">
-          <span class="text-xl">🧗‍♂️</span>
-        </div>
-        <span class="font-display font-bold text-[8px] text-[var(--text-muted)] mt-1 uppercase tracking-wider text-center">CLIMBING</span>
-      </div>
-
-      <!-- NODOS BASE 1 A 6: FUTURE EXPANSIONS (Pequeños, Deshabilitados con candado/incógnita) -->
-      <div #nodeSub1 class="absolute flex items-center justify-center z-20 w-8 h-8 bg-[var(--bg-card)] border border-[var(--border-subtle)]/60 rounded-lg text-[9px] text-[var(--text-muted)] premium-shadow font-mono cursor-not-allowed">?</div>
-      <div #nodeSub2 class="absolute flex items-center justify-center z-20 w-8 h-8 bg-[var(--bg-card)] border border-[var(--border-subtle)]/60 rounded-lg text-[9px] text-[var(--text-muted)] premium-shadow font-mono cursor-not-allowed">?</div>
-      <div #nodeSub3 class="absolute flex items-center justify-center z-20 w-8 h-8 bg-[var(--bg-card)] border border-[var(--border-subtle)]/60 rounded-lg text-[9px] text-[var(--text-muted)] premium-shadow font-mono cursor-not-allowed">?</div>
-      <div #nodeSub4 class="absolute flex items-center justify-center z-20 w-8 h-8 bg-[var(--bg-card)] border border-[var(--border-subtle)]/60 rounded-lg text-[9px] text-[var(--text-muted)] premium-shadow font-mono cursor-not-allowed">?</div>
-      <div #nodeSub5 class="absolute flex items-center justify-center z-20 w-8 h-8 bg-[var(--bg-card)] border border-[var(--border-subtle)]/60 rounded-lg text-[9px] text-[var(--text-muted)] premium-shadow font-mono cursor-not-allowed">?</div>
-      <div #nodeSub6 class="absolute flex items-center justify-center z-20 w-8 h-8 bg-[var(--bg-card)] border border-[var(--border-subtle)]/60 rounded-lg text-[9px] text-[var(--text-muted)] premium-shadow font-mono cursor-not-allowed">?</div>
-
     </section>
 
-    <!-- Q4: DOWN-RIGHT (EDUCATION AND CERTIFICATES) -->
-    <section #q4Container class="q4-container relative w-full h-full flex items-center justify-center overflow-hidden">
+    <!-- ======================================================================= -->
+    <!-- 📄 SLIDE 04: 02 // FITFORGE SPA (DECOUPLED FULL-STACK)                  -->
+    <!-- ======================================================================= -->
+    <section id="section-fitforge" class="slide-frame p-6 sm:p-10 lg:p-12 space-y-8">
       
-      <span class="absolute bottom-4 right-4 font-display font-medium text-[10px] tracking-widest text-[var(--text-muted)]/60 uppercase transition-colors duration-500">
-        {{ translations[currentLang].q4 }}
-      </span>
-
-      <!-- 📐 LIENZO SVG DINÁMICO CON ARROW-HEAD Y NODO FÍSICO DE DERIVACIÓN -->
-      <svg class="absolute inset-0 w-full h-full pointer-events-none text-[var(--border-subtle)] fill-none transition-colors duration-500 z-10">
-        <defs>
-          <marker id="arrow-head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 1.5 L 8 5 L 0 8.5 z" class="fill-[var(--accent)] transition-colors duration-500" />
-          </marker>
-        </defs>
-        
-        <!-- Línea 1: Bachillerato -> Web App Developer -->
-        <path #pathBachDaw stroke="currentColor" stroke-width="1.2" class="hover:stroke-[var(--accent)] transition-colors duration-500" />
-        
-        <!-- Línea 2: Web App Developer -> Canterbury -->
-        <path #pathDawCant stroke="currentColor" stroke-width="1.2" class="hover:stroke-[var(--accent)] transition-colors duration-500" />
-        
-        <!-- Línea 3: Derivación desde el cable intermedio -> AWS Practitioner -->
-        <path #pathJunctionAws stroke="currentColor" stroke-width="1.2" marker-end="url(#arrow-head)" class="hover:stroke-[var(--accent)] transition-colors duration-500" />
-        
-        <!-- Círculo de empalme / derivación física calculated en TS -->
-        <circle #junctionNodeCircle r="3.5" class="fill-[var(--accent)] transition-colors duration-500" />
-      </svg>
-
-      <!-- 🎓 NODOS ACADÉMICOS EN DIAGONAL -->
-
-      <!-- 1. BACHILLERATO CIENTÍFICO (Abajo-Derecha, Nodo Pequeño) -->
-      <div #nodeBach 
-           (mouseenter)="onNodeHover('bach', true)" 
-           (mouseleave)="onNodeHover('bach', false)"
-           class="absolute flex flex-col items-center z-20 group cursor-pointer">
-        <div class="w-12 h-12 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow flex items-center justify-center transition-all duration-300 hover:scale-105">
-          <svg class="w-5 h-5 text-[var(--text-main)] group-hover:text-[var(--accent)] transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-          </svg>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-black/10 pb-4 gap-2">
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 rounded-lg bg-[#d97706]/15 text-[#d97706] border border-[#d97706]/30 font-mono text-xs font-bold">SLIDE 04 // 02</span>
+          <h3 class="font-shoulders font-bold text-2xl sm:text-3xl text-[#0f172a] uppercase tracking-wider">
+            FITFORGE SPA // DECOUPLED ARCHITECTURE
+          </h3>
         </div>
-        <span class="font-display font-bold text-[9px] text-[var(--text-main)] mt-2 uppercase tracking-wider text-center max-w-[100px]">
-          {{ translations[currentLang].edu_bach }}
-        </span>
-        <span class="text-[8px] text-[var(--text-muted)] font-mono mt-0.5">2022</span>
+        <div class="flex gap-2">
+          <span class="editorial-tag bg-[#dc2626]/10 text-[#dc2626] border-[#dc2626]/30">SYMFONY 7</span>
+          <span class="editorial-tag">ANGULAR</span>
+          <span class="editorial-tag">DOCKER</span>
+        </div>
       </div>
 
-      <!-- 2. WEB APP DEVELOPER (Centro, Nodo Mediano) -->
-      <div #nodeDaw 
-           (mouseenter)="onNodeHover('daw', true)" 
-           (mouseleave)="onNodeHover('daw', false)"
-           class="absolute flex flex-col items-center z-20 group cursor-pointer">
-        <div class="w-16 h-16 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-2xl premium-shadow flex items-center justify-center transition-all duration-300 hover:scale-105">
-          <svg class="w-7 h-7 text-[var(--text-main)] group-hover:text-[var(--accent)] transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" /><line x1="10" y1="21" x2="14" y2="3" />
-          </svg>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Left: Carousel Slide Showcase -->
+        <div class="lg:col-span-7 space-y-4">
+          <div class="relative aspect-video w-full rounded-2xl border border-black/10 bg-white flex flex-col justify-between p-6 sm:p-8 overflow-hidden shadow-xs">
+            <div class="flex justify-between items-center text-[10px] font-mono text-[#d97706] font-bold">
+              <span>MODULE // 0{{ fitForgeIndex + 1 }}</span>
+              <span>REST API: 33 ENDPOINTS</span>
+            </div>
+
+            <div class="space-y-2 text-center my-auto">
+              <h4 class="font-syne font-bold text-lg sm:text-xl text-[#0f172a]">
+                {{ currentLang === 'en' ? fitForgeSlides[fitForgeIndex].titleEn : fitForgeSlides[fitForgeIndex].titleEs }}
+              </h4>
+              <p class="text-xs text-[#475569] max-w-md mx-auto">
+                {{ currentLang === 'en' ? fitForgeSlides[fitForgeIndex].descEn : fitForgeSlides[fitForgeIndex].descEs }}
+              </p>
+            </div>
+
+            <div class="flex justify-between items-center pt-2">
+              <button (click)="prevFitForge()" class="px-3 py-1 rounded-lg bg-black/5 hover:bg-black/10 text-xs font-mono cursor-pointer">&larr; PREV</button>
+              <div class="flex gap-1.5">
+                @for (slide of fitForgeSlides; track $index) {
+                  <button (click)="setFitForgeSlide($index)" [class.bg-[#d97706]]="fitForgeIndex === $index" class="w-2 h-2 rounded-full bg-black/20 cursor-pointer"></button>
+                }
+              </div>
+              <button (click)="nextFitForge()" class="px-3 py-1 rounded-lg bg-black/5 hover:bg-black/10 text-xs font-mono cursor-pointer">NEXT &rarr;</button>
+            </div>
+          </div>
         </div>
-        <span class="font-display font-bold text-[10px] text-[var(--text-main)] mt-2 uppercase tracking-wider text-center max-w-[120px]">
-          {{ translations[currentLang].edu_daw }}
-        </span>
-        <span class="text-[8px] text-[var(--text-muted)] font-mono mt-0.5">2026</span>
+
+        <!-- Right: Technical Breakdown -->
+        <div class="lg:col-span-5 editorial-card p-6 flex flex-col justify-between space-y-4">
+          <div class="space-y-3">
+            <span class="font-mono text-xs text-[#d97706] font-bold block uppercase">Technical Evidence // TFG</span>
+            <h4 class="font-syne font-bold text-base text-[#0f172a]">
+              {{ currentLang === 'en' ? 'Enterprise REST & Relational Design' : 'Diseño REST y Relacional Enterprise' }}
+            </h4>
+            <ul class="space-y-2 text-xs text-[#334155] font-sans">
+              <li class="flex items-center gap-2"><span class="text-[#d97706]">▪</span> 33 REST Endpoints with custom Security Voters & JWT.</li>
+              <li class="flex items-center gap-2"><span class="text-[#d97706]">▪</span> MySQL 8 relational schema with 14 normalized tables.</li>
+              <li class="flex items-center gap-2"><span class="text-[#d97706]">▪</span> Angular Standalone components with reactive state.</li>
+              <li class="flex items-center gap-2"><span class="text-[#d97706]">▪</span> Multi-container Docker Compose setup.</li>
+            </ul>
+          </div>
+
+          <button (click)="openWindow('fitforge')"
+                  class="w-full py-2.5 rounded-xl bg-[#d97706] text-white font-bold text-xs uppercase tracking-wider hover:opacity-90 active:scale-95 transition-all cursor-pointer shadow-xs">
+            {{ currentLang === 'en' ? 'Open FitForge Architecture Window ↗' : 'Ver Arquitectura Completa ↗' }}
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- 📄 SLIDE 05: 03 // LEGACY LAND MAPPER (GEOSPATIAL WFS)                  -->
+    <!-- ======================================================================= -->
+    <section id="section-mapper" class="slide-frame p-6 sm:p-10 lg:p-12 space-y-8">
+      
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-black/10 pb-4 gap-2">
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 rounded-lg bg-[#0284c7]/15 text-[#0284c7] border border-[#0284c7]/30 font-mono text-xs font-bold">SLIDE 05 // 03</span>
+          <h3 class="font-shoulders font-bold text-2xl sm:text-3xl text-[#0f172a] uppercase tracking-wider">
+            LEGACY LAND MAPPER // GEOSPATIAL ENGINE
+          </h3>
+        </div>
+        <div class="flex gap-2">
+          <span class="editorial-tag bg-[#0284c7]/15 text-[#0284c7] border-[#0284c7]/30">PYTHON 3</span>
+          <span class="editorial-tag">PANDAS</span>
+          <span class="editorial-tag">WFS CADASTRAL API</span>
+        </div>
       </div>
 
-      <!-- 3. CANTERBURY (Arriba-Izquierda, Nodo Grande) -->
-      <div #nodeCant 
-           (mouseenter)="onNodeHover('cant', true)" 
-           (mouseleave)="onNodeHover('cant', false)"
-           class="absolute flex flex-col items-center z-20 group cursor-pointer"
-           (click)="openWindow('canterbury')">
-        <div class="w-20 h-20 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-3xl premium-shadow flex items-center justify-center transition-all duration-300 hover:scale-105">
-          <svg class="w-9 h-9 text-[var(--text-main)] group-hover:text-[var(--accent)] transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M22 10v6M2 10l10-5 10 5-10 5z" /><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5" />
-          </svg>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <div class="lg:col-span-5 space-y-5">
+          <div class="space-y-3">
+            <h4 class="font-syne font-bold text-base text-[#0f172a]">
+              {{ currentLang === 'en' ? 'Multithreaded Cadastre Extraction Engine' : 'Motor Multi-Hilo de Extracción Catastral' }}
+            </h4>
+            <p class="text-xs text-[#334155] leading-relaxed font-sans">
+              {{ currentLang === 'en'
+                ? 'High-performance geospatial tool retrieving cadastral parcel boundaries directly from official Spanish Cadastre WFS endpoints into Leaflet interactive maps. Implements 20 worker threads, cutting batch extraction latency by >90%.'
+                : 'Herramienta geoespacial de alto rendimiento que extrae geometrías de parcelas catastrales de la API WFS oficial de España para visualización GeoJSON interactiva en Leaflet. Backend multihilo con 20 workers reduciendo tiempos >90%.' }}
+            </p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 font-mono text-[11px]">
+            <div class="p-3 rounded-xl bg-black/5 border border-black/10">
+              <span class="text-[#64748b] block text-[9px] uppercase font-bold">Concurrency</span>
+              <span class="text-[#0284c7] font-bold text-base">20 Worker Threads</span>
+            </div>
+            <div class="p-3 rounded-xl bg-black/5 border border-black/10">
+              <span class="text-[#64748b] block text-[9px] uppercase font-bold">Latency Optimization</span>
+              <span class="text-emerald-600 font-bold text-base">&gt; 90% Faster</span>
+            </div>
+          </div>
+
+          <button (click)="openWindow('mapper')"
+                  class="w-full py-2.5 rounded-xl bg-[#0284c7]/15 hover:bg-[#0284c7]/25 border border-[#0284c7]/40 text-[#0284c7] font-bold text-xs uppercase tracking-wider transition-all cursor-pointer">
+            {{ currentLang === 'en' ? 'Open Cadastre Mapper Window ↗' : 'Abrir Visor Catastral en Ventana ↗' }}
+          </button>
         </div>
-        <span class="font-display font-bold text-[11px] text-[var(--text-main)] mt-2.5 uppercase tracking-widest text-center max-w-[130px]">
-          {{ translations[currentLang].edu_cs }}
-        </span>
-        <span class="text-[8px] text-[var(--text-muted)] font-mono mt-0.5">2027</span>
+
+        <div class="lg:col-span-7 editorial-card p-6 flex flex-col justify-between space-y-4">
+          <div class="flex justify-between items-center border-b border-black/10 pb-3 font-mono text-[10px]">
+            <span class="text-[#0284c7] font-bold">WFS CADASTRAL PARSER // SPAIN</span>
+            <span class="text-emerald-600 font-bold">STATUS: 20 WORKERS ACTIVE</span>
+          </div>
+
+          <!-- Mock Cadastral Map Geometry Screen -->
+          <div class="h-48 bg-[#0f172a] rounded-xl border border-black/10 overflow-hidden relative p-4 flex items-center justify-center">
+            <svg class="w-full h-full" viewBox="0 0 320 180">
+              <!-- Parcel outlines -->
+              <polygon points="30,40 120,30 140,90 40,100" fill="rgba(56, 189, 248, 0.2)" stroke="#38bdf8" stroke-width="1.5" />
+              <polygon points="120,30 220,20 240,80 140,90" fill="rgba(217, 119, 6, 0.2)" stroke="#d97706" stroke-width="1.5" />
+              <polygon points="40,100 140,90 160,160 50,150" fill="rgba(56, 189, 248, 0.25)" stroke="#38bdf8" stroke-width="1.5" />
+              <polygon points="140,90 240,80 270,150 160,160" fill="rgba(52, 211, 153, 0.2)" stroke="#34d399" stroke-width="1.5" />
+              <!-- Cadastral Reference Labels -->
+              <text x="60" y="70" fill="#f8fafc" font-size="8" font-family="monospace">PARCEL 4601</text>
+              <text x="160" y="60" fill="#f8fafc" font-size="8" font-family="monospace">PARCEL 4602</text>
+              <text x="75" y="130" fill="#f8fafc" font-size="8" font-family="monospace">PARCEL 4603</text>
+              <text x="185" y="125" fill="#f8fafc" font-size="8" font-family="monospace">PARCEL 4604</text>
+            </svg>
+          </div>
+
+          <div class="flex justify-between items-center text-[10px] font-mono text-[#475569] pt-1">
+            <span>Extracted: {{queriedParcelsCount}} Parcels</span>
+            <span class="text-[#0284c7] font-bold">Batch Latency: {{cadastreLatency}} ms</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- 📄 SLIDE 06: 04 // AI SYSTEMS & AGENTS (MCP & VECTOR DBS)               -->
+    <!-- ======================================================================= -->
+    <section id="section-ai-systems" class="slide-frame p-6 sm:p-10 lg:p-12 space-y-8">
+      
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-black/10 pb-4 gap-2">
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 rounded-lg bg-[#d97706]/15 text-[#d97706] border border-[#d97706]/30 font-mono text-xs font-bold">SLIDE 06 // 04</span>
+          <h3 class="font-shoulders font-bold text-2xl sm:text-3xl text-[#0f172a] uppercase tracking-wider">
+            AI SYSTEMS // AGENTS & MCP PROTOCOL
+          </h3>
+        </div>
+        <div class="flex gap-2">
+          <span class="editorial-tag bg-[#d97706]/15 text-[#d97706] border-[#d97706]/30">MCP PROTOCOL</span>
+          <span class="editorial-tag">QDRANT</span>
+          <span class="editorial-tag">FUNCTION CALLING</span>
+        </div>
       </div>
 
-      <!-- 4. AWS CLOUD PRACTITIONER (Nodo Superior Perpendicular) -->
-      <div #nodeAws 
-           (mouseenter)="onNodeHover('aws', true)" 
-           (mouseleave)="onNodeHover('aws', false)"
-           class="absolute flex flex-col items-center z-20 group cursor-pointer">
-        <div class="w-12 h-12 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl premium-shadow flex items-center justify-center transition-all duration-300 hover:scale-105">
-          <svg class="w-5 h-5 text-[var(--text-main)] group-hover:text-[var(--accent)] transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M20 17.58A5 5 0 0 0 18 8h-1.26A8 8 0 1 0 4 16.25" />
-            <line x1="8" y1="16" x2="8.01" y2="16" /><line x1="8" y1="20" x2="8.01" y2="20" />
-            <line x1="12" y1="18" x2="12.01" y2="18" /><line x1="16" y1="16" x2="16.01" y2="16" />
-          </svg>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <div class="editorial-card p-6 space-y-3">
+          <span class="font-mono text-xs text-[#d97706] font-bold block">01 // MCP PROTOCOL</span>
+          <h4 class="font-syne font-bold text-sm text-[#0f172a]">Model Context Protocol</h4>
+          <p class="text-xs text-[#475569] leading-relaxed font-sans">
+            Building specialized MCP servers providing LLMs with secure tools, file access, and multi-service orchestration.
+          </p>
         </div>
-        <span class="font-display font-bold text-[9px] text-[var(--text-main)] mt-2 uppercase tracking-wider text-center max-w-[110px]">
-          {{ translations[currentLang].edu_aws }}
-        </span>
-        <span class="text-[8px] text-[var(--text-muted)] font-mono mt-0.5">2025</span>
+
+        <div class="editorial-card p-6 space-y-3">
+          <span class="font-mono text-xs text-[#0284c7] font-bold block">02 // VECTOR STORES</span>
+          <h4 class="font-syne font-bold text-sm text-[#0f172a]">Qdrant & pgvector</h4>
+          <p class="text-xs text-[#475569] leading-relaxed font-sans">
+            High-density vector indexing (1536-dim embeddings), cosine similarity search, and semantic hybrid retrieval pipelines.
+          </p>
+        </div>
+
+        <div class="editorial-card p-6 space-y-3">
+          <span class="font-mono text-xs text-emerald-600 font-bold block">03 // AGENT LOOPS</span>
+          <h4 class="font-syne font-bold text-sm text-[#0f172a]">ReAct & Tool Calling</h4>
+          <p class="text-xs text-[#475569] leading-relaxed font-sans">
+            Autonomous agent reasoning loops with structured function calling, error recovery, and context verification.
+          </p>
+        </div>
+
+        <div class="editorial-card p-6 space-y-3">
+          <span class="font-mono text-xs text-[#d97706] font-bold block">04 // ENTERPRISE AI</span>
+          <h4 class="font-syne font-bold text-sm text-[#0f172a]">AWS Bedrock & PyTorch</h4>
+          <p class="text-xs text-[#475569] leading-relaxed font-sans">
+            Foundation models via AWS Bedrock API, custom fine-tuning workflows, and PyTorch inference servers.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- 📄 SLIDE 07: 05 // CLOUD INFRASTRUCTURE & MLOPS                         -->
+    <!-- ======================================================================= -->
+    <section id="section-devops" class="slide-frame p-6 sm:p-10 lg:p-12 space-y-8">
+      
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-black/10 pb-4 gap-2">
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 rounded-lg bg-[#0284c7]/15 text-[#0284c7] border border-[#0284c7]/30 font-mono text-xs font-bold">SLIDE 07 // 05</span>
+          <h3 class="font-shoulders font-bold text-2xl sm:text-3xl text-[#0f172a] uppercase tracking-wider">
+            DEVOPS // CLOUD INFRASTRUCTURE & MLOPS
+          </h3>
+        </div>
+        <div class="flex gap-2">
+          <span class="editorial-tag bg-[#0284c7]/15 text-[#0284c7] border-[#0284c7]/30">AWS STACK</span>
+          <span class="editorial-tag">DOCKER COMPOSE</span>
+          <span class="editorial-tag">CI/CD</span>
+        </div>
       </div>
 
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <div class="editorial-card p-6 space-y-4">
+          <div class="flex items-center justify-between border-b border-black/10 pb-2">
+            <span class="font-mono text-xs text-[#0284c7] font-bold">AWS ENTERPRISE</span>
+            <span class="editorial-tag">CLOUD NATIVE</span>
+          </div>
+          <p class="text-xs text-[#334155] leading-relaxed font-sans">
+            Deployment of containerized workloads on AWS EC2, S3 asset buckets, RDS relational databases, and serverless Lambda functions.
+          </p>
+        </div>
+
+        <div class="editorial-card p-6 space-y-4">
+          <div class="flex items-center justify-between border-b border-black/10 pb-2">
+            <span class="font-mono text-xs text-[#d97706] font-bold">DOCKER ORCHESTRATION</span>
+            <span class="editorial-tag">CONTAINERS</span>
+          </div>
+          <p class="text-xs text-[#334155] leading-relaxed font-sans">
+            Multi-stage Docker builds, isolated network bridging between Nginx, backend APIs and MySQL, and zero-downtime container updates.
+          </p>
+        </div>
+
+        <div class="editorial-card p-6 space-y-4">
+          <div class="flex items-center justify-between border-b border-black/10 pb-2">
+            <span class="font-mono text-xs text-emerald-600 font-bold">CI/CD & SECURITY</span>
+            <span class="editorial-tag">PIPELINES</span>
+          </div>
+          <p class="text-xs text-[#334155] leading-relaxed font-sans">
+            Automated test suites, linter gates, JWT token rotation, and NIST-aligned security practices.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- 📄 SLIDE 08: 06 // ROADMAP, EDUCATION & CERTIFICATIONS                  -->
+    <!-- ======================================================================= -->
+    <section id="section-roadmap" class="slide-frame p-6 sm:p-10 lg:p-12 space-y-8">
+      
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-black/10 pb-4 gap-2">
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 rounded-lg bg-[#d97706]/15 text-[#d97706] border border-[#d97706]/30 font-mono text-xs font-bold">SLIDE 08 // 06</span>
+          <h3 class="font-shoulders font-bold text-2xl sm:text-3xl text-[#0f172a] uppercase tracking-wider">
+            ROADMAP // EDUCATION & CERTIFICATIONS
+          </h3>
+        </div>
+        <span class="editorial-tag bg-emerald-500/15 text-emerald-700 border-emerald-500/30">DUBLIN 2026</span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Academic Path -->
+        <div class="lg:col-span-6 editorial-card p-6 space-y-5">
+          <span class="font-mono text-xs text-[#d97706] font-bold block uppercase">Academic Credentials</span>
+          
+          <div class="space-y-4">
+            <div class="p-4 rounded-xl bg-black/5 border border-black/10 space-y-1">
+              <span class="text-[10px] font-mono text-[#0284c7] uppercase font-bold">2026 — 2027 // UNITED KINGDOM / MADRID</span>
+              <h4 class="font-syne font-bold text-sm text-[#0f172a]">BSc (Hons) in Computer Science</h4>
+              <p class="text-xs text-[#64748b] font-sans">Canterbury Christ Church University (UK) • MSMK Campus</p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-black/5 border border-black/10 space-y-1">
+              <span class="text-[10px] font-mono text-emerald-600 uppercase font-bold">2024 — 2026 // VALENCIA, SPAIN</span>
+              <h4 class="font-syne font-bold text-sm text-[#0f172a]">CFGS Desarrollo de Aplicaciones Web (DAW)</h4>
+              <p class="text-xs text-[#64748b] font-sans">Grade: 7.00 • Full-Stack Software Engineering</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Certifications & Daily Routine -->
+        <div class="lg:col-span-6 editorial-card p-6 space-y-5">
+          <span class="font-mono text-xs text-[#0284c7] font-bold block uppercase">Certifications & High-Performance Routine</span>
+          
+          <div class="grid grid-cols-2 gap-3 font-mono text-xs">
+            <div class="p-3 rounded-xl bg-black/5 border border-black/10">
+              <span class="text-emerald-600 font-bold block">AWS Cloud Practitioner</span>
+              <span class="text-[9px] text-[#64748b]">Certified 2025</span>
+            </div>
+            <div class="p-3 rounded-xl bg-black/5 border border-black/10">
+              <span class="text-[#d97706] font-bold block">AWS AI Practitioner</span>
+              <span class="text-[9px] text-[#64748b]">AIF-C01 Target 2026</span>
+            </div>
+            <div class="p-3 rounded-xl bg-black/5 border border-black/10">
+              <span class="text-[#0284c7] font-bold block">GitHub Copilot GH-600</span>
+              <span class="text-[9px] text-[#64748b]">Target Q4 2026</span>
+            </div>
+            <div class="p-3 rounded-xl bg-black/5 border border-black/10">
+              <span class="text-emerald-600 font-bold block">English C1 Prep</span>
+              <span class="text-[9px] text-[#64748b]">Target Q4 2026</span>
+            </div>
+          </div>
+
+          <div class="pt-2 border-t border-black/10 flex items-center justify-between text-xs font-mono text-[#334155]">
+            <span>Sports: Gym, Boulder (V4-V8), Tennis</span>
+            <span class="text-[#d97706] font-bold">Daily Discipline</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- 📄 SLIDE 09: 07 // CONNECT & DIGITAL TWIN CHAT                          -->
+    <!-- ======================================================================= -->
+    <section id="section-connect" class="slide-frame p-6 sm:p-10 lg:p-12 space-y-8">
+      
+      <div class="flex items-center justify-between border-b border-black/10 pb-4">
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 rounded-lg bg-emerald-500/15 text-emerald-700 border border-emerald-500/30 font-mono text-xs font-bold">SLIDE 09</span>
+          <h3 class="font-shoulders font-bold text-2xl sm:text-3xl text-[#0f172a] uppercase tracking-wider">
+            {{ currentLang === 'en' ? 'CONNECT // AI DIGITAL TWIN & CONTACT' : 'CONECTAR // GEMELO DIGITAL IA Y CONTACTO' }}
+          </h3>
+        </div>
+        <span class="editorial-tag">DUBLIN 2026</span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        
+        <div class="lg:col-span-7 space-y-4">
+          <h4 class="font-syne font-bold text-xl text-[#0f172a]">
+            {{ currentLang === 'en' ? "Let's build intelligent, scalable systems together." : 'Construyamos sistemas inteligentes y escalables juntos.' }}
+          </h4>
+          <p class="text-xs sm:text-sm text-[#334155] leading-relaxed font-sans">
+            {{ translations[currentLang].dublinTarget }}
+          </p>
+
+          <div class="flex flex-wrap gap-3 pt-2">
+            <button (click)="openChatModal()"
+                    class="px-6 py-3 rounded-xl bg-[#1e293b] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#0f172a] active:scale-95 transition-all shadow-md cursor-pointer">
+              💬 {{ currentLang === 'en' ? 'Chat with Santiago AI Twin' : 'Hablar con Gemelo IA' }}
+            </button>
+            <button (click)="openWindow('whyhireme')"
+                    class="px-6 py-3 rounded-xl bg-black/5 hover:bg-black/10 border border-black/15 text-xs font-bold uppercase tracking-wider text-[#0f172a] transition-all cursor-pointer">
+              📄 {{ currentLang === 'en' ? 'Why Hire Santiago?' : '¿Por qué contratarme?' }}
+            </button>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 editorial-card p-6 space-y-3 font-mono text-xs">
+          <span class="text-[#d97706] font-bold block uppercase text-[10px]">Contact Direct Channels</span>
+          <div class="space-y-2 text-[#334155]">
+            <div class="flex justify-between py-1 border-b border-black/5">
+              <span>Location:</span>
+              <span class="text-[#0f172a] font-bold">Valencia, ES → Dublin, IE</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-black/5">
+              <span>Relocation:</span>
+              <span class="text-emerald-600 font-bold">30 Sept 2026</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-black/5">
+              <span>Status:</span>
+              <span class="text-emerald-600 font-bold">Active Search</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </section>
 
   </div>
 
-  <!-- SISTEMA DE VENTANAS MODALES ACTIVAS -->
+  <!-- ========================================================================= -->
+  <!-- 💬 FLOATING CHAT MODAL (AI DIGITAL TWIN STREAMING DIALOGUE)               -->
+  <!-- ========================================================================= -->
+  <app-chat-modal
+    [isOpen]="isChatModalOpen()"
+    [lang]="currentLang"
+    (close)="closeChatModal()"
+    (streamStart)="onChatStreamStart()"
+    (streamEnd)="onChatStreamEnd()">
+  </app-chat-modal>
+
+  <!-- ========================================================================= -->
+  <!-- 🖥️ SISTEMA DE VENTANAS MODALES (MACBOOK STYLE INTERACTIVE DEEP-DIVES)     -->
+  <!-- ========================================================================= -->
   @for (win of windows(); track win.id) {
-    @if (win.isOpen) {
+    @if (win.isOpen && !win.isMinimized) {
       <div [style.zIndex]="win.zIndex"
-           (mousedown)="focusModal(win.id)"
-           [ngClass]="win.isMaximized ? 'inset-12' : 'w-[680px] h-[480px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'"
-           class="fixed modal-enter bg-[var(--bg-card)]/90 backdrop-blur-md border border-[var(--border-subtle)] rounded-2xl premium-shadow flex flex-col overflow-hidden z-50 window-transition">
+           [style.width.px]="win.isMaximized ? null : win.width"
+           [style.height.px]="win.isMaximized ? null : win.height"
+           [style.left.px]="win.isMaximized ? null : win.x"
+           [style.top.px]="win.isMaximized ? null : win.y"
+           [class.fixed]="true"
+           [class.inset-6]="win.isMaximized"
+           [class.mac-window-enter]="win.isOpen"
+           [class.window-transition]="activeWindow?.id !== win.id"
+           (mousedown)="focusWindow(win.id)"
+           class="bg-[#f8fafc]/95 backdrop-blur-xl border border-black/15 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.18)] flex flex-col overflow-hidden z-50 text-[#0f172a]">
         
-        <!-- Header de Ventana (A la izquierda título, a la derecha botones) -->
-        <div class="h-12 border-b border-[var(--border-subtle)] px-5 flex items-center justify-between bg-[var(--bg-main)]/30 select-none">
+        <!-- CABECERA ESTILO MACBOOK -->
+        <div (mousedown)="startDrag($event, win, 'drag')" 
+             class="h-11 border-b border-black/10 px-5 flex items-center justify-between bg-white/70 select-none cursor-move">
           
-          <span class="font-display font-bold text-xs tracking-wider text-[var(--text-main)] uppercase">
-            {{ win.id === 'lafe' ? 'FERTOOLITY AI LAB' : 
-               win.id === 'fitforge' ? 'FIT FORGE SPA' : 
-               win.id === 'mapper' ? 'LEGACY LAND MAPPER' : 
-               win.id === 'climbing' ? 'ROCK CLIMBING & SPORTS' : 'CANTERBURY TERMINAL' }}
+          <span class="font-syne font-bold text-xs tracking-wider text-[#0f172a] uppercase">
+            {{ currentLang === 'en' ? win.titleEn : win.titleEs }}
           </span>
 
           <div class="flex items-center gap-2">
-            <!-- Botón Minimizar -->
-            <button (click)="closeModal(win.id)" class="w-3.5 h-3.5 rounded-full bg-amber-500/20 hover:bg-amber-500 border border-amber-500/30 flex items-center justify-center transition-all duration-200 group cursor-pointer">
-              <span class="text-[8px] text-amber-900 font-bold opacity-0 group-hover:opacity-100">-</span>
-            </button>
-            <!-- Botón Maximizar -->
-            <button (click)="toggleMaximize(win.id)" class="w-3.5 h-3.5 rounded-full bg-emerald-500/20 hover:bg-emerald-500 border border-emerald-500/30 flex items-center justify-center transition-all duration-200 group cursor-pointer">
-              <span class="text-[6px] text-emerald-900 font-bold opacity-0 group-hover:opacity-100">⤢</span>
-            </button>
-            <!-- Botón Cerrar -->
-            <button (click)="closeModal(win.id)" class="w-3.5 h-3.5 rounded-full bg-red-500/20 hover:bg-red-500 border border-red-500/30 flex items-center justify-center transition-all duration-200 group cursor-pointer">
-              <span class="text-[8px] text-red-900 font-bold opacity-0 group-hover:opacity-100">×</span>
-            </button>
+            <button (click)="minimizeWindow(win.id, $event)" 
+                    class="w-3 h-3 rounded-full bg-amber-500/40 hover:bg-amber-500 border border-amber-500/60 flex items-center justify-center transition-all cursor-pointer"></button>
+            <button (click)="toggleMaximize(win.id, $event)" 
+                    class="w-3 h-3 rounded-full bg-emerald-500/40 hover:bg-emerald-500 border border-emerald-500/60 flex items-center justify-center transition-all cursor-pointer"></button>
+            <button (click)="closeWindow(win.id, $event)" 
+                    class="w-3 h-3 rounded-full bg-red-500/40 hover:bg-red-500 border border-red-500/60 flex items-center justify-center transition-all cursor-pointer"></button>
           </div>
-
         </div>
 
-        <!-- Contenido de Ventana -->
-        <div class="flex-1 overflow-y-auto p-6 text-sm text-[var(--text-main)] space-y-4">
-          
-          <!-- === CONTENIDO ACTUALIZADO: FERT00LITY AI LAB === -->
+        <!-- CONTENIDO DE CADA VENTANA -->
+        <div class="flex-1 overflow-y-auto p-6 text-sm text-[#0f172a] font-sans">
+
+          <!-- 1. HOSPITAL LA FE -->
           @if (win.id === 'lafe') {
             <div class="space-y-4 font-sans">
-              <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[var(--border-subtle)] pb-3 gap-2">
+              <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-black/10 pb-3 gap-2">
                 <div>
-                  <p class="text-[10px] text-[var(--text-muted)] uppercase tracking-wider font-mono">Hospital Universitari i Politècnic La Fe // AI Division</p>
-                  <h3 class="text-base font-display font-bold text-[var(--text-main)]">
+                  <p class="text-[10px] text-[#64748b] uppercase tracking-wider font-mono">Hospital Universitari i Politècnic La Fe // AI Division</p>
+                  <h3 class="text-base font-syne font-bold text-[#0f172a]">
                     {{ currentLang === 'en' ? 'Deep Learning for Gynaecological Imaging' : 'Deep Learning para Imágenes Ginecológicas' }}
                   </h3>
                 </div>
-                <!-- Stack Badge -->
-                <span class="px-2.5 py-1 text-[9px] font-mono rounded-md bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20 font-bold uppercase">
+                <span class="px-2.5 py-1 text-[9px] font-mono rounded-md bg-[#0284c7]/15 text-[#0284c7] border border-[#0284c7]/30 font-bold uppercase">
                   MONAI • PyTorch • FastAPI
                 </span>
               </div>
 
-              <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+              <p class="text-xs text-[#334155] leading-relaxed">
                 {{ currentLang === 'en' 
                   ? 'Developed custom neural networks for medical dataset segmentation using PyTorch and MONAI. Optimised workflows for clinicians to detect anomalies automatically with high diagnostic parameters.'
                   : 'Desarrollo de modelos neuronales de segmentación en datasets médicos utilizando PyTorch y MONAI. Optimización de workflows clínicos para la detección automatizada de anomalías anatómicas.' }}
               </p>
 
-              <!-- MONITOR MÉDICO INTERACTIVO -->
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-[var(--bg-main)]/50 p-4 rounded-xl border border-[var(--border-subtle)]">
-                
-                <!-- Panel de Control e Indicadores (Izquierda/Arriba) -->
+              <!-- Monitor Médico -->
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-white p-4 rounded-xl border border-black/10 shadow-xs">
                 <div class="md:col-span-1 space-y-3 flex flex-col justify-between">
                   <div class="space-y-2">
-                    <span class="text-[9px] font-mono text-[var(--text-muted)] tracking-wider block uppercase">Model Controller</span>
+                    <span class="text-[9px] font-mono text-[#64748b] tracking-wider block uppercase font-bold">Model Controller</span>
                     
-                    <!-- Control de Rodajas (Slice) -->
-                    <div class="flex items-center justify-between bg-[var(--bg-card)] px-3 py-1.5 rounded-lg border border-[var(--border-subtle)]">
-                      <span class="text-[10px] font-mono text-[var(--text-main)]">Slice: {{activeSlice}} / 48</span>
+                    <div class="flex items-center justify-between bg-black/5 px-3 py-1.5 rounded-lg border border-black/10">
+                      <span class="text-[10px] font-mono text-[#0f172a]">Slice: {{activeSlice}} / 48</span>
                       <div class="flex gap-1">
-                        <button (click)="changeSlice('prev')" class="px-1.5 py-0.5 rounded bg-[var(--bg-main)] border border-[var(--border-subtle)] text-[10px] hover:bg-[var(--accent)]/10 hover:text-[var(--accent)] cursor-pointer transition-colors font-mono">&lt;</button>
-                        <button (click)="changeSlice('next')" class="px-1.5 py-0.5 rounded bg-[var(--bg-main)] border border-[var(--border-subtle)] text-[10px] hover:bg-[var(--accent)]/10 hover:text-[var(--accent)] cursor-pointer transition-colors font-mono">&gt;</button>
+                        <button (click)="changeSlice('prev')" class="px-1.5 py-0.5 rounded bg-white border border-black/10 text-[10px] hover:text-[#0284c7] cursor-pointer">&lt;</button>
+                        <button (click)="changeSlice('next')" class="px-1.5 py-0.5 rounded bg-white border border-black/10 text-[10px] hover:text-[#0284c7] cursor-pointer">&gt;</button>
                       </div>
                     </div>
 
-                    <!-- Botón de Inferencia -->
                     <button (click)="runMedicalInference()"
                             [disabled]="isSegmenting"
-                            class="w-full py-2 rounded-lg text-xs font-semibold tracking-wider font-display uppercase border text-center cursor-pointer transition-all duration-300"
-                            [ngClass]="isSegmenting 
-                              ? 'bg-[var(--bg-card)] border-[var(--border-subtle)] text-[var(--text-muted)] cursor-not-allowed' 
-                              : 'bg-[var(--accent)] border-[var(--accent)] text-[var(--bg-card)] hover:opacity-90'">
+                            class="w-full py-2 rounded-lg text-xs font-semibold tracking-wider font-space uppercase border text-center cursor-pointer transition-all duration-300 bg-[#0284c7] border-[#0284c7] text-white hover:opacity-90 disabled:opacity-50 shadow-xs">
                       {{ isSegmenting ? (currentLang === 'en' ? 'Segmenting...' : 'Segmentando...') : (currentLang === 'en' ? 'Run Inference' : 'Ejecutar Inferencia') }}
                     </button>
                   </div>
 
-                  <!-- Panel de Métricas Diagnósticas -->
-                  <div class="space-y-1.5 bg-[var(--bg-card)] p-2.5 rounded-lg border border-[var(--border-subtle)] font-mono text-[10px]">
-                    <span class="text-[8px] text-[var(--text-muted)] tracking-widest block uppercase mb-1">Diagnostis Metrics</span>
+                  <div class="space-y-1.5 bg-black/5 p-2.5 rounded-lg border border-black/10 font-mono text-[10px]">
                     <div class="flex justify-between">
-                      <span class="text-[var(--text-muted)]">Dice Coefficient:</span>
-                      <span class="font-bold" [ngClass]="diceScore > 0.9 ? 'text-emerald-600' : 'text-[var(--text-main)]'">
-                        {{ diceScore > 0 ? (diceScore | number:'1.3-3') : '---' }}
-                      </span>
+                      <span class="text-[#64748b]">Dice Score:</span>
+                      <span class="font-bold text-emerald-600">{{ diceScore > 0 ? (diceScore | number:'1.3-3') : '---' }}</span>
                     </div>
                     <div class="flex justify-between">
-                      <span class="text-[var(--text-muted)]">GPU Latency:</span>
-                      <span class="font-bold text-[var(--text-main)]">
-                        {{ inferenceLatency > 0 ? inferenceLatency + ' ms' : '---' }}
-                      </span>
-                    </div>
-                    <div class="flex justify-between">
-                      <span class="text-[var(--text-muted)]">Engine Status:</span>
-                      <span class="font-bold" [ngClass]="isSegmenting ? 'text-amber-500 animate-pulse' : 'text-emerald-500'">
-                        {{ isSegmenting ? 'PROCESSING' : 'STANDBY' }}
-                      </span>
+                      <span class="text-[#64748b]">GPU Latency:</span>
+                      <span class="font-bold text-[#0f172a]">{{ inferenceLatency > 0 ? inferenceLatency + ' ms' : '---' }}</span>
                     </div>
                   </div>
                 </div>
 
-                <!-- Visor de Imagen Médica (Derecha/Abajo) -->
-                <div class="md:col-span-2 h-44 bg-black rounded-xl border border-neutral-900 overflow-hidden relative flex items-center justify-center select-none shadow-inner">
-                  <!-- Rejilla de calibración de imagen -->
-                  <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:10px_10px] pointer-events-none"></div>
-                  <span class="absolute top-2 left-3 text-[8px] font-mono text-neutral-500 uppercase tracking-widest">Medical Scan Slice // CCU-48</span>
-
-                  <!-- SVG de Visualización Médica -->
+                <div class="md:col-span-2 h-44 bg-[#0f172a] rounded-xl border border-black/10 overflow-hidden relative flex items-center justify-center">
                   <svg class="w-full h-full text-neutral-800" viewBox="0 0 300 180">
-                    <!-- Silueta esquemática del órgano -->
-                    <path d="M 60 90 C 60 40, 240 40, 240 90 C 240 140, 60 140, 60 90" 
-                          fill="none" stroke="#222" stroke-width="2" />
-                    
-                    <!-- Puntos calientes simulados (Anomalías detectadas) -->
-                    <circle cx="130" cy="85" [attr.r]="isSegmenting ? '4' : '3'" fill="#ef4444" class="opacity-60" [ngClass]="isSegmenting ? 'animate-ping' : ''" />
-                    <circle cx="170" cy="115" r="2.5" fill="#3b82f6" class="opacity-40" />
-
-                    <!-- Polígono de máscara de segmentación calculada en TS -->
+                    <path d="M 60 90 C 60 40, 240 40, 240 90 C 240 140, 60 140, 60 90" fill="none" stroke="#334155" stroke-width="2" />
+                    <circle cx="130" cy="85" [attr.r]="isSegmenting ? '4' : '3'" fill="#ef4444" class="opacity-70" [ngClass]="isSegmenting ? 'animate-ping' : ''" />
+                    <circle cx="170" cy="115" r="2.5" fill="#38bdf8" class="opacity-50" />
                     @if (segmentationPoints) {
-                      <polygon [attr.points]="segmentationPoints" 
-                               fill="rgba(16, 185, 129, 0.15)" 
-                               stroke="#10b981" 
-                               stroke-width="1.5" 
-                               stroke-dasharray="3 2" />
+                      <polygon [attr.points]="segmentationPoints" fill="rgba(56, 189, 248, 0.2)" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="3 2" />
                     }
                   </svg>
-
-                  <!-- Barra de progreso superpuesta en Inferencia -->
-                  @if (isSegmenting) {
-                    <div class="absolute bottom-3 left-3 right-3 bg-neutral-950/80 border border-neutral-800/80 px-3 py-1.5 rounded-lg flex items-center justify-between font-mono text-[9px] text-emerald-400">
-                      <span>COMPUTING MASKS...</span>
-                      <span>{{segmentationProgress}}%</span>
-                    </div>
-                  }
                 </div>
-
               </div>
             </div>
           }
 
+          <!-- 2. FITFORGE -->
           @if (win.id === 'fitforge') {
-            <div class="space-y-6 font-sans text-[var(--text-main)] pr-1">
-              
-              <!-- Cabecera del Proyecto -->
-              <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[var(--border-subtle)] pb-4 gap-2">
+            <div class="space-y-4 font-sans text-[#0f172a]">
+              <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-black/10 pb-3 gap-2">
                 <div>
-                  <span class="text-[9px] font-mono text-[var(--text-muted)] uppercase tracking-widest block">TFG // Full-Stack Fitness SPA</span>
-                  <h3 class="text-lg font-display font-bold">Fit Forge</h3>
+                  <span class="text-[9px] font-mono text-[#64748b] uppercase tracking-widest block font-bold">TFG // Full-Stack Fitness SPA</span>
+                  <h3 class="text-base font-syne font-bold">FitForge Platform Architecture</h3>
                 </div>
-                
-                <!-- Tech Stack con Colores Representativos -->
                 <div class="flex flex-wrap gap-1.5">
-                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-md bg-[#dd0031]/10 text-[#dd0031] border border-[#dd0031]/20">Angular</span>
-                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-md bg-[#777bb4]/10 text-[#777bb4] border border-[#777bb4]/20">PHP 8.2</span>
-                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-md bg-[#4f46e5]/10 text-[#4f46e5] border border-[#4f46e5]/20">Symfony 7</span>
-                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-md bg-[#f7df1e]/10 text-[#a39103] dark:text-[#f7df1e] border border-[#f7df1e]/20">JavaScript</span>
-                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-md bg-[#f29111]/10 text-[#f29111] border border-[#f29111]/20">MySQL</span>
-                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-md bg-[#2496ed]/10 text-[#2496ed] border border-[#2496ed]/20">Docker</span>
+                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded bg-[#dc2626]/10 text-[#dc2626] border border-[#dc2626]/30">Symfony 7</span>
+                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded bg-[#0284c7]/10 text-[#0284c7] border border-[#0284c7]/30">Angular</span>
+                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded bg-[#2563eb]/10 text-[#2563eb] border border-[#2563eb]/30">Docker</span>
                 </div>
               </div>
 
-              <!-- Layout de Dos Columnas: Carrusel e Info -->
-              <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
-                
-                <!-- Columna 1: Carrusel de Capturas (3/5 del ancho) -->
-                <div class="lg:col-span-3 space-y-3">
-                  <div class="relative aspect-video w-full overflow-hidden rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] premium-shadow flex items-center justify-center">
-                    
-                    <!-- Imagen de Slide con Fallback a Template Visual -->
-                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-[var(--bg-main)] to-[var(--bg-card)]">
-                      <svg class="w-12 h-12 text-[var(--accent)]/40 mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                        <circle cx="8.5" cy="8.5" r="1.5"/>
-                        <polyline points="21 15 16 10 5 21"/>
-                      </svg>
-                      <span class="text-xs font-mono font-bold text-[var(--text-main)]">{{ fitForgeSlides[fitForgeIndex].title }}</span>
-                      <span class="text-[10px] text-[var(--text-muted)] mt-1 max-w-xs">{{ fitForgeSlides[fitForgeIndex].desc }}</span>
-                    </div>
-
-                    <!-- Flechas de Navegación del Carrusel -->
-                    <button (click)="prevFitForge()" class="absolute left-3 p-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)]/80 text-[var(--text-main)] hover:scale-105 active:scale-95 transition-all cursor-pointer z-10">
-                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-                    </button>
-                    <button (click)="nextFitForge()" class="absolute right-3 p-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)]/80 text-[var(--text-main)] hover:scale-105 active:scale-95 transition-all cursor-pointer z-10">
-                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-                    </button>
-                  </div>
-
-                  <!-- Puntos Indicadores del Carrusel -->
-                  <div class="flex justify-center gap-1.5">
-                    @for (slide of fitForgeSlides; track $index) {
-                      <button (click)="setFitForgeSlide($index)" 
-                              [class.bg-[var(--accent)]]="fitForgeIndex === $index" 
-                              [class.w-4]="fitForgeIndex === $index"
-                              class="w-1.5 h-1.5 rounded-full bg-[var(--border-subtle)] transition-all cursor-pointer"></button>
-                    }
-                  </div>
-                </div>
-
-                <!-- Columna 2: Ficha Técnica Completa (2/5 del ancho) -->
-                <div class="lg:col-span-2 space-y-4 text-xs">
-                  
-                  <!-- Bloque: ¿Por qué se hizo? -->
-                  <div class="bg-[var(--bg-main)]/40 p-3.5 rounded-xl border border-[var(--border-subtle)] space-y-1.5">
-                    <h4 class="font-display font-bold text-[var(--accent)] uppercase tracking-wider text-[10px]">
-                      {{ translations[currentLang].whyMade }}
-                    </h4>
-                    <p class="text-[var(--text-muted)] leading-relaxed">
-                      {{ currentLang === 'en' 
-                        ? 'Created to address training and nutrition fragmentation. Fit Forge provides a unified portal featuring customized workout catalogues alongside diet planning systems, powered by an intelligent star-rating (1-5) feedback evaluation mechanism.'
-                        : 'Desarrollado para resolver la dispersión de entrenamientos y dietas en múltiples plataformas. Fit Forge provee un portal unificado con rutinas dinámicas, planes nutricionales a medida y un motor evaluativo de recomendaciones.' }}
-                    </p>
-                  </div>
-
-                  <!-- Bloque: Detalle Técnico Deep Dive -->
-                  <div class="bg-[var(--bg-main)]/40 p-3.5 rounded-xl border border-[var(--border-subtle)] space-y-1.5">
-                    <h4 class="font-display font-bold text-[var(--accent)] uppercase tracking-wider text-[10px]">
-                      {{ translations[currentLang].techDepth }}
-                    </h4>
-                    <p class="text-[var(--text-muted)] leading-relaxed">
-                      {{ currentLang === 'en' 
-                        ? 'Architected with a decoupled model: a robust Symfony 7 backend exposing a secure REST API of 33 endpoints with JWT authentication and custom security voting, coupled with an Angular standalone SPA with HTTP interceptors, reactive forms, and Docker deployment orchestration.'
-                        : 'Construido mediante desacoplamiento robusto: backend con Symfony 7 exponiendo una API REST de 33 endpoints con seguridad JWT y votantes de acceso, conectado a un cliente SPA con Angular Standalone, interceptores HTTP, formularios reactivos y orquestación con Docker.' }}
-                    </p>
-                  </div>
-
-                  <!-- Bloque: Colaboradores -->
-                  <div class="bg-[var(--bg-main)]/40 p-3.5 rounded-xl border border-[var(--border-subtle)] flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-[var(--accent)]/5 flex items-center justify-center text-[var(--accent)]">
-                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 class="font-display font-bold text-[var(--text-main)] text-[10px] uppercase tracking-wider">
-                        {{ translations[currentLang].collabTitle }}
-                      </h4>
-                      <p class="text-[10px] text-[var(--text-muted)]">
-                        {{ translations[currentLang].soleAuthor }}
-                      </p>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-          }
-
-          @if (win.id === 'mapper') {
-            <div class="space-y-6 font-sans text-[var(--text-main)] pr-1">
-              
-              <!-- Cabecera del Proyecto -->
-              <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[var(--border-subtle)] pb-4 gap-2">
-                <div>
-                  <span class="text-[9px] font-mono text-[var(--text-muted)] uppercase tracking-widest block">Geospatial Automation Tool</span>
-                  <h3 class="text-lg font-display font-bold">Legacy Land Mapper</h3>
-                </div>
-                
-                <!-- Tech Stack con Colores Representativos -->
-                <div class="flex flex-wrap gap-1.5">
-                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-md bg-[#3776ab]/10 text-[#215a8b] dark:text-[#5fa2dd] border border-[#3776ab]/20">Python 3</span>
-                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-md bg-[#150458]/10 text-[#7154fa] dark:text-[#a08aff] border border-[#150458]/20">Pandas</span>
-                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-md bg-[#42b883]/10 text-[#28845a] dark:text-[#42b883] border border-[#42b883]/20">Leaflet.js</span>
-                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-md bg-[#3178c6]/10 text-[#3178c6] border border-[#3178c6]/20">TypeScript</span>
-                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-md bg-[#f7df1e]/10 text-[#a39103] dark:text-[#f7df1e] border border-[#f7df1e]/20">GeoJSON</span>
-                </div>
-              </div>
-
-              <!-- Layout de Dos Columnas: Carrusel e Info -->
-              <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
-                
-                <!-- Columna 1: Carrusel de Capturas (3/5 del ancho) -->
-                <div class="lg:col-span-3 space-y-3">
-                  <div class="relative aspect-video w-full overflow-hidden rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] premium-shadow flex items-center justify-center">
-                    
-                    <!-- Imagen de Slide con Fallback a Template Visual -->
-                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-[var(--bg-main)] to-[var(--bg-card)]">
-                      <svg class="w-12 h-12 text-[var(--accent)]/40 mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
-                        <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
-                        <line x1="9" y1="3" x2="9" y2="18"/>
-                        <line x1="15" y1="6" x2="15" y2="21"/>
-                      </svg>
-                      <span class="text-xs font-mono font-bold text-[var(--text-main)]">{{ mapperSlides[mapperIndex].title }}</span>
-                      <span class="text-[10px] text-[var(--text-muted)] mt-1 max-w-xs">{{ mapperSlides[mapperIndex].desc }}</span>
-                    </div>
-
-                    <!-- Flechas de Navegación del Carrusel -->
-                    <button (click)="prevMapper()" class="absolute left-3 p-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)]/80 text-[var(--text-main)] hover:scale-105 active:scale-95 transition-all cursor-pointer z-10">
-                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-                    </button>
-                    <button (click)="nextMapper()" class="absolute right-3 p-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)]/80 text-[var(--text-main)] hover:scale-105 active:scale-95 transition-all cursor-pointer z-10">
-                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-                    </button>
-                  </div>
-
-                  <!-- Puntos Indicadores del Carrusel -->
-                  <div class="flex justify-center gap-1.5">
-                    @for (slide of mapperSlides; track $index) {
-                      <button (click)="setMapperSlide($index)" 
-                              [class.bg-[var(--accent)]]="mapperIndex === $index" 
-                              [class.w-4]="mapperIndex === $index"
-                              class="w-1.5 h-1.5 rounded-full bg-[var(--border-subtle)] transition-all cursor-pointer"></button>
-                    }
-                  </div>
-                </div>
-
-                <!-- Columna 2: Ficha Técnica Completa (2/5 del ancho) -->
-                <div class="lg:col-span-2 space-y-4 text-xs">
-                  
-                  <!-- Bloque: ¿Por qué se hizo? -->
-                  <div class="bg-[var(--bg-main)]/40 p-3.5 rounded-xl border border-[var(--border-subtle)] space-y-1.5">
-                    <h4 class="font-display font-bold text-[var(--accent)] uppercase tracking-wider text-[10px]">
-                      {{ translations[currentLang].whyMade }}
-                    </h4>
-                    <p class="text-[var(--text-muted)] leading-relaxed">
-                      {{ currentLang === 'en' 
-                        ? 'Developed to automate geospatial intelligence on Spanish land registry data. It enables non-technical stakeholders to input Excel or CSV files and instantly receive dynamic maps with complete real estate statistics.'
-                        : 'Desarrollado para automatizar la obtención de datos catastrales en España. Permite a usuarios sin conocimientos técnicos ingresar archivos Excel/CSV y convertirlos inmediatamente en mapas visuales interactivos con todas las estadísticas.' }}
-                    </p>
-                  </div>
-
-                  <!-- Bloque: Detalle Técnico Deep Dive -->
-                  <div class="bg-[var(--bg-main)]/40 p-3.5 rounded-xl border border-[var(--border-subtle)] space-y-1.5">
-                    <h4 class="font-display font-bold text-[var(--accent)] uppercase tracking-wider text-[10px]">
-                      {{ translations[currentLang].techDepth }}
-                    </h4>
-                    <p class="text-[var(--text-muted)] leading-relaxed">
-                      {{ currentLang === 'en' 
-                        ? 'Features a multi-threaded Python backend leveraging a thread pool of 20 concurrent workers to query the Spanish Cadastre WFS API, achieving an execution optimization of over 90%. Data is processed via Pandas into clean GeoJSON layers and rendered as an interactive standalone Leaflet map.'
-                        : 'Implementa un script multi-hilo en Python con un pool de 20 workers concurrentes que consulta la API WFS del Catastro oficial, optimizando tiempos de descarga en un 90%. Procesa los polígonos con Pandas en capas GeoJSON e interactúa sobre un visor Leaflet.js.' }}
-                    </p>
-                  </div>
-
-                  <!-- Bloque: Colaboradores -->
-                  <div class="bg-[var(--bg-main)]/40 p-3.5 rounded-xl border border-[var(--border-subtle)] flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-[var(--accent)]/5 flex items-center justify-center text-[var(--accent)]">
-                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 class="font-display font-bold text-[var(--text-main)] text-[10px] uppercase tracking-wider">
-                        {{ translations[currentLang].collabTitle }}
-                      </h4>
-                      <p class="text-[10px] text-[var(--text-muted)]">
-                        {{ translations[currentLang].soleAuthor }}
-                      </p>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-          }
-
-          @if (win.id === 'climbing') {
-            <div class="space-y-6 font-sans text-[var(--text-main)] pr-1">
-              
-              <!-- Cabecera del Modal -->
-              <div class="border-b border-[var(--border-subtle)] pb-4">
-                <span class="text-[9px] font-mono text-[var(--text-muted)] uppercase tracking-widest block">
-                  {{ translations[currentLang].hobbiesTitle }}
-                </span>
-                <h3 class="text-lg font-display font-bold">
-                  {{ currentLang === 'en' ? 'Me & Hobbies' : 'Sobre mí y Hobbies' }}
-                </h3>
-              </div>
-
-              <!-- Layout de Dos Columnas -->
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
-                
-                <!-- Columna 1: Escalada en Roca (Estilo Diario de Entrenamiento) -->
-                <div class="space-y-4">
-                  <div class="bg-[var(--bg-main)]/40 p-4 rounded-xl border border-[var(--border-subtle)] space-y-3">
-                    <div class="flex items-center gap-2.5">
-                      <div class="w-7 h-7 rounded-lg bg-[var(--accent)]/5 flex items-center justify-center text-[var(--accent)]">
-                        <!-- Icono de Montaña/Roca -->
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                          <path d="m8 3-6 16h20L16 5l-3 4z"/>
-                        </svg>
-                      </div>
-                      <div>
-                        <h4 class="font-display font-bold text-[11px] uppercase tracking-wider">
-                          {{ translations[currentLang].climbingTitle }}
-                        </h4>
-                        <p class="text-[9px] text-[var(--text-muted)] font-mono">
-                          {{ translations[currentLang].climbingSub }}
-                        </p>
-                      </div>
-                    </div>
-
-                    <!-- Tipos de presas favoritas -->
-                    <div class="space-y-1.5 pt-1">
-                      <span class="text-[9px] font-mono font-bold text-[var(--accent)] uppercase tracking-wider block">
-                        {{ translations[currentLang].favHolds }}
-                      </span>
-                      <div class="flex flex-wrap gap-1.5">
-                        <span class="px-2 py-0.5 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded text-[10px] font-mono">
-                          🧗‍♂️ {{ translations[currentLang].crimps }}
-                        </span>
-                        <span class="px-2 py-0.5 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded text-[10px] font-mono">
-                          🤚 {{ translations[currentLang].slopers }}
-                        </span>
-                        <span class="px-2 py-0.5 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded text-[10px] font-mono">
-                          ✌️ {{ translations[currentLang].pockets }}
-                        </span>
-                      </div>
-                    </div>
-
-                    <!-- Métricas de rendimiento -->
-                    <div class="pt-2 border-t border-[var(--border-subtle)] space-y-1">
-                      <span class="text-[9px] font-mono font-bold text-[var(--accent)] uppercase tracking-wider block">
-                        {{ translations[currentLang].climbingStats }}
-                      </span>
-                      <div class="flex justify-between text-[10px]">
-                        <span class="text-[var(--text-muted)]">{{ translations[currentLang].avgGrade }}:</span>
-                        <span class="font-mono font-bold text-[var(--text-main)]">V6 (7A Fontainebleau)</span>
-                      </div>
-                      <div class="flex justify-between text-[10px]">
-                        <span class="text-[var(--text-muted)]">{{ translations[currentLang].weeklySessions }}:</span>
-                        <span class="font-mono font-bold text-[var(--text-main)]">3 Sessions // Rock & Indoor</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Columna 2: Deportes de Club (Tenis y Fútbol) -->
-                <div class="space-y-4">
-                  <div class="bg-[var(--bg-main)]/40 p-4 rounded-xl border border-[var(--border-subtle)] space-y-3">
-                    
-                    <div class="flex items-center gap-2.5 border-b border-[var(--border-subtle)] pb-2.5">
-                      <div class="w-7 h-7 rounded-lg bg-[var(--accent)]/5 flex items-center justify-center text-[var(--accent)]">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                          <circle cx="12" cy="12" r="10"/><path d="M6 12c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6-6-2.7-6-6Z"/>
-                        </svg>
-                      </div>
-                      <h4 class="font-display font-bold text-[11px] uppercase tracking-wider">
-                        {{ translations[currentLang].otherSportsTitle }}
-                      </h4>
-                    </div>
-
-                    <!-- Tenis -->
-                    <div class="space-y-1">
-                      <div class="flex justify-between items-center">
-                        <span class="font-display font-bold text-[10px] text-[var(--text-main)] uppercase">
-                          🎾 {{ translations[currentLang].tennisClub }}
-                        </span>
-                        <span class="text-[8px] font-mono bg-[var(--accent)]/10 text-[var(--accent)] px-1.5 py-0.2 rounded">Singles League</span>
-                      </div>
-                      <p class="text-[10px] text-[var(--text-muted)] leading-relaxed">
-                        {{ translations[currentLang].tennisDesc }}
-                      </p>
-                    </div>
-
-                    <!-- Fútbol -->
-                    <div class="space-y-1 pt-2 border-t border-[var(--border-subtle)]">
-                      <div class="flex justify-between items-center">
-                        <span class="font-display font-bold text-[10px] text-[var(--text-main)] uppercase">
-                          ⚽ {{ translations[currentLang].footballClub }}
-                        </span>
-                        <span class="text-[8px] font-mono bg-[var(--accent)]/10 text-[var(--accent)] px-1.5 py-0.2 rounded">Midfielder</span>
-                      </div>
-                      <p class="text-[10px] text-[var(--text-muted)] leading-relaxed">
-                        {{ translations[currentLang].footballDesc }}
-                      </p>
-                    </div>
-
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          }
-
-          @if (win.id === 'canterbury') {
-            <div class="space-y-6 font-sans text-[var(--text-main)] pr-1">
-              
-              <!-- Cabecera del Modal -->
-              <div class="border-b border-[var(--border-subtle)] pb-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
-                <div>
-                  <span class="text-[9px] font-mono text-[var(--text-muted)] uppercase tracking-widest block">
-                    {{ translations[currentLang].eduModalTitle }}
-                  </span>
-                  <h3 class="text-base font-display font-bold mt-0.5">
-                    {{ translations[currentLang].eduModalSub }}
-                  </h3>
-                </div>
-                <!-- Grad badge -->
-                <span class="px-2.5 py-1 text-[9px] font-mono font-bold rounded-md bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20 uppercase">
-                  2024 — 2027
-                </span>
-              </div>
-
-              <!-- Layout de Dos Columnas -->
-              <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 text-xs">
-                
-                <!-- Columna 1: Pilares de Especialización (3/5 del ancho) -->
-                <div class="lg:col-span-3 space-y-4">
-                  <span class="text-[9px] font-mono font-bold text-[var(--accent)] uppercase tracking-wider block">
-                    {{ translations[currentLang].pillsTitle }}
-                  </span>
-
-                  <!-- Pillar 1: Ciberseguridad -->
-                  <div class="bg-[var(--bg-main)]/40 p-4 rounded-xl border border-[var(--border-subtle)] flex items-start gap-4">
-                    <div class="w-8 h-8 rounded-lg bg-[#e11d48]/5 text-[#e11d48] flex items-center justify-center flex-shrink-0 border border-[#e11d48]/10">
-                      <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                      </svg>
-                    </div>
-                    <div class="space-y-1">
-                      <h4 class="font-display font-bold text-[11px] uppercase tracking-wide">
-                        {{ translations[currentLang].cyberTitle }}
-                      </h4>
-                      <p class="text-[10px] text-[var(--text-muted)] leading-relaxed">
-                        {{ translations[currentLang].cyberDesc }}
-                      </p>
-                    </div>
-                  </div>
-
-                  <!-- Pillar 2: Inteligencia Artificial -->
-                  <div class="bg-[var(--bg-main)]/40 p-4 rounded-xl border border-[var(--border-subtle)] flex items-start gap-4">
-                    <div class="w-8 h-8 rounded-lg bg-[#3b82f6]/5 text-[#3b82f6] flex items-center justify-center flex-shrink-0 border border-[#3b82f6]/10">
-                      <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
-                      </svg>
-                    </div>
-                    <div class="space-y-1">
-                      <h4 class="font-display font-bold text-[11px] uppercase tracking-wide">
-                        {{ translations[currentLang].aiTitle }}
-                      </h4>
-                      <p class="text-[10px] text-[var(--text-muted)] leading-relaxed">
-                        {{ translations[currentLang].aiDesc }}
-                      </p>
-                    </div>
-                  </div>
-
-                  <!-- Pillar 3: Cloud Native -->
-                  <div class="bg-[var(--bg-main)]/40 p-4 rounded-xl border border-[var(--border-subtle)] flex items-start gap-4">
-                    <div class="w-8 h-8 rounded-lg bg-[#0ea5e9]/5 text-[#0ea5e9] flex items-center justify-center flex-shrink-0 border border-[#0ea5e9]/10">
-                      <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <path d="M20 17.58A5 5 0 0 0 18 8h-1.26A8 8 0 1 0 4 16.25"/>
-                      </svg>
-                    </div>
-                    <div class="space-y-1">
-                      <h4 class="font-display font-bold text-[11px] uppercase tracking-wide">
-                        {{ translations[currentLang].cloudTitle }}
-                      </h4>
-                      <p class="text-[10px] text-[var(--text-muted)] leading-relaxed">
-                        {{ translations[currentLang].cloudDesc }}
-                      </p>
-                    </div>
-                  </div>
-
-                </div>
-
-                <!-- Columna 2: Tecnologías transversales (2/5 del ancho) -->
-                <div class="lg:col-span-2 space-y-4">
-                  <span class="text-[9px] font-mono font-bold text-[var(--accent)] uppercase tracking-wider block">
-                    {{ translations[currentLang].techBreadthTitle }}
-                  </span>
-
-                  <!-- Tarjeta de Desglose de Tecnologías -->
-                  <div class="bg-[var(--bg-main)]/40 p-4 rounded-xl border border-[var(--border-subtle)] space-y-4">
-                    
-                    <!-- Java -->
-                    <div class="space-y-1.5">
-                      <div class="flex justify-between items-center">
-                        <span class="font-display font-bold text-[10px] text-[var(--text-main)] uppercase tracking-wide">☕ Java Enterprise</span>
-                        <span class="text-[8px] font-mono bg-[#b07219]/10 text-[#b07219] px-1.5 py-0.2 rounded border border-[#b07219]/20 font-bold">OOP</span>
-                      </div>
-                      <p class="text-[10px] text-[var(--text-muted)] leading-relaxed">
-                        {{ translations[currentLang].javaDesc }}
-                      </p>
-                    </div>
-
-                    <!-- SQL -->
-                    <div class="space-y-1.5 pt-3 border-t border-[var(--border-subtle)]">
-                      <div class="flex justify-between items-center">
-                        <span class="font-display font-bold text-[10px] text-[var(--text-main)] uppercase tracking-wide">🗄️ SQL & PostgreSQL</span>
-                        <span class="text-[8px] font-mono bg-[#336791]/10 text-[#336791] px-1.5 py-0.2 rounded border border-[#336791]/20 font-bold">Database</span>
-                      </div>
-                      <p class="text-[10px] text-[var(--text-muted)] leading-relaxed">
-                        {{ translations[currentLang].sqlDesc }}
-                      </p>
-                    </div>
-
-                    <!-- Herramientas Cloud -->
-                    <div class="space-y-2 pt-3 border-t border-[var(--border-subtle)]">
-                      <span class="text-[9px] font-mono font-bold text-[var(--text-muted)] uppercase tracking-wider block">Cloud Core Toolkit</span>
-                      <div class="flex flex-wrap gap-1.5">
-                        <span class="px-2 py-0.5 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded text-[9px] font-mono font-bold">Docker</span>
-                        <span class="px-2 py-0.5 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded text-[9px] font-mono font-bold">AWS Certified</span>
-                        <span class="px-2 py-0.5 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded text-[9px] font-mono font-bold">Git / GitHub</span>
-                        <span class="px-2 py-0.5 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded text-[9px] font-mono font-bold">Linux CLI</span>
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          }
-
-          <!-- === MODAL INTERACTIVO: WHY HIRE ME === -->
-          @if (win.id === 'whyhireme') {
-            <div class="flex flex-col h-full font-sans text-[var(--text-main)] space-y-4">
-              
-              <!-- Encabezado de Modal -->
-              <div class="flex items-start justify-between">
-                <div>
-                  <h3 class="text-lg font-display font-bold uppercase tracking-wide">
-                    {{ translations[currentLang].why_heading }}
-                  </h3>
-                  <p class="text-xs text-[var(--text-muted)] font-mono mt-0.5">
-                    {{ translations[currentLang].why_sub }}
-                  </p>
-                </div>
-                <!-- Botón de Descarga del CV -->
-                <a href="assets/CASTRO_SALT_SANTIAGO_CV.pdf" download="Santiago_Castro_Salt_CV.pdf"
-                   class="px-4 py-2 bg-[var(--accent)] hover:opacity-90 text-[var(--bg-card)] rounded-xl font-display font-bold text-[11px] tracking-wider uppercase transition-all flex items-center gap-1.5 shadow-md cursor-pointer">
-                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                  </svg>
-                  <span>{{ translations[currentLang].txt_download_cv }}</span>
-                </a>
-              </div>
-
-              <!-- Pitch Text -->
-              <p class="text-xs text-[var(--text-muted)] leading-relaxed">
-                {{ translations[currentLang].pitch_text }}
+              <p class="text-xs text-[#334155] leading-relaxed">
+                FitForge is an end-to-end fitness platform featuring 33 REST endpoints in Symfony 7, JWT authentication, MySQL 8 with 14 relational tables, and an Angular standalone client.
               </p>
+            </div>
+          }
 
-              <!-- Caja de Competencias Clave -->
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
-                <div class="bg-[var(--bg-main)]/50 p-3 rounded-xl border border-[var(--border-subtle)] space-y-1.5">
-                  <span class="text-[9px] font-mono font-bold uppercase tracking-wider text-[var(--accent)]">01 // AI & Cloud</span>
-                  <p class="text-[10px] text-[var(--text-muted)] leading-relaxed">
-                    {{ translations[currentLang].competency1 }}
-                  </p>
+          <!-- 3. MAPPER -->
+          @if (win.id === 'mapper') {
+            <div class="space-y-4 font-sans text-[#0f172a]">
+              <div class="flex justify-between items-center border-b border-black/10 pb-3">
+                <h3 class="text-base font-syne font-bold">Legacy Land Mapper</h3>
+                <span class="px-2 py-0.5 text-[9px] font-mono rounded bg-[#0284c7]/15 text-[#0284c7] border border-[#0284c7]/30 font-bold">PYTHON & LEAFLET</span>
+              </div>
+              <p class="text-xs text-[#334155]">
+                Multi-threaded WFS parcel extractor with 20 worker threads, Pandas, and GeoJSON mapping algorithms reducing query latency by >90%.
+              </p>
+            </div>
+          }
+
+          <!-- 4. WHY HIRE SANTIAGO -->
+          @if (win.id === 'whyhireme') {
+            <div class="space-y-4 font-sans text-[#0f172a]">
+              <div class="border-b border-black/10 pb-3">
+                <span class="text-[9px] font-mono text-[#d97706] uppercase tracking-widest block font-bold">Executive Rationale // Dublin 2026</span>
+                <h3 class="text-base font-syne font-bold mt-0.5">Why Hire Santiago Castro Salt?</h3>
+              </div>
+              <p class="text-xs text-[#334155] leading-relaxed">
+                {{ translations[currentLang].pitchText }}
+              </p>
+              <div class="space-y-2 pt-2 text-xs">
+                <div class="p-2.5 rounded-xl bg-black/5 border border-black/5 flex items-start gap-2.5">
+                  <span class="text-[#0284c7] font-bold">✓</span>
+                  <span>{{ translations[currentLang].competency1 }}</span>
                 </div>
-                <div class="bg-[var(--bg-main)]/50 p-3 rounded-xl border border-[var(--border-subtle)] space-y-1.5">
-                  <span class="text-[9px] font-mono font-bold uppercase tracking-wider text-[var(--accent)]">02 // Backend Engineering</span>
-                  <p class="text-[10px] text-[var(--text-muted)] leading-relaxed">
-                    {{ translations[currentLang].competency2 }}
-                  </p>
+                <div class="p-2.5 rounded-xl bg-black/5 border border-black/5 flex items-start gap-2.5">
+                  <span class="text-[#d97706] font-bold">✓</span>
+                  <span>{{ translations[currentLang].competency2 }}</span>
                 </div>
-                <div class="bg-[var(--bg-main)]/50 p-3 rounded-xl border border-[var(--border-subtle)] space-y-1.5">
-                  <span class="text-[9px] font-mono font-bold uppercase tracking-wider text-[var(--accent)]">03 // Modern Frontend</span>
-                  <p class="text-[10px] text-[var(--text-muted)] leading-relaxed">
-                    {{ translations[currentLang].competency3 }}
-                  </p>
+                <div class="p-2.5 rounded-xl bg-black/5 border border-black/5 flex items-start gap-2.5">
+                  <span class="text-[#0284c7] font-bold">✓</span>
+                  <span>{{ translations[currentLang].competency3 }}</span>
+                </div>
+                <div class="p-2.5 rounded-xl bg-black/5 border border-black/5 flex items-start gap-2.5">
+                  <span class="text-[#d97706] font-bold">✓</span>
+                  <span>{{ translations[currentLang].competency4 }}</span>
                 </div>
               </div>
-
-              <!-- Stack de Tecnologías Organizado -->
-              <div class="space-y-2 pt-2 border-t border-[var(--border-subtle)]">
-                <span class="text-[9px] font-mono text-[var(--text-muted)] uppercase tracking-widest block">
-                  {{ translations[currentLang].tech_stack_label }}
-                </span>
-                <div class="flex flex-wrap gap-1.5">
-                  <span class="px-2.5 py-1 bg-[var(--bg-main)] border border-[var(--border-subtle)] rounded-lg text-[10px] font-mono font-bold">Angular 19</span>
-                  <span class="px-2.5 py-1 bg-[var(--bg-main)] border border-[var(--border-subtle)] rounded-lg text-[10px] font-mono font-bold">Symfony 7</span>
-                  <span class="px-2.5 py-1 bg-[var(--bg-main)] border border-[var(--border-subtle)] rounded-lg text-[10px] font-mono font-bold">FastAPI</span>
-                  <span class="px-2.5 py-1 bg-[var(--bg-main)] border border-[var(--border-subtle)] rounded-lg text-[10px] font-mono font-bold">Python</span>
-                  <span class="px-2.5 py-1 bg-[var(--bg-main)] border border-[var(--border-subtle)] rounded-lg text-[10px] font-mono font-bold">PyTorch</span>
-                  <span class="px-2.5 py-1 bg-[var(--bg-main)] border border-[var(--border-subtle)] rounded-lg text-[10px] font-mono font-bold">AWS Certified</span>
-                  <span class="px-2.5 py-1 bg-[var(--bg-main)] border border-[var(--border-subtle)] rounded-lg text-[10px] font-mono font-bold">Docker</span>
-                  <span class="px-2.5 py-1 bg-[var(--bg-main)] border border-[var(--border-subtle)] rounded-lg text-[10px] font-mono font-bold">PostgreSQL</span>
-                </div>
-              </div>
-
             </div>
           }
 
         </div>
+
       </div>
     }
   }

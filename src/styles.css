@@ -3,126 +3,161 @@
 @source "./src/index.html";
 
 @theme {
-  --color-cream-bg: #faf6f0;         /* Crema cálido premium */
-  --color-cream-card: #ffffff;       /* Blanco puro para tarjetas */
-  --color-cream-border: #e3dfd5;     /* Tono gris papel de boceto */
-  --color-charcoal: #1a1a1a;         /* Carbón de alta legibilidad */
-  --color-muted: #706e68;            /* Gris medio para metadatos */
-  --color-accent: #2d4a43;           /* Verde bosque profundo alpino */
+  --color-studio-bg: #d7d7d7;
+  --color-studio-card: #f8fafc;
+  --color-studio-dark: #0f172a;
+  --color-studio-muted: #475569;
+  --color-amber-accent: #d97706;
+  --color-sky-accent: #0284c7;
 }
 
-/* Variables semánticas mutables por la clase .dark */
 :root {
-  --bg-main: var(--color-cream-bg);
-  --bg-card: var(--color-cream-card);
-  --border-subtle: var(--color-cream-border);
-  --text-main: var(--color-charcoal);
-  --text-muted: var(--color-muted);
-  --accent: var(--color-accent);
-  --accent-glow: rgba(45, 74, 67, 0.15);
-}
-
-.dark {
-  --bg-main: #141312;         /* Carbón oscuro analógico */
-  --bg-card: #1c1a18;         /* Fondo de tarjetas con matiz cálido */
-  --border-subtle: #2d2a27;   /* Bordes oscuros ultra sutiles */
-  --text-main: #f4efe6;       /* Crema suave para textos */
-  --text-muted: #8c857b;      /* Muted analógico */
-  --accent: #8fb3a9;          /* Verde salvia claro premium */
-  --accent-glow: rgba(143, 179, 169, 0.15);
+  --bg-main: #d6d6d6;
+  --bg-card: rgba(255, 255, 255, 0.88);
+  --bg-card-solid: #ffffff;
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-card: rgba(0, 0, 0, 0.1);
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --accent: #d97706;
+  --accent-cyan: #0284c7;
 }
 
 body {
-  background-color: var(--bg-main);
-  background-image: radial-gradient(var(--border-subtle) 1.5px, transparent 1.5px);
-  background-size: 24px 24px;
+  background-color: #d6d6d6;
+  background-image: radial-gradient(circle at 50% 30%, #e2e2e2 0%, #d6d6d6 60%, #cecece 100%);
   color: var(--text-main);
-  font-family: 'Inter', sans-serif;
-  transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
-              color 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
-              border-color 0.5s ease;
-  overflow: hidden;
+  font-family: 'Space Grotesk', 'Outfit', sans-serif;
+  overflow-x: hidden;
   user-select: none;
+  scroll-behavior: smooth;
+}
+
+/* Typography styles matching the reference editorial poster */
+.font-bebas {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.04em;
+}
+
+.font-shoulders {
+  font-family: 'Big Shoulders Display', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.font-syne {
+  font-family: 'Syne', sans-serif;
+}
+
+.font-space {
+  font-family: 'Space Grotesk', sans-serif;
 }
 
 .font-display {
   font-family: 'Outfit', sans-serif;
 }
 
-/* Sombras finas adaptables */
-.premium-shadow {
-  box-shadow: 0 4px 20px -2px rgba(112, 110, 104, 0.08), 
-              0 2px 8px -1px rgba(112, 110, 104, 0.04);
-  transition: box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+/* Slide container styling adapted to clean light studio theme */
+.slide-frame {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 250, 252, 0.88) 100%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 1.5rem;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.07),
+              0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+  position: relative;
+  overflow: hidden;
+  color: #0f172a;
 }
 
-.dark .premium-shadow {
-  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.45), 
-              0 4px 12px -2px rgba(0, 0, 0, 0.3);
+.slide-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg,
+    transparent 0px, transparent 60px,
+    rgba(0,0,0,0.02) 60px, rgba(0,0,0,0.02) 61px,
+    transparent 61px, transparent 180px);
+  pointer-events: none;
 }
 
-/* Animaciones fluidas para ventanas modales */
-@keyframes modalEntrance {
-  from {
-    opacity: 0;
-    scale: 0.95;
+/* Editorial Glass Cards (Light Studio) */
+.editorial-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  border-radius: 1.25rem;
+  box-shadow: 0 10px 25px -8px rgba(0, 0, 0, 0.06), 
+              0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #0f172a;
+}
+
+.editorial-card:hover {
+  border-color: rgba(217, 119, 6, 0.45);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 35px -8px rgba(0, 0, 0, 0.1), 
+              0 0 25px rgba(217, 119, 6, 0.08);
+}
+
+.editorial-tag {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #475569;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  font-family: 'Space Grotesk', monospace;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-weight: 600;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+/* Window System Animations */
+@keyframes macEntrance {
+  0% { 
+    opacity: 0; 
+    transform: scale(0.95) translate3d(0, 16px, 0); 
+    filter: blur(6px);
   }
-  to {
-    opacity: 1;
-    scale: 1;
+  100% { 
+    opacity: 1; 
+    transform: scale(1) translate3d(0, 0, 0); 
+    filter: blur(0px);
   }
 }
 
-.modal-enter {
-  animation: modalEntrance 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+.mac-window-enter {
+  animation: macEntrance 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Transición de redimensionado de ventana */
 .window-transition {
   transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               height 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               top 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               left 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              background-color 0.5s ease,
-              border-color 0.5s ease;
-}
-
-/* ==========================================
-   MINIMALIST CUSTOM SCROLLBARS (GLOBAL)
-   ========================================== */
-
-/* Estilo para navegadores Webkit (Chrome, Safari, Edge) */
-::-webkit-scrollbar {
-  width: 5px; /* Barra extremadamente fina */
-  height: 5px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent; /* Fondo completamente invisible */
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--border-subtle); /* Se camufla con la cuadrícula de puntos */
-  border-radius: 10px;
-  transition: background 0.3s ease;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted); /* Destaca levemente al hacer hover */
-}
-
-/* Soporte para Firefox */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-subtle) transparent;
-}
-
-/* Clase de utilidad por si deseas ocultar el scroll por completo en zonas específicas */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+              transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
