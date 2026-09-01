@@ -8,22 +8,23 @@ describe('AppComponent', () => {
     }).compileComponents();
   });
 
-  it('should create the app', () => {
+  it('should create the app component', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'portfolio' title`, () => {
+  it('should initialize avatar state as TYPING', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('portfolio');
+    expect(app.avatarState()).toBe('TYPING');
   });
 
-  it('should render title', () => {
+  it('should toggle language correctly', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, portfolio');
+    const app = fixture.componentInstance;
+    const initialLang = app.currentLang;
+    app.toggleLang();
+    expect(app.currentLang).toBe(initialLang === 'en' ? 'es' : 'en');
   });
 });

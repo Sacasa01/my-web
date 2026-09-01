@@ -19,7 +19,6 @@
     "@angular/router": "^19.2.0",
     "@google/generative-ai": "^0.24.1",
     "rxjs": "~7.8.0",
-    "three": "^0.185.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
@@ -29,7 +28,6 @@
     "@angular/compiler-cli": "^19.2.0",
     "@tailwindcss/postcss": "^4.3.1",
     "@types/jasmine": "~5.1.0",
-    "@types/three": "^0.185.4",
     "autoprefixer": "^10.5.0",
     "jasmine-core": "~5.6.0",
     "karma": "~6.4.0",
