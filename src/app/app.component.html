@@ -1,11 +1,11 @@
 <main class="min-h-screen w-full bg-[#d6d6d6] text-[#0f172a] font-space relative overflow-x-hidden selection:bg-[#d97706] selection:text-white">
 
   <!-- ========================================================================= -->
-  <!-- 🎬 SLIDE 00: STUDIO POSTER HERO ("PORT [AVATAR PLAYER] FOLIO")            -->
+  <!-- 🎬 SLIDE 00: STUDIO POSTER HERO ("PORT [AVATAR CONTAINER] FOLIO")         -->
   <!-- ========================================================================= -->
   <section class="min-h-screen w-full relative flex flex-col justify-between p-6 sm:p-8 lg:p-10 overflow-hidden bg-[#d6d6d6]">
 
-    <!-- 🌫️ SUBTLE LIGHT STUDIO RADIAL BACKDROP (Blends with Video Seamlessly) -->
+    <!-- 🌫️ SUBTLE LIGHT STUDIO RADIAL BACKDROP (Matches Video Background Perfectly) -->
     <div class="absolute inset-0 pointer-events-none z-0">
       <div class="absolute left-1/2 top-[45%] -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full bg-radial from-[#e4e4e4] via-[#d7d7d7] to-[#cecece] blur-3xl opacity-80"></div>
     </div>
@@ -30,7 +30,7 @@
           {{ currentLang === 'en' ? 'ES' : 'EN' }}
         </button>
 
-        <button (click)="openChatModal()"
+        <button (click)="toggleSpeechBubble()"
                 class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1e293b] text-white font-bold text-[11px] uppercase tracking-wider hover:bg-[#0f172a] active:scale-95 transition-all shadow-md cursor-pointer">
           <span>AI Twin</span>
           <span class="text-xs">💬</span>
@@ -38,7 +38,7 @@
       </div>
     </header>
 
-    <!-- 🏛️ MONUMENTAL STUDIO POSTER CENTER: "PORT [AVATAR PLAYER] FOLIO" -->
+    <!-- 🏛️ MONUMENTAL STUDIO POSTER CENTER: "PORT [AVATAR] FOLIO" -->
     <div class="relative z-20 w-full flex-1 flex items-center justify-center my-auto py-6">
 
       <!-- BACKGROUND TYPOGRAPHY LAYER ("PORT" on Left, "FOLIO" on Right) -->
@@ -74,14 +74,23 @@
 
       </div>
 
-      <!-- 🎬 AVATAR PLAYER COMPONENT (5-STATE SYNCED VIDEO MACHINE) -->
+      <!-- 🎬 AVATAR CONTAINER + FLOATING COMIC SPEECH BUBBLE -->
       <div class="relative z-30 w-full max-w-[540px] sm:max-w-[600px] md:max-w-[640px] flex items-center justify-center pointer-events-auto">
-        <app-avatar-player
+        <app-avatar-container
           [state]="avatarState()"
           [lang]="currentLang"
           (avatarClick)="onAvatarClicked()"
           (stateChange)="onAvatarStateChange($event)">
-        </app-avatar-player>
+        </app-avatar-container>
+
+        <!-- 💬 COMIC SPEECH BUBBLE POSITIONED AT UPPER-RIGHT OF AVATAR -->
+        <app-speech-bubble
+          [isOpen]="isSpeechBubbleOpen()"
+          [lang]="currentLang"
+          (close)="closeSpeechBubble()"
+          (streamStart)="onChatStreamStart()"
+          (streamEnd)="onChatStreamEnd()">
+        </app-speech-bubble>
       </div>
 
     </div>
@@ -181,7 +190,7 @@
                     class="flex-1 py-2.5 rounded-xl bg-[#1e293b] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#0f172a] active:scale-95 transition-all text-center cursor-pointer shadow-sm">
               {{ currentLang === 'en' ? 'Why Hire Santiago?' : '¿Por qué contratarme?' }}
             </button>
-            <button (click)="openChatModal()"
+            <button (click)="toggleSpeechBubble()"
                     class="px-4 py-2.5 rounded-xl bg-black/5 hover:bg-black/10 border border-black/10 text-xs font-bold uppercase tracking-wider text-[#0f172a] transition-all cursor-pointer">
               💬 AI Twin
             </button>
@@ -240,7 +249,7 @@
         <span class="font-mono text-xs text-[#64748b] font-semibold">01 — 06</span>
       </div>
 
-      <!-- 6-Grid Content Index from Reference Image -->
+      <!-- 6-Grid Content Index -->
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
         
         <a href="#section-lafe" class="editorial-card p-5 text-center group cursor-pointer hover:border-[#0284c7]/60 flex flex-col justify-between h-40">
@@ -321,7 +330,6 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        <!-- Description & Architecture Specs -->
         <div class="lg:col-span-5 space-y-5">
           <div class="space-y-3">
             <h4 class="font-syne font-bold text-base text-[#0f172a]">
@@ -351,7 +359,6 @@
           </button>
         </div>
 
-        <!-- Live Interactive Simulation Sandbox -->
         <div class="lg:col-span-7 editorial-card p-6 flex flex-col justify-between space-y-4">
           <div class="flex justify-between items-center border-b border-black/10 pb-3">
             <span class="text-[10px] font-mono text-[#0284c7] font-bold">● LIVE INFERENCE SIMULATOR</span>
@@ -362,7 +369,6 @@
             </div>
           </div>
 
-          <!-- SVG Visualizer Screen -->
           <div class="h-48 bg-[#0f172a] rounded-xl border border-black/10 overflow-hidden relative flex items-center justify-center">
             <svg class="w-full h-full text-neutral-800" viewBox="0 0 300 180">
               <path d="M 60 90 C 60 40, 240 40, 240 90 C 240 140, 60 140, 60 90" fill="none" stroke="#334155" stroke-width="2" />
@@ -417,7 +423,6 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        <!-- Left: Carousel Slide Showcase -->
         <div class="lg:col-span-7 space-y-4">
           <div class="relative aspect-video w-full rounded-2xl border border-black/10 bg-white flex flex-col justify-between p-6 sm:p-8 overflow-hidden shadow-xs">
             <div class="flex justify-between items-center text-[10px] font-mono text-[#d97706] font-bold">
@@ -446,7 +451,6 @@
           </div>
         </div>
 
-        <!-- Right: Technical Breakdown -->
         <div class="lg:col-span-5 editorial-card p-6 flex flex-col justify-between space-y-4">
           <div class="space-y-3">
             <span class="font-mono text-xs text-[#d97706] font-bold block uppercase">Technical Evidence // TFG</span>
@@ -526,15 +530,12 @@
             <span class="text-emerald-600 font-bold">STATUS: 20 WORKERS ACTIVE</span>
           </div>
 
-          <!-- Mock Cadastral Map Geometry Screen -->
           <div class="h-48 bg-[#0f172a] rounded-xl border border-black/10 overflow-hidden relative p-4 flex items-center justify-center">
             <svg class="w-full h-full" viewBox="0 0 320 180">
-              <!-- Parcel outlines -->
               <polygon points="30,40 120,30 140,90 40,100" fill="rgba(56, 189, 248, 0.2)" stroke="#38bdf8" stroke-width="1.5" />
               <polygon points="120,30 220,20 240,80 140,90" fill="rgba(217, 119, 6, 0.2)" stroke="#d97706" stroke-width="1.5" />
               <polygon points="40,100 140,90 160,160 50,150" fill="rgba(56, 189, 248, 0.25)" stroke="#38bdf8" stroke-width="1.5" />
               <polygon points="140,90 240,80 270,150 160,160" fill="rgba(52, 211, 153, 0.2)" stroke="#34d399" stroke-width="1.5" />
-              <!-- Cadastral Reference Labels -->
               <text x="60" y="70" fill="#f8fafc" font-size="8" font-family="monospace">PARCEL 4601</text>
               <text x="160" y="60" fill="#f8fafc" font-size="8" font-family="monospace">PARCEL 4602</text>
               <text x="75" y="130" fill="#f8fafc" font-size="8" font-family="monospace">PARCEL 4603</text>
@@ -702,19 +703,19 @@
           <span class="font-mono text-xs text-[#0284c7] font-bold block uppercase">Certifications & High-Performance Routine</span>
           
           <div class="grid grid-cols-2 gap-3 font-mono text-xs">
-            <div class="p-3 rounded-xl bg-black/5 border border-black/10">
+            <div class="p-3 rounded-xl bg-black/5 border border-black/5">
               <span class="text-emerald-600 font-bold block">AWS Cloud Practitioner</span>
               <span class="text-[9px] text-[#64748b]">Certified 2025</span>
             </div>
-            <div class="p-3 rounded-xl bg-black/5 border border-black/10">
+            <div class="p-3 rounded-xl bg-black/5 border border-black/5">
               <span class="text-[#d97706] font-bold block">AWS AI Practitioner</span>
               <span class="text-[9px] text-[#64748b]">AIF-C01 Target 2026</span>
             </div>
-            <div class="p-3 rounded-xl bg-black/5 border border-black/10">
+            <div class="p-3 rounded-xl bg-black/5 border border-black/5">
               <span class="text-[#0284c7] font-bold block">GitHub Copilot GH-600</span>
               <span class="text-[9px] text-[#64748b]">Target Q4 2026</span>
             </div>
-            <div class="p-3 rounded-xl bg-black/5 border border-black/10">
+            <div class="p-3 rounded-xl bg-black/5 border border-black/5">
               <span class="text-emerald-600 font-bold block">English C1 Prep</span>
               <span class="text-[9px] text-[#64748b]">Target Q4 2026</span>
             </div>
@@ -755,7 +756,7 @@
           </p>
 
           <div class="flex flex-wrap gap-3 pt-2">
-            <button (click)="openChatModal()"
+            <button (click)="toggleSpeechBubble()"
                     class="px-6 py-3 rounded-xl bg-[#1e293b] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#0f172a] active:scale-95 transition-all shadow-md cursor-pointer">
               💬 {{ currentLang === 'en' ? 'Chat with Santiago AI Twin' : 'Hablar con Gemelo IA' }}
             </button>
@@ -788,17 +789,6 @@
     </section>
 
   </div>
-
-  <!-- ========================================================================= -->
-  <!-- 💬 FLOATING CHAT MODAL (AI DIGITAL TWIN STREAMING DIALOGUE)               -->
-  <!-- ========================================================================= -->
-  <app-chat-modal
-    [isOpen]="isChatModalOpen()"
-    [lang]="currentLang"
-    (close)="closeChatModal()"
-    (streamStart)="onChatStreamStart()"
-    (streamEnd)="onChatStreamEnd()">
-  </app-chat-modal>
 
   <!-- ========================================================================= -->
   <!-- 🖥️ SISTEMA DE VENTANAS MODALES (MACBOOK STYLE INTERACTIVE DEEP-DIVES)     -->

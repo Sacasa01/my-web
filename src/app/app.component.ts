@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AvatarPlayerComponent, AvatarState } from './components/avatar/avatar-player.component';
-import { ChatModalComponent } from './components/chat/chat-modal.component';
+import { AvatarContainerComponent, AvatarState } from './components/avatar/avatar-container.component';
+import { SpeechBubbleComponent } from './components/chat/speech-bubble.component';
 
 export interface WindowState {
   id: string;
@@ -20,7 +20,7 @@ export interface WindowState {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, AvatarPlayerComponent, ChatModalComponent],
+  imports: [CommonModule, AvatarContainerComponent, SpeechBubbleComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -28,9 +28,9 @@ export class AppComponent implements OnInit {
   currentLang: 'en' | 'es' = 'en';
   private maxZIndex = 100;
 
-  // Avatar State Machine: 'TYPING' | 'GREETING' | 'CHAT_IDLE' | 'TALKING' | 'RETURNING'
+  // Avatar State Lifecycle: 'TYPING' | 'GREETING' | 'CHAT_IDLE' | 'TALKING' | 'RETURNING'
   avatarState = signal<AvatarState>('TYPING');
-  isChatModalOpen = signal(false);
+  isSpeechBubbleOpen = signal(false);
 
   // Medical AI Simulator State (Hospital La Fe)
   isSegmenting = false;
@@ -61,8 +61,7 @@ export class AppComponent implements OnInit {
     { id: 'fitforge', titleEn: 'FitForge Full-Stack SPA', titleEs: 'FitForge Full-Stack SPA', isOpen: false, isMaximized: false, isMinimized: false, zIndex: 100, width: 720, height: 520 },
     { id: 'mapper', titleEn: 'Legacy Land Mapper', titleEs: 'Legacy Land Mapper (WFS)', isOpen: false, isMaximized: false, isMinimized: false, zIndex: 100, width: 680, height: 480 },
     { id: 'mcp-agents', titleEn: 'MCP & Agent Systems Architecture', titleEs: 'Arquitectura de Agentes & MCP', isOpen: false, isMaximized: false, isMinimized: false, zIndex: 100, width: 680, height: 500 },
-    { id: 'whyhireme', titleEn: 'Why Hire Santiago? // Dublin 2026', titleEs: '¿Por qué contratar a Santiago? // Dublín 2026', isOpen: false, isMaximized: false, isMinimized: false, zIndex: 100, width: 680, height: 540 },
-    { id: 'canterbury', titleEn: 'Canterbury Christ Church Degree', titleEs: 'Grado Canterbury Christ Church', isOpen: false, isMaximized: false, isMinimized: false, zIndex: 100, width: 660, height: 480 }
+    { id: 'whyhireme', titleEn: 'Why Hire Santiago? // Dublin 2026', titleEs: '¿Por qué contratar a Santiago? // Dublín 2026', isOpen: false, isMaximized: false, isMinimized: false, zIndex: 100, width: 680, height: 540 }
   ]);
 
   activeWindow: WindowState | null = null;
@@ -123,23 +122,24 @@ export class AppComponent implements OnInit {
     localStorage.setItem('lang', this.currentLang);
   }
 
-  // Avatar & Chat Modal State Machine Triggers
+  // 100% Automated Avatar & Speech Bubble Event Lifecycle
   onAvatarClicked() {
     if (this.avatarState() === 'TYPING') {
       this.avatarState.set('GREETING');
     }
-    this.isChatModalOpen.set(true);
+    this.isSpeechBubbleOpen.set(true);
   }
 
-  openChatModal() {
-    if (this.avatarState() === 'TYPING') {
-      this.avatarState.set('GREETING');
+  toggleSpeechBubble() {
+    if (this.isSpeechBubbleOpen()) {
+      this.closeSpeechBubble();
+    } else {
+      this.onAvatarClicked();
     }
-    this.isChatModalOpen.set(true);
   }
 
-  closeChatModal() {
-    this.isChatModalOpen.set(false);
+  closeSpeechBubble() {
+    this.isSpeechBubbleOpen.set(false);
     this.avatarState.set('RETURNING');
   }
 
