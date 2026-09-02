@@ -39,6 +39,26 @@ export class AppComponent implements OnInit {
   // AI Assistant Console State
   isAiAssistantOpen = signal(false);
 
+  // Character Solo Leveling HUD State
+  isCharacterHovered = false;
+  activeStatCategory: 'skills' | 'passives' | 'quest' = 'skills';
+
+  hunterStats = [
+    { name: 'Python 3 / PyTorch / MONAI', level: 95, exp: '95/100', category: 'AI & Deep Learning', desc: 'Hospital La Fe clinical scan segmentation (Dice >0.942)' },
+    { name: 'PHP 8.2 / Symfony 7 REST', level: 92, exp: '92/100', category: 'Backend Architecture', desc: '33 Endpoints, JWT Rotation, Custom Security Voters' },
+    { name: 'Agentic MCP & Vector RAG', level: 94, exp: '94/100', category: 'AI Systems', desc: 'Model Context Protocol, Qdrant 1536-dim, ReAct loops' },
+    { name: 'Geospatial & Multithreading', level: 90, exp: '90/100', category: 'High Throughput', desc: '20 Worker Threads, Pandas, Spanish Cadastre WFS' },
+    { name: 'Cloud AWS & Docker Compose', level: 88, exp: '88/100', category: 'Cloud Infrastructure', desc: 'AWS Certified Cloud Practitioner, Multi-stage containers' },
+    { name: 'TypeScript & Angular 19', level: 86, exp: '86/100', category: 'Full-Stack UI', desc: 'Standalone Components, Reactive Signals, Tailwind CSS' }
+  ];
+
+  passiveSkills = [
+    { name: 'Low-Latency Optimizer', effect: 'Reduces geospatial WFS batch extraction latency by >90%.' },
+    { name: 'Clinical Precision', effect: 'Segments ultrasound slices in 16ms with Dice coefficient >0.942.' },
+    { name: 'Dublin Relocation 2026', effect: 'Immediate On-Site availability in Dublin starting Sept 30, 2026.' }
+  ];
+
+
   // 1. Fertoolity Medical AI Simulator State (Hospital La Fe)
   isSegmenting = false;
   segmentationProgress = 0;
