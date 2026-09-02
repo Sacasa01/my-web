@@ -1,7 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AvatarContainerComponent, AvatarState } from './components/avatar/avatar-container.component';
-import { SpeechBubbleComponent } from './components/chat/speech-bubble.component';
+import { AiAssistantComponent } from './components/chat/ai-assistant.component';
 
 export interface WindowState {
   id: string;
@@ -17,10 +16,19 @@ export interface WindowState {
   y?: number;
 }
 
+interface EndpointSimulation {
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  path: string;
+  auth: string;
+  status: number;
+  latency: number;
+  response: any;
+}
+
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, AvatarContainerComponent, SpeechBubbleComponent],
+  imports: [CommonModule, AiAssistantComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -28,32 +36,90 @@ export class AppComponent implements OnInit {
   currentLang: 'en' | 'es' = 'en';
   private maxZIndex = 100;
 
-  // Avatar State Lifecycle: 'TYPING' | 'GREETING' | 'CHAT_IDLE' | 'TALKING' | 'RETURNING'
-  avatarState = signal<AvatarState>('TYPING');
-  isSpeechBubbleOpen = signal(false);
+  // AI Assistant Console State
+  isAiAssistantOpen = signal(false);
 
-  // Medical AI Simulator State (Hospital La Fe)
+  // 1. Fertoolity Medical AI Simulator State (Hospital La Fe)
   isSegmenting = false;
   segmentationProgress = 0;
   diceScore = 0.00;
   inferenceLatency = 0;
-  activeSlice = 12;
+  activeSlice = 14;
   segmentationPoints = '';
 
-  // FitForge Carousel State
-  fitForgeIndex = 0;
-  fitForgeSlides = [
-    { titleEn: 'Decoupled Architecture', titleEs: 'Arquitectura Desacoplada', descEn: 'Symfony 7 REST API with 33 endpoints, JWT auth, and Angular standalone client.', descEs: 'API REST en Symfony 7 con 33 endpoints, JWT auth y cliente Angular standalone.' },
-    { titleEn: 'Personalized Workout Engine', titleEs: 'Motor de Entrenamiento Personalizado', descEn: 'Dynamic exercise indexing, RBAC security voters, and user rating recommendations.', descEs: 'Indexación dinámica de ejercicios, security voters RBAC y recomendaciones por valoración.' },
-    { titleEn: 'Diet & Nutrition Generator', titleEs: 'Generador de Dietas y Nutrición', descEn: 'Caloric balance computation with macro distribution parameters.', descEs: 'Cálculo de balance calórico con parámetros de distribución de macronutrientes.' },
-    { titleEn: 'Analytics Dashboard', titleEs: 'Panel de Analíticas', descEn: 'Progress tracking, volume overload metrics, and body measurement telemetry.', descEs: 'Seguimiento de progreso, métricas de sobrecarga y telemetría corporal.' },
-    { titleEn: 'Docker Containerization', titleEs: 'Contenedores Docker', descEn: 'Multi-container orchestration with Nginx, PHP-FPM, MySQL 8, and Node.', descEs: 'Orquestación multi-contenedor con Nginx, PHP-FPM, MySQL 8 y Node.' }
+  // 2. FitForge Interactive API Console State
+  activeEndpointIndex = 0;
+  fitForgeEndpoints: EndpointSimulation[] = [
+    {
+      method: 'GET',
+      path: '/api/v1/workouts/recommendations?difficulty=advanced',
+      auth: 'Bearer JWT (RBAC: ROLE_USER)',
+      status: 200,
+      latency: 24,
+      response: {
+        success: true,
+        data: {
+          routineId: 'wf-4601',
+          split: 'Push-Pull-Legs Hypertrophy',
+          targetVolumeSets: 18,
+          progressiveOverloadCoefficient: 1.05,
+          voterAccessGranted: true
+        }
+      }
+    },
+    {
+      method: 'POST',
+      path: '/api/v1/auth/jwt/refresh',
+      auth: 'Refresh Token Rotation',
+      status: 201,
+      latency: 18,
+      response: {
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.santiago.fitforge.2026',
+        expiresIn: 3600,
+        tokenType: 'Bearer'
+      }
+    },
+    {
+      method: 'GET',
+      path: '/api/v1/nutrition/macros/balance',
+      auth: 'Bearer JWT (RBAC: ROLE_PREMIUM)',
+      status: 200,
+      latency: 32,
+      response: {
+        totalCalories: 2850,
+        proteinGrams: 195,
+        carbsGrams: 340,
+        fatGrams: 75,
+        distribution: { proteinPct: 27, carbsPct: 48, fatPct: 25 }
+      }
+    }
   ];
 
-  // Land Mapper Simulation State
-  activeMapWorkerCount = 20;
-  queriedParcelsCount = 1420;
+  // 3. Legacy Land Mapper Multithreading Simulator
+  workerThreadsCount = 20;
+  cadastreParcelsExtracted = 1420;
   cadastreLatency = 142; // ms
+  isExtractingParcels = false;
+
+  // 4. MCP Agent Simulator State
+  selectedMcpTool = 'query_vector_db';
+  isExecutingMcp = false;
+  mcpOutputTrace: {
+    protocol: string;
+    tool: string;
+    embeddingDimensions: number;
+    vectorStore: string;
+    topKMatches: Array<{ id: string; score: number; metadata: Record<string, any> }>;
+  } = {
+    protocol: 'JSON-RPC 2.0',
+    tool: 'query_vector_db',
+    embeddingDimensions: 1536,
+    vectorStore: 'Qdrant (Cosine Similarity)',
+    topKMatches: [
+      { id: 'chunk-dublin-2026', score: 0.942, metadata: { topic: 'Relocation Dublin', date: '30 Sep 2026' } },
+      { id: 'chunk-hospital-lafe', score: 0.915, metadata: { topic: 'MONAI PyTorch Segmentation', dice: 0.942 } }
+    ]
+  };
 
   // Interactive Modal Windows (Deep-Dives)
   windows = signal<WindowState[]>([
@@ -122,37 +188,130 @@ export class AppComponent implements OnInit {
     localStorage.setItem('lang', this.currentLang);
   }
 
-  // 100% Automated Avatar & Speech Bubble Event Lifecycle
-  onAvatarClicked() {
-    if (this.avatarState() === 'TYPING') {
-      this.avatarState.set('GREETING');
-    }
-    this.isSpeechBubbleOpen.set(true);
+  // AI Assistant Console Actions
+  openAiAssistant() {
+    this.isAiAssistantOpen.set(true);
   }
 
-  toggleSpeechBubble() {
-    if (this.isSpeechBubbleOpen()) {
-      this.closeSpeechBubble();
-    } else {
-      this.onAvatarClicked();
-    }
+  closeAiAssistant() {
+    this.isAiAssistantOpen.set(false);
   }
 
-  closeSpeechBubble() {
-    this.isSpeechBubbleOpen.set(false);
-    this.avatarState.set('RETURNING');
+  toggleAiAssistant() {
+    this.isAiAssistantOpen.update(v => !v);
   }
 
-  onAvatarStateChange(newState: AvatarState) {
-    this.avatarState.set(newState);
+  // FitForge API Console
+  setFitForgeEndpoint(index: number) {
+    this.activeEndpointIndex = index;
   }
 
-  onChatStreamStart() {
-    this.avatarState.set('TALKING');
+  // MCP Agent Simulator
+  selectMcpTool(toolName: string) {
+    this.selectedMcpTool = toolName;
+    this.isExecutingMcp = true;
+
+    setTimeout(() => {
+      this.isExecutingMcp = false;
+      if (toolName === 'query_vector_db') {
+        this.mcpOutputTrace = {
+          protocol: 'JSON-RPC 2.0',
+          tool: 'query_vector_db',
+          embeddingDimensions: 1536,
+          vectorStore: 'Qdrant (Cosine Similarity)',
+          topKMatches: [
+            { id: 'chunk-dublin-2026', score: 0.942, metadata: { topic: 'Relocation Dublin', date: '30 Sep 2026' } },
+            { id: 'chunk-hospital-lafe', score: 0.915, metadata: { topic: 'MONAI PyTorch Segmentation', dice: 0.942 } }
+          ]
+        };
+      } else if (toolName === 'fetch_cadastre_wfs') {
+        this.mcpOutputTrace = {
+          protocol: 'JSON-RPC 2.0',
+          tool: 'fetch_cadastre_wfs',
+          embeddingDimensions: 0,
+          vectorStore: 'Spanish Cadastre WFS REST Endpoint',
+          topKMatches: [
+            { id: 'parcel-4601-wfs', score: 1.000, metadata: { coordinates: [39.4699, -0.3763], format: 'GeoJSON Polygon' } }
+          ]
+        };
+      } else if (toolName === 'run_monai_segmenter') {
+        this.mcpOutputTrace = {
+          protocol: 'JSON-RPC 2.0',
+          tool: 'run_monai_segmenter',
+          embeddingDimensions: 0,
+          vectorStore: 'PyTorch CUDA Inference Engine',
+          topKMatches: [
+            { id: 'scan-slice-14', score: 0.948, metadata: { diceScore: 0.942, gpuLatencyMs: 16, status: 'Inference Complete' } }
+          ]
+        };
+      }
+    }, 450);
   }
 
-  onChatStreamEnd() {
-    this.avatarState.set('CHAT_IDLE');
+  // Hospital La Fe Medical Simulator
+  runMedicalInference() {
+    if (this.isSegmenting) return;
+
+    this.isSegmenting = true;
+    this.segmentationProgress = 0;
+    this.diceScore = 0.00;
+    this.inferenceLatency = 0;
+    this.segmentationPoints = '';
+
+    const duration = 1400;
+    const start = performance.now();
+
+    const step = (now: number) => {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+
+      this.segmentationProgress = Math.round(progress * 100);
+
+      if (progress > 0.2) {
+        const points: string[] = [];
+        const numPoints = 14;
+        const centerX = 150;
+        const centerY = 100;
+        const baseRadius = 46;
+
+        for (let i = 0; i < numPoints; i++) {
+          const angle = (i / numPoints) * Math.PI * 2;
+          const noise = Math.sin(angle * 3 + progress * 10) * 8 * progress;
+          const r = baseRadius + noise;
+          const x = centerX + Math.cos(angle) * r;
+          const y = centerY + Math.sin(angle) * r;
+          points.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+        }
+        this.segmentationPoints = points.join(' ');
+      }
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        this.isSegmenting = false;
+        this.diceScore = parseFloat((0.938 + Math.random() * 0.03).toFixed(3));
+        this.inferenceLatency = Math.round(14 + Math.random() * 4);
+      }
+    };
+
+    requestAnimationFrame(step);
+  }
+
+  changeSlice(direction: 'next' | 'prev') {
+    if (direction === 'next' && this.activeSlice < 48) this.activeSlice++;
+    if (direction === 'prev' && this.activeSlice > 1) this.activeSlice--;
+    this.segmentationPoints = '';
+    this.diceScore = 0;
+  }
+
+  // Land Mapper Concurrency Benchmark
+  runLandMapperBatch() {
+    this.isExtractingParcels = true;
+    setTimeout(() => {
+      this.isExtractingParcels = false;
+      this.cadastreLatency = Math.round(3200 / this.workerThreadsCount + Math.random() * 15);
+      this.cadastreParcelsExtracted += Math.round(this.workerThreadsCount * 12);
+    }, 600);
   }
 
   // Windows Management
@@ -245,73 +404,4 @@ export class AppComponent implements OnInit {
     document.removeEventListener('mousemove', this.onMouseMove);
     document.removeEventListener('mouseup', this.onMouseUp);
   };
-
-  // Hospital La Fe Medical Simulator
-  runMedicalInference() {
-    if (this.isSegmenting) return;
-
-    this.isSegmenting = true;
-    this.segmentationProgress = 0;
-    this.diceScore = 0.00;
-    this.inferenceLatency = 0;
-    this.segmentationPoints = '';
-
-    const duration = 1600;
-    const start = performance.now();
-
-    const step = (now: number) => {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-
-      this.segmentationProgress = Math.round(progress * 100);
-
-      if (progress > 0.2) {
-        const points: string[] = [];
-        const numPoints = 14;
-        const centerX = 150;
-        const centerY = 100;
-        const baseRadius = 46;
-
-        for (let i = 0; i < numPoints; i++) {
-          const angle = (i / numPoints) * Math.PI * 2;
-          const noise = Math.sin(angle * 3 + progress * 10) * 8 * progress;
-          const r = baseRadius + noise;
-          const x = centerX + Math.cos(angle) * r;
-          const y = centerY + Math.sin(angle) * r;
-          points.push(`${x.toFixed(1)},${y.toFixed(1)}`);
-        }
-        this.segmentationPoints = points.join(' ');
-      }
-
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      } else {
-        this.isSegmenting = false;
-        this.diceScore = parseFloat((0.938 + Math.random() * 0.03).toFixed(3));
-        this.inferenceLatency = Math.round(14 + Math.random() * 5);
-      }
-    };
-
-    requestAnimationFrame(step);
-  }
-
-  changeSlice(direction: 'next' | 'prev') {
-    if (direction === 'next' && this.activeSlice < 48) this.activeSlice++;
-    if (direction === 'prev' && this.activeSlice > 1) this.activeSlice--;
-    this.segmentationPoints = '';
-    this.diceScore = 0;
-  }
-
-  // FitForge Carousel
-  prevFitForge() {
-    this.fitForgeIndex = (this.fitForgeIndex === 0) ? this.fitForgeSlides.length - 1 : this.fitForgeIndex - 1;
-  }
-
-  nextFitForge() {
-    this.fitForgeIndex = (this.fitForgeIndex === this.fitForgeSlides.length - 1) ? 0 : this.fitForgeIndex + 1;
-  }
-
-  setFitForgeSlide(index: number) {
-    this.fitForgeIndex = index;
-  }
 }

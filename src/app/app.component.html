@@ -1,20 +1,19 @@
 <main class="min-h-screen w-full bg-[#d6d6d6] text-[#0f172a] font-space relative overflow-x-hidden selection:bg-[#d97706] selection:text-white">
 
   <!-- ========================================================================= -->
-  <!-- 🎬 SLIDE 00: STUDIO POSTER HERO ("PORT [AVATAR CONTAINER] FOLIO")         -->
+  <!-- 🏛️ SLIDE 00: HIGH-IMPACT BACKEND & AI ENGINEERING HERO                   -->
   <!-- ========================================================================= -->
-  <section class="min-h-screen w-full relative flex flex-col justify-between p-6 sm:p-8 lg:p-10 overflow-hidden bg-[#d6d6d6]">
+  <section class="min-h-screen w-full relative flex flex-col justify-between p-6 sm:p-10 lg:p-12 overflow-hidden bg-[#d6d6d6]">
 
-    <!-- 🌫️ SUBTLE LIGHT STUDIO RADIAL BACKDROP (Matches Video Background Perfectly) -->
+    <!-- 🌫️ SUBTLE STUDIO RADIAL BACKDROP -->
     <div class="absolute inset-0 pointer-events-none z-0">
-      <div class="absolute left-1/2 top-[45%] -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full bg-radial from-[#e4e4e4] via-[#d7d7d7] to-[#cecece] blur-3xl opacity-80"></div>
+      <div class="absolute left-1/2 top-[40%] -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] rounded-full bg-radial from-[#e4e4e4] via-[#d7d7d7] to-[#cecece] blur-3xl opacity-90"></div>
     </div>
 
     <!-- 🧭 TOP MINIMALIST NAV BAR -->
     <header class="relative z-30 w-full flex items-center justify-between">
-      <!-- Left: Signature Mark -->
       <div class="flex items-center gap-3">
-        <span class="w-2.5 h-2.5 rounded-full bg-[#d97706] shadow-[0_0_10px_rgba(217,119,6,0.5)]"></span>
+        <span class="w-2.5 h-2.5 rounded-full bg-[#d97706] shadow-[0_0_12px_rgba(217,119,6,0.6)]"></span>
         <div class="leading-tight">
           <h1 class="font-syne font-bold text-xs sm:text-sm tracking-widest uppercase text-[#0f172a]">Santiago Castro Salt</h1>
           <p class="text-[9px] sm:text-[10px] text-[#475569] tracking-widest uppercase font-mono font-semibold">
@@ -23,14 +22,13 @@
         </div>
       </div>
 
-      <!-- Right: Action Buttons -->
       <div class="flex items-center gap-2.5 sm:gap-3">
         <button (click)="toggleLang()"
                 class="px-3.5 py-1.5 rounded-full border border-black/15 bg-white/80 hover:bg-white text-[11px] font-bold uppercase tracking-wider text-[#0f172a] transition-all cursor-pointer shadow-xs">
           {{ currentLang === 'en' ? 'ES' : 'EN' }}
         </button>
 
-        <button (click)="toggleSpeechBubble()"
+        <button (click)="openAiAssistant()"
                 class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1e293b] text-white font-bold text-[11px] uppercase tracking-wider hover:bg-[#0f172a] active:scale-95 transition-all shadow-md cursor-pointer">
           <span>AI Twin</span>
           <span class="text-xs">💬</span>
@@ -38,88 +36,96 @@
       </div>
     </header>
 
-    <!-- 🏛️ MONUMENTAL STUDIO POSTER CENTER: "PORT [AVATAR] FOLIO" -->
-    <div class="relative z-20 w-full flex-1 flex items-center justify-center my-auto py-6">
-
-      <!-- BACKGROUND TYPOGRAPHY LAYER ("PORT" on Left, "FOLIO" on Right) -->
-      <div class="absolute inset-0 flex items-center justify-between pointer-events-none select-none px-2 sm:px-6 md:px-12 lg:px-16">
-
-        <!-- LEFT: "PORT" -->
-        <div class="w-1/2 flex flex-col items-end text-right pr-4 sm:pr-8 md:pr-14 lg:pr-20">
-          <div class="relative flex items-center">
-            <h2 class="font-bebas text-[18vw] sm:text-[16vw] md:text-[14vw] lg:text-[13vw] leading-[0.82] tracking-normal text-[#1e293b]/90 drop-shadow-sm">
-              PORT
-            </h2>
-            <!-- Connecting horizontal top bar extending towards center -->
-            <div class="hidden sm:block absolute -right-6 md:-right-12 top-[12%] h-[1.2vw] w-10 md:w-16 bg-[#1e293b]/90 rounded-l-none"></div>
-          </div>
-          <p class="font-space text-[9px] sm:text-xs md:text-sm tracking-[0.35em] text-[#334155] uppercase font-bold mt-2 mr-1">
-            {{ translations[currentLang].heroSubLeft }}
-          </p>
+    <!-- ⚡ HERO CENTER: ARCHITECTURE HUB & TELEMETRY DASHBOARD -->
+    <div class="relative z-20 w-full max-w-5xl mx-auto my-auto py-10 flex flex-col items-center text-center space-y-8">
+      
+      <!-- Headline & Roles -->
+      <div class="space-y-4">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/80 border border-black/10 text-[#0f172a] shadow-xs text-xs font-mono font-bold tracking-wider uppercase">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>{{ translations[currentLang].dublinBadge }}</span>
         </div>
 
-        <!-- RIGHT: "FOLIO" -->
-        <div class="w-1/2 flex flex-col items-start text-left pl-4 sm:pl-8 md:pl-14 lg:pl-20">
-          <div class="relative flex items-center">
-            <!-- Connecting horizontal top bar extending from left -->
-            <div class="hidden sm:block absolute -left-6 md:-left-12 top-[12%] h-[1.2vw] w-10 md:w-16 bg-[#1e293b]/90 rounded-r-none"></div>
-            <h2 class="font-bebas text-[18vw] sm:text-[16vw] md:text-[14vw] lg:text-[13vw] leading-[0.82] tracking-normal text-[#1e293b]/90 drop-shadow-sm">
-              FOLIO
-            </h2>
-          </div>
-          <p class="font-space text-[9px] sm:text-xs md:text-sm tracking-[0.35em] text-[#334155] uppercase font-bold mt-2 ml-1">
-            {{ translations[currentLang].heroSubRight }}
-          </p>
-        </div>
+        <h2 class="font-bebas text-6xl sm:text-7xl md:text-8xl lg:text-9xl leading-[0.88] tracking-tight text-[#1e293b] uppercase drop-shadow-xs">
+          BACKEND & AI SYSTEMS<br/>
+          <span class="text-[#d97706]">INTEGRATION ENGINEER</span>
+        </h2>
 
+        <p class="max-w-2xl mx-auto text-xs sm:text-sm md:text-base text-[#334155] font-sans font-normal leading-relaxed">
+          {{ translations[currentLang].pitchText }}
+        </p>
       </div>
 
-      <!-- 🎬 AVATAR CONTAINER + FLOATING COMIC SPEECH BUBBLE -->
-      <div class="relative z-30 w-full max-w-[540px] sm:max-w-[600px] md:max-w-[640px] flex items-center justify-center pointer-events-auto">
-        <app-avatar-container
-          [state]="avatarState()"
-          [lang]="currentLang"
-          (avatarClick)="onAvatarClicked()"
-          (stateChange)="onAvatarStateChange($event)">
-        </app-avatar-container>
+      <!-- Live Architecture Telemetry Strip -->
+      <div class="w-full grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-left">
+        <div class="p-3.5 rounded-2xl bg-white/80 border border-black/10 shadow-xs space-y-1">
+          <span class="text-[9px] text-[#64748b] uppercase font-bold block">Target Relocation</span>
+          <span class="text-xs text-emerald-600 font-bold block">Dublin (30 Sep 2026)</span>
+          <span class="text-[9px] text-[#475569]">On-Site / EU Remote</span>
+        </div>
 
-        <!-- 💬 COMIC SPEECH BUBBLE POSITIONED AT UPPER-RIGHT OF AVATAR -->
-        <app-speech-bubble
-          [isOpen]="isSpeechBubbleOpen()"
-          [lang]="currentLang"
-          (close)="closeSpeechBubble()"
-          (streamStart)="onChatStreamStart()"
-          (streamEnd)="onChatStreamEnd()">
-        </app-speech-bubble>
+        <div class="p-3.5 rounded-2xl bg-white/80 border border-black/10 shadow-xs space-y-1">
+          <span class="text-[9px] text-[#64748b] uppercase font-bold block">Clinical AI (La Fe)</span>
+          <span class="text-xs text-[#0284c7] font-bold block">Dice: >0.942</span>
+          <span class="text-[9px] text-[#475569]">PyTorch & MONAI</span>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-white/80 border border-black/10 shadow-xs space-y-1">
+          <span class="text-[9px] text-[#64748b] uppercase font-bold block">FitForge API</span>
+          <span class="text-xs text-[#d97706] font-bold block">33 Endpoints (JWT)</span>
+          <span class="text-[9px] text-[#475569]">Symfony 7 & MySQL 8</span>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-white/80 border border-black/10 shadow-xs space-y-1">
+          <span class="text-[9px] text-[#64748b] uppercase font-bold block">Land Mapper WFS</span>
+          <span class="text-xs text-emerald-600 font-bold block">20 Worker Threads</span>
+          <span class="text-[9px] text-[#475569]">&gt;90% Speedup</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+        <button (click)="openAiAssistant()"
+                class="px-6 py-3 rounded-2xl bg-[#1e293b] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#0f172a] active:scale-95 transition-all shadow-md cursor-pointer flex items-center gap-2">
+          <span>💬 {{ currentLang === 'en' ? 'Chat with AI Twin (Streaming)' : 'Hablar con Gemelo IA (Streaming)' }}</span>
+          <span class="text-xs font-mono bg-white/20 px-1.5 py-0.5 rounded">1st Person</span>
+        </button>
+
+        <a href="#section-lafe"
+           class="px-6 py-3 rounded-2xl bg-white hover:bg-white/90 border border-black/15 text-xs font-bold uppercase tracking-wider text-[#0f172a] transition-all cursor-pointer shadow-xs flex items-center gap-2">
+          <span>⚡ {{ currentLang === 'en' ? 'Live Engineering Simulators' : 'Simuladores Técnicos en Vivo' }}</span>
+          <span class="text-xs">&darr;</span>
+        </a>
+
+        <button (click)="openWindow('whyhireme')"
+                class="px-5 py-3 rounded-2xl bg-black/5 hover:bg-black/10 border border-black/10 text-xs font-bold uppercase tracking-wider text-[#0f172a] transition-all cursor-pointer">
+          📄 {{ currentLang === 'en' ? 'Why Hire Santiago?' : '¿Por qué contratarme?' }}
+        </button>
       </div>
 
     </div>
 
-    <!-- 📍 BOTTOM BAR WITH DUBLIN AVAILABILITY BADGE & SCROLL INDICATOR -->
+    <!-- 📍 BOTTOM BAR -->
     <footer class="relative z-30 w-full flex flex-col sm:flex-row items-center justify-between text-[10px] sm:text-[11px] font-space text-[#334155] uppercase tracking-widest gap-2 pt-2">
-      <!-- Dublin Availability Pill -->
-      <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-black/10 text-[#0f172a] shadow-xs">
-        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-        <span class="font-mono text-[9px] sm:text-[10px] tracking-wider font-semibold">{{ translations[currentLang].dublinBadge }}</span>
+      <div class="flex items-center gap-2 text-[#475569] font-mono text-[10px] font-semibold">
+        <span>CANTERBURY CHRIST CHURCH UNIV. (UK) • MSMK CAMPUS</span>
       </div>
 
-      <!-- Scroll Action Button -->
       <a href="#section-introduction"
-         class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white hover:bg-white/90 border border-black/15 text-[#0f172a] transition-all cursor-pointer shadow-xs group font-semibold">
-        <span>{{ currentLang === 'en' ? 'Explore Presentation' : 'Ver Presentación' }}</span>
-        <span class="group-hover:translate-y-0.5 transition-transform font-mono text-xs">↓</span>
+         class="flex items-center gap-2 text-[#0f172a] font-semibold hover:underline cursor-pointer">
+        <span>{{ currentLang === 'en' ? 'Explore Presentation Index' : 'Ver Índice Editorial' }}</span>
+        <span class="font-mono text-xs">&darr;</span>
       </a>
 
-      <!-- Academic Mark -->
-      <div class="flex items-center gap-2 text-[#475569] font-mono text-[10px] font-semibold">
-        <span>CANTERBURY CHRIST CHURCH UNIV. (UK)</span>
+      <div class="flex items-center gap-2 font-mono text-[10px] text-[#64748b]">
+        <span>VALENCIA, ES → DUBLIN, IE</span>
       </div>
     </footer>
 
   </section>
 
   <!-- ========================================================================= -->
-  <!-- 📑 SLIDES CONTAINER: 12-SLIDE EDITORIAL PRESENTATION SHOWCASE             -->
+  <!-- 📑 SLIDES CONTAINER: EDITORIAL PRESENTATION & LIVE SANDBOXES              -->
   <!-- ========================================================================= -->
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 space-y-16 relative z-10">
 
@@ -184,13 +190,12 @@
             </div>
           </div>
 
-          <!-- Direct Actions -->
           <div class="flex flex-wrap gap-2 pt-2">
             <button (click)="openWindow('whyhireme')"
                     class="flex-1 py-2.5 rounded-xl bg-[#1e293b] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#0f172a] active:scale-95 transition-all text-center cursor-pointer shadow-sm">
               {{ currentLang === 'en' ? 'Why Hire Santiago?' : '¿Por qué contratarme?' }}
             </button>
-            <button (click)="toggleSpeechBubble()"
+            <button (click)="openAiAssistant()"
                     class="px-4 py-2.5 rounded-xl bg-black/5 hover:bg-black/10 border border-black/10 text-xs font-bold uppercase tracking-wider text-[#0f172a] transition-all cursor-pointer">
               💬 AI Twin
             </button>
@@ -225,7 +230,6 @@
             </div>
           </div>
 
-          <!-- Academic Footer Mark -->
           <div class="flex items-center justify-between border-t border-black/10 pt-3 text-[11px] font-mono text-[#64748b]">
             <span>{{ translations[currentLang].educationTitle }}</span>
             <span class="text-[#d97706] font-bold">2026-2027</span>
@@ -403,7 +407,7 @@
     </section>
 
     <!-- ======================================================================= -->
-    <!-- 📄 SLIDE 04: 02 // FITFORGE SPA (DECOUPLED FULL-STACK)                  -->
+    <!-- 📄 SLIDE 04: 02 // FITFORGE SPA (INTERACTIVE API CONSOLE)               -->
     <!-- ======================================================================= -->
     <section id="section-fitforge" class="slide-frame p-6 sm:p-10 lg:p-12 space-y-8">
       
@@ -411,46 +415,54 @@
         <div class="flex items-center gap-3">
           <span class="px-3 py-1 rounded-lg bg-[#d97706]/15 text-[#d97706] border border-[#d97706]/30 font-mono text-xs font-bold">SLIDE 04 // 02</span>
           <h3 class="font-shoulders font-bold text-2xl sm:text-3xl text-[#0f172a] uppercase tracking-wider">
-            FITFORGE SPA // DECOUPLED ARCHITECTURE
+            FITFORGE SPA // DECOUPLED REST & RBAC ARCHITECTURE
           </h3>
         </div>
         <div class="flex gap-2">
           <span class="editorial-tag bg-[#dc2626]/10 text-[#dc2626] border-[#dc2626]/30">SYMFONY 7</span>
-          <span class="editorial-tag">ANGULAR</span>
+          <span class="editorial-tag">MYSQL 8</span>
           <span class="editorial-tag">DOCKER</span>
         </div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        <div class="lg:col-span-7 space-y-4">
-          <div class="relative aspect-video w-full rounded-2xl border border-black/10 bg-white flex flex-col justify-between p-6 sm:p-8 overflow-hidden shadow-xs">
-            <div class="flex justify-between items-center text-[10px] font-mono text-[#d97706] font-bold">
-              <span>MODULE // 0{{ fitForgeIndex + 1 }}</span>
-              <span>REST API: 33 ENDPOINTS</span>
-            </div>
+        <!-- Left: Interactive REST API Console -->
+        <div class="lg:col-span-7 editorial-card p-6 flex flex-col justify-between space-y-4">
+          <div class="flex justify-between items-center border-b border-black/10 pb-3 font-mono text-[10px]">
+            <span class="text-[#d97706] font-bold">● INTERACTIVE REST API EXPLORER</span>
+            <span class="text-emerald-600 font-bold">33 ENDPOINTS LIVE</span>
+          </div>
 
-            <div class="space-y-2 text-center my-auto">
-              <h4 class="font-syne font-bold text-lg sm:text-xl text-[#0f172a]">
-                {{ currentLang === 'en' ? fitForgeSlides[fitForgeIndex].titleEn : fitForgeSlides[fitForgeIndex].titleEs }}
-              </h4>
-              <p class="text-xs text-[#475569] max-w-md mx-auto">
-                {{ currentLang === 'en' ? fitForgeSlides[fitForgeIndex].descEn : fitForgeSlides[fitForgeIndex].descEs }}
-              </p>
-            </div>
+          <!-- Endpoint Selector Chips -->
+          <div class="flex gap-1.5 overflow-x-auto pb-1 text-[11px] font-mono no-scrollbar">
+            @for (ep of fitForgeEndpoints; track $index) {
+              <button
+                (click)="setFitForgeEndpoint($index)"
+                [ngClass]="activeEndpointIndex === $index ? 'bg-[#1e293b] text-white' : 'bg-black/5 text-[#334155] hover:bg-black/10'"
+                class="px-2.5 py-1 rounded-lg border border-black/10 whitespace-nowrap transition-all cursor-pointer text-[10px] font-bold">
+                <span class="text-[#d97706] mr-1">{{ ep.method }}</span> {{ ep.path.split('?')[0] }}
+              </button>
+            }
+          </div>
 
-            <div class="flex justify-between items-center pt-2">
-              <button (click)="prevFitForge()" class="px-3 py-1 rounded-lg bg-black/5 hover:bg-black/10 text-xs font-mono cursor-pointer">&larr; PREV</button>
-              <div class="flex gap-1.5">
-                @for (slide of fitForgeSlides; track $index) {
-                  <button (click)="setFitForgeSlide($index)" [class.bg-[#d97706]]="fitForgeIndex === $index" class="w-2 h-2 rounded-full bg-black/20 cursor-pointer"></button>
-                }
-              </div>
-              <button (click)="nextFitForge()" class="px-3 py-1 rounded-lg bg-black/5 hover:bg-black/10 text-xs font-mono cursor-pointer">NEXT &rarr;</button>
+          <!-- JSON Response Screen -->
+          <div class="bg-[#0f172a] rounded-xl p-4 font-mono text-xs text-slate-200 overflow-x-auto space-y-2 h-44 shadow-inner">
+            <div class="flex justify-between text-[10px] text-[#64748b] border-b border-slate-700 pb-1">
+              <span>Status: <strong class="text-emerald-400">{{ fitForgeEndpoints[activeEndpointIndex].status }} OK</strong></span>
+              <span>Latency: <strong class="text-[#38bdf8]">{{ fitForgeEndpoints[activeEndpointIndex].latency }} ms</strong></span>
+              <span>Auth: <strong class="text-amber-400">{{ fitForgeEndpoints[activeEndpointIndex].auth }}</strong></span>
             </div>
+            <pre class="text-[11px] text-emerald-400 leading-tight">{{ fitForgeEndpoints[activeEndpointIndex].response | json }}</pre>
+          </div>
+
+          <div class="flex justify-between items-center text-[10px] font-mono text-[#64748b] pt-1">
+            <span>Security: Custom Symfony Voters + JWT Token Rotation</span>
+            <span class="text-emerald-600 font-bold">14 Relational Tables</span>
           </div>
         </div>
 
+        <!-- Right: Technical Breakdown -->
         <div class="lg:col-span-5 editorial-card p-6 flex flex-col justify-between space-y-4">
           <div class="space-y-3">
             <span class="font-mono text-xs text-[#d97706] font-bold block uppercase">Technical Evidence // TFG</span>
@@ -460,7 +472,7 @@
             <ul class="space-y-2 text-xs text-[#334155] font-sans">
               <li class="flex items-center gap-2"><span class="text-[#d97706]">▪</span> 33 REST Endpoints with custom Security Voters & JWT.</li>
               <li class="flex items-center gap-2"><span class="text-[#d97706]">▪</span> MySQL 8 relational schema with 14 normalized tables.</li>
-              <li class="flex items-center gap-2"><span class="text-[#d97706]">▪</span> Angular Standalone components with reactive state.</li>
+              <li class="flex items-center gap-2"><span class="text-[#d97706]">▪</span> Angular Standalone client with reactive Signals.</li>
               <li class="flex items-center gap-2"><span class="text-[#d97706]">▪</span> Multi-container Docker Compose setup.</li>
             </ul>
           </div>
@@ -510,7 +522,7 @@
           <div class="grid grid-cols-2 gap-3 font-mono text-[11px]">
             <div class="p-3 rounded-xl bg-black/5 border border-black/10">
               <span class="text-[#64748b] block text-[9px] uppercase font-bold">Concurrency</span>
-              <span class="text-[#0284c7] font-bold text-base">20 Worker Threads</span>
+              <span class="text-[#0284c7] font-bold text-base">{{ workerThreadsCount }} Worker Threads</span>
             </div>
             <div class="p-3 rounded-xl bg-black/5 border border-black/10">
               <span class="text-[#64748b] block text-[9px] uppercase font-bold">Latency Optimization</span>
@@ -527,10 +539,11 @@
         <div class="lg:col-span-7 editorial-card p-6 flex flex-col justify-between space-y-4">
           <div class="flex justify-between items-center border-b border-black/10 pb-3 font-mono text-[10px]">
             <span class="text-[#0284c7] font-bold">WFS CADASTRAL PARSER // SPAIN</span>
-            <span class="text-emerald-600 font-bold">STATUS: 20 WORKERS ACTIVE</span>
+            <span class="text-emerald-600 font-bold">STATUS: {{ workerThreadsCount }} WORKERS ACTIVE</span>
           </div>
 
-          <div class="h-48 bg-[#0f172a] rounded-xl border border-black/10 overflow-hidden relative p-4 flex items-center justify-center">
+          <!-- Cadastral Map Geometry Canvas -->
+          <div class="h-44 bg-[#0f172a] rounded-xl border border-black/10 overflow-hidden relative p-4 flex items-center justify-center">
             <svg class="w-full h-full" viewBox="0 0 320 180">
               <polygon points="30,40 120,30 140,90 40,100" fill="rgba(56, 189, 248, 0.2)" stroke="#38bdf8" stroke-width="1.5" />
               <polygon points="120,30 220,20 240,80 140,90" fill="rgba(217, 119, 6, 0.2)" stroke="#d97706" stroke-width="1.5" />
@@ -541,11 +554,23 @@
               <text x="75" y="130" fill="#f8fafc" font-size="8" font-family="monospace">PARCEL 4603</text>
               <text x="185" y="125" fill="#f8fafc" font-size="8" font-family="monospace">PARCEL 4604</text>
             </svg>
+            @if (isExtractingParcels) {
+              <div class="absolute inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center font-mono text-xs text-sky-400">
+                BENCHMARKING PARALLEL EXTRACTION...
+              </div>
+            }
           </div>
 
-          <div class="flex justify-between items-center text-[10px] font-mono text-[#475569] pt-1">
-            <span>Extracted: {{queriedParcelsCount}} Parcels</span>
-            <span class="text-[#0284c7] font-bold">Batch Latency: {{cadastreLatency}} ms</span>
+          <div class="flex items-center justify-between gap-3 pt-1">
+            <button (click)="runLandMapperBatch()"
+                    [disabled]="isExtractingParcels"
+                    class="flex-1 py-2 rounded-xl bg-[#0284c7] text-white font-bold text-xs uppercase tracking-wider hover:opacity-90 active:scale-95 disabled:opacity-50 transition-all cursor-pointer shadow-xs">
+              {{ isExtractingParcels ? 'Parsing WFS API...' : '⚡ Test Concurrency Benchmark' }}
+            </button>
+            <div class="text-[10px] font-mono text-[#334155]">
+              <span>Batch Latency: </span>
+              <span class="text-emerald-600 font-bold">{{ cadastreLatency }} ms</span>
+            </div>
           </div>
         </div>
 
@@ -561,7 +586,7 @@
         <div class="flex items-center gap-3">
           <span class="px-3 py-1 rounded-lg bg-[#d97706]/15 text-[#d97706] border border-[#d97706]/30 font-mono text-xs font-bold">SLIDE 06 // 04</span>
           <h3 class="font-shoulders font-bold text-2xl sm:text-3xl text-[#0f172a] uppercase tracking-wider">
-            AI SYSTEMS // AGENTS & MCP PROTOCOL
+            AI SYSTEMS // MCP PROTOCOL & AGENT LOOPS
           </h3>
         </div>
         <div class="flex gap-2">
@@ -571,38 +596,80 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        <div class="editorial-card p-6 space-y-3">
-          <span class="font-mono text-xs text-[#d97706] font-bold block">01 // MCP PROTOCOL</span>
-          <h4 class="font-syne font-bold text-sm text-[#0f172a]">Model Context Protocol</h4>
-          <p class="text-xs text-[#475569] leading-relaxed font-sans">
-            Building specialized MCP servers providing LLMs with secure tools, file access, and multi-service orchestration.
-          </p>
+        <!-- Left: 4-Core Matrix -->
+        <div class="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="editorial-card p-5 space-y-2">
+            <span class="font-mono text-xs text-[#d97706] font-bold block">01 // MCP PROTOCOL</span>
+            <h4 class="font-syne font-bold text-sm text-[#0f172a]">Model Context Protocol</h4>
+            <p class="text-xs text-[#475569] leading-relaxed">
+              Custom MCP servers providing LLMs with secure tools, file access, and multi-service orchestration.
+            </p>
+          </div>
+
+          <div class="editorial-card p-5 space-y-2">
+            <span class="font-mono text-xs text-[#0284c7] font-bold block">02 // VECTOR STORES</span>
+            <h4 class="font-syne font-bold text-sm text-[#0f172a]">Qdrant & pgvector</h4>
+            <p class="text-xs text-[#475569] leading-relaxed">
+              High-density vector indexing (1536-dim), cosine similarity search, and semantic hybrid retrieval.
+            </p>
+          </div>
+
+          <div class="editorial-card p-5 space-y-2">
+            <span class="font-mono text-xs text-emerald-600 font-bold block">03 // AGENT LOOPS</span>
+            <h4 class="font-syne font-bold text-sm text-[#0f172a]">ReAct & Tool Calling</h4>
+            <p class="text-xs text-[#475569] leading-relaxed">
+              Autonomous agent reasoning loops with structured function calling and context verification.
+            </p>
+          </div>
+
+          <div class="editorial-card p-5 space-y-2">
+            <span class="font-mono text-xs text-[#d97706] font-bold block">04 // ENTERPRISE AI</span>
+            <h4 class="font-syne font-bold text-sm text-[#0f172a]">AWS Bedrock & PyTorch</h4>
+            <p class="text-xs text-[#475569] leading-relaxed">
+              Foundation models via AWS Bedrock API, custom fine-tuning workflows, and PyTorch servers.
+            </p>
+          </div>
         </div>
 
-        <div class="editorial-card p-6 space-y-3">
-          <span class="font-mono text-xs text-[#0284c7] font-bold block">02 // VECTOR STORES</span>
-          <h4 class="font-syne font-bold text-sm text-[#0f172a]">Qdrant & pgvector</h4>
-          <p class="text-xs text-[#475569] leading-relaxed font-sans">
-            High-density vector indexing (1536-dim embeddings), cosine similarity search, and semantic hybrid retrieval pipelines.
-          </p>
-        </div>
+        <!-- Right: Interactive MCP Tool Inspector -->
+        <div class="lg:col-span-6 editorial-card p-6 flex flex-col justify-between space-y-4">
+          <div class="flex justify-between items-center border-b border-black/10 pb-3 font-mono text-[10px]">
+            <span class="text-[#d97706] font-bold">● MCP TOOL ORCHESTRATOR SIMULATOR</span>
+            <span class="text-emerald-600 font-bold">JSON-RPC 2.0</span>
+          </div>
 
-        <div class="editorial-card p-6 space-y-3">
-          <span class="font-mono text-xs text-emerald-600 font-bold block">03 // AGENT LOOPS</span>
-          <h4 class="font-syne font-bold text-sm text-[#0f172a]">ReAct & Tool Calling</h4>
-          <p class="text-xs text-[#475569] leading-relaxed font-sans">
-            Autonomous agent reasoning loops with structured function calling, error recovery, and context verification.
-          </p>
-        </div>
+          <div class="flex gap-1.5 overflow-x-auto text-[10px] font-mono no-scrollbar">
+            <button (click)="selectMcpTool('query_vector_db')"
+                    [ngClass]="selectedMcpTool === 'query_vector_db' ? 'bg-[#1e293b] text-white' : 'bg-black/5 text-[#334155]'"
+                    class="px-2.5 py-1 rounded-lg border border-black/10 transition-all cursor-pointer font-bold">
+              tool: query_vector_db
+            </button>
+            <button (click)="selectMcpTool('fetch_cadastre_wfs')"
+                    [ngClass]="selectedMcpTool === 'fetch_cadastre_wfs' ? 'bg-[#1e293b] text-white' : 'bg-black/5 text-[#334155]'"
+                    class="px-2.5 py-1 rounded-lg border border-black/10 transition-all cursor-pointer font-bold">
+              tool: fetch_cadastre_wfs
+            </button>
+            <button (click)="selectMcpTool('run_monai_segmenter')"
+                    [ngClass]="selectedMcpTool === 'run_monai_segmenter' ? 'bg-[#1e293b] text-white' : 'bg-black/5 text-[#334155]'"
+                    class="px-2.5 py-1 rounded-lg border border-black/10 transition-all cursor-pointer font-bold">
+              tool: run_monai_segmenter
+            </button>
+          </div>
 
-        <div class="editorial-card p-6 space-y-3">
-          <span class="font-mono text-xs text-[#d97706] font-bold block">04 // ENTERPRISE AI</span>
-          <h4 class="font-syne font-bold text-sm text-[#0f172a]">AWS Bedrock & PyTorch</h4>
-          <p class="text-xs text-[#475569] leading-relaxed font-sans">
-            Foundation models via AWS Bedrock API, custom fine-tuning workflows, and PyTorch inference servers.
-          </p>
+          <div class="bg-[#0f172a] rounded-xl p-4 font-mono text-xs text-slate-200 overflow-x-auto space-y-2 h-44 shadow-inner">
+            <div class="flex justify-between text-[10px] text-[#64748b] border-b border-slate-700 pb-1">
+              <span>Protocol: <strong class="text-emerald-400">{{ mcpOutputTrace.protocol }}</strong></span>
+              <span>Target: <strong class="text-[#38bdf8]">{{ mcpOutputTrace.vectorStore }}</strong></span>
+            </div>
+            <pre class="text-[11px] text-amber-400 leading-tight">{{ mcpOutputTrace | json }}</pre>
+          </div>
+
+          <button (click)="openWindow('mcp-agents')"
+                  class="w-full py-2 rounded-xl bg-black/5 hover:bg-black/10 border border-black/10 text-xs font-bold uppercase tracking-wider text-[#0f172a] transition-all cursor-pointer">
+            {{ currentLang === 'en' ? 'Open Full MCP Architecture Window ↗' : 'Ver Arquitectura MCP Completa ↗' }}
+          </button>
         </div>
 
       </div>
@@ -756,12 +823,12 @@
           </p>
 
           <div class="flex flex-wrap gap-3 pt-2">
-            <button (click)="toggleSpeechBubble()"
-                    class="px-6 py-3 rounded-xl bg-[#1e293b] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#0f172a] active:scale-95 transition-all shadow-md cursor-pointer">
-              💬 {{ currentLang === 'en' ? 'Chat with Santiago AI Twin' : 'Hablar con Gemelo IA' }}
+            <button (click)="openAiAssistant()"
+                    class="px-6 py-3 rounded-2xl bg-[#1e293b] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#0f172a] active:scale-95 transition-all shadow-md cursor-pointer">
+              💬 {{ currentLang === 'en' ? 'Launch AI Digital Twin Console' : 'Abrir Consola del Gemelo IA' }}
             </button>
             <button (click)="openWindow('whyhireme')"
-                    class="px-6 py-3 rounded-xl bg-black/5 hover:bg-black/10 border border-black/15 text-xs font-bold uppercase tracking-wider text-[#0f172a] transition-all cursor-pointer">
+                    class="px-6 py-3 rounded-2xl bg-black/5 hover:bg-black/10 border border-black/15 text-xs font-bold uppercase tracking-wider text-[#0f172a] transition-all cursor-pointer">
               📄 {{ currentLang === 'en' ? 'Why Hire Santiago?' : '¿Por qué contratarme?' }}
             </button>
           </div>
@@ -791,7 +858,16 @@
   </div>
 
   <!-- ========================================================================= -->
-  <!-- 🖥️ SISTEMA DE VENTANAS MODALES (MACBOOK STYLE INTERACTIVE DEEP-DIVES)     -->
+  <!-- 💬 FLOATING AI ASSISTANT CONSOLE (GEMINI STREAMING DIGITAL TWIN)          -->
+  <!-- ========================================================================= -->
+  <app-ai-assistant
+    [isOpen]="isAiAssistantOpen()"
+    [lang]="currentLang"
+    (close)="closeAiAssistant()">
+  </app-ai-assistant>
+
+  <!-- ========================================================================= -->
+  <!-- 🖥️ MACBOOK-STYLE MODAL WINDOWS SYSTEM (INTERACTIVE DEEP-DIVES)             -->
   <!-- ========================================================================= -->
   @for (win of windows(); track win.id) {
     @if (win.isOpen && !win.isMinimized) {
