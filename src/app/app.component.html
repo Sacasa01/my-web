@@ -1,6 +1,6 @@
-<main class="w-screen h-screen overflow-hidden fixed inset-0 m-0 p-0 bg-[#090d16] select-none">
+<main class="w-screen h-screen overflow-hidden fixed inset-0 m-0 p-0 bg-[#060810] select-none">
 
-  <!-- 🖼️ 1. FULLSCREEN 100VW x 100VH BACKGROUND (ZERO SCROLL, FULL BLEED) -->
+  <!-- 🖼️ FULLSCREEN BACKGROUND -->
   <img 
     src="/assets/locker_background.png" 
     alt="Santiago Locker Background" 
@@ -8,246 +8,216 @@
     loading="eager"
     decoding="sync" />
 
-  <!-- 🌐 2. SVG CONNECTING VECTOR LINES LAYER -->
+  <!-- 🌐 SVG CONNECTOR LINES -->
   <svg class="absolute inset-0 w-full h-full pointer-events-none z-20" viewBox="0 0 100 100" preserveAspectRatio="none">
     <defs>
-      <linearGradient id="gradAbout" x1="100%" y1="100%" x2="0%" y2="0%">
-        <stop offset="0%" stop-color="#c084fc" stop-opacity="0.9" />
-        <stop offset="100%" stop-color="#a855f7" stop-opacity="0.4" />
+      <linearGradient id="gradPurple" x1="100%" y1="0%" x2="0%" y2="0%">
+        <stop offset="0%" stop-color="#c084fc" stop-opacity="0.85" />
+        <stop offset="100%" stop-color="#a855f7" stop-opacity="0.3" />
       </linearGradient>
-      <linearGradient id="gradEducation" x1="100%" y1="0%" x2="0%" y2="0%">
-        <stop offset="0%" stop-color="#34d399" stop-opacity="0.9" />
-        <stop offset="100%" stop-color="#10b981" stop-opacity="0.4" />
+      <linearGradient id="gradGreen" x1="100%" y1="0%" x2="0%" y2="0%">
+        <stop offset="0%" stop-color="#34d399" stop-opacity="0.85" />
+        <stop offset="100%" stop-color="#10b981" stop-opacity="0.3" />
       </linearGradient>
-      <linearGradient id="gradLanguages" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.9" />
-        <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.4" />
+      <linearGradient id="gradAmber" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.85" />
+        <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.3" />
       </linearGradient>
-      <linearGradient id="gradCertifications" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.9" />
-        <stop offset="100%" stop-color="#0284c7" stop-opacity="0.4" />
+      <linearGradient id="gradCyan" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.85" />
+        <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.3" />
       </linearGradient>
     </defs>
 
-    <!-- Top-Left Connector (About Me) -->
     @if (isAboutMeOpen()) {
-      <path d="M 50.8 53.8 L 34 53.8 L 27 26" 
-            fill="none" 
-            stroke="url(#gradAbout)" 
-            stroke-width="0.3" 
-            stroke-dasharray="3 1.5"
-            class="animate-draw-line" />
-      <circle cx="27" cy="26" r="0.5" fill="#c084fc" />
+      <path d="M 50.8 52.5 L 37 52.5 L 24 35" fill="none" stroke="url(#gradPurple)" stroke-width="0.25" stroke-dasharray="2.5 1.5" class="animate-draw-line" />
+      <circle cx="24" cy="35" r="0.4" fill="#c084fc" opacity="0.8" />
     }
-
-    <!-- Bottom-Left Connector (Education) -->
     @if (isEducationOpen()) {
-      <path d="M 53.0 76.5 L 34 76.5 L 27 72" 
-            fill="none" 
-            stroke="url(#gradEducation)" 
-            stroke-width="0.3" 
-            stroke-dasharray="3 1.5"
-            class="animate-draw-line" />
-      <circle cx="27" cy="72" r="0.5" fill="#34d399" />
+      <path d="M 53.0 78.0 L 37 78.0 L 24 72" fill="none" stroke="url(#gradGreen)" stroke-width="0.25" stroke-dasharray="2.5 1.5" class="animate-draw-line" />
+      <circle cx="24" cy="72" r="0.4" fill="#34d399" opacity="0.8" />
     }
-
-    <!-- Top-Right Connector (Languages) -->
     @if (isLanguagesOpen()) {
-      <path d="M 66.8 13.8 L 71 13.8 L 73 22" 
-            fill="none" 
-            stroke="url(#gradLanguages)" 
-            stroke-width="0.3" 
-            stroke-dasharray="3 1.5"
-            class="animate-draw-line" />
-      <circle cx="73" cy="22" r="0.5" fill="#fbbf24" />
+      <path d="M 67.0 12.0 L 72 12.0 L 76 25" fill="none" stroke="url(#gradAmber)" stroke-width="0.25" stroke-dasharray="2.5 1.5" class="animate-draw-line" />
+      <circle cx="76" cy="25" r="0.4" fill="#fbbf24" opacity="0.8" />
     }
-
-    <!-- Bottom-Right Connector (Certifications) -->
     @if (isCertificationsOpen()) {
-      <path d="M 66.6 64.2 L 71 64.2 L 73 70" 
-            fill="none" 
-            stroke="url(#gradCertifications)" 
-            stroke-width="0.3" 
-            stroke-dasharray="3 1.5"
-            class="animate-draw-line" />
-      <circle cx="73" cy="70" r="0.5" fill="#38bdf8" />
+      <path d="M 67.5 62.0 L 72 62.0 L 76 68" fill="none" stroke="url(#gradCyan)" stroke-width="0.25" stroke-dasharray="2.5 1.5" class="animate-draw-line" />
+      <circle cx="76" cy="68" r="0.4" fill="#38bdf8" opacity="0.8" />
     }
   </svg>
 
-  <!-- 🎯 3. PRECISE RE-ALIGNED HOTSPOTS -->
+  <!-- 🎯 PREMIUM BEACON HOTSPOTS -->
   <div class="absolute inset-0 pointer-events-none z-30">
     @for (spot of hotspots; track spot.id) {
       <div 
-        class="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto cursor-pointer group flex items-center justify-center"
+        class="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto cursor-pointer group"
         [style.left.%]="spot.x"
         [style.top.%]="spot.y"
         (click)="toggleHotspot(spot.id)"
         (mouseenter)="hoveredHotspot.set(spot.id)"
         (mouseleave)="hoveredHotspot.set(null)">
         
-        <!-- Radar Ping Halo -->
-        <div 
-          class="w-7 h-7 rounded-full absolute pointer-events-none hotspot-halo"
-          [style.background-color]="spot.glow">
+        <!-- Double Ping Rings -->
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="w-4 h-4 rounded-full hotspot-ping absolute" [style.background-color]="spot.glow"></div>
+          <div class="w-4 h-4 rounded-full hotspot-ping-delayed absolute" [style.background-color]="spot.glow"></div>
         </div>
 
-        <!-- Frosted Glass Precision Core Ring -->
-        <button 
-          type="button"
-          class="relative w-5 h-5 sm:w-5.5 sm:h-5.5 rounded-full backdrop-blur-md bg-black/40 border border-white/80 shadow-[0_0_12px_rgba(0,0,0,0.8)] flex items-center justify-center transition-all duration-300 group-hover:scale-130 group-hover:border-white cursor-pointer"
-          [ngClass]="isSectionOpen(spot.id) ? 'scale-125 ring-2 ring-white ring-offset-2 ring-offset-black/80' : ''">
-          
-          <!-- Inner Glowing Color Dot -->
-          <span 
-            class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full shadow-xs transition-transform duration-300 group-hover:scale-120"
-            [style.background-color]="spot.color"
-            [style.box-shadow]="'0 0 8px ' + spot.color">
-          </span>
+        <!-- Core Button -->
+        <button type="button"
+          class="relative w-4 h-4 rounded-full border-2 border-white/90 shadow-lg flex items-center justify-center transition-all duration-300 group-hover:scale-150 cursor-pointer hotspot-breath"
+          [style.background-color]="spot.color"
+          [style.box-shadow]="'0 0 14px 2px ' + spot.glow"
+          [ngClass]="isSectionOpen(spot.id) ? 'scale-150 ring-2 ring-white/60 ring-offset-1 ring-offset-black/60' : ''">
         </button>
 
-        <!-- Tooltip on Hover -->
-        <div 
-          class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 rounded-xl bg-black/85 backdrop-blur-md text-white border border-white/20 text-[10px] font-sans whitespace-nowrap shadow-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-40 flex items-center gap-1.5">
-          <span class="w-1.5 h-1.5 rounded-full" [style.background-color]="spot.color"></span>
-          <span class="font-semibold">{{ spot.label }}</span>
+        <!-- Hover Label -->
+        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-3 py-1.5 rounded-xl bg-black/80 backdrop-blur-lg text-white border border-white/15 text-[11px] font-sans whitespace-nowrap shadow-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full shrink-0" [style.background-color]="spot.color"></span>
+          <span class="font-medium tracking-wide">{{ spot.label }}</span>
         </div>
 
       </div>
     }
   </div>
 
-  <!-- ========================================================================= -->
-  <!-- 🧊 4. WIDER BENTO GLASSMORPHISM WINDOWS (NO SCROLL, ALL VISIBLE AT ONCE)   -->
-  <!-- ========================================================================= -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- 🧊 BENTO GLASSMORPHISM PANELS — FULL-HEIGHT COLUMNS    -->
+  <!-- ═══════════════════════════════════════════════════════ -->
 
-  <!-- 1. TOP-LEFT: ABOUT ME (Wider: 380px, Height: 44vh, Zero Scroll) -->
+  <!-- ┌─────────────────────────────────────────────────────┐ -->
+  <!-- │  LEFT COLUMN — About Me (top half) & Education (bot) │ -->
+  <!-- └─────────────────────────────────────────────────────┘ -->
+
+  <!-- ABOUT ME — Top-Left Panel -->
   @if (isAboutMeOpen()) {
-    <div 
-      class="bento-glass absolute left-3 sm:left-6 lg:left-8 top-3 sm:top-5 lg:top-6 w-[310px] sm:w-[360px] lg:w-[390px] xl:w-[410px] h-[44vh] max-h-[44vh] z-40 p-4 sm:p-5 flex flex-col justify-between text-white animate-bento-card overflow-hidden">
+    <div class="bento-glass animate-card-left absolute z-40 text-white overflow-hidden
+                left-2 top-2 w-[22vw] h-[47vh]
+                sm:left-4 sm:top-4 sm:w-[21vw] sm:h-[47vh]
+                lg:left-5 lg:top-5 lg:w-[20vw]
+                xl:left-6 xl:top-6 xl:w-[19vw]
+                min-w-[260px] max-w-[380px]
+                p-5 flex flex-col">
       
-      <!-- Card Header -->
-      <div class="flex items-center justify-between pb-2 border-b border-white/10 shrink-0">
+      <!-- Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-purple-400/15 shrink-0">
         <div class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-[#c084fc] shadow-[0_0_8px_#c084fc]"></span>
-          <span class="text-xs font-semibold text-white tracking-wide">About Me</span>
+          <span class="w-2.5 h-2.5 rounded-full bg-purple-400 shadow-[0_0_10px_#c084fc]"></span>
+          <span class="text-[13px] font-semibold tracking-wide">About Me</span>
         </div>
-        <button 
-          (click)="closeSection('about')"
-          class="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white flex items-center justify-center text-xs font-bold transition-colors cursor-pointer"
-          title="Close">
-          ✕
-        </button>
+        <button (click)="closeSection('about')"
+          class="w-7 h-7 rounded-full bg-white/8 hover:bg-white/16 text-white/60 hover:text-white flex items-center justify-center text-sm transition-colors cursor-pointer">✕</button>
       </div>
 
-      <!-- Card Body: Zero Scroll -->
-      <div class="my-auto space-y-2.5 text-xs text-slate-300">
-        <div class="space-y-0.5">
-          <h4 class="text-white font-bold text-sm leading-tight">{{ cvData.personal.name }}</h4>
-          <p class="text-[#c084fc] text-[11px] font-medium">{{ cvData.personal.role }}</p>
-          <p class="text-emerald-400 text-[10px] font-medium">📍 {{ cvData.personal.locations }}</p>
+      <!-- Body -->
+      <div class="flex-1 flex flex-col justify-center space-y-3 py-3">
+        <div>
+          <h3 class="text-[15px] font-bold text-white leading-tight">{{ cvData.personal.name }}</h3>
+          <p class="text-purple-300 text-[12px] font-medium mt-0.5">{{ cvData.personal.role }}</p>
+          <p class="text-emerald-400/90 text-[11px] mt-1">📍 {{ cvData.personal.locations }}</p>
         </div>
 
-        <p class="text-[11px] text-slate-300 leading-relaxed bg-white/5 p-2.5 rounded-2xl border border-white/5">
+        <p class="text-[12px] text-slate-300/90 leading-relaxed bg-white/4 rounded-2xl p-3 border border-white/5">
           {{ cvData.personal.summary }}
         </p>
 
-        <!-- Spoken Languages Pills -->
-        <div class="space-y-1">
-          <span class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold block">Spoken Languages</span>
+        <div class="space-y-1.5">
+          <span class="text-[10px] text-slate-500 uppercase tracking-widest font-semibold">Languages</span>
           <div class="flex flex-wrap gap-1.5">
             @for (lang of cvData.personal.languages; track lang.name) {
-              <span class="bento-pill px-2.5 py-0.5 text-[10px] text-white">
-                {{ lang.name }} <strong class="text-[#c084fc] font-normal">({{ lang.level }})</strong>
+              <span class="bento-pill px-3 py-1 text-[11px] text-white/90">
+                {{ lang.name }} · <span class="text-purple-300">{{ lang.level }}</span>
               </span>
             }
           </div>
         </div>
       </div>
 
-      <!-- Card Footer Actions -->
-      <div class="pt-2 border-t border-white/10 flex items-center justify-between text-[10px] text-slate-400 shrink-0">
-        <div class="flex gap-2">
-          <a href="https://linkedin.com/in/santiago-castro-salt" target="_blank" class="bento-pill px-3 py-1 text-white hover:text-[#c084fc]">LinkedIn ↗</a>
-          <a href="https://github.com/Sacasa01" target="_blank" class="bento-pill px-3 py-1 text-white hover:text-[#c084fc]">GitHub ↗</a>
-        </div>
-        <span class="text-slate-400 font-mono text-[9px]">Dublin 2026</span>
+      <!-- Footer -->
+      <div class="pt-3 border-t border-purple-400/15 flex items-center gap-2 shrink-0">
+        <a href="https://linkedin.com/in/santiago-castro-salt" target="_blank" class="bento-pill px-3 py-1 text-[11px] text-white/90 hover:text-purple-300">LinkedIn ↗</a>
+        <a href="https://github.com/Sacasa01" target="_blank" class="bento-pill px-3 py-1 text-[11px] text-white/90 hover:text-purple-300">GitHub ↗</a>
       </div>
-
     </div>
   }
 
-  <!-- 2. BOTTOM-LEFT: EDUCATION (Wider: 380px, Height: 44vh, Zero Scroll) -->
+  <!-- EDUCATION — Bottom-Left Panel -->
   @if (isEducationOpen()) {
-    <div 
-      class="bento-glass absolute left-3 sm:left-6 lg:left-8 bottom-3 sm:bottom-5 lg:bottom-6 w-[310px] sm:w-[360px] lg:w-[390px] xl:w-[410px] h-[44vh] max-h-[44vh] z-40 p-4 sm:p-5 flex flex-col justify-between text-white animate-bento-card overflow-hidden">
+    <div class="bento-glass animate-card-left absolute z-40 text-white overflow-hidden
+                left-2 bottom-2 w-[22vw] h-[47vh]
+                sm:left-4 sm:bottom-4 sm:w-[21vw] sm:h-[47vh]
+                lg:left-5 lg:bottom-5 lg:w-[20vw]
+                xl:left-6 xl:bottom-6 xl:w-[19vw]
+                min-w-[260px] max-w-[380px]
+                p-5 flex flex-col">
       
-      <!-- Card Header -->
-      <div class="flex items-center justify-between pb-2 border-b border-white/10 shrink-0">
+      <!-- Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-emerald-400/15 shrink-0">
         <div class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-[#34d399] shadow-[0_0_8px_#34d399]"></span>
-          <span class="text-xs font-semibold text-white tracking-wide">Education</span>
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_10px_#34d399]"></span>
+          <span class="text-[13px] font-semibold tracking-wide">Education</span>
         </div>
-        <button 
-          (click)="closeSection('education')"
-          class="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white flex items-center justify-center text-xs font-bold transition-colors cursor-pointer"
-          title="Close">
-          ✕
-        </button>
+        <button (click)="closeSection('education')"
+          class="w-7 h-7 rounded-full bg-white/8 hover:bg-white/16 text-white/60 hover:text-white flex items-center justify-center text-sm transition-colors cursor-pointer">✕</button>
       </div>
 
-      <!-- Card Body: Zero Scroll -->
-      <div class="my-auto space-y-2.5 text-xs text-slate-300">
+      <!-- Body -->
+      <div class="flex-1 flex flex-col justify-center space-y-3 py-3">
         @for (item of cvData.education; track item.degree) {
-          <div class="p-2.5 rounded-2xl bg-white/5 border border-white/5 space-y-1">
-            <div class="flex justify-between items-start gap-1">
-              <h5 class="text-white font-bold text-[11px] leading-tight">{{ item.degree }}</h5>
-              <span class="bento-pill px-2 py-0.5 text-[9px] text-[#34d399] font-semibold shrink-0">
-                {{ item.badge }}
-              </span>
+          <div class="rounded-2xl bg-white/4 border border-white/5 p-3.5 space-y-1.5">
+            <div class="flex justify-between items-start gap-2">
+              <h4 class="text-white font-bold text-[13px] leading-snug">{{ item.degree }}</h4>
+              <span class="bento-pill px-2 py-0.5 text-[10px] text-emerald-300 font-semibold shrink-0">{{ item.badge }}</span>
             </div>
-            <p class="text-slate-400 text-[10px]">{{ item.institution }} • <span class="text-emerald-400 font-mono">{{ item.period }}</span></p>
-            <p class="text-slate-300 text-[10px] leading-snug">{{ item.topics }}</p>
+            <p class="text-slate-400 text-[11px]">{{ item.institution }}</p>
+            <p class="text-emerald-400/80 text-[11px] font-mono">{{ item.period }}</p>
+            <p class="text-slate-300/80 text-[11px] leading-relaxed">{{ item.topics }}</p>
           </div>
         }
       </div>
 
-      <!-- Card Footer -->
-      <div class="pt-2 border-t border-white/10 flex items-center justify-between text-[10px] text-slate-400 shrink-0">
+      <!-- Footer -->
+      <div class="pt-3 border-t border-emerald-400/15 flex items-center justify-between text-[11px] text-slate-500 shrink-0">
         <span>Formal Qualifications</span>
-        <span class="text-[#34d399] font-medium">BSc Hons & DAW</span>
+        <span class="text-emerald-400 font-medium">BSc Hons & DAW</span>
       </div>
-
     </div>
   }
 
-  <!-- 3. TOP-RIGHT: PROGRAMMING LANGUAGES (Wider: 380px, Height: 44vh, Zero Scroll) -->
+  <!-- ┌─────────────────────────────────────────────────────┐ -->
+  <!-- │ RIGHT COLUMN — Languages (top) & Certs (bottom)     │ -->
+  <!-- └─────────────────────────────────────────────────────┘ -->
+
+  <!-- PROGRAMMING LANGUAGES — Top-Right Panel -->
   @if (isLanguagesOpen()) {
-    <div 
-      class="bento-glass absolute right-3 sm:right-6 lg:right-8 top-3 sm:top-5 lg:top-6 w-[310px] sm:w-[360px] lg:w-[390px] xl:w-[410px] h-[44vh] max-h-[44vh] z-40 p-4 sm:p-5 flex flex-col justify-between text-white animate-bento-card overflow-hidden">
+    <div class="bento-glass animate-card-right absolute z-40 text-white overflow-hidden
+                right-2 top-2 w-[22vw] h-[47vh]
+                sm:right-4 sm:top-4 sm:w-[21vw] sm:h-[47vh]
+                lg:right-5 lg:top-5 lg:w-[20vw]
+                xl:right-6 xl:top-6 xl:w-[19vw]
+                min-w-[260px] max-w-[380px]
+                p-5 flex flex-col">
       
-      <!-- Card Header -->
-      <div class="flex items-center justify-between pb-2 border-b border-white/10 shrink-0">
+      <!-- Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-amber-400/15 shrink-0">
         <div class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-[#fbbf24] shadow-[0_0_8px_#fbbf24]"></span>
-          <span class="text-xs font-semibold text-white tracking-wide">Programming Languages</span>
+          <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[0_0_10px_#fbbf24]"></span>
+          <span class="text-[13px] font-semibold tracking-wide">Programming Languages</span>
         </div>
-        <button 
-          (click)="closeSection('languages')"
-          class="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white flex items-center justify-center text-xs font-bold transition-colors cursor-pointer"
-          title="Close">
-          ✕
-        </button>
+        <button (click)="closeSection('languages')"
+          class="w-7 h-7 rounded-full bg-white/8 hover:bg-white/16 text-white/60 hover:text-white flex items-center justify-center text-sm transition-colors cursor-pointer">✕</button>
       </div>
 
-      <!-- Card Body: Zero Scroll -->
-      <div class="my-auto space-y-2 text-xs">
+      <!-- Body: Skill Bars -->
+      <div class="flex-1 flex flex-col justify-center space-y-3.5 py-3">
         @for (s of cvData.skills; track s.name) {
-          <div class="space-y-1">
-            <div class="flex justify-between text-[11px]">
+          <div class="space-y-1.5">
+            <div class="flex justify-between text-[12px]">
               <span class="text-slate-200 font-medium">{{ s.name }}</span>
               <span class="text-white font-bold">{{ s.level }}%</span>
             </div>
-            <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden p-0.5">
+            <div class="w-full h-2.5 bg-white/8 rounded-full overflow-hidden">
               <div 
                 class="h-full rounded-full transition-all duration-700"
                 [style.background-color]="s.barColor"
@@ -257,55 +227,52 @@
         }
       </div>
 
-      <!-- Card Footer -->
-      <div class="pt-2 border-t border-white/10 flex items-center justify-between text-[10px] text-slate-400 shrink-0">
+      <!-- Footer -->
+      <div class="pt-3 border-t border-amber-400/15 flex items-center justify-between text-[11px] text-slate-500 shrink-0">
         <span>Production Verified</span>
-        <span class="bento-pill px-2.5 py-0.5 text-white text-[9px]">Top 5 Skills</span>
+        <span class="bento-pill px-2.5 py-0.5 text-[10px] text-white/80">Top 5 Stack</span>
       </div>
-
     </div>
   }
 
-  <!-- 4. BOTTOM-RIGHT: CERTIFICATIONS (Wider: 380px, Height: 44vh, Zero Scroll) -->
+  <!-- CERTIFICATIONS — Bottom-Right Panel -->
   @if (isCertificationsOpen()) {
-    <div 
-      class="bento-glass absolute right-3 sm:right-6 lg:right-8 bottom-3 sm:bottom-5 lg:bottom-6 w-[310px] sm:w-[360px] lg:w-[390px] xl:w-[410px] h-[44vh] max-h-[44vh] z-40 p-4 sm:p-5 flex flex-col justify-between text-white animate-bento-card overflow-hidden">
+    <div class="bento-glass animate-card-right absolute z-40 text-white overflow-hidden
+                right-2 bottom-2 w-[22vw] h-[47vh]
+                sm:right-4 sm:bottom-4 sm:w-[21vw] sm:h-[47vh]
+                lg:right-5 lg:bottom-5 lg:w-[20vw]
+                xl:right-6 xl:bottom-6 xl:w-[19vw]
+                min-w-[260px] max-w-[380px]
+                p-5 flex flex-col">
       
-      <!-- Card Header -->
-      <div class="flex items-center justify-between pb-2 border-b border-white/10 shrink-0">
+      <!-- Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-cyan-400/15 shrink-0">
         <div class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-[#38bdf8] shadow-[0_0_8px_#38bdf8]"></span>
-          <span class="text-xs font-semibold text-white tracking-wide">Certifications</span>
+          <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_10px_#38bdf8]"></span>
+          <span class="text-[13px] font-semibold tracking-wide">Certifications</span>
         </div>
-        <button 
-          (click)="closeSection('certifications')"
-          class="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white flex items-center justify-center text-xs font-bold transition-colors cursor-pointer"
-          title="Close">
-          ✕
-        </button>
+        <button (click)="closeSection('certifications')"
+          class="w-7 h-7 rounded-full bg-white/8 hover:bg-white/16 text-white/60 hover:text-white flex items-center justify-center text-sm transition-colors cursor-pointer">✕</button>
       </div>
 
-      <!-- Card Body: Zero Scroll -->
-      <div class="my-auto space-y-2 text-xs text-slate-300">
+      <!-- Body -->
+      <div class="flex-1 flex flex-col justify-center space-y-3 py-3">
         @for (c of cvData.certifications; track c.title) {
-          <div class="p-2.5 rounded-2xl bg-white/5 border border-white/5 space-y-1">
-            <div class="flex justify-between items-start gap-1">
-              <h5 class="text-white font-bold text-[11px] leading-tight">{{ c.title }}</h5>
-              <span class="bento-pill px-2 py-0.5 text-[9px] text-[#38bdf8] font-semibold shrink-0">
-                {{ c.year }}
-              </span>
+          <div class="rounded-2xl bg-white/4 border border-white/5 p-3.5 space-y-1.5">
+            <div class="flex justify-between items-start gap-2">
+              <h4 class="text-white font-bold text-[13px] leading-snug">{{ c.title }}</h4>
+              <span class="bento-pill px-2 py-0.5 text-[10px] text-cyan-300 font-semibold shrink-0">{{ c.year }}</span>
             </div>
-            <p class="text-slate-400 text-[10px]">{{ c.issuer }}</p>
+            <p class="text-slate-400 text-[11px]">{{ c.issuer }}</p>
           </div>
         }
       </div>
 
-      <!-- Card Footer -->
-      <div class="pt-2 border-t border-white/10 flex items-center justify-between text-[10px] text-slate-400 shrink-0">
+      <!-- Footer -->
+      <div class="pt-3 border-t border-cyan-400/15 flex items-center justify-between text-[11px] text-slate-500 shrink-0">
         <span>Verified Credentials</span>
-        <span class="bento-pill px-2.5 py-0.5 text-white text-[9px]">Dublin 2026 Ready</span>
+        <span class="bento-pill px-2.5 py-0.5 text-[10px] text-white/80">Dublin 2026 Ready</span>
       </div>
-
     </div>
   }
 

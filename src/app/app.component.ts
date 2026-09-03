@@ -25,37 +25,37 @@ export class AppComponent {
     {
       id: 'about' as HotspotType,
       label: 'About Me',
-      color: '#c084fc', // Vibrant Purple
-      glow: 'rgba(192, 132, 252, 0.7)',
+      color: '#c084fc',
+      glow: 'rgba(192, 132, 252, 0.6)',
       x: 50.8,
-      y: 53.8, // Subido un pelín respecto al anterior
+      y: 52.5,
       targetSide: 'left'
     },
     {
       id: 'education' as HotspotType,
       label: 'Education',
-      color: '#34d399', // Emerald Green
-      glow: 'rgba(52, 211, 153, 0.7)',
+      color: '#34d399',
+      glow: 'rgba(52, 211, 153, 0.6)',
       x: 53.0,
-      y: 76.5, // Bajado al centro de los lomos de los libros
+      y: 78.0,
       targetSide: 'left'
     },
     {
       id: 'languages' as HotspotType,
       label: 'Programming Languages',
-      color: '#fbbf24', // Amber
-      glow: 'rgba(251, 191, 36, 0.7)',
-      x: 66.8,
-      y: 13.8, // Subido mucho más arriba, en la cabecera de la nota amarilla
+      color: '#fbbf24',
+      glow: 'rgba(251, 191, 36, 0.6)',
+      x: 67.0,
+      y: 12.0,
       targetSide: 'right'
     },
     {
       id: 'certifications' as HotspotType,
       label: 'Certifications',
-      color: '#38bdf8', // Sky Blue / Cyan
-      glow: 'rgba(56, 189, 248, 0.7)',
-      x: 66.6, // Un pelín a la derecha
-      y: 64.2, // Un poco para arriba
+      color: '#38bdf8',
+      glow: 'rgba(56, 189, 248, 0.6)',
+      x: 67.5,
+      y: 62.0,
       targetSide: 'right'
     }
   ];

@@ -1,92 +1,109 @@
-/* 🧊 Bento Glassmorphism Modal Style (Matching Reference Image) */
+/* ═══════════════════════════════════════════════════ */
+/* 🧊 Bento Glassmorphism — Premium Dark Glass        */
+/* ═══════════════════════════════════════════════════ */
 .bento-glass {
-  background: rgba(14, 17, 23, 0.75);
-  backdrop-filter: blur(28px) saturate(190%);
-  -webkit-backdrop-filter: blur(28px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7),
-              inset 0 1px 0 rgba(255, 255, 255, 0.22);
-  border-radius: 26px;
+  background: rgba(8, 10, 18, 0.72);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 32px 64px -16px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  border-radius: 24px;
 }
 
-/* Bento Pill Buttons */
 .bento-pill {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 9999px;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s ease;
 }
 
 .bento-pill:hover {
-  background: rgba(255, 255, 255, 0.18);
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
-/* 🎯 Sleek Minimalist Hotspot Glass Radar */
-.hotspot-halo {
-  animation: hotspotRadar 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
-}
+/* ═══════════════════════════════════════════════════ */
+/* 🎯 Hotspot — Premium Animated Beacon               */
+/* ═══════════════════════════════════════════════════ */
 
-@keyframes hotspotRadar {
+/* Outer ring pulse - expanding radar wave */
+@keyframes beaconPing {
   0% {
-    transform: scale(0.85);
-    opacity: 0.9;
+    transform: scale(1);
+    opacity: 0.7;
   }
-  60% {
-    transform: scale(2.2);
+  75% {
+    transform: scale(2.8);
     opacity: 0;
   }
   100% {
-    transform: scale(2.2);
+    transform: scale(2.8);
     opacity: 0;
   }
 }
 
-/* SVG Line Draw Animation */
+.hotspot-ping {
+  animation: beaconPing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Secondary delayed ping for depth */
+.hotspot-ping-delayed {
+  animation: beaconPing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  animation-delay: 0.6s;
+}
+
+/* Core breathing glow */
+@keyframes coreBreath {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.85;
+  }
+}
+
+.hotspot-breath {
+  animation: coreBreath 2.4s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════ */
+/* 🌐 SVG Connector Line Draw                         */
+/* ═══════════════════════════════════════════════════ */
 @keyframes drawConnector {
-  from {
-    stroke-dashoffset: 400;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
+  from { stroke-dashoffset: 500; }
+  to   { stroke-dashoffset: 0; }
 }
 
 .animate-draw-line {
-  stroke-dasharray: 400;
-  stroke-dashoffset: 400;
-  animation: drawConnector 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  stroke-dasharray: 500;
+  stroke-dashoffset: 500;
+  animation: drawConnector 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Bento Modal Scale & Fade In Animation */
-@keyframes bentoCardEnter {
+/* ═══════════════════════════════════════════════════ */
+/* 🪟 Bento Card Entry Animation                      */
+/* ═══════════════════════════════════════════════════ */
+@keyframes cardSlideIn {
   0% {
     opacity: 0;
-    transform: scale(0.94) translateY(6px);
+    transform: translateX(var(--slide-from, -20px)) scale(0.96);
   }
   100% {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: translateX(0) scale(1);
   }
 }
 
-.animate-bento-card {
-  animation: bentoCardEnter 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.animate-card-left {
+  --slide-from: -20px;
+  animation: cardSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Custom Mini Scrollbars inside Bento Cards */
-.bento-scroll::-webkit-scrollbar {
-  width: 4px;
-}
-.bento-scroll::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 8px;
-}
-.bento-scroll::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.25);
-  border-radius: 8px;
-}
-.bento-scroll::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.45);
+.animate-card-right {
+  --slide-from: 20px;
+  animation: cardSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
