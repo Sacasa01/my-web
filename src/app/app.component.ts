@@ -20,81 +20,73 @@ export class AppComponent {
   // Active hover preview tooltip
   hoveredHotspot = signal<HotspotType | null>(null);
 
-  // Precision Hotspots Calibrated to the Background Elements
+  // Precision Hotspots Calibrated to User Specifications
   hotspots = [
     {
       id: 'about' as HotspotType,
       label: 'About Me',
-      sublabel: 'Santiago Castro Salt',
-      color: '#c084fc', // Vibrant Purple / Violet
+      color: '#c084fc', // Vibrant Purple
       glow: 'rgba(192, 132, 252, 0.7)',
-      x: 50.8, // Centered dead-center under the pixel art portrait
-      y: 56.4,
+      x: 50.8,
+      y: 53.8, // Subido un pelín respecto al anterior
       targetSide: 'left'
     },
     {
       id: 'education' as HotspotType,
       label: 'Education',
-      sublabel: 'BSc Hons CS & DAW',
       color: '#34d399', // Emerald Green
       glow: 'rgba(52, 211, 153, 0.7)',
-      x: 52.8, // Dead-center in the middle of the stacked textbooks
-      y: 74.0,
+      x: 53.0,
+      y: 76.5, // Bajado al centro de los lomos de los libros
       targetSide: 'left'
     },
     {
       id: 'languages' as HotspotType,
       label: 'Programming Languages',
-      sublabel: 'Top 5 Tech Stack',
-      color: '#fbbf24', // Amber / Warm Gold
+      color: '#fbbf24', // Amber
       glow: 'rgba(251, 191, 36, 0.7)',
-      x: 65.8, // Positioned right at the top of the yellow sticky note
-      y: 26.5,
+      x: 66.8,
+      y: 13.8, // Subido mucho más arriba, en la cabecera de la nota amarilla
       targetSide: 'right'
     },
     {
       id: 'certifications' as HotspotType,
       label: 'Certifications',
-      sublabel: 'English C1, Google & AWS',
       color: '#38bdf8', // Sky Blue / Cyan
       glow: 'rgba(56, 189, 248, 0.7)',
-      x: 65.2, // Right above the header 'CERTIFICATIONS' on the blue sticky note
-      y: 66.0,
+      x: 66.6, // Un pelín a la derecha
+      y: 64.2, // Un poco para arriba
       targetSide: 'right'
     }
   ];
 
-  // Official Verified CV Data (from CVs-en.pdf)
+  // Official Verified CV Data (from CVs-en.pdf) - Concise to fit without scrolling
   cvData = {
     personal: {
       name: 'Santiago Castro Salt',
       role: 'Full-Stack Developer & AI Systems Integrator',
       locations: 'Dublin, Ireland • Valencia, Spain',
-      email: 'santiagocsdev@gmail.com',
-      phone: '+34 654 763 788',
-      github: 'github.com/Sacasa01',
-      linkedin: 'linkedin.com/in/santiago-castro-salt',
-      summary: 'Experienced in engineering production-grade web applications (PHP/Symfony 7, TypeScript/Angular, Python, Docker, SQL) and integrating AI into software architectures—including controlled agents, MCP tools, and Human-in-the-Loop clinical workflows at Hospital La Fe.',
+      summary: 'Engineering production-grade web applications (PHP/Symfony 7, TypeScript/Angular 19, Python, Docker, SQL) and integrating AI into software architectures (controlled agents, MCP tools, Human-in-the-Loop workflows at Hospital La Fe).',
       languages: [
-        { name: 'English', level: 'C1 Certified (IELTS 8.0)' },
+        { name: 'English', level: 'C1 (IELTS 8.0)' },
         { name: 'Spanish', level: 'Native' },
-        { name: 'Valencian / Catalan', level: 'Native' }
+        { name: 'Valencian', level: 'Native' }
       ]
     },
     education: [
       {
         degree: 'BSc (Hons) in Computer Science',
-        institution: 'Canterbury Christ Church University (via MSMK, Madrid)',
+        institution: 'Canterbury Christ Church University (via MSMK)',
         period: 'Sep 2026 – Jun 2027',
         badge: '100% in English',
-        topics: 'Cloud Systems, Cybersecurity, AI Integration, Advanced Software Engineering'
+        topics: 'Cloud Systems, Cybersecurity, AI Integration & Software Engineering'
       },
       {
         degree: 'CFGS Web Application Development (DAW)',
         institution: 'La Florida Universitària, Valencia',
         period: '2024 – 2026',
         badge: 'Grade: 7.00 / 10',
-        topics: 'Symfony 7 REST APIs, Relational DBs (MySQL), Angular Standalone, Docker'
+        topics: 'Symfony 7 REST APIs, Relational DBs (MySQL), Angular & Docker'
       }
     ],
     skills: [
@@ -119,11 +111,6 @@ export class AppComponent {
         title: 'Cloud Computing: Applied Infrastructure',
         issuer: 'Florida Universitària',
         year: 'May 2026'
-      },
-      {
-        title: 'Model Context Protocol & PyTorch / MONAI',
-        issuer: 'AI Systems Integration',
-        year: '2026'
       }
     ]
   };
