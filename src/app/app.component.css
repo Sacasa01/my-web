@@ -1,109 +1,71 @@
 /* ═══════════════════════════════════════════════════ */
-/* 🧊 Bento Glassmorphism — Premium Dark Glass        */
+/* 🧊 TRUE FROSTED GLASS — See-Through Blur Effect    */
 /* ═══════════════════════════════════════════════════ */
-.bento-glass {
-  background: rgba(8, 10, 18, 0.72);
-  backdrop-filter: blur(32px) saturate(200%);
-  -webkit-backdrop-filter: blur(32px) saturate(200%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+.glass-panel {
+  background: rgba(8, 10, 20, 0.42);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.10);
   box-shadow:
-    0 32px 64px -16px rgba(0, 0, 0, 0.65),
-    inset 0 1px 0 rgba(255, 255, 255, 0.14);
-  border-radius: 24px;
+    0 24px 48px -12px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10);
+  border-radius: 22px;
 }
 
-.bento-pill {
+.glass-pill {
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 9999px;
   transition: all 0.2s ease;
 }
-
-.bento-pill:hover {
+.glass-pill:hover {
   background: rgba(255, 255, 255, 0.14);
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.35);
 }
 
 /* ═══════════════════════════════════════════════════ */
-/* 🎯 Hotspot — Premium Animated Beacon               */
+/* 🎯 Hotspot Beacon — Double Ring Pulse               */
 /* ═══════════════════════════════════════════════════ */
-
-/* Outer ring pulse - expanding radar wave */
-@keyframes beaconPing {
-  0% {
-    transform: scale(1);
-    opacity: 0.7;
-  }
-  75% {
-    transform: scale(2.8);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(2.8);
-    opacity: 0;
-  }
+@keyframes ping1 {
+  0%   { transform: scale(1); opacity: 0.65; }
+  70%  { transform: scale(2.6); opacity: 0; }
+  100% { transform: scale(2.6); opacity: 0; }
 }
-
-.hotspot-ping {
-  animation: beaconPing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+@keyframes ping2 {
+  0%   { transform: scale(1); opacity: 0.5; }
+  70%  { transform: scale(2.6); opacity: 0; }
+  100% { transform: scale(2.6); opacity: 0; }
 }
-
-/* Secondary delayed ping for depth */
-.hotspot-ping-delayed {
-  animation: beaconPing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-  animation-delay: 0.6s;
+.hotspot-ring1 {
+  animation: ping1 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
-
-/* Core breathing glow */
-@keyframes coreBreath {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.15);
-    opacity: 0.85;
-  }
-}
-
-.hotspot-breath {
-  animation: coreBreath 2.4s ease-in-out infinite;
+.hotspot-ring2 {
+  animation: ping2 2.2s cubic-bezier(0, 0, 0.2, 1) infinite 0.55s;
 }
 
 /* ═══════════════════════════════════════════════════ */
 /* 🌐 SVG Connector Line Draw                         */
 /* ═══════════════════════════════════════════════════ */
-@keyframes drawConnector {
+@keyframes connectorDraw {
   from { stroke-dashoffset: 500; }
   to   { stroke-dashoffset: 0; }
 }
-
-.animate-draw-line {
+.animate-connector {
   stroke-dasharray: 500;
   stroke-dashoffset: 500;
-  animation: drawConnector 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: connectorDraw 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* ═══════════════════════════════════════════════════ */
-/* 🪟 Bento Card Entry Animation                      */
+/* 🪟 Panel Slide Animations                          */
 /* ═══════════════════════════════════════════════════ */
-@keyframes cardSlideIn {
-  0% {
-    opacity: 0;
-    transform: translateX(var(--slide-from, -20px)) scale(0.96);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
+@keyframes slideFromLeft {
+  0%   { opacity: 0; transform: translateX(-24px) scale(0.97); }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
 }
-
-.animate-card-left {
-  --slide-from: -20px;
-  animation: cardSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+@keyframes slideFromRight {
+  0%   { opacity: 0; transform: translateX(24px) scale(0.97); }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
 }
-
-.animate-card-right {
-  --slide-from: 20px;
-  animation: cardSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
+.slide-left  { animation: slideFromLeft  0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.slide-right { animation: slideFromRight 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
