@@ -11,7 +11,7 @@ export type HotspotType = 'about' | 'education' | 'languages' | 'certifications'
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  // Independent Window Open States
+  // Independent Window Open States (All 4 can stay open simultaneously without overlapping)
   isAboutMeOpen = signal(false);
   isEducationOpen = signal(false);
   isLanguagesOpen = signal(false);
@@ -20,51 +20,51 @@ export class AppComponent {
   // Active hover preview tooltip
   hoveredHotspot = signal<HotspotType | null>(null);
 
-  // Hotspot definitions with exact coordinates, colors and labels
+  // Precision Hotspots Calibrated to the Background Elements
   hotspots = [
     {
       id: 'about' as HotspotType,
-      label: 'About Me // Santiago',
-      color: '#a855f7', // Purple
-      pulseColor: 'rgba(168, 85, 247, 0.5)',
-      x: 49.6,
-      y: 53.8,
-      direction: 'left',
-      icon: '👤'
+      label: 'About Me',
+      sublabel: 'Santiago Castro Salt',
+      color: '#c084fc', // Vibrant Purple / Violet
+      glow: 'rgba(192, 132, 252, 0.7)',
+      x: 50.8, // Centered dead-center under the pixel art portrait
+      y: 56.4,
+      targetSide: 'left'
     },
     {
       id: 'education' as HotspotType,
-      label: 'Education // CS Degree & DAW',
-      color: '#10b981', // Emerald Green
-      pulseColor: 'rgba(16, 185, 129, 0.5)',
-      x: 48.2,
-      y: 71.5,
-      direction: 'left',
-      icon: '📚'
+      label: 'Education',
+      sublabel: 'BSc Hons CS & DAW',
+      color: '#34d399', // Emerald Green
+      glow: 'rgba(52, 211, 153, 0.7)',
+      x: 52.8, // Dead-center in the middle of the stacked textbooks
+      y: 74.0,
+      targetSide: 'left'
     },
     {
       id: 'languages' as HotspotType,
       label: 'Programming Languages',
-      color: '#f59e0b', // Amber
-      pulseColor: 'rgba(245, 158, 11, 0.5)',
-      x: 64.9,
-      y: 51.2,
-      direction: 'right',
-      icon: '⚡'
+      sublabel: 'Top 5 Tech Stack',
+      color: '#fbbf24', // Amber / Warm Gold
+      glow: 'rgba(251, 191, 36, 0.7)',
+      x: 65.8, // Positioned right at the top of the yellow sticky note
+      y: 26.5,
+      targetSide: 'right'
     },
     {
       id: 'certifications' as HotspotType,
-      label: 'Certifications & Workshops',
-      color: '#06b6d4', // Cyan
-      pulseColor: 'rgba(6, 182, 212, 0.5)',
-      x: 65.4,
-      y: 72.2,
-      direction: 'right',
-      icon: '🎓'
+      label: 'Certifications',
+      sublabel: 'English C1, Google & AWS',
+      color: '#38bdf8', // Sky Blue / Cyan
+      glow: 'rgba(56, 189, 248, 0.7)',
+      x: 65.2, // Right above the header 'CERTIFICATIONS' on the blue sticky note
+      y: 66.0,
+      targetSide: 'right'
     }
   ];
 
-  // Verified CV Data extracted from CVs-en.pdf
+  // Official Verified CV Data (from CVs-en.pdf)
   cvData = {
     personal: {
       name: 'Santiago Castro Salt',
@@ -72,74 +72,58 @@ export class AppComponent {
       locations: 'Dublin, Ireland • Valencia, Spain',
       email: 'santiagocsdev@gmail.com',
       phone: '+34 654 763 788',
-      linkedin: 'linkedin.com/in/santiago-castro-salt',
       github: 'github.com/Sacasa01',
-      summary: 'Experienced in engineering production-grade web applications (PHP/Symfony 7, TypeScript/Angular, Python, Docker, SQL) and integrating AI into software architectures—including controlled agents, MCP tools, and Human-in-the-Loop workflows at Hospital La Fe.',
-      languagesSpoken: [
-        { lang: 'English', level: 'C1 Certified (IELTS 8.0)', badge: 'Fluent / Academic' },
-        { lang: 'Spanish', level: 'Native', badge: 'Bilingual' },
-        { lang: 'Catalan / Valencian', level: 'Native', badge: 'Bilingual' }
+      linkedin: 'linkedin.com/in/santiago-castro-salt',
+      summary: 'Experienced in engineering production-grade web applications (PHP/Symfony 7, TypeScript/Angular, Python, Docker, SQL) and integrating AI into software architectures—including controlled agents, MCP tools, and Human-in-the-Loop clinical workflows at Hospital La Fe.',
+      languages: [
+        { name: 'English', level: 'C1 Certified (IELTS 8.0)' },
+        { name: 'Spanish', level: 'Native' },
+        { name: 'Valencian / Catalan', level: 'Native' }
       ]
     },
     education: [
       {
         degree: 'BSc (Hons) in Computer Science',
-        institution: 'Canterbury Christ Church University (via MSMK University, Madrid)',
+        institution: 'Canterbury Christ Church University (via MSMK, Madrid)',
         period: 'Sep 2026 – Jun 2027',
-        highlight: 'Taught 100% in English',
-        specialisations: [
-          'Advanced Software Engineering',
-          'Cloud Systems Architecture',
-          'Cybersecurity Protocols',
-          'AI System Integration'
-        ]
+        badge: '100% in English',
+        topics: 'Cloud Systems, Cybersecurity, AI Integration, Advanced Software Engineering'
       },
       {
-        degree: 'Higher National Diploma (DAW) – Web Application Development',
+        degree: 'CFGS Web Application Development (DAW)',
         institution: 'La Florida Universitària, Valencia',
         period: '2024 – 2026',
-        highlight: 'Grade: 7.00 / 10',
-        specialisations: [
-          'Enterprise Full-Stack Architecture (Symfony 7 & Angular 19)',
-          'Relational Database Modeling (MySQL / PostgreSQL)',
-          'RESTful API Engineering, JWT Auth & RBAC Security'
-        ]
+        badge: 'Grade: 7.00 / 10',
+        topics: 'Symfony 7 REST APIs, Relational DBs (MySQL), Angular Standalone, Docker'
       }
     ],
-    technicalSkills: [
-      { name: 'TypeScript (Angular, Node.js)', level: 95, color: '#38bdf8' },
-      { name: 'PHP 8 (Symfony 7)', level: 90, color: '#a855f7' },
-      { name: 'Python 3 (FastAPI, Pandas)', level: 88, color: '#10b981' },
-      { name: 'SQL (MySQL, PostgreSQL)', level: 82, color: '#f59e0b' },
-      { name: 'Go / Java', level: 75, color: '#ef4444' }
-    ],
-    databasesAndInfra: [
-      'Docker', 'Docker Compose', 'MySQL', 'PostgreSQL', 'REST APIs', 'Git', 'Nginx', 'Linux', 'PowerShell'
+    skills: [
+      { name: 'TypeScript / Angular', level: 95, barColor: '#38bdf8' },
+      { name: 'PHP 8 / Symfony 7', level: 90, barColor: '#c084fc' },
+      { name: 'Python 3 / PyTorch', level: 88, barColor: '#34d399' },
+      { name: 'SQL / Databases', level: 82, barColor: '#fbbf24' },
+      { name: 'Go / Java / Systems', level: 75, barColor: '#f87171' }
     ],
     certifications: [
       {
         title: 'English: C1 Certified (IELTS 8.0)',
         issuer: 'Official IELTS Examination',
-        date: '2026',
-        desc: 'Advanced professional and academic fluency in English.'
+        year: '2026'
       },
       {
-        title: 'Google: Artificial Intelligence & Productivity',
+        title: 'Google: AI & Productivity',
         issuer: 'Santander Open Academy',
-        date: 'Jan 2025',
-        desc: 'Productivity workflows, prompt engineering, and foundational AI models.'
+        year: 'Jan 2025'
       },
       {
-        title: 'Cloud Computing: Applied Cloud Infrastructure & Deployment',
+        title: 'Cloud Computing: Applied Infrastructure',
         issuer: 'Florida Universitària',
-        date: 'May 2026',
-        desc: 'Cloud deployment strategies, container orchestration, and network topologies.'
+        year: 'May 2026'
       },
       {
-        title: 'AI & System Integration: MCP Protocols',
-        issuer: 'Model Context Protocol & PyTorch / MONAI',
-        date: '2026',
-        desc: 'Controlled agentic workflows, function calling, and Human-in-the-Loop architectures.'
+        title: 'Model Context Protocol & PyTorch / MONAI',
+        issuer: 'AI Systems Integration',
+        year: '2026'
       }
     ]
   };
