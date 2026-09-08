@@ -17,19 +17,54 @@
 /* Theme transition                                */
 /* ═══════════════════════════════════════════════ */
 .theme-transition {
-  transition: background-color 0.5s ease, color 0.5s ease;
+  transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ═══════════════════════════════════════════════ */
-/* Hero character image                            */
+/* Hero character image & depth shadows            */
 /* ═══════════════════════════════════════════════ */
 .character-img {
-  filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.15));
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, filter;
 }
 
 .character-img:hover {
-  transform: scale(1.02) translateY(-4px);
+  transform: scale(1.025) translateY(-6px);
+}
+
+/* Light Mode: Soft directional natural ambient depth */
+.char-shadow-light {
+  filter: drop-shadow(0 22px 28px rgba(0, 0, 0, 0.18))
+          drop-shadow(0 8px 12px rgba(0, 0, 0, 0.12));
+}
+
+/* Dark Mode: Deep occlusion shadow + soft ambient rim separation */
+.char-shadow-dark {
+  filter: drop-shadow(0 28px 40px rgba(0, 0, 0, 0.85))
+          drop-shadow(0 4px 12px rgba(0, 0, 0, 0.60))
+          drop-shadow(0 0 45px rgba(255, 255, 255, 0.05));
+}
+
+/* ═══════════════════════════════════════════════ */
+/* Floor Grounding Contact Shadows                 */
+/* ═══════════════════════════════════════════════ */
+.character-floor-shadow {
+  width: 78%;
+  height: 26px;
+  border-radius: 100%;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.floor-shadow-light {
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.14) 45%, transparent 75%);
+  filter: blur(8px);
+  transform: translateX(-50%) scaleY(0.65);
+}
+
+.floor-shadow-dark {
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.90) 0%, rgba(0, 0, 0, 0.50) 50%, transparent 80%);
+  filter: blur(12px);
+  transform: translateX(-50%) scaleY(0.70);
 }
 
 /* ═══════════════════════════════════════════════ */

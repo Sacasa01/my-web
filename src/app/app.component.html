@@ -32,12 +32,18 @@
     <!-- BOXED CONTENT (max-width centered strip) -->
     <div class="w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-8 lg:gap-4">
 
-      <!-- LEFT: Character Image (slightly left-aligned) -->
-      <div class="flex-shrink-0 flex items-end justify-center lg:justify-start lg:w-[45%]">
+      <!-- LEFT: Character Image (with 3D Floor Shadow & Depth) -->
+      <div class="relative flex-shrink-0 flex items-end justify-center lg:justify-start lg:w-[45%]">
+        <!-- Grounding Floor Contact Shadow -->
+        <div class="character-floor-shadow absolute -bottom-2 left-1/2 pointer-events-none"
+             [ngClass]="theme() === 'light' ? 'floor-shadow-light' : 'floor-shadow-dark'"></div>
+
+        <!-- Character Cutout -->
         <img 
           src="/assets/santiago-character.png" 
           alt="Santiago Castro Salt — Pixar Style Character"
-          class="character-img w-[280px] sm:w-[340px] md:w-[400px] lg:w-[420px] xl:w-[460px] h-auto object-contain select-none pointer-events-none" />
+          class="character-img relative z-10 w-[280px] sm:w-[340px] md:w-[400px] lg:w-[420px] xl:w-[460px] h-auto object-contain select-none pointer-events-none"
+          [ngClass]="theme() === 'light' ? 'char-shadow-light' : 'char-shadow-dark'" />
       </div>
 
       <!-- RIGHT: Text Content -->
