@@ -223,9 +223,83 @@ export class AppComponent {
         ]
       },
       skills: {
-        sectionTitle: 'Skills & Tooling',
-        sectionSubtitle: 'Technical Capabilities & Stack',
-        sectionDescription: 'Curated technical competencies spanning core programming languages, frameworks, cloud infrastructure, AI architectures, and spoken languages.',
+        sectionTitle: 'Skills Architecture',
+        sectionSubtitle: 'Full-Stack & AI Systems Breakdown',
+        sectionDescription: 'Hierarchical node diagram connecting core Full-Stack engineering to production AI systems, relational databases, and cloud infrastructure with proficiency levels.',
+        rootRole: 'FULL STACK & AI DEVELOPER',
+        rootSubtitle: 'Santiago Castro Salt · Technical Backbone',
+        branches: [
+          {
+            id: 'frontend',
+            name: 'FRONT END',
+            color: '#0284C7',
+            glowColor: 'rgba(2, 132, 199, 0.45)',
+            lightBg: 'rgba(2, 132, 199, 0.08)',
+            icon: 'frontend',
+            skills: [
+              { id: 'typescript', name: 'TypeScript', level: 95, detail: 'Angular 19 · Strict Typings · Node.js', badge: '95%' },
+              { id: 'angular', name: 'Angular 19', level: 92, detail: 'Standalone Components · Signals · RxJS', badge: '92%' },
+              { id: 'html-css', name: 'HTML5 & CSS3', level: 90, detail: 'Semantic Standards · Tailwind CSS', badge: '90%' }
+            ]
+          },
+          {
+            id: 'backend',
+            name: 'BACK END',
+            color: '#D7340B',
+            glowColor: 'rgba(215, 52, 11, 0.45)',
+            lightBg: 'rgba(215, 52, 11, 0.08)',
+            icon: 'backend',
+            skills: [
+              { id: 'php', name: 'PHP 8 / Symfony 7', level: 90, detail: 'Clean Architecture · RBAC · JWT', badge: '90%' },
+              { id: 'python', name: 'Python 3 / FastAPI', level: 88, detail: 'Async APIs · Microservices · Pandas', badge: '88%' },
+              { id: 'symfony-fastapi', name: 'RESTful Architecture', level: 90, detail: 'High-Throughput API Design · Auth', badge: '90%' }
+            ]
+          },
+          {
+            id: 'database',
+            name: 'DATABASE',
+            color: '#0D9488',
+            glowColor: 'rgba(13, 148, 136, 0.45)',
+            lightBg: 'rgba(13, 148, 136, 0.08)',
+            icon: 'database',
+            skills: [
+              { id: 'sql', name: 'MySQL 8 Relational', level: 88, detail: '14-Table Normalized Schemas · Indexing', badge: '88%' },
+              { id: 'sql-pg', name: 'PostgreSQL & pgvector', level: 85, detail: 'Vector Search · Spatial Geometries', badge: '85%' },
+              { id: 'sql-norm', name: 'Data Modeling & 3NF', level: 90, detail: 'Entity Relationship · Query Optimization', badge: '90%' }
+            ]
+          },
+          {
+            id: 'devops',
+            name: 'DEV OPS & CLOUD',
+            color: '#D97706',
+            glowColor: 'rgba(217, 119, 6, 0.45)',
+            lightBg: 'rgba(217, 119, 6, 0.08)',
+            icon: 'devops',
+            skills: [
+              { id: 'docker', name: 'Docker & Compose v2', level: 88, detail: 'Multi-stage Builds · Orchestration · CI', badge: '88%' },
+              { id: 'aws', name: 'AWS Cloud Services', level: 80, detail: 'EC2 · S3 · RDS · Lambda · Practitioner', badge: '80%' },
+              { id: 'git-cicd', name: 'GitOps & GitHub Actions', level: 85, detail: 'Automated CI/CD · Quality Gates', badge: '85%' }
+            ]
+          },
+          {
+            id: 'ai-agents',
+            name: 'AI & AGENTS',
+            color: '#9333EA',
+            glowColor: 'rgba(147, 51, 234, 0.45)',
+            lightBg: 'rgba(147, 51, 234, 0.08)',
+            icon: 'ai',
+            skills: [
+              { id: 'mcp-ai', name: 'Model Context Protocol (MCP)', level: 88, detail: 'Custom Tools · Server Protocol · Agents', badge: '88%' },
+              { id: 'pytorch-monai', name: 'PyTorch & MONAI', level: 85, detail: 'Medical Imaging · Neural Segmentation', badge: '85%' },
+              { id: 'agentic-ai', name: 'Agentic Workflows & ReAct', level: 85, detail: 'Function Calling · Human-in-the-Loop', badge: '85%' }
+            ]
+          }
+        ],
+        languages: [
+          { id: 'lang-en', name: 'English', level: 92, detail: 'C1 Certified · IELTS 8.0 · Full Professional Working Proficiency', badge: 'C1 Certified' },
+          { id: 'lang-es', name: 'Spanish', level: 100, detail: 'Native Speaker · Bilingual Academic & Technical Fluency', badge: 'Native (C2)' },
+          { id: 'lang-va', name: 'Valencian / Catalan', level: 100, detail: 'Native Regional Bilingual Proficiency', badge: 'Native' }
+        ],
         items: [
           {
             id: 'python',
@@ -586,9 +660,83 @@ export class AppComponent {
         ]
       },
       skills: {
-        sectionTitle: 'Habilidades y Tecnologías',
-        sectionSubtitle: 'Capacidades Técnicas y Stack',
-        sectionDescription: 'Competencias técnicas seleccionadas abarcando lenguajes troncales, frameworks, infraestructura cloud, arquitecturas de IA e idiomas.',
+        sectionTitle: 'Arquitectura de Habilidades',
+        sectionSubtitle: 'Desglose Full-Stack & Sistemas de IA',
+        sectionDescription: 'Diagrama de nodos jerárquico que conecta el núcleo Full-Stack con sistemas de IA en producción, bases de datos relacionales e infraestructura cloud con niveles de progreso.',
+        rootRole: 'DESARROLLADOR FULL STACK & IA',
+        rootSubtitle: 'Santiago Castro Salt · Núcleo de Ingeniería',
+        branches: [
+          {
+            id: 'frontend',
+            name: 'FRONT END',
+            color: '#0284C7',
+            glowColor: 'rgba(2, 132, 199, 0.45)',
+            lightBg: 'rgba(2, 132, 199, 0.08)',
+            icon: 'frontend',
+            skills: [
+              { id: 'typescript', name: 'TypeScript', level: 95, detail: 'Angular 19 · Tipado Estricto · Node.js', badge: '95%' },
+              { id: 'angular', name: 'Angular 19', level: 92, detail: 'Componentes Standalone · Signals · RxJS', badge: '92%' },
+              { id: 'html-css', name: 'HTML5 y CSS3', level: 90, detail: 'Estándares Semánticos · Tailwind CSS', badge: '90%' }
+            ]
+          },
+          {
+            id: 'backend',
+            name: 'BACK END',
+            color: '#D7340B',
+            glowColor: 'rgba(215, 52, 11, 0.45)',
+            lightBg: 'rgba(215, 52, 11, 0.08)',
+            icon: 'backend',
+            skills: [
+              { id: 'php', name: 'PHP 8 / Symfony 7', level: 90, detail: 'Arquitectura Limpia · RBAC · JWT', badge: '90%' },
+              { id: 'python', name: 'Python 3 / FastAPI', level: 88, detail: 'APIs Asíncronas · Microservicios · Pandas', badge: '88%' },
+              { id: 'symfony-fastapi', name: 'Arquitectura RESTful', level: 90, detail: 'Diseño de APIs de Alto Rendimiento', badge: '90%' }
+            ]
+          },
+          {
+            id: 'database',
+            name: 'BASES DE DATOS',
+            color: '#0D9488',
+            glowColor: 'rgba(13, 148, 136, 0.45)',
+            lightBg: 'rgba(13, 148, 136, 0.08)',
+            icon: 'database',
+            skills: [
+              { id: 'sql', name: 'MySQL 8 Relacional', level: 88, detail: 'Esquemas Normalizados 14 Tablas · Índices', badge: '88%' },
+              { id: 'sql-pg', name: 'PostgreSQL y pgvector', level: 85, detail: 'Búsqueda Vectorial · Geometrías GIS', badge: '85%' },
+              { id: 'sql-norm', name: 'Modelado de Datos y 3FN', level: 90, detail: 'Entidad Relación · Optimización SQL', badge: '90%' }
+            ]
+          },
+          {
+            id: 'devops',
+            name: 'DEV OPS & CLOUD',
+            color: '#D97706',
+            glowColor: 'rgba(217, 119, 6, 0.45)',
+            lightBg: 'rgba(217, 119, 6, 0.08)',
+            icon: 'devops',
+            skills: [
+              { id: 'docker', name: 'Docker y Compose v2', level: 88, detail: 'Builds Multi-etapa · Orquestación · CI', badge: '88%' },
+              { id: 'aws', name: 'Servicios Cloud AWS', level: 80, detail: 'EC2 · S3 · RDS · Lambda · Practitioner', badge: '80%' },
+              { id: 'git-cicd', name: 'GitOps y GitHub Actions', level: 85, detail: 'CI/CD Automatizado · Quality Gates', badge: '85%' }
+            ]
+          },
+          {
+            id: 'ai-agents',
+            name: 'IA & AGENTES',
+            color: '#9333EA',
+            glowColor: 'rgba(147, 51, 234, 0.45)',
+            lightBg: 'rgba(147, 51, 234, 0.08)',
+            icon: 'ai',
+            skills: [
+              { id: 'mcp-ai', name: 'Model Context Protocol (MCP)', level: 88, detail: 'Herramientas Custom · Protocolo Servidor', badge: '88%' },
+              { id: 'pytorch-monai', name: 'PyTorch y MONAI', level: 85, detail: 'Imagen Médica · Segmentación Neuronal', badge: '85%' },
+              { id: 'agentic-ai', name: 'Flujos Agénticos y ReAct', level: 85, detail: 'Function Calling · Human-in-the-Loop', badge: '85%' }
+            ]
+          }
+        ],
+        languages: [
+          { id: 'lang-en', name: 'Inglés', level: 92, detail: 'Certificado C1 · IELTS 8.0 · Fluidez Profesional Internacional', badge: 'Nivel C1' },
+          { id: 'lang-es', name: 'Español / Castellano', level: 100, detail: 'Hablante Nativo · Fluidez Académica y Técnica Plena', badge: 'Nativo (C2)' },
+          { id: 'lang-va', name: 'Valenciano / Catalán', level: 100, detail: 'Competencia Bilingüe Regional Nativa', badge: 'Nativo' }
+        ],
         items: [
           {
             id: 'python',

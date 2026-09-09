@@ -316,8 +316,8 @@
 
 .skill-card:hover {
   transform: translateY(-3px);
-  border-color: #D7340B !important;
-  box-shadow: 0 12px 24px -8px rgba(215, 52, 11, 0.18);
+  border-color: var(--skill-accent, #D7340B) !important;
+  box-shadow: 0 14px 28px -10px rgba(0, 0, 0, 0.25), 0 0 16px -2px var(--skill-accent, rgba(215, 52, 11, 0.25));
 }
 
 /* ═══════════════════════════════════════════════ */
