@@ -1,94 +1,265 @@
-<!-- FULL-WIDTH PAGE with BOXED CONTENT STRIP -->
-<div class="min-h-screen w-full theme-transition font-body" [style.background-color]="bgColor()">
+<main class="w-screen h-screen overflow-hidden fixed inset-0 m-0 p-0 bg-[#060810] select-none">
 
-  <!-- ═══ TOP CONTROLS BAR ═══ -->
-  <header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-end gap-3 px-6 py-4">
+  <!-- 🖼️ FULLSCREEN BACKGROUND -->
+  <img src="/assets/locker_background.png" alt="Locker Background"
+    class="w-full h-full object-cover object-center absolute inset-0 select-none pointer-events-none z-0"
+    loading="eager" decoding="sync" />
 
-    <!-- Language Toggle -->
-    <button 
-      (click)="toggleLang()"
-      class="control-pill px-4 py-2 rounded-full text-[13px] font-semibold tracking-wide cursor-pointer border select-none"
-      [ngClass]="theme() === 'light' 
-        ? 'bg-white/60 border-black/8 text-neutral-800 hover:bg-white/90' 
-        : 'bg-white/8 border-white/12 text-white/80 hover:bg-white/16'">
-      {{ lang() === 'en' ? '🇪🇸 ES' : '🇬🇧 EN' }}
-    </button>
+  <!-- 🌐 SVG CONNECTOR LINES -->
+  <svg class="absolute inset-0 w-full h-full pointer-events-none z-20" viewBox="0 0 100 100" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="gPurple" x1="100%" y1="0%" x2="0%" y2="0%">
+        <stop offset="0%" stop-color="#c084fc" stop-opacity="0.8" /><stop offset="100%" stop-color="#a855f7" stop-opacity="0.25" />
+      </linearGradient>
+      <linearGradient id="gOrange" x1="100%" y1="0%" x2="0%" y2="0%">
+        <stop offset="0%" stop-color="#fb923c" stop-opacity="0.8" /><stop offset="100%" stop-color="#f97316" stop-opacity="0.25" />
+      </linearGradient>
+      <linearGradient id="gGreen" x1="100%" y1="0%" x2="0%" y2="0%">
+        <stop offset="0%" stop-color="#34d399" stop-opacity="0.8" /><stop offset="100%" stop-color="#10b981" stop-opacity="0.25" />
+      </linearGradient>
+      <linearGradient id="gAmber" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.8" /><stop offset="100%" stop-color="#f59e0b" stop-opacity="0.25" />
+      </linearGradient>
+      <linearGradient id="gCyan" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.8" /><stop offset="100%" stop-color="#06b6d4" stop-opacity="0.25" />
+      </linearGradient>
+    </defs>
 
-    <!-- Theme Toggle -->
-    <button 
-      (click)="toggleTheme()"
-      class="control-pill w-10 h-10 rounded-full text-lg cursor-pointer border flex items-center justify-center select-none"
-      [ngClass]="theme() === 'light' 
-        ? 'bg-white/60 border-black/8 text-neutral-800 hover:bg-white/90' 
-        : 'bg-white/8 border-white/12 text-white/80 hover:bg-white/16'">
-      {{ theme() === 'light' ? '🌙' : '☀️' }}
-    </button>
+    @if (isOpen('about')) {
+      <path d="M 50.8 52.5 L 36 52.5 L 26 20" fill="none" stroke="url(#gPurple)" stroke-width="0.22" stroke-dasharray="2.5 1.5" class="animate-connector" />
+      <circle cx="26" cy="20" r="0.4" fill="#c084fc" opacity="0.75" />
+    }
+    @if (isOpen('experience')) {
+      <path d="M 47.5 70.0 L 36 70.0 L 26 52" fill="none" stroke="url(#gOrange)" stroke-width="0.22" stroke-dasharray="2.5 1.5" class="animate-connector" />
+      <circle cx="26" cy="52" r="0.4" fill="#fb923c" opacity="0.75" />
+    }
+    @if (isOpen('education')) {
+      <path d="M 53.0 78.0 L 36 78.0 L 26 82" fill="none" stroke="url(#gGreen)" stroke-width="0.22" stroke-dasharray="2.5 1.5" class="animate-connector" />
+      <circle cx="26" cy="82" r="0.4" fill="#34d399" opacity="0.75" />
+    }
+    @if (isOpen('languages')) {
+      <path d="M 67.0 12.0 L 72 12.0 L 76 20" fill="none" stroke="url(#gAmber)" stroke-width="0.22" stroke-dasharray="2.5 1.5" class="animate-connector" />
+      <circle cx="76" cy="20" r="0.4" fill="#fbbf24" opacity="0.75" />
+    }
+    @if (isOpen('certifications')) {
+      <path d="M 67.5 62.0 L 72 62.0 L 76 68" fill="none" stroke="url(#gCyan)" stroke-width="0.22" stroke-dasharray="2.5 1.5" class="animate-connector" />
+      <circle cx="76" cy="68" r="0.4" fill="#38bdf8" opacity="0.75" />
+    }
+  </svg>
 
-  </header>
+  <!-- 🎯 BEACON HOTSPOTS (5 total) -->
+  <div class="absolute inset-0 pointer-events-none z-30">
+    @for (h of hotspots; track h.id) {
+      <div class="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto cursor-pointer group"
+        [style.left.%]="h.x" [style.top.%]="h.y"
+        (click)="toggle(h.id)"
+        (mouseenter)="hoveredHotspot.set(h.id)"
+        (mouseleave)="hoveredHotspot.set(null)">
 
-  <!-- ═══ HERO SECTION ═══ -->
-  <section class="min-h-screen w-full flex items-center justify-center px-4">
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="w-4 h-4 rounded-full hotspot-ring1 absolute" [style.background-color]="h.glow"></div>
+          <div class="w-4 h-4 rounded-full hotspot-ring2 absolute" [style.background-color]="h.glow"></div>
+        </div>
 
-    <!-- BOXED CONTENT (max-width centered strip) -->
-    <div class="w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-8 lg:gap-4">
+        <button type="button"
+          class="relative w-3.5 h-3.5 rounded-full border-[1.5px] border-white/90 shadow-lg flex items-center justify-center transition-all duration-300 group-hover:scale-[1.6] cursor-pointer"
+          [style.background-color]="h.color"
+          [style.box-shadow]="'0 0 12px 2px ' + h.glow"
+          [ngClass]="isOpen(h.id) ? 'scale-[1.5] ring-2 ring-white/50 ring-offset-1 ring-offset-black/50' : ''">
+        </button>
 
-      <!-- LEFT: Character Image (with 3D Floor Shadow & Depth) -->
-      <div class="relative flex-shrink-0 flex items-end justify-center lg:justify-start lg:w-[45%]">
-        <!-- Grounding Floor Contact Shadow -->
-        <div class="character-floor-shadow absolute -bottom-2 left-1/2 pointer-events-none"
-             [ngClass]="theme() === 'light' ? 'floor-shadow-light' : 'floor-shadow-dark'"></div>
+        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-3 py-1.5 rounded-xl bg-black/75 backdrop-blur-lg text-white border border-white/12 text-[11px] font-sans whitespace-nowrap shadow-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full shrink-0" [style.background-color]="h.color"></span>
+          <span class="font-medium">{{ h.label }}</span>
+        </div>
+      </div>
+    }
+  </div>
 
-        <!-- Character Cutout -->
-        <img 
-          src="/assets/santiago-character.png" 
-          alt="Santiago Castro Salt — Pixar Style Character"
-          class="character-img relative z-10 w-[280px] sm:w-[340px] md:w-[400px] lg:w-[420px] xl:w-[460px] h-auto object-contain select-none pointer-events-none"
-          [ngClass]="theme() === 'light' ? 'char-shadow-light' : 'char-shadow-dark'" />
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- 🧊 FROSTED GLASS PANELS — WIDE HORIZONTAL, SEE-THROUGH   -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+
+  <!-- ┌─── LEFT COLUMN (3 panels: About Me · Experience · Education) ───┐ -->
+
+  <!-- ABOUT ME — Top-Left -->
+  @if (isOpen('about')) {
+    <div class="glass-panel slide-left absolute z-40 text-white overflow-hidden
+                left-2 top-2 w-[36vw] h-[30vh]
+                min-w-[300px] max-w-[520px] min-h-[200px]
+                p-5 flex flex-col">
+
+      <div class="flex items-center justify-between pb-2.5 border-b border-purple-400/12 shrink-0">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-purple-400 shadow-[0_0_8px_#c084fc]"></span>
+          <span class="text-[13px] font-semibold tracking-wide">About Me</span>
+        </div>
+        <button (click)="close('about')" class="w-6 h-6 rounded-full bg-white/8 hover:bg-white/16 text-white/50 hover:text-white flex items-center justify-center text-xs transition-colors cursor-pointer">✕</button>
       </div>
 
-      <!-- RIGHT: Text Content -->
-      <div class="flex flex-col items-center lg:items-start text-center lg:text-left lg:w-[55%] space-y-5">
-        
-        <!-- Greeting -->
-        <p class="font-anton text-[clamp(1.2rem,2.5vw,1.8rem)] tracking-wide"
-           [style.color]="mutedColor()">
-          {{ t().greeting }}
-        </p>
-
-        <!-- Name — BIG Anton -->
-        <h1 class="font-anton leading-[0.9] select-none"
-            [style.color]="textColor()">
-          <span class="block text-[clamp(4rem,10vw,9rem)]">{{ t().name }}</span>
-          <span class="block text-[clamp(2.5rem,6vw,5.5rem)]" [style.color]="mutedColor()">
-            {{ t().surname }}
-          </span>
-        </h1>
-
-        <!-- Role -->
-        <p class="font-body text-[clamp(0.85rem,1.4vw,1.1rem)] font-medium max-w-md leading-relaxed"
-           [style.color]="mutedColor()">
-          {{ t().role }}
-        </p>
-
-        <!-- Location -->
-        <p class="font-body text-[clamp(0.75rem,1.1vw,0.9rem)] font-medium tracking-wide"
-           [style.color]="mutedColor()">
-          📍 {{ t().location }}
-        </p>
-
-        <!-- CTA Button -->
-        <a href="#work" 
-           class="mt-2 inline-flex items-center gap-2 px-8 py-3.5 rounded-full font-semibold text-[14px] tracking-wide transition-all duration-300 cursor-pointer select-none"
-           [ngClass]="theme() === 'light' 
-             ? 'bg-neutral-900 text-white hover:bg-neutral-700 shadow-lg shadow-black/10' 
-             : 'bg-white text-neutral-900 hover:bg-neutral-200 shadow-lg shadow-white/10'">
-          {{ t().cta }}
-          <span class="text-lg">↓</span>
-        </a>
-
+      <div class="flex-1 flex flex-col justify-center space-y-2 py-2">
+        <div>
+          <h3 class="text-[15px] font-bold text-white leading-tight">{{ aboutMe.name }}</h3>
+          <p class="text-purple-300/90 text-[12px] italic">{{ aboutMe.tagline }}</p>
+          <p class="text-emerald-400/80 text-[11px] mt-0.5">📍 {{ aboutMe.location }}</p>
+        </div>
+        <p class="text-[11.5px] text-white/70 leading-relaxed">{{ aboutMe.bio }}</p>
+        <div class="flex flex-wrap gap-1.5">
+          @for (l of aboutMe.languages; track l.name) {
+            <span class="glass-pill px-2.5 py-0.5 text-[10px] text-white/85">{{ l.name }} · <span class="text-purple-300">{{ l.level }}</span></span>
+          }
+        </div>
       </div>
 
+      <div class="pt-2 border-t border-purple-400/12 flex items-center gap-2 shrink-0">
+        <a href="https://linkedin.com/in/santiago-castro-salt" target="_blank" class="glass-pill px-3 py-1 text-[10px] text-white/80 hover:text-purple-300">LinkedIn ↗</a>
+        <a href="https://github.com/Sacasa01" target="_blank" class="glass-pill px-3 py-1 text-[10px] text-white/80 hover:text-purple-300">GitHub ↗</a>
+      </div>
     </div>
-  </section>
+  }
 
-</div>
+  <!-- WORK EXPERIENCE — Middle-Left -->
+  @if (isOpen('experience')) {
+    <div class="glass-panel slide-left absolute z-40 text-white overflow-hidden
+                left-2 top-[33vh] w-[36vw] h-[34vh]
+                min-w-[300px] max-w-[520px] min-h-[220px]
+                p-5 flex flex-col">
+
+      <div class="flex items-center justify-between pb-2.5 border-b border-orange-400/12 shrink-0">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-orange-400 shadow-[0_0_8px_#fb923c]"></span>
+          <span class="text-[13px] font-semibold tracking-wide">Work Experience</span>
+        </div>
+        <button (click)="close('experience')" class="w-6 h-6 rounded-full bg-white/8 hover:bg-white/16 text-white/50 hover:text-white flex items-center justify-center text-xs transition-colors cursor-pointer">✕</button>
+      </div>
+
+      <div class="flex-1 flex flex-col justify-center space-y-2 py-2 overflow-hidden">
+        @for (job of experience; track job.role) {
+          <div class="rounded-xl bg-white/4 border border-white/5 p-2.5 space-y-1">
+            <div class="flex justify-between items-start gap-2">
+              <div>
+                <h4 class="text-white font-bold text-[12px] leading-snug">{{ job.role }}</h4>
+                <p class="text-orange-300/80 text-[10px]">{{ job.company }} · <span class="text-white/50 font-mono">{{ job.period }}</span></p>
+              </div>
+              <span class="glass-pill px-2 py-0.5 text-[9px] text-orange-300 font-medium shrink-0">{{ job.type }}</span>
+            </div>
+            <ul class="space-y-0.5 text-[10px] text-white/60 leading-snug">
+              @for (h of job.highlights; track h) {
+                <li class="flex gap-1.5 items-start"><span class="text-orange-400 mt-0.5 shrink-0">▸</span><span>{{ h }}</span></li>
+              }
+            </ul>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- EDUCATION — Bottom-Left -->
+  @if (isOpen('education')) {
+    <div class="glass-panel slide-left absolute z-40 text-white overflow-hidden
+                left-2 bottom-2 w-[36vw] h-[30vh]
+                min-w-[300px] max-w-[520px] min-h-[200px]
+                p-5 flex flex-col">
+
+      <div class="flex items-center justify-between pb-2.5 border-b border-emerald-400/12 shrink-0">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
+          <span class="text-[13px] font-semibold tracking-wide">Education</span>
+        </div>
+        <button (click)="close('education')" class="w-6 h-6 rounded-full bg-white/8 hover:bg-white/16 text-white/50 hover:text-white flex items-center justify-center text-xs transition-colors cursor-pointer">✕</button>
+      </div>
+
+      <div class="flex-1 flex flex-col justify-center space-y-2.5 py-2">
+        @for (edu of education; track edu.degree) {
+          <div class="rounded-xl bg-white/4 border border-white/5 p-3 space-y-1">
+            <div class="flex justify-between items-start gap-2">
+              <h4 class="text-white font-bold text-[12px] leading-snug">{{ edu.degree }}</h4>
+              <span class="glass-pill px-2 py-0.5 text-[10px] text-emerald-300 font-medium shrink-0">{{ edu.badge }}</span>
+            </div>
+            <p class="text-white/50 text-[11px]">{{ edu.institution }}</p>
+            <p class="text-emerald-400/70 text-[10px] font-mono">{{ edu.period }}</p>
+            <p class="text-white/55 text-[10px] leading-snug">{{ edu.topics }}</p>
+          </div>
+        }
+      </div>
+
+      <div class="pt-2 border-t border-emerald-400/12 flex items-center justify-between text-[10px] text-white/40 shrink-0">
+        <span>Formal Qualifications</span>
+        <span class="text-emerald-400/80 font-medium">BSc Hons & DAW</span>
+      </div>
+    </div>
+  }
+
+  <!-- ┌─── RIGHT COLUMN (2 panels: Languages · Certifications) ───┐ -->
+
+  <!-- PROGRAMMING LANGUAGES — Top-Right -->
+  @if (isOpen('languages')) {
+    <div class="glass-panel slide-right absolute z-40 text-white overflow-hidden
+                right-2 top-2 w-[30vw] h-[47vh]
+                min-w-[280px] max-w-[440px] min-h-[280px]
+                p-5 flex flex-col">
+
+      <div class="flex items-center justify-between pb-2.5 border-b border-amber-400/12 shrink-0">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_8px_#fbbf24]"></span>
+          <span class="text-[13px] font-semibold tracking-wide">Programming Languages</span>
+        </div>
+        <button (click)="close('languages')" class="w-6 h-6 rounded-full bg-white/8 hover:bg-white/16 text-white/50 hover:text-white flex items-center justify-center text-xs transition-colors cursor-pointer">✕</button>
+      </div>
+
+      <div class="flex-1 flex flex-col justify-center space-y-3.5 py-3">
+        @for (s of skills; track s.name) {
+          <div class="space-y-1.5">
+            <div class="flex justify-between text-[12px]">
+              <span class="text-white/85 font-medium">{{ s.name }}</span>
+              <span class="text-white font-bold">{{ s.level }}%</span>
+            </div>
+            <div class="w-full h-2.5 bg-white/6 rounded-full overflow-hidden">
+              <div class="h-full rounded-full transition-all duration-700" [style.background-color]="s.color" [style.width.%]="s.level"></div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="pt-2.5 border-t border-amber-400/12 flex items-center justify-between text-[10px] text-white/40 shrink-0">
+        <span>Production Verified</span>
+        <span class="glass-pill px-2.5 py-0.5 text-[9px] text-white/75">Top 5 Stack</span>
+      </div>
+    </div>
+  }
+
+  <!-- CERTIFICATIONS — Bottom-Right -->
+  @if (isOpen('certifications')) {
+    <div class="glass-panel slide-right absolute z-40 text-white overflow-hidden
+                right-2 bottom-2 w-[30vw] h-[47vh]
+                min-w-[280px] max-w-[440px] min-h-[280px]
+                p-5 flex flex-col">
+
+      <div class="flex items-center justify-between pb-2.5 border-b border-cyan-400/12 shrink-0">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_#38bdf8]"></span>
+          <span class="text-[13px] font-semibold tracking-wide">Certifications</span>
+        </div>
+        <button (click)="close('certifications')" class="w-6 h-6 rounded-full bg-white/8 hover:bg-white/16 text-white/50 hover:text-white flex items-center justify-center text-xs transition-colors cursor-pointer">✕</button>
+      </div>
+
+      <div class="flex-1 flex flex-col justify-center space-y-3 py-3">
+        @for (c of certifications; track c.title) {
+          <div class="rounded-xl bg-white/4 border border-white/5 p-3.5 space-y-1.5">
+            <div class="flex justify-between items-start gap-2">
+              <h4 class="text-white font-bold text-[13px] leading-snug">{{ c.title }}</h4>
+              <span class="glass-pill px-2 py-0.5 text-[10px] text-cyan-300 font-medium shrink-0">{{ c.year }}</span>
+            </div>
+            <p class="text-white/45 text-[11px]">{{ c.issuer }}</p>
+          </div>
+        }
+      </div>
+
+      <div class="pt-2.5 border-t border-cyan-400/12 flex items-center justify-between text-[10px] text-white/40 shrink-0">
+        <span>Verified Credentials</span>
+        <span class="glass-pill px-2.5 py-0.5 text-[9px] text-white/75">Dublin 2026 Ready</span>
+      </div>
+    </div>
+  }
+
+</main>
