@@ -1,62 +1,63 @@
 /* ═══════════════════════════════════════════════ */
-/* Typography                                      */
+/* 🔤 Typography & Font Classes                    */
 /* ═══════════════════════════════════════════════ */
 .font-anton {
-  font-family: 'Anton', sans-serif;
+  font-family: 'Anton', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 400;
   font-style: normal;
   text-transform: uppercase;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
 }
 
 .font-body {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 /* ═══════════════════════════════════════════════ */
-/* Theme transition                                */
+/* 🎨 Theme Transitions & Base Surfaces            */
 /* ═══════════════════════════════════════════════ */
-.theme-transition {
-  transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+.theme-surface {
+  transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              color 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ═══════════════════════════════════════════════ */
-/* Hero character image & depth shadows            */
+/* 🖼️ Character Image & 3D Depth Shadows           */
 /* ═══════════════════════════════════════════════ */
 .character-img {
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+              filter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, filter;
 }
 
 .character-img:hover {
-  transform: scale(1.025) translateY(-6px);
+  transform: scale(1.02) translateY(-6px);
 }
 
 /* Light Mode: Soft directional natural ambient depth */
 .char-shadow-light {
-  filter: drop-shadow(0 22px 28px rgba(0, 0, 0, 0.18))
-          drop-shadow(0 8px 12px rgba(0, 0, 0, 0.12));
+  filter: drop-shadow(0 20px 24px rgba(0, 0, 0, 0.16))
+          drop-shadow(0 8px 10px rgba(0, 0, 0, 0.10));
 }
 
-/* Dark Mode: Deep occlusion shadow + soft ambient rim separation */
+/* Dark Mode: Deep occlusion shadow + subtle ambient glow */
 .char-shadow-dark {
-  filter: drop-shadow(0 28px 40px rgba(0, 0, 0, 0.85))
-          drop-shadow(0 4px 12px rgba(0, 0, 0, 0.60))
-          drop-shadow(0 0 45px rgba(255, 255, 255, 0.05));
+  filter: drop-shadow(0 26px 36px rgba(0, 0, 0, 0.85))
+          drop-shadow(0 4px 14px rgba(0, 0, 0, 0.60))
+          drop-shadow(0 0 45px rgba(255, 255, 255, 0.04));
 }
 
-/* ═══════════════════════════════════════════════ */
-/* Floor Grounding Contact Shadows                 */
-/* ═══════════════════════════════════════════════ */
+/* Floor Grounding Contact Shadows */
 .character-floor-shadow {
-  width: 78%;
-  height: 26px;
+  width: 76%;
+  height: 24px;
   border-radius: 100%;
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .floor-shadow-light {
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.14) 45%, transparent 75%);
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.32) 0%, rgba(0, 0, 0, 0.12) 45%, transparent 75%);
   filter: blur(8px);
   transform: translateX(-50%) scaleY(0.65);
 }
@@ -68,9 +69,31 @@
 }
 
 /* ═══════════════════════════════════════════════ */
-/* Control pills (theme / lang toggles)            */
+/* 🪟 Bento Cards & Navigation Pills               */
 /* ═══════════════════════════════════════════════ */
+.portfolio-card {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease;
+}
+
+.portfolio-card:hover {
+  transform: translateY(-3px);
+}
+
 .control-pill {
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   transition: all 0.25s ease;
+}
+
+.control-pill:hover {
+  transform: translateY(-1px);
+}
+
+/* ═══════════════════════════════════════════════ */
+/* ⚡ Section Anchor Smooth Offsets                */
+/* ═══════════════════════════════════════════════ */
+.section-anchor {
+  scroll-margin-top: 6rem;
 }

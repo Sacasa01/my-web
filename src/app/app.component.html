@@ -1,94 +1,630 @@
-<!-- FULL-WIDTH PAGE with BOXED CONTENT STRIP -->
-<div class="min-h-screen w-full theme-transition font-body" [style.background-color]="bgColor()">
+<!-- MAIN PORTFOLIO WRAPPER (Full-Width with Theme Transitions) -->
+<div class="min-h-screen w-full theme-surface font-body selection:bg-purple-500 selection:text-white"
+     [style.background-color]="bgColor()"
+     [style.color]="textColor()">
 
-  <!-- ═══ TOP CONTROLS BAR ═══ -->
-  <header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-end gap-3 px-6 py-4">
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+  <!-- 📌 TOP NAVIGATION BAR (Fixed with Blur Glass Effect)                 -->
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+  <header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 sm:px-8 py-3.5 backdrop-blur-xl border-b transition-colors duration-400"
+          [style.background-color]="theme() === 'light' ? 'rgba(236, 232, 232, 0.82)' : 'rgba(15, 17, 23, 0.82)'"
+          [style.border-color]="cardBorder()">
+    
+    <!-- Brand / Name Logo -->
+    <a href="#hero" class="flex items-center gap-2 group cursor-pointer select-none">
+      <span class="w-8 h-8 rounded-full flex items-center justify-center font-anton text-sm font-bold text-white transition-transform group-hover:scale-105"
+            [ngClass]="theme() === 'light' ? 'bg-neutral-900' : 'bg-purple-600 shadow-[0_0_12px_rgba(168,85,247,0.5)]'">
+        SC
+      </span>
+      <span class="font-anton tracking-wider text-base sm:text-lg select-none hidden sm:inline"
+            [style.color]="textColor()">
+        SANTIAGO CASTRO SALT
+      </span>
+    </a>
 
-    <!-- Language Toggle -->
-    <button 
-      (click)="toggleLang()"
-      class="control-pill px-4 py-2 rounded-full text-[13px] font-semibold tracking-wide cursor-pointer border select-none"
-      [ngClass]="theme() === 'light' 
-        ? 'bg-white/60 border-black/8 text-neutral-800 hover:bg-white/90' 
-        : 'bg-white/8 border-white/12 text-white/80 hover:bg-white/16'">
-      {{ lang() === 'en' ? '🇪🇸 ES' : '🇬🇧 EN' }}
-    </button>
+    <!-- Navigation Anchors (Strict Order) -->
+    <nav class="hidden md:flex items-center gap-1 lg:gap-2 text-[13px] font-medium"
+         [style.color]="mutedColor()">
+      <a href="#experience" class="px-3 py-1.5 rounded-full transition-colors hover:text-purple-400 hover:bg-white/5">
+        {{ t().nav.experience }}
+      </a>
+      <a href="#projects" class="px-3 py-1.5 rounded-full transition-colors hover:text-purple-400 hover:bg-white/5">
+        {{ t().nav.projects }}
+      </a>
+      <a href="#education" class="px-3 py-1.5 rounded-full transition-colors hover:text-purple-400 hover:bg-white/5">
+        {{ t().nav.education }}
+      </a>
+      <a href="#certifications" class="px-3 py-1.5 rounded-full transition-colors hover:text-purple-400 hover:bg-white/5">
+        {{ t().nav.certifications }}
+      </a>
+      <a href="#contact" class="px-3 py-1.5 rounded-full transition-colors hover:text-purple-400 hover:bg-white/5">
+        {{ t().nav.contact }}
+      </a>
+    </nav>
 
-    <!-- Theme Toggle -->
-    <button 
-      (click)="toggleTheme()"
-      class="control-pill w-10 h-10 rounded-full text-lg cursor-pointer border flex items-center justify-center select-none"
-      [ngClass]="theme() === 'light' 
-        ? 'bg-white/60 border-black/8 text-neutral-800 hover:bg-white/90' 
-        : 'bg-white/8 border-white/12 text-white/80 hover:bg-white/16'">
-      {{ theme() === 'light' ? '🌙' : '☀️' }}
-    </button>
+    <!-- Controls: Language + Dark/Light Theme -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      <!-- Language Toggle -->
+      <button 
+        type="button"
+        (click)="toggleLang()"
+        class="control-pill px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide border cursor-pointer select-none flex items-center gap-1.5"
+        [style.border-color]="cardBorder()"
+        [style.background-color]="tagBg()"
+        [style.color]="textColor()">
+        <span>{{ lang() === 'en' ? '🇬🇧' : '🇪🇸' }}</span>
+        <span>{{ lang() === 'en' ? 'EN' : 'ES' }}</span>
+      </button>
+
+      <!-- Theme Toggle -->
+      <button 
+        type="button"
+        (click)="toggleTheme()"
+        [attr.aria-label]="theme() === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'"
+        class="control-pill w-9 h-9 rounded-full text-base border flex items-center justify-center cursor-pointer select-none"
+        [style.border-color]="cardBorder()"
+        [style.background-color]="tagBg()"
+        [style.color]="textColor()">
+        <span>{{ theme() === 'light' ? '🌙' : '☀️' }}</span>
+      </button>
+    </div>
 
   </header>
 
-  <!-- ═══ HERO SECTION ═══ -->
-  <section class="min-h-screen w-full flex items-center justify-center px-4">
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+  <!-- 🌟 HERO SECTION (Boxed Layout with Native Avatar & Anton Heading)   -->
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+  <section id="hero" class="min-h-screen w-full flex items-center justify-center px-4 sm:px-8 pt-24 pb-12">
+    
+    <!-- BOXED CONTAINER -->
+    <div class="w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
 
-    <!-- BOXED CONTENT (max-width centered strip) -->
-    <div class="w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-8 lg:gap-4">
-
-      <!-- LEFT: Character Image (with 3D Floor Shadow & Depth) -->
-      <div class="relative flex-shrink-0 flex items-end justify-center lg:justify-start lg:w-[45%]">
-        <!-- Grounding Floor Contact Shadow -->
+      <!-- LEFT: Character Cutout with 3D Floor Shadow -->
+      <div class="relative flex-shrink-0 flex items-end justify-center lg:w-[45%] order-2 lg:order-1 pt-4">
+        <!-- Floor Contact Shadow -->
         <div class="character-floor-shadow absolute -bottom-2 left-1/2 pointer-events-none"
              [ngClass]="theme() === 'light' ? 'floor-shadow-light' : 'floor-shadow-dark'"></div>
 
-        <!-- Character Cutout -->
+        <!-- Clean Transparent Avatar Image -->
         <img 
           src="/assets/santiago-character.png" 
-          alt="Santiago Castro Salt — Pixar Style Character"
-          class="character-img relative z-10 w-[280px] sm:w-[340px] md:w-[400px] lg:w-[420px] xl:w-[460px] h-auto object-contain select-none pointer-events-none"
-          [ngClass]="theme() === 'light' ? 'char-shadow-light' : 'char-shadow-dark'" />
+          alt="Santiago Castro Salt — Software Engineer & AI Integrator Avatar"
+          class="character-img relative z-10 w-[260px] sm:w-[320px] md:w-[380px] lg:w-[430px] xl:w-[470px] h-auto object-contain select-none pointer-events-none"
+          [ngClass]="theme() === 'light' ? 'char-shadow-light' : 'char-shadow-dark'"
+          loading="eager"
+          decoding="sync" />
       </div>
 
-      <!-- RIGHT: Text Content -->
-      <div class="flex flex-col items-center lg:items-start text-center lg:text-left lg:w-[55%] space-y-5">
+      <!-- RIGHT: Hero Content -->
+      <div class="flex flex-col items-center lg:items-start text-center lg:text-left lg:w-[55%] space-y-4 sm:space-y-5 order-1 lg:order-2">
         
         <!-- Greeting -->
-        <p class="font-anton text-[clamp(1.2rem,2.5vw,1.8rem)] tracking-wide"
-           [style.color]="mutedColor()">
-          {{ t().greeting }}
-        </p>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold tracking-wider font-anton select-none"
+             [style.background-color]="tagBg()"
+             [style.color]="mutedColor()">
+          <span>👋</span>
+          <span>{{ t().hero.greeting }}</span>
+        </div>
 
-        <!-- Name — BIG Anton -->
-        <h1 class="font-anton leading-[0.9] select-none"
-            [style.color]="textColor()">
-          <span class="block text-[clamp(4rem,10vw,9rem)]">{{ t().name }}</span>
-          <span class="block text-[clamp(2.5rem,6vw,5.5rem)]" [style.color]="mutedColor()">
-            {{ t().surname }}
+        <!-- Giant Anton Name Heading -->
+        <h1 class="font-anton leading-[0.88] select-none tracking-tight">
+          <span class="block text-[clamp(3.8rem,9vw,8.5rem)] text-transparent bg-clip-text"
+                [ngClass]="theme() === 'light' 
+                  ? 'bg-gradient-to-r from-neutral-950 via-neutral-800 to-neutral-700' 
+                  : 'bg-gradient-to-r from-white via-slate-100 to-slate-300'">
+            {{ t().hero.name }}
+          </span>
+          <span class="block text-[clamp(2.2rem,5.5vw,5.2rem)] opacity-80"
+                [style.color]="mutedColor()">
+            {{ t().hero.surname }}
           </span>
         </h1>
 
-        <!-- Role -->
-        <p class="font-body text-[clamp(0.85rem,1.4vw,1.1rem)] font-medium max-w-md leading-relaxed"
+        <!-- Professional Headline / ATS Title -->
+        <div class="space-y-1.5">
+          <h2 class="text-base sm:text-lg md:text-xl font-bold tracking-tight text-purple-500 font-sans">
+            {{ t().hero.title }}
+          </h2>
+          <!-- Location (Only Dublin, Ireland as requested) -->
+          <p class="font-body text-xs sm:text-sm font-semibold tracking-wide flex items-center justify-center lg:justify-start gap-1.5"
+             [style.color]="mutedColor()">
+            <span>📍</span>
+            <span>{{ t().hero.location }}</span>
+          </p>
+        </div>
+
+        <!-- Summary -->
+        <p class="font-body text-xs sm:text-sm md:text-base leading-relaxed max-w-xl"
            [style.color]="mutedColor()">
-          {{ t().role }}
+          {{ t().hero.summary }}
         </p>
 
-        <!-- Location -->
-        <p class="font-body text-[clamp(0.75rem,1.1vw,0.9rem)] font-medium tracking-wide"
-           [style.color]="mutedColor()">
-          📍 {{ t().location }}
-        </p>
+        <!-- Availability Status Badge -->
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-semibold"
+             [style.border-color]="cardBorder()"
+             [style.background-color]="tagBg()">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_#10b981]"></span>
+          <span class="text-emerald-500">{{ t().hero.status }}</span>
+        </div>
 
-        <!-- CTA Button -->
-        <a href="#work" 
-           class="mt-2 inline-flex items-center gap-2 px-8 py-3.5 rounded-full font-semibold text-[14px] tracking-wide transition-all duration-300 cursor-pointer select-none"
-           [ngClass]="theme() === 'light' 
-             ? 'bg-neutral-900 text-white hover:bg-neutral-700 shadow-lg shadow-black/10' 
-             : 'bg-white text-neutral-900 hover:bg-neutral-200 shadow-lg shadow-white/10'">
-          {{ t().cta }}
-          <span class="text-lg">↓</span>
-        </a>
+        <!-- Quick Jump Links (No 'See my work' button, direct professional navigation) -->
+        <div class="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-3">
+          <a href="#contact" 
+             class="px-6 py-2.5 rounded-full text-xs font-semibold tracking-wide font-sans transition-all duration-300 cursor-pointer shadow-md"
+             [ngClass]="theme() === 'light' 
+               ? 'bg-neutral-900 text-white hover:bg-neutral-800' 
+               : 'bg-purple-600 text-white hover:bg-purple-500 shadow-[0_0_20px_rgba(168,85,247,0.4)]'">
+            {{ t().nav.contact }} ✉️
+          </a>
+          <a href="#experience" 
+             class="px-5 py-2.5 rounded-full text-xs font-semibold tracking-wide font-sans border transition-all duration-300 cursor-pointer"
+             [style.border-color]="cardBorder()"
+             [style.background-color]="tagBg()"
+             [style.color]="textColor()">
+            {{ t().nav.experience }} ↓
+          </a>
+        </div>
 
       </div>
 
     </div>
+
   </section>
+
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+  <!-- 💼 SECTION 1: WORK EXPERIENCE (Required 1st in Order)                -->
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+  <section id="experience" class="section-anchor w-full py-16 px-4 sm:px-8 border-t transition-colors duration-400"
+           [style.border-color]="cardBorder()">
+    
+    <div class="w-full max-w-5xl mx-auto space-y-8">
+      
+      <!-- Section Header -->
+      <div class="space-y-1">
+        <p class="text-xs font-bold uppercase tracking-widest text-purple-500 font-sans">01 // {{ t().experience.sectionSubtitle }}</p>
+        <h2 class="font-anton text-3xl sm:text-5xl tracking-wide" [style.color]="textColor()">
+          {{ t().experience.sectionTitle }}
+        </h2>
+      </div>
+
+      <!-- Experience Cards -->
+      <div class="space-y-6">
+        @for (job of t().experience.items; track job.role) {
+          <article class="portfolio-card p-6 sm:p-8 rounded-3xl border shadow-xl relative overflow-hidden"
+                   [style.background-color]="cardBg()"
+                   [style.border-color]="cardBorder()">
+            
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 pb-4 border-b"
+                 [style.border-color]="cardBorder()">
+              <div>
+                <h3 class="text-lg sm:text-xl font-bold font-sans tracking-tight" [style.color]="textColor()">
+                  {{ job.role }}
+                </h3>
+                <p class="text-sm font-medium text-purple-500 font-sans mt-0.5">
+                  {{ job.company }}
+                </p>
+                <p class="text-xs mt-1" [style.color]="mutedColor()">
+                  📍 {{ job.location }}
+                </p>
+              </div>
+
+              <div class="flex flex-col sm:items-end gap-1 shrink-0">
+                <span class="inline-block px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide font-sans bg-purple-500/15 text-purple-400 border border-purple-500/20">
+                  {{ job.type }}
+                </span>
+                <time class="text-xs font-mono font-medium" [style.color]="mutedColor()">
+                  {{ job.period }}
+                </time>
+              </div>
+            </div>
+
+            <!-- Description & Highlights -->
+            <div class="py-4 space-y-3 text-xs sm:text-sm leading-relaxed" [style.color]="mutedColor()">
+              <p class="font-medium" [style.color]="textColor()">
+                {{ job.description }}
+              </p>
+              <ul class="space-y-2">
+                @for (h of job.highlights; track h) {
+                  <li class="flex items-start gap-2.5">
+                    <span class="text-purple-500 font-bold shrink-0 mt-0.5">▸</span>
+                    <span>{{ h }}</span>
+                  </li>
+                }
+              </ul>
+            </div>
+
+            <!-- Tech Stack Badges -->
+            <div class="pt-4 border-t flex flex-wrap items-center gap-1.5 sm:gap-2"
+                 [style.border-color]="cardBorder()">
+              @for (tech of job.techStack; track tech) {
+                <span class="px-2.5 py-1 rounded-lg text-[11px] font-mono font-medium border"
+                      [style.border-color]="cardBorder()"
+                      [style.background-color]="tagBg()"
+                      [style.color]="textColor()">
+                  {{ tech }}
+                </span>
+              }
+            </div>
+
+          </article>
+        }
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+  <!-- 🚀 SECTION 2: PROJECTS (Required 2nd in Order)                       -->
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+  <section id="projects" class="section-anchor w-full py-16 px-4 sm:px-8 border-t transition-colors duration-400"
+           [style.border-color]="cardBorder()">
+    
+    <div class="w-full max-w-5xl mx-auto space-y-8">
+      
+      <!-- Section Header -->
+      <div class="space-y-1">
+        <p class="text-xs font-bold uppercase tracking-widest text-emerald-500 font-sans">02 // {{ t().projects.sectionSubtitle }}</p>
+        <h2 class="font-anton text-3xl sm:text-5xl tracking-wide" [style.color]="textColor()">
+          {{ t().projects.sectionTitle }}
+        </h2>
+      </div>
+
+      <!-- Project Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        @for (proj of t().projects.items; track proj.title) {
+          <article class="portfolio-card p-6 sm:p-7 rounded-3xl border shadow-xl flex flex-col justify-between"
+                   [style.background-color]="cardBg()"
+                   [style.border-color]="cardBorder()">
+            
+            <div class="space-y-3">
+              <!-- Top Row: Badge + Period -->
+              <div class="flex items-center justify-between gap-2">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold tracking-wide font-sans bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">
+                  {{ proj.badge }}
+                </span>
+                <span class="text-xs font-mono" [style.color]="mutedColor()">
+                  {{ proj.period }}
+                </span>
+              </div>
+
+              <!-- Title & Subtitle -->
+              <div>
+                <h3 class="text-xl font-bold font-sans tracking-tight" [style.color]="textColor()">
+                  {{ proj.title }}
+                </h3>
+                <p class="text-xs font-medium text-emerald-500 font-sans mt-0.5">
+                  {{ proj.subtitle }}
+                </p>
+              </div>
+
+              <!-- Summary -->
+              <p class="text-xs sm:text-sm leading-relaxed" [style.color]="mutedColor()">
+                {{ proj.summary }}
+              </p>
+
+              <!-- Detailed Bullet Points -->
+              <ul class="space-y-1.5 text-xs leading-relaxed" [style.color]="mutedColor()">
+                @for (d of proj.details; track d) {
+                  <li class="flex items-start gap-2">
+                    <span class="text-emerald-500 font-bold shrink-0 mt-0.5">✓</span>
+                    <span>{{ d }}</span>
+                  </li>
+                }
+              </ul>
+            </div>
+
+            <!-- Footer: Tech Stack + Direct Link -->
+            <div class="pt-5 mt-5 border-t space-y-3.5" [style.border-color]="cardBorder()">
+              <div class="flex flex-wrap gap-1.5">
+                @for (tech of proj.techStack; track tech) {
+                  <span class="px-2 py-0.5 rounded-md text-[10px] font-mono border"
+                        [style.border-color]="cardBorder()"
+                        [style.background-color]="tagBg()"
+                        [style.color]="textColor()">
+                    {{ tech }}
+                  </span>
+                }
+              </div>
+
+              <div>
+                <a [href]="proj.link" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-500 hover:text-emerald-400 transition-colors">
+                  <span>{{ proj.linkText }}</span>
+                </a>
+              </div>
+            </div>
+
+          </article>
+        }
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+  <!-- 🎓 SECTION 3: EDUCATION (Required 3rd in Order)                      -->
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+  <section id="education" class="section-anchor w-full py-16 px-4 sm:px-8 border-t transition-colors duration-400"
+           [style.border-color]="cardBorder()">
+    
+    <div class="w-full max-w-5xl mx-auto space-y-8">
+      
+      <!-- Section Header -->
+      <div class="space-y-1">
+        <p class="text-xs font-bold uppercase tracking-widest text-amber-500 font-sans">03 // {{ t().education.sectionSubtitle }}</p>
+        <h2 class="font-anton text-3xl sm:text-5xl tracking-wide" [style.color]="textColor()">
+          {{ t().education.sectionTitle }}
+        </h2>
+      </div>
+
+      <!-- Education Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        @for (edu of t().education.items; track edu.degree) {
+          <article class="portfolio-card p-6 sm:p-7 rounded-3xl border shadow-xl flex flex-col justify-between"
+                   [style.background-color]="cardBg()"
+                   [style.border-color]="cardBorder()">
+            
+            <div class="space-y-3">
+              <!-- Degree Badge & Period -->
+              <div class="flex items-center justify-between gap-2">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold tracking-wide font-sans bg-amber-500/15 text-amber-400 border border-amber-500/20">
+                  {{ edu.badge }}
+                </span>
+                <span class="text-xs font-mono font-medium" [style.color]="mutedColor()">
+                  {{ edu.period }}
+                </span>
+              </div>
+
+              <!-- Degree Title & Institution -->
+              <div>
+                <h3 class="text-lg sm:text-xl font-bold font-sans tracking-tight" [style.color]="textColor()">
+                  {{ edu.degree }}
+                </h3>
+                <p class="text-xs sm:text-sm font-medium text-amber-500 font-sans mt-0.5">
+                  {{ edu.institution }}
+                </p>
+              </div>
+
+              <!-- Highlights -->
+              <ul class="space-y-2 text-xs sm:text-sm leading-relaxed" [style.color]="mutedColor()">
+                @for (h of edu.highlights; track h) {
+                  <li class="flex items-start gap-2">
+                    <span class="text-amber-500 font-bold shrink-0 mt-0.5">▪</span>
+                    <span>{{ h }}</span>
+                  </li>
+                }
+              </ul>
+            </div>
+
+            <div class="pt-4 mt-4 border-t text-[11px] font-mono"
+                 [style.border-color]="cardBorder()"
+                 [style.color]="mutedColor()">
+              <span>Accredited Academic Qualification</span>
+            </div>
+
+          </article>
+        }
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+  <!-- 🏅 SECTION 4: CERTIFICATIONS (Required 4th in Order)                 -->
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+  <section id="certifications" class="section-anchor w-full py-16 px-4 sm:px-8 border-t transition-colors duration-400"
+           [style.border-color]="cardBorder()">
+    
+    <div class="w-full max-w-5xl mx-auto space-y-8">
+      
+      <!-- Section Header -->
+      <div class="space-y-1">
+        <p class="text-xs font-bold uppercase tracking-widest text-cyan-500 font-sans">04 // {{ t().certifications.sectionSubtitle }}</p>
+        <h2 class="font-anton text-3xl sm:text-5xl tracking-wide" [style.color]="textColor()">
+          {{ t().certifications.sectionTitle }}
+        </h2>
+      </div>
+
+      <!-- Certifications Cards Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        @for (cert of t().certifications.items; track cert.title) {
+          <article class="portfolio-card p-5 sm:p-6 rounded-3xl border shadow-lg flex flex-col justify-between"
+                   [style.background-color]="cardBg()"
+                   [style.border-color]="cardBorder()">
+            
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between gap-2">
+                <span class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_#38bdf8]"></span>
+                <span class="text-[11px] font-mono font-medium px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                  {{ cert.year }}
+                </span>
+              </div>
+
+              <div>
+                <h3 class="text-sm sm:text-base font-bold font-sans leading-snug" [style.color]="textColor()">
+                  {{ cert.title }}
+                </h3>
+                <p class="text-xs text-cyan-500 font-medium font-sans mt-0.5">
+                  {{ cert.issuer }}
+                </p>
+              </div>
+
+              <p class="text-xs leading-relaxed" [style.color]="mutedColor()">
+                {{ cert.description }}
+              </p>
+            </div>
+
+            <div class="pt-3 mt-3 border-t text-[10px] font-mono uppercase tracking-wider"
+                 [style.border-color]="cardBorder()"
+                 [style.color]="mutedColor()">
+              Verified Credential
+            </div>
+
+          </article>
+        }
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+  <!-- ✉️ SECTION 5: CONTACT (Required 5th in Order)                        -->
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+  <section id="contact" class="section-anchor w-full py-16 px-4 sm:px-8 border-t transition-colors duration-400"
+           [style.border-color]="cardBorder()">
+    
+    <div class="w-full max-w-5xl mx-auto space-y-8">
+      
+      <!-- Section Header -->
+      <div class="space-y-1">
+        <p class="text-xs font-bold uppercase tracking-widest text-purple-500 font-sans">05 // {{ t().contact.sectionSubtitle }}</p>
+        <h2 class="font-anton text-3xl sm:text-5xl tracking-wide" [style.color]="textColor()">
+          {{ t().contact.sectionTitle }}
+        </h2>
+      </div>
+
+      <!-- Main Contact Card -->
+      <div class="portfolio-card p-6 sm:p-10 rounded-3xl border shadow-2xl space-y-8"
+           [style.background-color]="cardBg()"
+           [style.border-color]="cardBorder()">
+        
+        <div class="space-y-3 max-w-2xl">
+          <h3 class="text-2xl sm:text-3xl font-anton tracking-wide" [style.color]="textColor()">
+            {{ t().contact.heading }}
+          </h3>
+          <p class="text-xs sm:text-sm md:text-base leading-relaxed" [style.color]="mutedColor()">
+            {{ t().contact.text }}
+          </p>
+        </div>
+
+        <!-- Contact Channels Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          
+          <!-- Email Card with Copy Button -->
+          <div class="p-4 rounded-2xl border flex flex-col justify-between space-y-3"
+               [style.border-color]="cardBorder()"
+               [style.background-color]="tagBg()">
+            <div>
+              <span class="text-[11px] font-mono uppercase tracking-wider block" [style.color]="mutedColor()">
+                {{ t().contact.emailLabel }}
+              </span>
+              <a href="mailto:santiagocsdev@gmail.com" class="text-sm font-bold hover:text-purple-400 transition-colors font-sans mt-0.5 block break-all">
+                santiagocsdev&#64;gmail.com
+              </a>
+            </div>
+            <button 
+              type="button"
+              (click)="copyEmailToClipboard()"
+              class="px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5"
+              [ngClass]="copiedEmail() ? 'bg-emerald-500 text-white border-emerald-500' : 'hover:bg-white/10'"
+              [style.border-color]="cardBorder()">
+              <span>{{ copiedEmail() ? '✓' : '📋' }}</span>
+              <span>{{ copiedEmail() ? t().contact.emailCopied : t().contact.copyEmail }}</span>
+            </button>
+          </div>
+
+          <!-- Phone Card -->
+          <div class="p-4 rounded-2xl border flex flex-col justify-between space-y-3"
+               [style.border-color]="cardBorder()"
+               [style.background-color]="tagBg()">
+            <div>
+              <span class="text-[11px] font-mono uppercase tracking-wider block" [style.color]="mutedColor()">
+                {{ t().contact.phoneLabel }}
+              </span>
+              <a href="tel:+34654763788" class="text-sm font-bold hover:text-purple-400 transition-colors font-sans mt-0.5 block">
+                +34 654 763 788
+              </a>
+            </div>
+            <a href="tel:+34654763788" 
+               class="px-3 py-1.5 rounded-lg text-xs font-semibold border text-center hover:bg-white/10 transition-all duration-200"
+               [style.border-color]="cardBorder()">
+              Call / WhatsApp ↗
+            </a>
+          </div>
+
+          <!-- Base Location Card (Only Dublin, Ireland) -->
+          <div class="p-4 rounded-2xl border flex flex-col justify-between space-y-3 sm:col-span-2 lg:col-span-1"
+               [style.border-color]="cardBorder()"
+               [style.background-color]="tagBg()">
+            <div>
+              <span class="text-[11px] font-mono uppercase tracking-wider block" [style.color]="mutedColor()">
+                {{ t().contact.locationLabel }}
+              </span>
+              <p class="text-sm font-bold font-sans mt-0.5 flex items-center gap-1.5">
+                <span>📍</span>
+                <span>Dublin, Ireland</span>
+              </p>
+            </div>
+            <div class="text-[11px] text-emerald-500 font-semibold">
+              On-Site & EU Remote Ready
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Social Profiles & Actions -->
+        <div class="pt-6 border-t flex flex-wrap items-center justify-between gap-4"
+             [style.border-color]="cardBorder()">
+          
+          <div class="flex items-center gap-3">
+            <a href="https://linkedin.com/in/santiago-castro-salt" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               class="control-pill px-4 py-2 rounded-full text-xs font-semibold border flex items-center gap-2 transition-all hover:text-purple-400"
+               [style.border-color]="cardBorder()"
+               [style.background-color]="tagBg()">
+              <span>LinkedIn</span>
+              <span>↗</span>
+            </a>
+            <a href="https://github.com/Sacasa01" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               class="control-pill px-4 py-2 rounded-full text-xs font-semibold border flex items-center gap-2 transition-all hover:text-purple-400"
+               [style.border-color]="cardBorder()"
+               [style.background-color]="tagBg()">
+              <span>GitHub</span>
+              <span>↗</span>
+            </a>
+          </div>
+
+          <!-- Direct Send Email Action -->
+          <a href="mailto:santiagocsdev@gmail.com?subject=Opportunity%20Discussion%20-%20Santiago%20Castro%20Salt"
+             class="px-6 py-2 rounded-full text-xs font-semibold tracking-wide font-sans transition-all duration-300 shadow-md flex items-center gap-2"
+             [ngClass]="theme() === 'light' 
+               ? 'bg-neutral-900 text-white hover:bg-neutral-800' 
+               : 'bg-purple-600 text-white hover:bg-purple-500 shadow-[0_0_16px_rgba(168,85,247,0.4)]'">
+            <span>{{ t().contact.sendEmail }}</span>
+            <span>✉️</span>
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+  <!-- 📄 FOOTER                                                             -->
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+  <footer class="w-full py-8 px-4 sm:px-8 border-t text-xs transition-colors duration-400"
+          [style.border-color]="cardBorder()"
+          [style.color]="mutedColor()">
+    <div class="w-full max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+      <p>
+        © 2026 <strong>Santiago Castro Salt</strong>. {{ t().footer.rights }}
+      </p>
+      <p class="font-mono text-[11px]">
+        {{ t().footer.builtWith }}
+      </p>
+    </div>
+  </footer>
 
 </div>
