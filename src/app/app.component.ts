@@ -17,13 +17,16 @@ export class AppComponent {
   theme = signal<Theme>('light');
   copiedEmail = signal<boolean>(false);
 
-  // Dynamic theme colors matching background and contrast
-  bgColor = computed(() => this.theme() === 'light' ? '#ece8e8' : '#0f1117');
-  cardBg = computed(() => this.theme() === 'light' ? '#ffffff' : '#171a23');
-  cardBorder = computed(() => this.theme() === 'light' ? 'rgba(0, 0, 0, 0.08)' : 'rgba(255, 255, 255, 0.08)');
-  textColor = computed(() => this.theme() === 'light' ? '#111216' : '#f8f8fb');
-  mutedColor = computed(() => this.theme() === 'light' ? '#5a5858' : '#9ea2b0');
-  tagBg = computed(() => this.theme() === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.06)');
+  // Dynamic theme colors matching Sinopia (#D7340B), Vanilla (#E0DDAE), and Caribbean (#336467)
+  bgColor = computed(() => this.theme() === 'light' ? '#F5F3E7' : '#0D1718');
+  cardBg = computed(() => this.theme() === 'light' ? '#FFFFFF' : '#152426');
+  cardBorder = computed(() => this.theme() === 'light' ? 'rgba(51, 100, 103, 0.15)' : 'rgba(224, 221, 174, 0.14)');
+  textColor = computed(() => this.theme() === 'light' ? '#1A3537' : '#E0DDAE');
+  mutedColor = computed(() => this.theme() === 'light' ? '#5C7476' : '#8AA2A4');
+  tagBg = computed(() => this.theme() === 'light' ? 'rgba(51, 100, 103, 0.07)' : 'rgba(224, 221, 174, 0.07)');
+  accentSinopia = computed(() => this.theme() === 'light' ? '#D7340B' : '#E64319');
+  accentCaribbean = computed(() => this.theme() === 'light' ? '#336467' : '#4E898D');
+  navBg = computed(() => this.theme() === 'light' ? 'rgba(245, 243, 231, 0.88)' : 'rgba(13, 23, 24, 0.88)');
 
   // Bilingual content structured in exact requested order
   content = {
