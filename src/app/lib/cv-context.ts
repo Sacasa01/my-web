@@ -111,6 +111,28 @@ export const SANTIAGO_CV_CONTEXT: CandidateProfile = {
         "> 90% latency reduction in batch queries",
         "Automated GeoJSON polygon rendering"
       ]
+    },
+    {
+      name: "Agentic MCP Ecosystem",
+      role: "AI Systems Integration Engineer",
+      stack: ["Model Context Protocol (MCP)", "Python", "FastAPI", "Vector DBs", "Function Calling"],
+      description: "Custom Model Context Protocol servers connecting Large Language Models to local tools and vector stores with Human-in-the-Loop guardrails.",
+      metrics: [
+        "Deterministic function calling with strict schema validation",
+        "Human-in-the-Loop security gates for privileged commands",
+        "Multi-agent autonomous tool execution graphs"
+      ]
+    },
+    {
+      name: "HomeLab & Cloud Ecosystem",
+      role: "DevOps & Infrastructure Engineer",
+      stack: ["Docker Compose v2", "Linux / Proxmox", "Tailscale Zero-Trust", "Ollama / Whisper", "CI/CD GitOps"],
+      description: "Enterprise-grade self-hosted cloud server running GitOps CI/CD deployments, Tailscale Zero-Trust mesh network, and GPU-accelerated local AI.",
+      metrics: [
+        "99.9% uptime local cluster with automated health checks",
+        "Zero-Trust encrypted mesh networking without exposed ports",
+        "Private local GPU inference for Whisper and LLM workflows"
+      ]
     }
   ],
   dailyRoutine: [

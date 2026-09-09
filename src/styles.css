@@ -3,113 +3,42 @@
 @source "./src/index.html";
 
 @theme {
-  --color-studio-bg: #d7d7d7;
-  --color-studio-card: #f8fafc;
-  --color-studio-dark: #0f172a;
-  --color-studio-muted: #475569;
-  --color-amber-accent: #d97706;
-  --color-sky-accent: #0284c7;
+  --color-sinopia: #D7340B;
+  --color-vanilla: #E0DDAE;
+  --color-caribbean: #336467;
 }
 
 :root {
-  --bg-main: #d6d6d6;
-  --bg-card: rgba(255, 255, 255, 0.88);
-  --bg-card-solid: #ffffff;
-  --border-subtle: rgba(0, 0, 0, 0.08);
-  --border-card: rgba(0, 0, 0, 0.1);
-  --text-main: #0f172a;
-  --text-muted: #475569;
-  --accent: #d97706;
-  --accent-cyan: #0284c7;
+  --bg-light: #F5F3E7;
+  --bg-dark: #0D1718;
+  --text-light: #1A3537;
+  --text-dark: #E0DDAE;
+  --sinopia: #D7340B;
+  --caribbean: #336467;
+  --vanilla: #E0DDAE;
 }
 
-body {
-  background-color: #d6d6d6;
-  background-image: radial-gradient(circle at 50% 30%, #e2e2e2 0%, #d6d6d6 60%, #cecece 100%);
-  color: var(--text-main);
-  font-family: 'Space Grotesk', 'Outfit', sans-serif;
-  overflow-x: hidden;
-  user-select: none;
+html {
   scroll-behavior: smooth;
 }
 
-/* Typography styles matching the reference editorial poster */
-.font-bebas {
-  font-family: 'Bebas Neue', sans-serif;
-  letter-spacing: 0.04em;
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
+  user-select: none;
+  margin: 0;
+  padding: 0;
 }
 
-.font-shoulders {
-  font-family: 'Big Shoulders Display', sans-serif;
-  letter-spacing: 0.02em;
-}
-
-.font-syne {
-  font-family: 'Syne', sans-serif;
-}
-
-.font-space {
-  font-family: 'Space Grotesk', sans-serif;
-}
-
-.font-display {
-  font-family: 'Outfit', sans-serif;
-}
-
-/* Slide container styling adapted to clean light studio theme */
-.slide-frame {
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 250, 252, 0.88) 100%);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 1.5rem;
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.07),
-              0 0 0 1px rgba(255, 255, 255, 0.8) inset;
-  position: relative;
-  overflow: hidden;
-  color: #0f172a;
-}
-
-.slide-frame::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(90deg,
-    transparent 0px, transparent 60px,
-    rgba(0,0,0,0.02) 60px, rgba(0,0,0,0.02) 61px,
-    transparent 61px, transparent 180px);
-  pointer-events: none;
-}
-
-/* Editorial Glass Cards (Light Studio) */
-.editorial-card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 0, 0, 0.09);
-  border-radius: 1.25rem;
-  box-shadow: 0 10px 25px -8px rgba(0, 0, 0, 0.06), 
-              0 0 0 1px rgba(255, 255, 255, 0.9) inset;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  color: #0f172a;
-}
-
-.editorial-card:hover {
-  border-color: rgba(217, 119, 6, 0.45);
-  transform: translateY(-2px);
-  box-shadow: 0 16px 35px -8px rgba(0, 0, 0, 0.1), 
-              0 0 25px rgba(217, 119, 6, 0.08);
-}
-
-.editorial-tag {
-  background: rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  color: #475569;
+/* Typography styles */
+.font-anton {
+  font-family: 'Anton', -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: -0.015em;
   text-transform: uppercase;
-  font-size: 0.65rem;
-  letter-spacing: 0.12em;
-  font-family: 'Space Grotesk', monospace;
-  padding: 0.25rem 0.65rem;
-  border-radius: 9999px;
-  font-weight: 600;
+}
+
+.font-body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* Custom Scrollbar */
@@ -123,105 +52,17 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(51, 100, 103, 0.25);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
+  background: #D7340B;
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  scrollbar-color: rgba(51, 100, 103, 0.25) transparent;
 }
 
-/* Window System Animations */
-@keyframes macEntrance {
-  0% { 
-    opacity: 0; 
-    transform: scale(0.95) translate3d(0, 16px, 0); 
-    filter: blur(6px);
-  }
-  100% { 
-    opacity: 1; 
-    transform: scale(1) translate3d(0, 0, 0); 
-    filter: blur(0px);
-  }
-}
-
-.mac-window-enter {
-  animation: macEntrance 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.window-transition {
-  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              height 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              top 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              left 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* 🎮 Solo Leveling & Cyber-HUD Effects */
-@keyframes cyberScan {
-  0% {
-    top: 0%;
-    opacity: 0;
-  }
-  15% {
-    opacity: 1;
-  }
-  85% {
-    opacity: 1;
-  }
-  100% {
-    top: 100%;
-    opacity: 0;
-  }
-}
-
-.animate-cyber-scan {
-  animation: cyberScan 2.4s ease-in-out infinite;
-}
-
-@keyframes hudPulse {
-  0%, 100% {
-    box-shadow: 0 0 15px rgba(217, 119, 6, 0.2), inset 0 0 15px rgba(217, 119, 6, 0.1);
-  }
-  50% {
-    box-shadow: 0 0 25px rgba(2, 132, 199, 0.35), inset 0 0 20px rgba(2, 132, 199, 0.15);
-  }
-}
-
-.hud-pulse-glow {
-  animation: hudPulse 3s ease-in-out infinite;
-}
-
-.cyber-corner {
-  position: relative;
-}
-
-.cyber-corner::before,
-.cyber-corner::after {
-  content: '';
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border-color: #d97706;
-  pointer-events: none;
-}
-
-.cyber-corner::before {
-  top: 0;
-  left: 0;
-  border-top-width: 2px;
-  border-left-width: 2px;
-}
-
-.cyber-corner::after {
-  bottom: 0;
-  right: 0;
-  border-bottom-width: 2px;
-  border-right-width: 2px;
-}
 

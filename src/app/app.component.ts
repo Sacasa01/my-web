@@ -1,8 +1,35 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export type Lang = 'en' | 'es';
 export type Theme = 'light' | 'dark';
+
+export interface ProjectItem {
+  id: string;
+  title: string;
+  subtitle: string;
+  badge: string;
+  metricBadge: string;
+  period: string;
+  image: string;
+  accentColor: string;
+  glowColor: string;
+  summary: string;
+  fullDescription: string;
+  details: string[];
+  techStack: string[];
+  link: string;
+  linkText: string;
+}
+
+export interface SkillItem {
+  id: string;
+  name: string;
+  category: 'core' | 'frameworks' | 'cloud' | 'ai' | 'languages';
+  categoryLabel: string;
+  subtitle: string;
+  badge: string;
+}
 
 @Component({
   selector: 'app-root',
@@ -16,6 +43,12 @@ export class AppComponent {
   lang = signal<Lang>('en');
   theme = signal<Theme>('light');
   copiedEmail = signal<boolean>(false);
+  selectedProject = signal<ProjectItem | null>(null);
+  avatarState = signal<'TYPING' | 'IDLE'>('TYPING');
+
+  get currentLang(): Lang {
+    return this.lang();
+  }
 
   // Dynamic theme colors matching Sinopia (#D7340B), Vanilla (#E0DDAE), and Caribbean (#336467)
   bgColor = computed(() => this.theme() === 'light' ? '#F5F3E7' : '#0D1718');
@@ -34,6 +67,7 @@ export class AppComponent {
       nav: {
         experience: 'Experience',
         projects: 'Projects',
+        skills: 'Skills',
         education: 'Education',
         certifications: 'Certifications',
         contact: 'Contact'
@@ -70,16 +104,72 @@ export class AppComponent {
       projects: {
         sectionTitle: 'Featured Projects',
         sectionSubtitle: 'System Architecture & Technical Execution',
+        sectionDescription: 'Selected flagship systems spanning full-stack architectures, clinical AI diagnostic pipelines, cadastre engines, and enterprise infrastructure. Hover cards to elevate, and click to inspect complete specifications.',
+        inspectPrompt: 'Inspect Specs',
+        highlightsTitle: 'Key Technical Achievements',
+        techStackTitle: 'Technologies & Architecture',
+        modalClose: 'Close Details',
         items: [
           {
+            id: 'agentic-mcp',
+            title: 'Agentic MCP Ecosystem',
+            subtitle: 'Model Context Protocol & Autonomous Tool Calling',
+            badge: 'Agentic AI · MCP Architecture',
+            metricBadge: '★ 5.0 · MCP',
+            period: '2026',
+            image: '/assets/projects/agentic-mcp.jpg',
+            accentColor: '#7C3AED',
+            glowColor: 'rgba(124, 58, 237, 0.55)',
+            summary: 'Custom Model Context Protocol servers connecting Large Language Models to local tools, vector stores, and APIs with Human-in-the-Loop guardrails.',
+            fullDescription: 'Engineered autonomous agent architectures and tool execution servers implementing Anthropic Model Context Protocol (MCP). Enables Large Language Models to securely interact with the local filesystem, vector databases (Qdrant, pgvector), and external services through strict schema validation and deterministic function calling. Implemented robust Human-in-the-Loop approval barriers to prevent destructive actions and ensure enterprise-grade safety in production environments.',
+            details: [
+              'Built custom Model Context Protocol (MCP) servers enabling LLMs to securely execute deterministic database operations and code validation.',
+              'Implemented Human-in-the-Loop approval barriers to prevent unauthorized destructive commands in production agents.',
+              'Integrated vector database retrieval (Qdrant / pgvector) for contextual memory augmentation and semantic search.',
+              'Designed multi-agent execution graphs using ReAct patterns for self-correcting autonomous pipelines.'
+            ],
+            techStack: ['Model Context Protocol (MCP)', 'Python', 'FastAPI', 'Function Calling', 'Vector DBs', 'System Integration'],
+            link: 'https://github.com/Sacasa01',
+            linkText: 'Explore GitHub Profile ↗'
+          },
+          {
+            id: 'fertoolity',
+            title: 'Fertoolity',
+            subtitle: 'Clinical AI & Medical Imaging Diagnostics',
+            badge: 'Hospital La Fe · Clinical FCT',
+            metricBadge: '★ 4.9 · MONAI',
+            period: 'Mar 2026 – Jun 2026',
+            image: '/assets/projects/fertoolity.jpg',
+            accentColor: '#0D9488',
+            glowColor: 'rgba(13, 148, 136, 0.55)',
+            summary: 'Human-in-the-Loop supervised AI workflow for clinical medical image segmentation and real-time inference microservices.',
+            fullDescription: 'Engineered at Hospital Universitari i Politècnic La Fe (Valencia) within a clinical medical AI environment. Built supervised Human-in-the-Loop deep learning pipelines for medical imaging segmentation, normalization, and specialist dataset annotation for model fine-tuning. Developed asynchronous FastAPI microservices delivering low-latency real-time inference powered by PyTorch and MONAI biomedical models, translating complex clinical imaging protocols into reliable production software.',
+            details: [
+              'Implemented Human-in-the-Loop supervised AI pipelines for medical image segmentation, normalisation, and dataset annotation for model fine-tuning.',
+              'Engineered auxiliary preprocessing microservices and FastAPI REST endpoints using Python, OpenCV, PyTorch, and MONAI to deliver real-time model inference.',
+              'Delivered low-latency real-time inference workflows for clinical imaging scans with strict reliability metrics.',
+              'Collaborated closely with clinical specialists at Hospital La Fe to translate complex diagnostic imaging requirements into production-ready software components.'
+            ],
+            techStack: ['Python 3', 'FastAPI', 'PyTorch', 'MONAI', 'OpenCV', 'Docker', 'RESTful APIs', 'Medical Imaging'],
+            link: 'https://github.com/Sacasa01/Fertoolity',
+            linkText: 'View Clinical Project ↗'
+          },
+          {
+            id: 'fitforge',
             title: 'FitForge',
-            subtitle: 'Full-Stack Fitness Platform & Recommendation Engine',
-            badge: 'TFG Project · Sole Developer',
+            subtitle: 'Full-Stack Fitness & Recommendation Platform',
+            badge: 'TFG Flagship · Sole Architect',
+            metricBadge: '★ 5.0 · 33 APIs',
             period: '2025 – 2026',
-            summary: 'A full-stack fitness SPA powered by a custom workout and nutrition recommendation algorithm.',
+            image: '/assets/projects/fitforge.jpg',
+            accentColor: '#D7340B',
+            glowColor: 'rgba(215, 52, 11, 0.60)',
+            summary: 'A decoupled fitness SPA powered by a custom workout and nutrition recommendation algorithm.',
+            fullDescription: 'Developed as a final degree project (TFG) with top honors. Engineered a completely decoupled architecture featuring a Symfony 7 REST API with 33 secured endpoints, stateless JWT authentication, and role-based access control (RBAC). A normalized 14-table MySQL relational database powers algorithmic training and diet recommendations. The frontend is built with Angular 19 standalone components and reactive signals for instantaneous state propagation, fully containerized with Docker Compose.',
             details: [
               'Architected a 14-table normalized MySQL schema and a Symfony 7 REST API featuring 33 secured endpoints, JWT authentication, and fine-grained RBAC.',
-              'Designed a clean, standalone Angular 19 frontend with reactive signals and modular components.',
+              'Developed dynamic recommendation algorithms tailoring workout routines and macronutrient targets to user progression.',
+              'Designed a clean, standalone Angular 19 frontend with reactive signals and modular clean architecture.',
               'Containerized the complete deployment with Docker Compose (PHP-FPM, Nginx, MySQL) maintaining a feature-branch Git workflow.'
             ],
             techStack: ['PHP 8.2', 'Symfony 7', 'Angular 19', 'MySQL', 'Docker Compose', 'JWT Auth', 'RBAC', 'REST API'],
@@ -87,44 +177,183 @@ export class AppComponent {
             linkText: 'View Repository ↗'
           },
           {
+            id: 'land-mapper',
             title: 'Legacy Land Mapper',
-            subtitle: 'Geospatial Cadastral Automation Tool',
-            badge: 'Personal Project · Sole Developer',
+            subtitle: 'High-Throughput Geospatial Cadastre Engine',
+            badge: 'Geospatial GIS · 20 Workers',
+            metricBadge: '★ 4.8 · >90% Opt',
             period: '2025',
-            summary: 'Automated geospatial data pipeline converting Spanish cadastral records into responsive interactive HTML maps.',
+            image: '/assets/projects/land-mapper.jpg',
+            accentColor: '#16A34A',
+            glowColor: 'rgba(22, 163, 74, 0.55)',
+            summary: 'Multithreaded geospatial data pipeline cutting cadastral parcel batch queries by over 90% with dynamic interactive map rendering.',
+            fullDescription: 'Created to solve real-world agricultural land management and cadastral validation challenges in Galicia. Transforms raw tabular cadastral records (Excel/CSV) into interactive, multi-layered geospatial HTML maps. Designed a high-throughput Python backend utilizing a 20-worker thread pool that queries the Spanish Directorate General of Cadastre WFS API concurrently, cutting batch query execution time by over 90%. Outputs enriched GeoJSON spatial polygons with real-time layer toggles and area calculations.',
             details: [
               'Engineered a multi-threaded Python backend with 20 concurrent workers querying the Spanish Cadastre WFS API, cutting bulk query times by over 90%.',
-              'Processed raw tabular cadastral records with Pandas into enriched GeoJSON spatial polygons with customizable layer toggles and real-time filtering.'
+              'Processed raw tabular cadastral records with Pandas into enriched GeoJSON spatial polygons with customizable layer toggles and real-time filtering.',
+              'Rendered responsive, interactive web map interfaces using Leaflet.js with dynamic filtering and surface area calculators.',
+              'Integrated OGC compliant WFS standards for automated spatial boundaries and administrative parcel attributes.'
             ],
-            techStack: ['Python 3', 'Pandas', 'Leaflet.js', 'GeoJSON', 'Cadastre WFS API', 'Multi-Threading'],
+            techStack: ['Python 3', 'Pandas', 'Leaflet.js', 'GeoJSON', 'Cadastre WFS API', 'Multi-Threading', 'GIS'],
             link: 'https://github.com/Sacasa01/legacy-land-mapper',
             linkText: 'View Repository ↗'
           },
           {
-            title: 'MCP Agentic Tools & AI Integrations',
-            subtitle: 'Model Context Protocol & Autonomous Tool Calling',
-            badge: 'Architecture & System Integration',
-            period: '2026',
-            summary: 'Engineered agentic systems connecting Large Language Models to local tools, vector databases, and databases via MCP protocols.',
+            id: 'homelab',
+            title: 'HomeLab & Cloud Ecosystem',
+            subtitle: 'Enterprise Self-Hosted Infrastructure & GitOps',
+            badge: 'DevOps & Cloud · Zero-Trust',
+            metricBadge: '★ 4.9 · 99.9% Up',
+            period: '2025 – 2026',
+            image: '/assets/projects/homelab.jpg',
+            accentColor: '#0284C7',
+            glowColor: 'rgba(2, 132, 199, 0.55)',
+            summary: 'Production-grade local cloud infrastructure featuring GitOps CI/CD automation, Tailscale Zero-Trust mesh network, and GPU-accelerated local AI models.',
+            fullDescription: 'Transformed dedicated bare-metal hardware into an enterprise-grade self-hosted cloud server following modern DevOps engineering practices. Features declarative multi-container service orchestration with Docker Compose v2, continuous GitOps deployment via GitHub Actions, and an encrypted peer-to-peer Zero-Trust mesh network powered by Tailscale (eliminating router port forwarding). Hosts local AI inference pipelines (Ollama, Whisper) accelerated by dedicated NVIDIA GPU for private LLM workflows.',
             details: [
-              'Built custom Model Context Protocol (MCP) servers enabling LLMs to securely execute deterministic database operations and code validation.',
-              'Configured Human-in-the-Loop approval barriers to prevent unauthorized destructive commands in production agents.'
+              'Implemented automated GitOps workflows with GitHub Actions: repository commits automatically trigger deployment and health checks.',
+              'Configured encrypted Zero-Trust peer-to-peer mesh network with Tailscale for secure worldwide remote access without exposed ports.',
+              'Deployed GPU-accelerated private AI services (Ollama, Whisper) for zero-latency local speech-to-text and LLM inference.',
+              'Structured modular Docker Compose architecture with automated volume backups, reverse proxying, and health monitoring.'
             ],
-            techStack: ['Model Context Protocol (MCP)', 'Python', 'Function Calling', 'Vector DBs', 'System Integration'],
-            link: 'https://github.com/Sacasa01',
-            linkText: 'Explore GitHub Profile ↗'
+            techStack: ['Docker Compose v2', 'Linux / Proxmox', 'Tailscale Zero-Trust', 'Ollama / GPU AI', 'CI/CD GitOps', 'Nginx'],
+            link: 'https://github.com/Sacasa01/homelab-ecosystem',
+            linkText: 'View Infrastructure ↗'
+          }
+        ]
+      },
+      skills: {
+        sectionTitle: 'Skills & Tooling',
+        sectionSubtitle: 'Technical Capabilities & Stack',
+        sectionDescription: 'Curated technical competencies spanning core programming languages, frameworks, cloud infrastructure, AI architectures, and spoken languages.',
+        items: [
+          {
+            id: 'python',
+            name: 'Python 3',
+            category: 'core',
+            categoryLabel: 'Core Backend & AI',
+            subtitle: 'FastAPI · PyTorch · Pandas · MONAI',
+            badge: 'Advanced'
+          },
+          {
+            id: 'php',
+            name: 'PHP 8',
+            category: 'core',
+            categoryLabel: 'Core Backend',
+            subtitle: 'Symfony 7 · Clean Architecture · RBAC',
+            badge: 'Advanced'
+          },
+          {
+            id: 'typescript',
+            name: 'TypeScript',
+            category: 'core',
+            categoryLabel: 'Frontend & Node',
+            subtitle: 'Angular 19 · Strict Typings · Node.js',
+            badge: 'Advanced'
+          },
+          {
+            id: 'html-css',
+            name: 'HTML5 & CSS3',
+            category: 'core',
+            categoryLabel: 'Web Standards',
+            subtitle: 'Semantic HTML · Tailwind CSS · Responsive',
+            badge: 'Expert'
+          },
+          {
+            id: 'angular',
+            name: 'Angular 19',
+            category: 'frameworks',
+            categoryLabel: 'Frontend Architecture',
+            subtitle: 'Standalone Components · Signals · RxJS',
+            badge: 'v19 Standalone'
+          },
+          {
+            id: 'symfony-fastapi',
+            name: 'Symfony & FastAPI',
+            category: 'frameworks',
+            categoryLabel: 'API Microservices',
+            subtitle: 'RESTful Endpoints · Async High-Speed APIs',
+            badge: 'Production'
+          },
+          {
+            id: 'docker',
+            name: 'Docker & Compose',
+            category: 'cloud',
+            categoryLabel: 'DevOps & Containers',
+            subtitle: 'Multi-stage builds · Orchestration · CI/CD',
+            badge: 'Production'
+          },
+          {
+            id: 'aws',
+            name: 'AWS Cloud',
+            category: 'cloud',
+            categoryLabel: 'Cloud Platform',
+            subtitle: 'EC2 · S3 · RDS · Lambda · Bedrock',
+            badge: 'Practitioner'
+          },
+          {
+            id: 'sql',
+            name: 'MySQL & PostgreSQL',
+            category: 'frameworks',
+            categoryLabel: 'Relational & Vector DBs',
+            subtitle: '14-Table Normalized Schemas · pgvector',
+            badge: 'Database'
+          },
+          {
+            id: 'mcp-ai',
+            name: 'MCP & AI Agents',
+            category: 'ai',
+            categoryLabel: 'Autonomous Systems',
+            subtitle: 'Model Context Protocol · Function Calling',
+            badge: 'Agentic AI'
+          },
+          {
+            id: 'git-cicd',
+            name: 'Git & GitHub Actions',
+            category: 'cloud',
+            categoryLabel: 'Version Control & CI/CD',
+            subtitle: 'GitOps · Automated Pipelines · Testing',
+            badge: 'GitOps'
+          },
+          {
+            id: 'lang-en',
+            name: 'English',
+            category: 'languages',
+            categoryLabel: 'Spoken Language',
+            subtitle: 'C1 Certified · IELTS 8.0 · Full Professional',
+            badge: 'C1 Proficiency'
+          },
+          {
+            id: 'lang-es',
+            name: 'Spanish',
+            category: 'languages',
+            categoryLabel: 'Spoken Language',
+            subtitle: 'Native Speaker · Bilingual Fluency',
+            badge: 'Native'
+          },
+          {
+            id: 'lang-va',
+            name: 'Valencian / Catalan',
+            category: 'languages',
+            categoryLabel: 'Spoken Language',
+            subtitle: 'Native / Bilingual Competence',
+            badge: 'Native'
           }
         ]
       },
       education: {
         sectionTitle: 'Education',
-        sectionSubtitle: 'Academic Credentials & Formal Qualifications',
+        sectionSubtitle: 'Academic Progression · Bottom-to-Top Timeline',
+        timelineBadge: 'Ascending Chronology (Bottom = Oldest → Top = Newest)',
         items: [
           {
             degree: 'BSc (Hons) in Computer Science (Top-Up)',
             institution: 'Canterbury Christ Church University (via MSMK University, Madrid)',
             period: 'Sep 2026 – Jun 2027',
-            badge: 'Taught 100% in English',
+            badge: 'Taught 100% in English · Current',
+            status: 'Current Degree',
+            step: '02',
+            position: 'top',
             highlights: [
               'Specializations: Advanced Software Engineering, Cloud Systems Architecture, Cybersecurity Protocols, and AI System Integration.',
               'Dual British/Spanish university collaboration preparing for high-impact software engineering roles.'
@@ -135,6 +364,9 @@ export class AppComponent {
             institution: 'La Florida Universitària, Valencia',
             period: '2024 – 2026',
             badge: 'Grade: 7.00 / 10 · Completed',
+            status: 'Foundation Degree',
+            step: '01',
+            position: 'bottom',
             highlights: [
               'Rigorous focus on enterprise backend architectures (PHP 8/Symfony 7, MySQL relational schemas).',
               'Modern frontend engineering with TypeScript/Angular, clean architecture principles, and containerized Docker environments.'
@@ -150,46 +382,44 @@ export class AppComponent {
             title: 'English: C1 Certified (IELTS 8.0)',
             issuer: 'Official IELTS Examination',
             year: '2026',
-            description: 'Advanced academic and professional English fluency for international communication and engineering leadership.'
-          },
-          {
-            title: 'AWS Certified Cloud Practitioner',
-            issuer: 'Amazon Web Services (AWS)',
-            year: '2025',
-            description: 'Cloud architecture fundamentals, security compliance, serverless primitives, and deployment strategies.'
+            badge: 'C1 Fluent · CEFR',
+            description: 'Advanced academic and professional English fluency for international communication, technical interviews, and engineering leadership.'
           },
           {
             title: 'Google: Artificial Intelligence & Productivity',
-            issuer: 'Santander Open Academy',
+            issuer: 'Santander Open Academy & Google',
             year: 'Jan 2025',
-            description: 'Modern generative AI integration, prompt design, and automated developer productivity workflows.'
+            badge: 'Google AI · Certified',
+            description: 'Modern generative AI integration, prompt design architectures, and automated developer productivity workflows.'
           },
           {
-            title: 'Cloud Computing: Applied Infrastructure & Deployment',
-            issuer: 'Florida Universitària',
-            year: 'May 2026',
-            description: 'Practical Linux server administration, container networking, and continuous deployment workflows.'
-          },
-          {
-            title: 'Target Credential: AWS Certified AI Practitioner (AIF-C01)',
-            issuer: 'AWS Cloud & Bedrock Track',
-            year: 'In Progress (2026)',
-            description: 'Deepening production enterprise machine learning and foundation model deployments with Amazon Bedrock.'
+            title: 'AWS: Cloud Workshop & Practitioner Fundamentals',
+            issuer: 'Amazon Web Services (AWS)',
+            year: '2025',
+            badge: 'AWS Cloud · Workshop',
+            description: 'Hands-on cloud architecture workshop covering AWS core services (EC2, S3, RDS, Lambda), security compliance, and deployment strategies.'
           }
         ]
       },
       contact: {
         sectionTitle: 'Contact',
-        sectionSubtitle: "Let's Build Something Impactful",
-        heading: 'Ready to connect?',
-        text: 'I am actively seeking software engineering and AI systems integration opportunities in Dublin, Ireland or international remote. Whether you have a challenging backend role, an AI pipeline project, or simply want to chat technology, my inbox is open.',
+        sectionSubtitle: 'Direct Channel & Opportunities',
+        heading: "Let's Build Something Impactful",
+        subheading: 'Open for Software Engineering and AI Systems Integration roles in Dublin, Ireland or International Remote.',
+        text: 'Whether you have an engineering opening, a clinical AI pipeline challenge, or want to discuss technical architecture, my inbox is always open. Feel free to connect directly through any channel below.',
+        email: 'santiagocsdev@gmail.com',
+        phone: '+34 654 763 788',
+        location: 'Dublin, Ireland',
+        locationBadge: 'Available On-Site (Sep 2026) / International Remote',
         emailLabel: 'Direct Email',
-        phoneLabel: 'Direct Phone',
-        locationLabel: 'Base Location',
+        phoneLabel: 'Direct Phone / WhatsApp',
+        locationLabel: 'Target Location',
         copyEmail: 'Copy Email',
-        emailCopied: 'Copied to clipboard!',
-        sendEmail: 'Send Email Message',
-        downloadCv: 'Download Curriculum Vitae (PDF)'
+        emailCopied: 'Copied to Clipboard!',
+        sendEmail: 'Send Direct Email',
+        callWhatsapp: 'Call / WhatsApp',
+        socialsTitle: 'Professional Profiles',
+        downloadCv: 'Curriculum Vitae (PDF)'
       },
       footer: {
         rights: 'All rights reserved.',
@@ -200,6 +430,7 @@ export class AppComponent {
       nav: {
         experience: 'Experiencia',
         projects: 'Proyectos',
+        skills: 'Habilidades',
         education: 'Educación',
         certifications: 'Certificaciones',
         contact: 'Contacto'
@@ -236,16 +467,72 @@ export class AppComponent {
       projects: {
         sectionTitle: 'Proyectos Destacados',
         sectionSubtitle: 'Arquitectura de Sistemas y Ejecución Técnica',
+        sectionDescription: 'Explora mis 5 proyectos insignia en producción, IA clínica, procesamiento geoespacial e infraestructura. Pasa el cursor para elevar las cartas y pulsa para abrir la ficha técnica completa.',
+        inspectPrompt: 'Ver Ficha',
+        highlightsTitle: 'Hitos de Ingeniería y Arquitectura',
+        techStackTitle: 'Tecnologías y Arquitectura',
+        modalClose: 'Cerrar Ficha',
         items: [
           {
+            id: 'agentic-mcp',
+            title: 'Herramientas Agénticas MCP',
+            subtitle: 'Model Context Protocol y Ejecución de Herramientas IA',
+            badge: 'Sistemas Agénticos · Arquitectura',
+            metricBadge: '★ 5.0 · MCP',
+            period: '2026',
+            image: '/assets/projects/agentic-mcp.jpg',
+            accentColor: '#7C3AED',
+            glowColor: 'rgba(124, 58, 237, 0.55)',
+            summary: 'Sistemas agénticos que conectan Modelos de Lenguaje (LLMs) con herramientas locales, bases de datos vectoriales y APIs mediante MCP.',
+            fullDescription: 'Diseño e implementación de una red de servidores agénticos conformes al estándar abierto Model Context Protocol (MCP). Permite a modelos de lenguaje (LLMs) interactuar de manera segura y determinista con el sistema operativo, bases de datos vectoriales (Qdrant, pgvector) y servicios corporativos. Incorpora barreras de validación Human-in-the-Loop para evitar comandos destructivos no supervisados, con soporte para streaming y orquestación ReAct.',
+            details: [
+              'Creación de servidores MCP personalizados que permiten a los LLMs ejecutar de forma segura operaciones deterministas en bases de datos y validación de código.',
+              'Configuración de barreras de aprobación Human-in-the-Loop para evitar comandos destructivos no supervisados en entornos de producción.',
+              'Integración con bases de datos vectoriales (Qdrant / pgvector) para memoria a largo plazo y recuperación semántica de contexto.',
+              'Diseño de grafos de ejecución multi-agente con patrones ReAct para flujos autónomos de ingeniería de software.'
+            ],
+            techStack: ['Model Context Protocol (MCP)', 'Python', 'FastAPI', 'Function Calling', 'Vector DBs', 'Integración de Sistemas'],
+            link: 'https://github.com/Sacasa01',
+            linkText: 'Ver Perfil de GitHub ↗'
+          },
+          {
+            id: 'fertoolity',
+            title: 'Fertoolity',
+            subtitle: 'IA Clínica y Diagnóstico por Imagen Médica',
+            badge: 'Hospital La Fe · Prácticas FCT',
+            metricBadge: '★ 4.9 · MONAI',
+            period: 'Mar 2026 – Jun 2026',
+            image: '/assets/projects/fertoolity.jpg',
+            accentColor: '#0D9488',
+            glowColor: 'rgba(13, 148, 136, 0.55)',
+            summary: 'Pipeline de visión por computador e inferencia de IA en tiempo real para segmentación diagnóstica en entornos clínicos de alta exigencia.',
+            fullDescription: 'Desarrollado durante las prácticas curriculares en el Hospital Universitari i Politècnic La Fe de Valencia. El sistema implementa un flujo asistido por IA supervisado (Human-in-the-Loop) para el procesamiento, normalización y segmentación de imágenes médicas. Integra microservicios de inferencia asíncronos de baja latencia con FastAPI respaldados por PyTorch y la librería biomédica MONAI, permitiendo a especialistas clínicos validar anotaciones y acelerar diagnósticos con fiabilidad.',
+            details: [
+              'Implementación de flujos de trabajo supervisados Human-in-the-Loop para segmentación de imagen médica, normalización y anotación de datasets para fine-tuning de modelos.',
+              'Desarrollo de microservicios de preprocesamiento y endpoints REST con FastAPI utilizando Python, OpenCV, PyTorch y MONAI para inferencia en tiempo real.',
+              'Inferencia en tiempo real de baja latencia optimizada para cortes tomográficos y de ultrasonido de alta resolución.',
+              'Colaboración directa con especialistas clínicos del Hospital La Fe para traducir requerimientos de datos diagnósticos en componentes de software robustos.'
+            ],
+            techStack: ['Python 3', 'FastAPI', 'PyTorch', 'MONAI', 'OpenCV', 'Docker', 'APIs REST', 'Imagen Médica'],
+            link: 'https://github.com/Sacasa01/Fertoolity',
+            linkText: 'Ver Proyecto Clínico ↗'
+          },
+          {
+            id: 'fitforge',
             title: 'FitForge',
             subtitle: 'Plataforma Full-Stack de Fitness y Motor de Recomendación',
-            badge: 'Proyecto Final de Grado (TFG) · Único Desarrollador',
+            badge: 'Proyecto TFG · Único Arquitecto',
+            metricBadge: '★ 5.0 · 33 APIs',
             period: '2025 – 2026',
+            image: '/assets/projects/fitforge.jpg',
+            accentColor: '#D7340B',
+            glowColor: 'rgba(215, 52, 11, 0.60)',
             summary: 'SPA completa impulsada por un algoritmo propio de recomendación de entrenamientos y planes nutricionales.',
+            fullDescription: 'Desarrollado como Proyecto de Fin de Grado (TFG) con máxima calificación. Cuenta con una arquitectura desacoplada que integra una API REST en Symfony 7 con 33 endpoints securizados, autenticación JWT stateless y control de acceso basado en roles (RBAC). Una base de datos relacional MySQL normalizada de 14 tablas respalda algoritmos propios de recomendación física y nutricional. El frontend reactivo en Angular 19 standalone aprovecha Signals para una experiencia ultrarrápida, orquestado íntegramente mediante Docker Compose.',
             details: [
               'Arquitectura de base de datos MySQL normalizada de 14 tablas y API REST con Symfony 7 (33 endpoints, autenticación JWT y control de acceso RBAC).',
-              'Frontend desacoplado en Angular 19 standalone con Signals reactivos y componentes modulares.',
+              'Desarrollo de motor de recomendación algorítmico adaptativo para rutinas de entrenamiento y cálculo de macronutrientes.',
+              'Frontend desacoplado en Angular 19 standalone con Signals reactivos y componentes modulares bajo arquitectura limpia.',
               'Entorno completo contenerizado con Docker Compose (PHP-FPM, Nginx, MySQL) siguiendo un flujo estricto de ramas Git.'
             ],
             techStack: ['PHP 8.2', 'Symfony 7', 'Angular 19', 'MySQL', 'Docker Compose', 'JWT Auth', 'RBAC', 'API REST'],
@@ -253,44 +540,183 @@ export class AppComponent {
             linkText: 'Ver Repositorio ↗'
           },
           {
+            id: 'land-mapper',
             title: 'Legacy Land Mapper',
-            subtitle: 'Herramienta de Automatización Geoespacial Catastral',
-            badge: 'Proyecto Personal · Único Desarrollador',
+            subtitle: 'Motor de Automatización Geoespacial Catastral',
+            badge: 'GIS Geoespacial · 20 Workers',
+            metricBadge: '★ 4.8 · >90% Opt',
             period: '2025',
+            image: '/assets/projects/land-mapper.jpg',
+            accentColor: '#16A34A',
+            glowColor: 'rgba(22, 163, 74, 0.55)',
             summary: 'Pipeline de automatización geoespacial que convierte registros catastrales de Excel/CSV en mapas HTML interactivos y responsivos.',
+            fullDescription: 'Herramienta de automatización territorial nacida para resolver la gestión de parcelas y fincas rústicas en Galicia. Transforma registros tabulares complejos en mapas interactivos con polígonos catastrales vectoriales. Diseñado con un worker pool multihilo en Python (20 hilos concurrentes) que consulta la API WFS oficial del Catastro de España, reduciendo el tiempo de procesamiento masivo en más del 90% y produciendo GeoJSON interactivo sobre Leaflet.js con cálculo dinámico de áreas y filtros.',
             details: [
               'Backend multihilo en Python con 20 workers concurrentes consultando la API WFS del Catastro, reduciendo tiempos de consulta en más del 90%.',
-              'Procesamiento de datos espaciales crudos con Pandas hacia geometrías GeoJSON enriquecidas con filtrado y capas en tiempo real.'
+              'Procesamiento de datos espaciales crudos con Pandas hacia geometrías GeoJSON enriquecidas con filtrado y capas en tiempo real.',
+              'Visualizador web interactivo con Leaflet.js con capas activas, filtros dinámicos y cálculo métrico de superficies.',
+              'Integración directa con especificaciones WFS/OGC de la Dirección General del Catastro del Ministerio de Hacienda.'
             ],
-            techStack: ['Python 3', 'Pandas', 'Leaflet.js', 'GeoJSON', 'API WFS Catastro', 'Multithreading'],
+            techStack: ['Python 3', 'Pandas', 'Leaflet.js', 'GeoJSON', 'API WFS Catastro', 'Multithreading', 'GIS'],
             link: 'https://github.com/Sacasa01/legacy-land-mapper',
             linkText: 'Ver Repositorio ↗'
           },
           {
-            title: 'Herramientas Agénticas MCP e Integración IA',
-            subtitle: 'Model Context Protocol y Ejecución de Herramientas Autónomas',
-            badge: 'Arquitectura e Integración de Sistemas',
-            period: '2026',
-            summary: 'Sistemas agénticos que conectan Modelos de Lenguaje (LLMs) con herramientas locales, bases de datos vectoriales y APIs mediante MCP.',
+            id: 'homelab',
+            title: 'Ecosistema HomeLab y Cloud',
+            subtitle: 'Infraestructura Empresarial Self-Hosted y GitOps',
+            badge: 'DevOps y Cloud · Zero-Trust',
+            metricBadge: '★ 4.9 · 99.9% Up',
+            period: '2025 – 2026',
+            image: '/assets/projects/homelab.jpg',
+            accentColor: '#0284C7',
+            glowColor: 'rgba(2, 132, 199, 0.55)',
+            summary: 'Infraestructura de servidor local de nivel empresarial con arquitectura GitOps, red mesh segura Zero-Trust, Docker modular e IA local acelerada por GPU.',
+            fullDescription: 'Transformación de hardware dedicado en un servidor doméstico de categoría empresarial aplicando metodologías DevOps profesionales. Cuenta con orquestación declarativa de microservicios con Docker Compose v2, despliegues continuos automatizados con GitHub Actions (GitOps) y red mesh privada cifrada Zero-Trust con Tailscale (sin apertura de puertos en el router). Aloja servicios de inferencia de IA local (Ollama, Whisper) acelerados por GPU NVIDIA para computación privada sin consumo de APIs de pago.',
             details: [
-              'Creación de servidores MCP personalizados que permiten a los LLMs ejecutar de forma segura operaciones deterministas en bases de datos y validación de código.',
-              'Configuración de barreras de aprobación Human-in-the-Loop para evitar comandos destructivos no supervisados en entornos de producción.'
+              'Flujo de trabajo GitOps con GitHub Actions: validación automática y despliegue continuo de contenedores ante cada commit.',
+              'Red mallada privada cifrada punto a punto con Tailscale para acceso global seguro sin comprometer la seguridad perimetral.',
+              'Inferencia de IA local privada (Ollama, Whisper) acelerada por GPU NVIDIA para transcripción de audio y modelos de lenguaje.',
+              'Arquitectura modular con Docker Compose, proxy inverso securizado, monitorización en tiempo real y copias de seguridad automatizadas.'
             ],
-            techStack: ['Model Context Protocol (MCP)', 'Python', 'Function Calling', 'Vector DBs', 'Integración de Sistemas'],
-            link: 'https://github.com/Sacasa01',
-            linkText: 'Ver Perfil de GitHub ↗'
+            techStack: ['Docker Compose v2', 'Linux / Proxmox', 'Tailscale Zero-Trust', 'Ollama / GPU AI', 'CI/CD GitOps', 'Nginx'],
+            link: 'https://github.com/Sacasa01/homelab-ecosystem',
+            linkText: 'Ver Infraestructura ↗'
+          }
+        ]
+      },
+      skills: {
+        sectionTitle: 'Habilidades y Tecnologías',
+        sectionSubtitle: 'Capacidades Técnicas y Stack',
+        sectionDescription: 'Competencias técnicas seleccionadas abarcando lenguajes troncales, frameworks, infraestructura cloud, arquitecturas de IA e idiomas.',
+        items: [
+          {
+            id: 'python',
+            name: 'Python 3',
+            category: 'core',
+            categoryLabel: 'Backend Troncal e IA',
+            subtitle: 'FastAPI · PyTorch · Pandas · MONAI',
+            badge: 'Avanzado'
+          },
+          {
+            id: 'php',
+            name: 'PHP 8',
+            category: 'core',
+            categoryLabel: 'Backend Troncal',
+            subtitle: 'Symfony 7 · Clean Architecture · RBAC',
+            badge: 'Avanzado'
+          },
+          {
+            id: 'typescript',
+            name: 'TypeScript',
+            category: 'core',
+            categoryLabel: 'Frontend y Node',
+            subtitle: 'Angular 19 · Tipado Estricto · Node.js',
+            badge: 'Avanzado'
+          },
+          {
+            id: 'html-css',
+            name: 'HTML5 y CSS3',
+            category: 'core',
+            categoryLabel: 'Estándares Web',
+            subtitle: 'HTML Semántico · Tailwind CSS · Responsive',
+            badge: 'Experto'
+          },
+          {
+            id: 'angular',
+            name: 'Angular 19',
+            category: 'frameworks',
+            categoryLabel: 'Arquitectura Frontend',
+            subtitle: 'Componentes Standalone · Signals · RxJS',
+            badge: 'v19 Standalone'
+          },
+          {
+            id: 'symfony-fastapi',
+            name: 'Symfony y FastAPI',
+            category: 'frameworks',
+            categoryLabel: 'Microservicios y APIs',
+            subtitle: 'Endpoints RESTful · Inferencia Asíncrona',
+            badge: 'Producción'
+          },
+          {
+            id: 'docker',
+            name: 'Docker y Compose',
+            category: 'cloud',
+            categoryLabel: 'Contenedores y DevOps',
+            subtitle: 'Builds Multi-etapa · Redes · CI/CD',
+            badge: 'Producción'
+          },
+          {
+            id: 'aws',
+            name: 'AWS Cloud',
+            category: 'cloud',
+            categoryLabel: 'Plataforma Cloud',
+            subtitle: 'EC2 · S3 · RDS · Lambda · Bedrock',
+            badge: 'Practitioner'
+          },
+          {
+            id: 'sql',
+            name: 'MySQL y PostgreSQL',
+            category: 'frameworks',
+            categoryLabel: 'Bases de Datos Relacionales y Vectoriales',
+            subtitle: 'Esquemas Normalizados (14 tablas) · pgvector',
+            badge: 'Base de Datos'
+          },
+          {
+            id: 'mcp-ai',
+            name: 'MCP y Agentes de IA',
+            category: 'ai',
+            categoryLabel: 'Sistemas Autónomos',
+            subtitle: 'Model Context Protocol · Ejecución de Herramientas',
+            badge: 'IA Agéntica'
+          },
+          {
+            id: 'git-cicd',
+            name: 'Git y GitHub Actions',
+            category: 'cloud',
+            categoryLabel: 'Control de Versiones y CI/CD',
+            subtitle: 'GitOps · Pipelines Automatizados · Testing',
+            badge: 'GitOps'
+          },
+          {
+            id: 'lang-en',
+            name: 'Inglés',
+            category: 'languages',
+            categoryLabel: 'Idioma',
+            subtitle: 'C1 Acreditado · IELTS 8.0 · Profesional Fluido',
+            badge: 'C1 Avanzado'
+          },
+          {
+            id: 'lang-es',
+            name: 'Español',
+            category: 'languages',
+            categoryLabel: 'Idioma',
+            subtitle: 'Hablante Nativo · Dominio Completo',
+            badge: 'Nativo'
+          },
+          {
+            id: 'lang-va',
+            name: 'Valencian / Catalan',
+            category: 'languages',
+            categoryLabel: 'Idioma',
+            subtitle: 'Competencia Nativa / Bilingüe',
+            badge: 'Nativo'
           }
         ]
       },
       education: {
         sectionTitle: 'Formación Académica',
-        sectionSubtitle: 'Titulaciones Oficiales y Acreditaciones',
+        sectionSubtitle: 'Progresión Académica · Línea de Tiempo de Abajo hacia Arriba',
+        timelineBadge: 'Cronología Ascendente (Abajo = Más antigua → Arriba = Más nueva)',
         items: [
           {
             degree: 'BSc (Hons) in Computer Science (Top-Up)',
             institution: 'Canterbury Christ Church University (sede Madrid en MSMK University)',
             period: 'Sep 2026 – Jun 2027',
-            badge: 'Impartido 100% en Inglés',
+            badge: 'Impartido 100% en Inglés · En Curso',
+            status: 'Titulación Universitaria',
+            step: '02',
+            position: 'top',
             highlights: [
               'Especializaciones: Advanced Software Engineering, Cloud Systems, Cybersecurity y AI System Integration.',
               'Formación universitaria británica y española orientada a roles de ingeniería de software de alto impacto.'
@@ -301,6 +727,9 @@ export class AppComponent {
             institution: 'La Florida Universitària, Valencia',
             period: '2024 – 2026',
             badge: 'Nota Media: 7.00 / 10 · Finalizado',
+            status: 'Hito Fundacional',
+            step: '01',
+            position: 'bottom',
             highlights: [
               'Enfoque riguroso en arquitecturas empresariales de backend (PHP 8/Symfony 7, esquemas relacionales MySQL/PostgreSQL).',
               'Ingeniería frontend moderna con TypeScript/Angular, principios Clean Code y entornos contenerizados con Docker.'
@@ -313,49 +742,47 @@ export class AppComponent {
         sectionSubtitle: 'Competencias Validadas y Formación Continua',
         items: [
           {
-            title: 'Inglés: C1 Certified (IELTS 8.0)',
+            title: 'Inglés: Certificación C1 (IELTS 8.0)',
             issuer: 'Official IELTS Examination',
             year: '2026',
+            badge: 'C1 Fluido · MCER',
             description: 'Fluidez académica y profesional avanzada en inglés técnico para liderazgo y comunicación en equipos internacionales.'
           },
           {
-            title: 'AWS Certified Cloud Practitioner',
-            issuer: 'Amazon Web Services (AWS)',
-            year: '2025',
-            description: 'Fundamentos de arquitectura en la nube, cumplimiento de seguridad, servicios serverless y despliegues.'
-          },
-          {
             title: 'Google: Inteligencia Artificial y Productividad',
-            issuer: 'Santander Open Academy',
+            issuer: 'Santander Open Academy y Google',
             year: 'Ene 2025',
+            badge: 'Google AI · Certificado',
             description: 'Integración de IA generativa, diseño de prompts y automatización de flujos de productividad de desarrollo.'
           },
           {
-            title: 'Cloud Computing: Infraestructura y Despliegue Aplicado',
-            issuer: 'Florida Universitària',
-            year: 'May 2026',
-            description: 'Administración práctica de servidores Linux, redes de contenedores y flujos de despliegue continuo.'
-          },
-          {
-            title: 'Objetivo Activo: AWS Certified AI Practitioner (AIF-C01)',
-            issuer: 'AWS Cloud & Bedrock Track',
-            year: 'En Curso (2026)',
-            description: 'Profundización en modelos fundacionales y machine learning empresarial en producción con Amazon Bedrock.'
+            title: 'AWS: Taller Cloud y Fundamentos Practitioner',
+            issuer: 'Amazon Web Services (AWS)',
+            year: '2025',
+            badge: 'AWS Cloud · Taller',
+            description: 'Taller práctico de arquitectura cloud en AWS (EC2, S3, RDS, Lambda), seguridad en la nube y estrategias de despliegue en producción.'
           }
         ]
       },
       contact: {
         sectionTitle: 'Contacto',
-        sectionSubtitle: 'Construyamos Algo de Impacto',
-        heading: '¿Hablamos?',
-        text: 'Estoy activamente buscando oportunidades como ingeniero de software e integrador de sistemas de IA en Dublín, Irlanda o en remoto internacional. Si tienes un reto técnico en backend, un pipeline de IA que construir o simplemente quieres conversar sobre ingeniería, contáctame.',
+        sectionSubtitle: 'Canal Directo y Oportunidades',
+        heading: 'Construyamos Algo de Impacto',
+        subheading: 'Disponible para roles de ingeniería de software e integración de sistemas de IA en Dublín, Irlanda o remoto internacional.',
+        text: 'Si buscas incorporar talento técnico en backend, construir pipelines de IA o conversar sobre arquitectura de sistemas, mis vías de contacto están abiertas. Escríbeme directamente.',
+        email: 'santiagocsdev@gmail.com',
+        phone: '+34 654 763 788',
+        location: 'Dublín, Irlanda',
+        locationBadge: 'Disponible On-Site (Sep 2026) / Remoto Internacional',
         emailLabel: 'Correo Electrónico',
-        phoneLabel: 'Teléfono Directo',
-        locationLabel: 'Ubicación',
+        phoneLabel: 'Teléfono / WhatsApp',
+        locationLabel: 'Ubicación Objetivo',
         copyEmail: 'Copiar Correo',
         emailCopied: '¡Copiado al portapapeles!',
-        sendEmail: 'Enviar Mensaje',
-        downloadCv: 'Descargar Curriculum Vitae (PDF)'
+        sendEmail: 'Enviar Mensaje Directo',
+        callWhatsapp: 'Llamar o WhatsApp',
+        socialsTitle: 'Perfiles y Código',
+        downloadCv: 'Curriculum Vitae (PDF)'
       },
       footer: {
         rights: 'Todos los derechos reservados.',
@@ -387,5 +814,26 @@ export class AppComponent {
     setTimeout(() => {
       this.copiedEmail.set(false);
     }, 2500);
+  }
+
+  @HostListener('window:keydown.escape')
+  handleEscape() {
+    if (this.selectedProject()) {
+      this.closeProjectModal();
+    }
+  }
+
+  openProjectModal(project: ProjectItem) {
+    this.selectedProject.set(project);
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  closeProjectModal() {
+    this.selectedProject.set(null);
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = '';
+    }
   }
 }
