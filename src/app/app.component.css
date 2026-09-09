@@ -1,71 +1,76 @@
-/* ═══════════════════════════════════════════════════ */
-/* 🧊 TRUE FROSTED GLASS — See-Through Blur Effect    */
-/* ═══════════════════════════════════════════════════ */
-.glass-panel {
-  background: rgba(8, 10, 20, 0.42);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  box-shadow:
-    0 24px 48px -12px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.10);
-  border-radius: 22px;
+/* ═══════════════════════════════════════════════ */
+/* Typography                                      */
+/* ═══════════════════════════════════════════════ */
+.font-anton {
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
 }
 
-.glass-pill {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 9999px;
-  transition: all 0.2s ease;
-}
-.glass-pill:hover {
-  background: rgba(255, 255, 255, 0.14);
-  border-color: rgba(255, 255, 255, 0.35);
+.font-body {
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
-/* ═══════════════════════════════════════════════════ */
-/* 🎯 Hotspot Beacon — Double Ring Pulse               */
-/* ═══════════════════════════════════════════════════ */
-@keyframes ping1 {
-  0%   { transform: scale(1); opacity: 0.65; }
-  70%  { transform: scale(2.6); opacity: 0; }
-  100% { transform: scale(2.6); opacity: 0; }
-}
-@keyframes ping2 {
-  0%   { transform: scale(1); opacity: 0.5; }
-  70%  { transform: scale(2.6); opacity: 0; }
-  100% { transform: scale(2.6); opacity: 0; }
-}
-.hotspot-ring1 {
-  animation: ping1 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-.hotspot-ring2 {
-  animation: ping2 2.2s cubic-bezier(0, 0, 0.2, 1) infinite 0.55s;
+/* ═══════════════════════════════════════════════ */
+/* Theme transition                                */
+/* ═══════════════════════════════════════════════ */
+.theme-transition {
+  transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ═══════════════════════════════════════════════════ */
-/* 🌐 SVG Connector Line Draw                         */
-/* ═══════════════════════════════════════════════════ */
-@keyframes connectorDraw {
-  from { stroke-dashoffset: 500; }
-  to   { stroke-dashoffset: 0; }
-}
-.animate-connector {
-  stroke-dasharray: 500;
-  stroke-dashoffset: 500;
-  animation: connectorDraw 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+/* ═══════════════════════════════════════════════ */
+/* Hero character image & depth shadows            */
+/* ═══════════════════════════════════════════════ */
+.character-img {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, filter;
 }
 
-/* ═══════════════════════════════════════════════════ */
-/* 🪟 Panel Slide Animations                          */
-/* ═══════════════════════════════════════════════════ */
-@keyframes slideFromLeft {
-  0%   { opacity: 0; transform: translateX(-24px) scale(0.97); }
-  100% { opacity: 1; transform: translateX(0) scale(1); }
+.character-img:hover {
+  transform: scale(1.025) translateY(-6px);
 }
-@keyframes slideFromRight {
-  0%   { opacity: 0; transform: translateX(24px) scale(0.97); }
-  100% { opacity: 1; transform: translateX(0) scale(1); }
+
+/* Light Mode: Soft directional natural ambient depth */
+.char-shadow-light {
+  filter: drop-shadow(0 22px 28px rgba(0, 0, 0, 0.18))
+          drop-shadow(0 8px 12px rgba(0, 0, 0, 0.12));
 }
-.slide-left  { animation: slideFromLeft  0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-.slide-right { animation: slideFromRight 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+/* Dark Mode: Deep occlusion shadow + soft ambient rim separation */
+.char-shadow-dark {
+  filter: drop-shadow(0 28px 40px rgba(0, 0, 0, 0.85))
+          drop-shadow(0 4px 12px rgba(0, 0, 0, 0.60))
+          drop-shadow(0 0 45px rgba(255, 255, 255, 0.05));
+}
+
+/* ═══════════════════════════════════════════════ */
+/* Floor Grounding Contact Shadows                 */
+/* ═══════════════════════════════════════════════ */
+.character-floor-shadow {
+  width: 78%;
+  height: 26px;
+  border-radius: 100%;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.floor-shadow-light {
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.14) 45%, transparent 75%);
+  filter: blur(8px);
+  transform: translateX(-50%) scaleY(0.65);
+}
+
+.floor-shadow-dark {
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.90) 0%, rgba(0, 0, 0, 0.50) 50%, transparent 80%);
+  filter: blur(12px);
+  transform: translateX(-50%) scaleY(0.70);
+}
+
+/* ═══════════════════════════════════════════════ */
+/* Control pills (theme / lang toggles)            */
+/* ═══════════════════════════════════════════════ */
+.control-pill {
+  backdrop-filter: blur(12px);
+  transition: all 0.25s ease;
+}
