@@ -517,7 +517,7 @@
 
     </section>
     <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <!-- 🚀 SECTION 2: FEATURED PROJECTS (5-Card Viewport Budgeted Row in PC) -->
+    <!-- 🚀 SECTION 2: FEATURED PROJECTS (Bento Grid: FitForge, VisionRest, LegacyLandMapper) -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <section id="projects" class="section-anchor w-full space-y-4 pt-4 border-t"
              [style.border-color]="cardBorder()">
@@ -537,82 +537,291 @@
         </p>
       </div>
 
-      <!-- 5-Column Single-Row Desktop Grid (All 5 Projects Visible Simultaneously Without Scrolling) -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5">
-        @for (proj of t().projects.items; track proj.id; let idx = $index) {
+      <!-- 🎴 ASYMMETRIC BENTO GRID (FitForge, VisionRest, LegacyLandMapper) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 sm:gap-4 items-stretch">
+        
+        <!-- ═════════════════════════════════════════════════════════════════ -->
+        <!-- 🏋️ BENTO CARD 1: FITFORGE (Featured Hero Bento · Col 1-5, Full Height) -->
+        <!-- ═════════════════════════════════════════════════════════════════ -->
+        @if (t().projects.items[0]; as fitforge) {
           <article 
-            class="project-card portfolio-card rounded-2xl border shadow-md flex flex-col justify-between overflow-hidden cursor-pointer group transition-all duration-300"
+            class="project-card portfolio-card col-span-1 lg:col-span-5 rounded-3xl border shadow-lg flex flex-col justify-between overflow-hidden cursor-pointer group transition-all duration-300 relative h-full min-h-[460px] lg:h-[500px] hover:-translate-y-1 hover:shadow-2xl"
             [style.background-color]="cardBg()"
             [style.border-color]="cardBorder()"
-            (click)="openProjectModal(proj)"
+            (click)="openProjectModal(fitforge)"
             tabindex="0"
             role="button"
-            (keydown.enter)="openProjectModal(proj)"
-            [attr.aria-label]="proj.title + ' — ' + proj.subtitle">
+            (keydown.enter)="openProjectModal(fitforge)"
+            [attr.aria-label]="fitforge.title + ' — ' + fitforge.subtitle">
             
-            <!-- Top Cover Image (Compact Budgeted Height for Desktop Viewport) -->
-            <div class="relative w-full overflow-hidden bg-slate-950 select-none h-28 sm:h-32">
+            <!-- Top Cover Image -->
+            <div class="relative w-full h-44 sm:h-48 overflow-hidden bg-slate-950 select-none shrink-0">
               <img 
-                [src]="proj.image" 
-                [alt]="proj.title" 
+                [src]="fitforge.image" 
+                [alt]="fitforge.title" 
                 class="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105 opacity-90"
                 loading="lazy" />
-              <!-- Palette Atmospheric Overlay -->
-              <div class="absolute inset-0 bg-gradient-to-t from-[#0D1718] via-[#0D1718]/40 to-[#336467]/25 mix-blend-multiply opacity-80 group-hover:opacity-60 transition-opacity"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0D1718] via-[#0D1718]/40 to-[#D7340B]/20 mix-blend-multiply opacity-80 group-hover:opacity-60 transition-opacity"></div>
               <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
 
-              <!-- Top Image Floating Badges -->
-              <div class="absolute top-2 inset-x-2 flex items-center justify-between gap-1.5 z-10">
-                <span class="px-2 py-0.5 rounded-full text-[9px] font-bold font-mono tracking-wider text-white bg-black/60 backdrop-blur-md border border-white/20 truncate max-w-[65%]">
-                  {{ proj.badge }}
+              <!-- Top Floating Badges -->
+              <div class="absolute top-3 inset-x-3 flex items-center justify-between gap-1.5 z-10">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono tracking-wider text-white bg-black/60 backdrop-blur-md border border-white/20">
+                  {{ fitforge.badge }}
                 </span>
-                <span class="px-1.5 py-0.5 rounded-full text-[9px] font-bold font-mono text-white bg-black/60 backdrop-blur-md border border-white/20 shrink-0">
-                  {{ proj.metricBadge }}
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold font-mono text-white bg-black/60 backdrop-blur-md border border-white/20">
+                  {{ fitforge.metricBadge }}
                 </span>
               </div>
 
               <!-- Bottom Image Title Overlay -->
-              <div class="absolute bottom-2 inset-x-2.5 z-10 space-y-0.5">
-                <h3 class="font-anton text-sm sm:text-base text-white tracking-wide uppercase leading-tight drop-shadow-md truncate">
-                  {{ proj.title }}
+              <div class="absolute bottom-2.5 inset-x-3.5 z-10 space-y-0.5">
+                <h3 class="font-anton text-2xl text-white tracking-wide uppercase leading-tight drop-shadow-md">
+                  {{ fitforge.title }}
                 </h3>
-                <p class="text-[10px] text-white/90 font-medium truncate drop-shadow-sm">
-                  {{ proj.subtitle }}
+                <p class="text-[11px] text-white/90 font-medium truncate drop-shadow-sm">
+                  {{ fitforge.subtitle }}
                 </p>
               </div>
             </div>
 
-            <!-- Card Body & Tech Logos (Compact Vertical Height) -->
-            <div class="p-3 flex-1 flex flex-col justify-between space-y-2">
-              <p class="text-[11px] leading-snug line-clamp-2" [style.color]="mutedColor()">
-                {{ proj.summary }}
+            <!-- Card Body & Telemetry -->
+            <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
+              <p class="text-xs leading-relaxed line-clamp-2" [style.color]="mutedColor()">
+                {{ fitforge.summary }}
               </p>
+
+              <!-- Bento Telemetry Widget Strip -->
+              <div class="grid grid-cols-3 gap-2 py-2 px-2.5 rounded-xl border"
+                   [style.border-color]="cardBorder()"
+                   [style.background-color]="tagBg()">
+                @for (m of fitforge.bentoMetrics; track m.label) {
+                  <div class="flex flex-col items-center text-center">
+                    <span class="font-anton text-sm sm:text-base leading-tight" [style.color]="accentSinopia()">
+                      {{ m.value }}
+                    </span>
+                    <span class="text-[9px] font-mono uppercase tracking-wider opacity-75" [style.color]="mutedColor()">
+                      {{ m.label }}
+                    </span>
+                  </div>
+                }
+              </div>
 
               <div class="space-y-2 pt-1.5 border-t" [style.border-color]="cardBorder()">
                 <!-- Tech Logos Badge Row -->
-                <div class="flex flex-wrap items-center gap-1">
-                  @for (tech of proj.techStack; track tech.name) {
-                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-md border shadow-xs transition-transform group-hover:scale-110"
+                <div class="flex flex-wrap items-center gap-1.5">
+                  @for (tech of fitforge.techStack; track tech.name) {
+                    <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg border shadow-xs transition-transform group-hover:scale-110"
                           [style.border-color]="cardBorder()"
                           [style.background-color]="tagBg()"
                           [title]="tech.name"
                           [attr.aria-label]="tech.name">
-                      <svg class="w-3 h-3 shrink-0"><use [attr.href]="'#icon-' + tech.icon"/></svg>
+                      <svg class="w-3.5 h-3.5 shrink-0"><use [attr.href]="'#icon-' + tech.icon"/></svg>
                     </span>
                   }
                 </div>
 
                 <!-- Hover CTA bar -->
-                <div class="flex items-center justify-between text-[10px] font-bold pt-0.5 transition-colors"
+                <div class="flex items-center justify-between text-xs font-bold pt-0.5 transition-colors"
                      [style.color]="accentSinopia()">
                   <span class="tracking-wide uppercase font-mono">{{ t().projects.inspectPrompt }}</span>
-                  <span class="text-xs transition-transform group-hover:translate-x-1">→</span>
+                  <span class="text-sm transition-transform group-hover:translate-x-1.5">→</span>
                 </div>
               </div>
             </div>
 
           </article>
         }
+
+        <!-- ═════════════════════════════════════════════════════════════════ -->
+        <!-- 🧩 RIGHT COLUMN BENTO STACK (VisionRest & LegacyLandMapper · Col 6-12) -->
+        <!-- ═════════════════════════════════════════════════════════════════ -->
+        <div class="col-span-1 lg:col-span-7 flex flex-col justify-between gap-3.5 sm:gap-4 h-full">
+          
+          <!-- 🧠 BENTO CARD 2: VISIONREST (Clinical AI / Hospital La Fe) -->
+          @if (t().projects.items[1]; as visionrest) {
+            <article 
+              class="project-card portfolio-card rounded-3xl border shadow-lg flex flex-col sm:flex-row justify-between overflow-hidden cursor-pointer group transition-all duration-300 relative min-h-[220px] lg:h-[242px] hover:-translate-y-1 hover:shadow-2xl"
+              [style.background-color]="cardBg()"
+              [style.border-color]="cardBorder()"
+              (click)="openProjectModal(visionrest)"
+              tabindex="0"
+              role="button"
+              (keydown.enter)="openProjectModal(visionrest)"
+              [attr.aria-label]="visionrest.title + ' — ' + visionrest.subtitle">
+              
+              <!-- Left Body Content -->
+              <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-2 sm:max-w-[62%]">
+                <div>
+                  <div class="flex items-center gap-1.5 pb-1">
+                    <span class="px-2 py-0.5 rounded-full text-[9px] font-bold font-mono tracking-wider border shrink-0"
+                          [style.border-color]="cardBorder()"
+                          [style.background-color]="tagBg()"
+                          [style.color]="accentCaribbean()">
+                      {{ visionrest.badge }}
+                    </span>
+                    <span class="px-1.5 py-0.5 rounded-full text-[9px] font-bold font-mono border shrink-0"
+                          [style.border-color]="cardBorder()"
+                          [style.background-color]="tagBg()"
+                          [style.color]="accentSinopia()">
+                      {{ visionrest.metricBadge }}
+                    </span>
+                  </div>
+
+                  <h3 class="font-anton text-xl sm:text-2xl tracking-wide uppercase leading-tight" [style.color]="textColor()">
+                    {{ visionrest.title }}
+                  </h3>
+                  <p class="text-[11px] font-medium truncate" [style.color]="accentCaribbean()">
+                    {{ visionrest.subtitle }}
+                  </p>
+                </div>
+
+                <p class="text-[11px] leading-snug line-clamp-2" [style.color]="mutedColor()">
+                  {{ visionrest.summary }}
+                </p>
+
+                <div class="space-y-1.5 pt-1.5 border-t" [style.border-color]="cardBorder()">
+                  <!-- Tech Logos Row + CTA -->
+                  <div class="flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-1.5">
+                      @for (tech of visionrest.techStack; track tech.name) {
+                        <span class="inline-flex items-center justify-center w-6 h-6 rounded-md border shadow-xs transition-transform group-hover:scale-110"
+                              [style.border-color]="cardBorder()"
+                              [style.background-color]="tagBg()"
+                              [title]="tech.name"
+                              [attr.aria-label]="tech.name">
+                          <svg class="w-3 h-3 shrink-0"><use [attr.href]="'#icon-' + tech.icon"/></svg>
+                        </span>
+                      }
+                    </div>
+
+                    <div class="flex items-center gap-1 text-[11px] font-bold font-mono uppercase transition-colors shrink-0"
+                         [style.color]="accentCaribbean()">
+                      <span>{{ t().projects.inspectPrompt }}</span>
+                      <span class="transition-transform group-hover:translate-x-1">→</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Visual Mask (Inspired by virage.ai hero card in reference photo) -->
+              <div class="relative sm:w-[38%] h-36 sm:h-full overflow-hidden bg-slate-950 select-none shrink-0">
+                <img 
+                  [src]="visionrest.image" 
+                  [alt]="visionrest.title" 
+                  class="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105 opacity-90"
+                  loading="lazy" />
+                <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent hidden sm:block"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent sm:hidden"></div>
+                <div class="absolute inset-0 bg-[#336467]/20 mix-blend-multiply opacity-80"></div>
+                
+                <!-- Telemetry Chip on Image -->
+                <div class="absolute bottom-2.5 right-2.5 z-10 hidden sm:flex flex-col items-end gap-1">
+                  <span class="px-2 py-0.5 rounded-md text-[9px] font-mono font-bold bg-black/75 backdrop-blur-md text-white border border-white/20">
+                    PyTorch + MONAI
+                  </span>
+                  <span class="px-2 py-0.5 rounded-md text-[9px] font-mono font-bold bg-[#336467]/85 backdrop-blur-md text-white border border-white/20">
+                    HITL Workflow
+                  </span>
+                </div>
+              </div>
+
+            </article>
+          }
+
+          <!-- 🗺️ BENTO CARD 3: LEGACY LAND MAPPER (Geospatial Big Data Engine) -->
+          @if (t().projects.items[2]; as landmapper) {
+            <article 
+              class="project-card portfolio-card rounded-3xl border shadow-lg flex flex-col sm:flex-row justify-between overflow-hidden cursor-pointer group transition-all duration-300 relative min-h-[220px] lg:h-[242px] hover:-translate-y-1 hover:shadow-2xl"
+              [style.background-color]="cardBg()"
+              [style.border-color]="cardBorder()"
+              (click)="openProjectModal(landmapper)"
+              tabindex="0"
+              role="button"
+              (keydown.enter)="openProjectModal(landmapper)"
+              [attr.aria-label]="landmapper.title + ' — ' + landmapper.subtitle">
+              
+              <!-- Left Body Content -->
+              <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-2 sm:max-w-[62%]">
+                <div>
+                  <div class="flex items-center gap-1.5 pb-1">
+                    <span class="px-2 py-0.5 rounded-full text-[9px] font-bold font-mono tracking-wider border shrink-0"
+                          [style.border-color]="cardBorder()"
+                          [style.background-color]="tagBg()"
+                          [style.color]="accentSinopia()">
+                      {{ landmapper.badge }}
+                    </span>
+                    <span class="px-1.5 py-0.5 rounded-full text-[9px] font-bold font-mono border shrink-0"
+                          [style.border-color]="cardBorder()"
+                          [style.background-color]="tagBg()"
+                          [style.color]="accentCaribbean()">
+                      {{ landmapper.metricBadge }}
+                    </span>
+                  </div>
+
+                  <h3 class="font-anton text-xl sm:text-2xl tracking-wide uppercase leading-tight" [style.color]="textColor()">
+                    {{ landmapper.title }}
+                  </h3>
+                  <p class="text-[11px] font-medium truncate" [style.color]="accentSinopia()">
+                    {{ landmapper.subtitle }}
+                  </p>
+                </div>
+
+                <p class="text-[11px] leading-snug line-clamp-2" [style.color]="mutedColor()">
+                  {{ landmapper.summary }}
+                </p>
+
+                <div class="space-y-1.5 pt-1.5 border-t" [style.border-color]="cardBorder()">
+                  <!-- Tech Logos Row + CTA -->
+                  <div class="flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-1.5">
+                      @for (tech of landmapper.techStack; track tech.name) {
+                        <span class="inline-flex items-center justify-center w-6 h-6 rounded-md border shadow-xs transition-transform group-hover:scale-110"
+                              [style.border-color]="cardBorder()"
+                              [style.background-color]="tagBg()"
+                              [title]="tech.name"
+                              [attr.aria-label]="tech.name">
+                          <svg class="w-3 h-3 shrink-0"><use [attr.href]="'#icon-' + tech.icon"/></svg>
+                        </span>
+                      }
+                    </div>
+
+                    <div class="flex items-center gap-1 text-[11px] font-bold font-mono uppercase transition-colors shrink-0"
+                         [style.color]="accentSinopia()">
+                      <span>{{ t().projects.inspectPrompt }}</span>
+                      <span class="transition-transform group-hover:translate-x-1">→</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Visual Mask -->
+              <div class="relative sm:w-[38%] h-36 sm:h-full overflow-hidden bg-slate-950 select-none shrink-0">
+                <img 
+                  [src]="landmapper.image" 
+                  [alt]="landmapper.title" 
+                  class="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105 opacity-90"
+                  loading="lazy" />
+                <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent hidden sm:block"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent sm:hidden"></div>
+                <div class="absolute inset-0 bg-[#2B585B]/25 mix-blend-multiply opacity-80"></div>
+                
+                <!-- Telemetry Chip on Image -->
+                <div class="absolute bottom-2.5 right-2.5 z-10 hidden sm:flex flex-col items-end gap-1">
+                  <span class="px-2 py-0.5 rounded-md text-[9px] font-mono font-bold bg-black/75 backdrop-blur-md text-white border border-white/20">
+                    >90% Optimization
+                  </span>
+                  <span class="px-2 py-0.5 rounded-md text-[9px] font-mono font-bold bg-[#2B585B]/85 backdrop-blur-md text-white border border-white/20">
+                    20 Workers Multithreaded
+                  </span>
+                </div>
+              </div>
+
+            </article>
+          }
+
+        </div>
+
       </div>
 
     </section>

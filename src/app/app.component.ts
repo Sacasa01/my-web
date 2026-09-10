@@ -21,6 +21,7 @@ export interface ProjectItem {
   techStack: { name: string; icon: string }[];
   link: string;
   linkText: string;
+  bentoMetrics?: { value: string; label: string }[];
 }
 
 export interface SkillNode {
@@ -156,62 +157,6 @@ export class AppComponent {
         techStackTitle: 'Technologies & Architecture',
         items: [
           {
-            id: 'agentic-mcp',
-            title: 'Agentic MCP Ecosystem',
-            subtitle: 'Model Context Protocol & Autonomous Tool Calling',
-            badge: 'Agentic AI · MCP Architecture',
-            metricBadge: '★ 5.0 · MCP',
-            period: '2026',
-            image: '/assets/projects/agentic-mcp.jpg',
-            accentColor: '#D7340B',
-            glowColor: 'rgba(215, 52, 11, 0.40)',
-            summary: 'Custom Model Context Protocol servers connecting Large Language Models to local tools, vector stores, and APIs with Human-in-the-Loop guardrails.',
-            fullDescription: 'Engineered autonomous agent architectures and tool execution servers implementing the Anthropic Model Context Protocol (MCP). Enables Large Language Models to securely interact with the local filesystem, vector databases (Qdrant, pgvector), and external services through strict schema validation and deterministic function calling. Implemented robust Human-in-the-Loop approval barriers to prevent destructive actions and ensure enterprise-grade safety in production environments.',
-            details: [
-              'Built custom Model Context Protocol (MCP) servers enabling LLMs to securely execute deterministic database operations and code validation.',
-              'Implemented Human-in-the-Loop approval barriers to prevent unauthorized destructive commands in production agents.',
-              'Integrated vector database retrieval (Qdrant / pgvector) for contextual memory augmentation and semantic search.',
-              'Designed multi-agent execution graphs using ReAct patterns for self-correcting autonomous pipelines.'
-            ],
-            techStack: [
-              { name: 'MCP', icon: 'mcp' },
-              { name: 'Python', icon: 'python' },
-              { name: 'FastAPI', icon: 'fastapi' },
-              { name: 'PostgreSQL', icon: 'postgresql' },
-              { name: 'AI Agents', icon: 'agentic' }
-            ],
-            link: 'https://github.com/Sacasa01',
-            linkText: 'Explore GitHub Profile ↗'
-          },
-          {
-            id: 'fertoolity',
-            title: 'Fertoolity',
-            subtitle: 'Clinical AI & Medical Imaging Diagnostics',
-            badge: 'Hospital La Fe · Clinical FCT',
-            metricBadge: '★ 4.9 · MONAI',
-            period: 'Mar 2026 – Jun 2026',
-            image: '/assets/projects/fertoolity.jpg',
-            accentColor: '#336467',
-            glowColor: 'rgba(51, 100, 103, 0.45)',
-            summary: 'Human-in-the-Loop supervised AI workflow for clinical medical image segmentation and real-time inference microservices.',
-            fullDescription: 'Engineered at Hospital Universitari i Politècnic La Fe (Valencia) within a clinical medical AI environment. Built supervised Human-in-the-Loop deep learning pipelines for medical imaging segmentation, normalization, and specialist dataset annotation for model fine-tuning. Developed asynchronous FastAPI microservices delivering low-latency real-time inference powered by PyTorch and MONAI biomedical models, translating complex clinical imaging protocols into reliable production software.',
-            details: [
-              'Implemented Human-in-the-Loop supervised AI pipelines for medical image segmentation, normalisation, and dataset annotation for model fine-tuning.',
-              'Engineered auxiliary preprocessing microservices and FastAPI REST endpoints using Python, OpenCV, PyTorch, and MONAI to deliver real-time model inference.',
-              'Delivered low-latency real-time inference workflows for clinical imaging scans with strict reliability metrics.',
-              'Collaborated closely with clinical specialists at Hospital La Fe to translate complex diagnostic imaging requirements into production-ready software components.'
-            ],
-            techStack: [
-              { name: 'Python', icon: 'python' },
-              { name: 'FastAPI', icon: 'fastapi' },
-              { name: 'PyTorch', icon: 'pytorch' },
-              { name: 'MONAI', icon: 'monai' },
-              { name: 'Docker', icon: 'docker' }
-            ],
-            link: 'https://github.com/Sacasa01/Fertoolity',
-            linkText: 'View Clinical Project ↗'
-          },
-          {
             id: 'fitforge',
             title: 'FitForge',
             subtitle: 'Full-Stack Fitness & Recommendation Platform',
@@ -221,7 +166,7 @@ export class AppComponent {
             image: '/assets/projects/fitforge.jpg',
             accentColor: '#D7340B',
             glowColor: 'rgba(215, 52, 11, 0.40)',
-            summary: 'A decoupled fitness SPA powered by a custom workout and nutrition recommendation algorithm.',
+            summary: 'A decoupled fitness SPA powered by a custom workout and nutrition recommendation algorithm with Symfony 7, Angular 19, and MySQL.',
             fullDescription: 'Developed as a final degree project (TFG) with top honors. Engineered a completely decoupled architecture featuring a Symfony 7 REST API with 33 secured endpoints, stateless JWT authentication, and role-based access control (RBAC). A normalized 14-table MySQL relational database powers algorithmic training and diet recommendations. The frontend is built with Angular 19 standalone components and reactive signals for instantaneous state propagation, fully containerized with Docker Compose.',
             details: [
               'Architected a 14-table normalized MySQL schema and a Symfony 7 REST API featuring 33 secured endpoints, JWT authentication, and fine-grained RBAC.',
@@ -237,8 +182,46 @@ export class AppComponent {
               { name: 'MySQL', icon: 'mysql' },
               { name: 'Docker', icon: 'docker' }
             ],
+            bentoMetrics: [
+              { value: '33', label: 'REST APIs' },
+              { value: '14', label: 'DB Tables' },
+              { value: '<50ms', label: 'Latency' }
+            ],
             link: 'https://github.com/Sacasa01/FitForge',
             linkText: 'View Repository ↗'
+          },
+          {
+            id: 'visionrest',
+            title: 'VisionRest',
+            subtitle: 'Clinical AI & Medical Imaging Diagnostic REST API',
+            badge: 'Hospital La Fe · Clinical FCT',
+            metricBadge: '★ 4.9 · MONAI',
+            period: 'Mar 2026 – Jun 2026',
+            image: '/assets/projects/visionrest.jpg',
+            accentColor: '#336467',
+            glowColor: 'rgba(51, 100, 103, 0.45)',
+            summary: 'Human-in-the-Loop supervised AI workflow for clinical medical image segmentation, DICOM scans, and real-time FastAPI inference microservices.',
+            fullDescription: 'Engineered at Hospital Universitari i Politècnic La Fe (Valencia) within a clinical medical AI environment. Built supervised Human-in-the-Loop deep learning pipelines for medical imaging segmentation, normalization, and specialist dataset annotation for model fine-tuning. Developed asynchronous FastAPI microservices delivering low-latency real-time inference powered by PyTorch and MONAI biomedical models, translating complex clinical imaging protocols into reliable production software.',
+            details: [
+              'Implemented Human-in-the-Loop supervised AI pipelines for medical image segmentation, normalisation, and dataset annotation for model fine-tuning.',
+              'Engineered auxiliary preprocessing microservices and FastAPI REST endpoints using Python, OpenCV, PyTorch, and MONAI to deliver real-time model inference.',
+              'Delivered low-latency real-time inference workflows for clinical imaging scans with strict reliability metrics.',
+              'Collaborated closely with clinical specialists at Hospital La Fe to translate complex diagnostic imaging requirements into production-ready software components.'
+            ],
+            techStack: [
+              { name: 'Python', icon: 'python' },
+              { name: 'FastAPI', icon: 'fastapi' },
+              { name: 'PyTorch', icon: 'pytorch' },
+              { name: 'MONAI', icon: 'monai' },
+              { name: 'Docker', icon: 'docker' }
+            ],
+            bentoMetrics: [
+              { value: 'PyTorch + MONAI', label: 'Biomedical AI' },
+              { value: 'HITL', label: 'Supervised' },
+              { value: 'Hospital La Fe', label: 'Clinical Site' }
+            ],
+            link: 'https://github.com/Sacasa01/Fertoolity',
+            linkText: 'View Clinical Project ↗'
           },
           {
             id: 'land-mapper',
@@ -264,35 +247,13 @@ export class AppComponent {
               { name: 'Leaflet', icon: 'leaflet' },
               { name: 'GeoJSON', icon: 'geojson' }
             ],
+            bentoMetrics: [
+              { value: '>90%', label: 'Query Optimization' },
+              { value: '20', label: 'Workers' },
+              { value: 'WFS API', label: 'Cadastre Geospatial' }
+            ],
             link: 'https://github.com/Sacasa01/legacy-land-mapper',
             linkText: 'View Repository ↗'
-          },
-          {
-            id: 'homelab',
-            title: 'HomeLab & Cloud Ecosystem',
-            subtitle: 'Enterprise Self-Hosted Infrastructure & GitOps',
-            badge: 'DevOps & Cloud · Zero-Trust',
-            metricBadge: '★ 4.9 · 99.9% Up',
-            period: '2025 – 2026',
-            image: '/assets/projects/homelab.jpg',
-            accentColor: '#336467',
-            glowColor: 'rgba(51, 100, 103, 0.45)',
-            summary: 'Production-grade local cloud infrastructure featuring GitOps CI/CD automation, Tailscale Zero-Trust mesh network, and GPU-accelerated local AI models.',
-            fullDescription: 'Transformed dedicated bare-metal hardware into an enterprise-grade self-hosted cloud server following modern DevOps engineering practices. Features declarative multi-container service orchestration with Docker Compose v2, continuous GitOps deployment via GitHub Actions, and an encrypted peer-to-peer Zero-Trust mesh network powered by Tailscale (eliminating router port forwarding). Hosts local AI inference pipelines (Ollama, Whisper) accelerated by dedicated NVIDIA GPU for private LLM workflows.',
-            details: [
-              'Implemented automated GitOps workflows with GitHub Actions: repository commits automatically trigger deployment and health checks.',
-              'Configured encrypted Zero-Trust peer-to-peer mesh network with Tailscale for secure worldwide remote access without exposed ports.',
-              'Deployed GPU-accelerated private AI services (Ollama, Whisper) for zero-latency local speech-to-text and LLM inference.',
-              'Structured modular Docker Compose architecture with automated volume backups, reverse proxying, and health monitoring.'
-            ],
-            techStack: [
-              { name: 'Docker', icon: 'docker' },
-              { name: 'Linux', icon: 'linux' },
-              { name: 'Tailscale', icon: 'tailscale' },
-              { name: 'GitOps', icon: 'git' }
-            ],
-            link: 'https://github.com/Sacasa01/homelab-ecosystem',
-            linkText: 'View Infrastructure ↗'
           }
         ]
       },
@@ -502,62 +463,6 @@ export class AppComponent {
         techStackTitle: 'Tecnologías y Arquitectura',
         items: [
           {
-            id: 'agentic-mcp',
-            title: 'Herramientas Agénticas MCP',
-            subtitle: 'Model Context Protocol y Ejecución de Herramientas IA',
-            badge: 'Sistemas Agénticos · Arquitectura',
-            metricBadge: '★ 5.0 · MCP',
-            period: '2026',
-            image: '/assets/projects/agentic-mcp.jpg',
-            accentColor: '#D7340B',
-            glowColor: 'rgba(215, 52, 11, 0.40)',
-            summary: 'Sistemas agénticos que conectan Modelos de Lenguaje (LLMs) con herramientas locales, bases de datos vectoriales y APIs mediante MCP.',
-            fullDescription: 'Diseño e implementación de una red de servidores agénticos conformes al estándar abierto Model Context Protocol (MCP). Permite a modelos de lenguaje (LLMs) interactuar de manera segura y determinista con el sistema operativo, bases de datos vectoriales (Qdrant, pgvector) y servicios corporativos. Incorpora barreras de validación Human-in-the-Loop para evitar comandos destructivos no supervisados, con soporte para streaming y orquestación ReAct.',
-            details: [
-              'Creación de servidores MCP personalizados que permiten a los LLMs ejecutar de forma segura operaciones deterministas en bases de datos y validación de código.',
-              'Configuración de barreras de aprobación Human-in-the-Loop para evitar comandos destructivos no supervisados en entornos de producción.',
-              'Integración con bases de datos vectoriales (Qdrant / pgvector) para memoria a largo plazo y recuperación semántica de contexto.',
-              'Diseño de grafos de ejecución multi-agente con patrones ReAct para flujos autónomos de ingeniería de software.'
-            ],
-            techStack: [
-              { name: 'MCP', icon: 'mcp' },
-              { name: 'Python', icon: 'python' },
-              { name: 'FastAPI', icon: 'fastapi' },
-              { name: 'PostgreSQL', icon: 'postgresql' },
-              { name: 'Agentes IA', icon: 'agentic' }
-            ],
-            link: 'https://github.com/Sacasa01',
-            linkText: 'Ver Perfil de GitHub ↗'
-          },
-          {
-            id: 'fertoolity',
-            title: 'Fertoolity',
-            subtitle: 'IA Clínica y Diagnóstico por Imagen Médica',
-            badge: 'Hospital La Fe · Prácticas FCT',
-            metricBadge: '★ 4.9 · MONAI',
-            period: 'Mar 2026 – Jun 2026',
-            image: '/assets/projects/fertoolity.jpg',
-            accentColor: '#336467',
-            glowColor: 'rgba(51, 100, 103, 0.45)',
-            summary: 'Pipeline de visión por computador e inferencia de IA en tiempo real para segmentación diagnóstica en entornos clínicos de alta exigencia.',
-            fullDescription: 'Desarrollado durante las prácticas curriculares en el Hospital Universitari i Politècnic La Fe de Valencia. El sistema implementa un flujo asistido por IA supervisado (Human-in-the-Loop) para el procesamiento, normalización y segmentación de imágenes médicas. Integra microservicios de inferencia asíncronos de baja latencia con FastAPI respaldados por PyTorch y la librería biomédica MONAI, permitiendo a especialistas clínicos validar anotaciones y acelerar diagnósticos con fiabilidad.',
-            details: [
-              'Implementación de flujos de trabajo supervisados Human-in-the-Loop para segmentación de imagen médica, normalización y anotación de datasets para fine-tuning de modelos.',
-              'Desarrollo de microservicios de preprocesamiento y endpoints REST con FastAPI utilizando Python, OpenCV, PyTorch y MONAI para inferencia en tiempo real.',
-              'Inferencia en tiempo real de baja latencia optimizada para cortes tomográficos y de ultrasonido de alta resolución.',
-              'Colaboración directa con especialistas clínicos del Hospital La Fe para traducir requerimientos de datos diagnósticos en componentes de software robustos.'
-            ],
-            techStack: [
-              { name: 'Python', icon: 'python' },
-              { name: 'FastAPI', icon: 'fastapi' },
-              { name: 'PyTorch', icon: 'pytorch' },
-              { name: 'MONAI', icon: 'monai' },
-              { name: 'Docker', icon: 'docker' }
-            ],
-            link: 'https://github.com/Sacasa01/Fertoolity',
-            linkText: 'Ver Proyecto Clínico ↗'
-          },
-          {
             id: 'fitforge',
             title: 'FitForge',
             subtitle: 'Plataforma Full-Stack de Fitness y Motor de Recomendación',
@@ -567,7 +472,7 @@ export class AppComponent {
             image: '/assets/projects/fitforge.jpg',
             accentColor: '#D7340B',
             glowColor: 'rgba(215, 52, 11, 0.40)',
-            summary: 'Una SPA desacoplada impulsada por algoritmos propios de recomendación de entrenamientos y nutrición.',
+            summary: 'Una SPA desacoplada impulsada por algoritmos propios de recomendación de entrenamientos y nutrición con Symfony 7, Angular 19 y MySQL.',
             fullDescription: 'Desarrollado como Trabajo de Fin de Grado (TFG) obteniendo Matrícula de Honor. Arquitectura totalmente desacoplada compuesta por una API REST construida en Symfony 7 con 33 endpoints asegurados mediante JWT y control de acceso basado en roles (RBAC). Una base de datos MySQL relacional normalizada de 14 tablas alimenta el motor de recomendaciones. Frontend moderno en Angular 19 con Signals reactivos y contenerización modular en Docker Compose.',
             details: [
               'Diseño y normalización de un esquema MySQL de 14 tablas y desarrollo de una API REST con Symfony 7 y 33 endpoints seguros con JWT.',
@@ -583,8 +488,46 @@ export class AppComponent {
               { name: 'MySQL', icon: 'mysql' },
               { name: 'Docker', icon: 'docker' }
             ],
+            bentoMetrics: [
+              { value: '33', label: 'APIs REST' },
+              { value: '14', label: 'Tablas MySQL' },
+              { value: '<50ms', label: 'Latencia' }
+            ],
             link: 'https://github.com/Sacasa01/FitForge',
             linkText: 'Ver Repositorio ↗'
+          },
+          {
+            id: 'visionrest',
+            title: 'VisionRest',
+            subtitle: 'API REST de IA Clínica y Diagnóstico por Imagen Médica',
+            badge: 'Hospital La Fe · Prácticas FCT',
+            metricBadge: '★ 4.9 · MONAI',
+            period: 'Mar 2026 – Jun 2026',
+            image: '/assets/projects/visionrest.jpg',
+            accentColor: '#336467',
+            glowColor: 'rgba(51, 100, 103, 0.45)',
+            summary: 'Pipeline de visión por computador e inferencia de IA en tiempo real para segmentación diagnóstica con PyTorch, MONAI y FastAPI.',
+            fullDescription: 'Desarrollado durante las prácticas curriculares en el Hospital Universitari i Politècnic La Fe de Valencia. El sistema implementa un flujo asistido por IA supervisado (Human-in-the-Loop) para el procesamiento, normalización y segmentación de imágenes médicas. Integra microservicios de inferencia asíncronos de baja latencia con FastAPI respaldados por PyTorch y la librería biomédica MONAI, permitiendo a especialistas clínicos validar anotaciones y acelerar diagnósticos con fiabilidad.',
+            details: [
+              'Implementación de flujos de trabajo supervisados Human-in-the-Loop para segmentación de imagen médica, normalización y anotación de datasets para fine-tuning de modelos.',
+              'Desarrollo de microservicios de preprocesamiento y endpoints REST con FastAPI utilizando Python, OpenCV, PyTorch y MONAI para inferencia en tiempo real.',
+              'Inferencia en tiempo real de baja latencia optimizada para cortes tomográficos y de ultrasonido de alta resolución.',
+              'Colaboración directa con especialistas clínicos del Hospital La Fe para traducir requerimientos de datos diagnósticos en componentes de software robustos.'
+            ],
+            techStack: [
+              { name: 'Python', icon: 'python' },
+              { name: 'FastAPI', icon: 'fastapi' },
+              { name: 'PyTorch', icon: 'pytorch' },
+              { name: 'MONAI', icon: 'monai' },
+              { name: 'Docker', icon: 'docker' }
+            ],
+            bentoMetrics: [
+              { value: 'PyTorch + MONAI', label: 'IA Biomédica' },
+              { value: 'HITL', label: 'Supervisión Clínica' },
+              { value: 'Hospital La Fe', label: 'Entorno Real' }
+            ],
+            link: 'https://github.com/Sacasa01/Fertoolity',
+            linkText: 'Ver Proyecto Clínico ↗'
           },
           {
             id: 'land-mapper',
@@ -610,35 +553,13 @@ export class AppComponent {
               { name: 'Leaflet', icon: 'leaflet' },
               { name: 'GeoJSON', icon: 'geojson' }
             ],
+            bentoMetrics: [
+              { value: '>90%', label: 'Optimización' },
+              { value: '20', label: 'Workers Multihilo' },
+              { value: 'API WFS', label: 'Catastro Oficial' }
+            ],
             link: 'https://github.com/Sacasa01/legacy-land-mapper',
             linkText: 'Ver Repositorio ↗'
-          },
-          {
-            id: 'homelab',
-            title: 'HomeLab y Ecosistema Cloud',
-            subtitle: 'Infraestructura Empresarial Autogestionada y GitOps',
-            badge: 'DevOps y Cloud · Zero-Trust',
-            metricBadge: '★ 4.9 · 99.9% Up',
-            period: '2025 – 2026',
-            image: '/assets/projects/homelab.jpg',
-            accentColor: '#336467',
-            glowColor: 'rgba(51, 100, 103, 0.45)',
-            summary: 'Servidor local de producción con integración continua GitOps, red mallada Zero-Trust mediante Tailscale e inferencia de IA local por GPU.',
-            fullDescription: 'Transformación de hardware dedicado en un servidor cloud autogestionado de nivel empresarial siguiendo prácticas modernas de DevOps. Orquestación multi-contenedor declarativa con Docker Compose v2, despliegue continuo GitOps con GitHub Actions y red privada segura punto a punto cifrada con Tailscale sin apertura de puertos en router. Aloja modelos de lenguaje locales (Ollama, Whisper) acelerados por GPU NVIDIA.',
-            details: [
-              'Flujos GitOps automatizados con GitHub Actions: cada commit despliega y comprueba la salud de los servicios.',
-              'Red privada cifrada Zero-Trust con Tailscale para acceso remoto seguro a nivel mundial sin exponer puertos externos.',
-              'Modelos de IA locales privados (Ollama, Whisper) acelerados por GPU NVIDIA dedicada para procesamiento sin latencia.',
-              'Estructura modular en Docker Compose con backups automáticos, proxy inverso y monitorización de disponibilidad.'
-            ],
-            techStack: [
-              { name: 'Docker', icon: 'docker' },
-              { name: 'Linux', icon: 'linux' },
-              { name: 'Tailscale', icon: 'tailscale' },
-              { name: 'GitOps', icon: 'git' }
-            ],
-            link: 'https://github.com/Sacasa01/homelab-ecosystem',
-            linkText: 'Ver Infraestructura ↗'
           }
         ]
       },

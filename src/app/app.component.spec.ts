@@ -28,17 +28,17 @@ describe('AppComponent', () => {
     expect(app.currentLang).toBe(initialLang === 'en' ? 'es' : 'en');
   });
 
-  it('should have exactly 5 flagship projects in both English and Spanish', () => {
+  it('should have exactly 3 flagship projects (FitForge, VisionRest, LegacyLandMapper) in both English and Spanish', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     
-    expect(app.content.en.projects.items.length).toBe(5);
-    expect(app.content.es.projects.items.length).toBe(5);
+    expect(app.content.en.projects.items.length).toBe(3);
+    expect(app.content.es.projects.items.length).toBe(3);
 
     const enIds = app.content.en.projects.items.map(p => p.id);
     const esIds = app.content.es.projects.items.map(p => p.id);
-    expect(enIds).toEqual(['agentic-mcp', 'fertoolity', 'fitforge', 'land-mapper', 'homelab']);
-    expect(esIds).toEqual(['agentic-mcp', 'fertoolity', 'fitforge', 'land-mapper', 'homelab']);
+    expect(enIds).toEqual(['fitforge', 'visionrest', 'land-mapper']);
+    expect(esIds).toEqual(['fitforge', 'visionrest', 'land-mapper']);
   });
 
   it('should open and close project modal correctly', () => {
