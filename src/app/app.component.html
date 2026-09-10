@@ -159,91 +159,195 @@
     <symbol id="icon-github" viewBox="0 0 24 24">
       <path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/>
     </symbol>
+
+    <!-- GeoJSON -->
+    <symbol id="icon-geojson" viewBox="0 0 32 32">
+      <rect width="32" height="32" rx="6" fill="#152426"/>
+      <polygon points="16,5 27,11 27,21 16,27 5,21 5,11" fill="none" stroke="#00A3E0" stroke-width="2"/>
+      <circle cx="16" cy="5" r="2.5" fill="#D7340B"/>
+      <circle cx="27" cy="11" r="2.5" fill="#336467"/>
+      <circle cx="27" cy="21" r="2.5" fill="#D7340B"/>
+      <circle cx="16" cy="27" r="2.5" fill="#336467"/>
+      <circle cx="5" cy="21" r="2.5" fill="#D7340B"/>
+      <circle cx="5" cy="11" r="2.5" fill="#336467"/>
+      <circle cx="16" cy="16" r="3" fill="#E0DDAE"/>
+    </symbol>
   </defs>
 </svg>
 
 <!-- ═════════════════════════════════════════════════════════════════════ -->
 <!-- 📦 BOXED-LAYOUT ROOT CONTAINER (Horizontally Centered & Framed)       -->
 <!-- ═════════════════════════════════════════════════════════════════════ -->
-<div class="min-h-screen w-full theme-surface font-body selection:bg-[#D7340B] selection:text-white flex flex-col items-center relative overflow-x-hidden"
-     [style.background-color]="bgColor()"
+<div class="min-h-screen w-full theme-surface font-body selection:bg-[#D7340B] selection:text-white flex flex-col items-center relative overflow-x-hidden transition-colors duration-300"
+     [style.background-color]="outerBg()"
      [style.color]="textColor()">
+
+  <!-- 📦 BOXED-LAYOUT SHELL (Centered Column with Rounded Top/Bottom Edges & Elevated Shadow) -->
+  <div class="w-full max-w-6xl min-h-screen my-0 sm:my-6 rounded-none sm:rounded-[2.5rem] border-x sm:border shadow-2xl flex flex-col items-center relative transition-colors duration-300 overflow-hidden"
+       [style.background-color]="bgColor()"
+       [style.border-color]="cardBorder()">
 
   <!-- ═════════════════════════════════════════════════════════════════════ -->
   <!-- 📌 FLOATING CENTERED TOP NAVIGATION BAR (Boxed Layout Aligned)        -->
   <!-- ═════════════════════════════════════════════════════════════════════ -->
-  <header class="fixed top-3 sm:top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-1.5rem)] sm:w-[calc(100%-3rem)] max-w-6xl flex items-center justify-between px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl sm:rounded-full backdrop-blur-xl border shadow-xl transition-all duration-300"
+  <header class="fixed top-2.5 sm:top-3.5 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)] max-w-6xl flex items-center justify-between px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full backdrop-blur-xl border shadow-xl transition-all duration-300"
           [style.background-color]="navBg()"
           [style.border-color]="cardBorder()">
     
     <!-- Top-Left Profile Photo & Brand Identity -->
-    <a href="#hero" class="flex items-center gap-3 group cursor-pointer select-none">
-      <div class="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border-2 transition-all group-hover:scale-105 shadow-md shrink-0"
-           [style.border-color]="accentSinopia()">
-        <img src="/assets/me-face-thumb.png" alt="Santiago Castro Salt" class="w-full h-full object-cover object-center">
-        <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-white dark:border-[#0D1718]"
-              [style.background-color]="accentCaribbean()"></span>
+    <a href="#hero" (click)="scrollToTop($event)" class="flex items-center gap-2.5 sm:gap-3 group cursor-pointer select-none">
+      <div class="relative shrink-0">
+        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden border-2 transition-all group-hover:scale-105 shadow-md"
+             [style.border-color]="accentSinopia()">
+          <img src="/assets/me-face.png" alt="Santiago Castro Salt" class="w-full h-full object-cover object-center">
+        </div>
+        <!-- 🟢 Green status dot OUTSIDE the circular border with slow breathing glow -->
+        <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-[#10B981] border-2 border-white dark:border-[#0D1718] animate-status-dot shadow-sm"></span>
       </div>
       <div class="flex flex-col">
-        <span class="font-anton tracking-wider text-sm sm:text-base leading-tight select-none"
+        <span class="font-anton tracking-wider text-xs sm:text-sm leading-tight select-none"
               [style.color]="textColor()">
           SANTIAGO CASTRO SALT
         </span>
-        <span class="text-[10px] font-mono tracking-widest uppercase opacity-80 hidden sm:inline"
+        <span class="text-[9px] font-mono tracking-widest uppercase opacity-80 hidden sm:inline"
               [style.color]="accentSinopia()">
           Backend & AI Engineer
         </span>
       </div>
     </a>
 
-    <!-- Navigation Anchors (Strict Editorial Order) -->
-    <nav class="hidden md:flex items-center gap-1 lg:gap-2 text-[13px] font-medium"
+    <!-- Navigation Anchors (Strict Editorial Order - Mathematically Dead-Centered on Desktop) -->
+    <nav class="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-0.5 lg:gap-1.5 text-xs lg:text-[13px] font-medium"
          [style.color]="mutedColor()">
-      <a href="#experience" class="px-3 py-1.5 rounded-full transition-colors hover:text-[#D7340B] hover:bg-black/5 dark:hover:bg-white/5">
+      <a href="#experience" class="px-2.5 py-1 rounded-full transition-colors hover:text-[#D7340B] hover:bg-black/5 dark:hover:bg-white/5">
         {{ t().nav.experience }}
       </a>
-      <a href="#projects" class="px-3 py-1.5 rounded-full transition-colors hover:text-[#D7340B] hover:bg-black/5 dark:hover:bg-white/5">
+      <a href="#projects" class="px-2.5 py-1 rounded-full transition-colors hover:text-[#D7340B] hover:bg-black/5 dark:hover:bg-white/5">
         {{ t().nav.projects }}
       </a>
-      <a href="#skills" class="px-3 py-1.5 rounded-full transition-colors hover:text-[#D7340B] hover:bg-black/5 dark:hover:bg-white/5">
+      <a href="#skills" class="px-2.5 py-1 rounded-full transition-colors hover:text-[#D7340B] hover:bg-black/5 dark:hover:bg-white/5">
         {{ t().nav.skills }}
       </a>
-      <a href="#education" class="px-3 py-1.5 rounded-full transition-colors hover:text-[#D7340B] hover:bg-black/5 dark:hover:bg-white/5">
+      <a href="#education" class="px-2.5 py-1 rounded-full transition-colors hover:text-[#D7340B] hover:bg-black/5 dark:hover:bg-white/5">
         {{ t().nav.education }}
       </a>
-      <a href="#certifications" class="px-3 py-1.5 rounded-full transition-colors hover:text-[#D7340B] hover:bg-black/5 dark:hover:bg-white/5">
+      <a href="#certifications" class="px-2.5 py-1 rounded-full transition-colors hover:text-[#D7340B] hover:bg-black/5 dark:hover:bg-white/5">
         {{ t().nav.certifications }}
-      </a>
-      <a href="#contact" class="px-3 py-1.5 rounded-full transition-colors hover:text-[#D7340B] hover:bg-black/5 dark:hover:bg-white/5">
-        {{ t().nav.contact }}
       </a>
     </nav>
 
-    <!-- Controls: Language + Dark/Light Theme -->
-    <div class="flex items-center gap-2 sm:gap-3">
+    <!-- Controls: Language + Dark/Light Theme + Hanging Contact Cord -->
+    <div class="flex items-center gap-1 sm:gap-2 relative">
       <!-- Language Toggle -->
       <button 
         type="button"
         (click)="toggleLang()"
-        class="control-pill px-3 py-1.5 rounded-full text-xs font-semibold tracking-wide border cursor-pointer select-none flex items-center gap-1.5"
+        class="control-pill px-2.5 py-1 rounded-full text-xs font-bold font-mono tracking-wider border cursor-pointer select-none flex items-center gap-1 transition-all"
         [style.border-color]="cardBorder()"
         [style.background-color]="tagBg()"
         [style.color]="textColor()">
-        <span>{{ lang() === 'en' ? '🇬🇧' : '🇪🇸' }}</span>
+        <span class="text-xs">{{ lang() === 'en' ? '🇬🇧' : '🇪🇸' }}</span>
         <span>{{ lang() === 'en' ? 'EN' : 'ES' }}</span>
       </button>
 
-      <!-- Theme Toggle -->
+      <!-- Theme Toggle Button -->
       <button 
         type="button"
         (click)="toggleTheme()"
         [attr.aria-label]="theme() === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'"
-        class="control-pill w-9 h-9 rounded-full text-base border flex items-center justify-center cursor-pointer select-none"
+        class="control-pill w-8 h-8 rounded-full text-sm border flex items-center justify-center cursor-pointer select-none relative shadow-xs transition-all"
         [style.border-color]="cardBorder()"
         [style.background-color]="tagBg()"
         [style.color]="textColor()">
         <span>{{ theme() === 'light' ? '🌙' : '☀️' }}</span>
       </button>
+
+      <!-- 🧵 Retract / Deploy Cord Button & Anchor (Shifted to the Right) -->
+      <div class="relative flex flex-col items-center">
+        <button
+          type="button"
+          (click)="toggleCord()"
+          [attr.aria-label]="isCordExpanded() ? 'Retract Contact Cord' : 'Deploy Contact Cord'"
+          [attr.title]="isCordExpanded() ? (lang() === 'en' ? 'Retract Contact Cord' : 'Contraer Cuerda de Contacto') : (lang() === 'en' ? 'Deploy Contact Cord' : 'Desplegar Cuerda de Contacto')"
+          class="control-pill px-2.5 py-1 rounded-full text-xs font-mono font-bold border flex items-center gap-1 cursor-pointer select-none relative z-20 shadow-xs transition-all"
+          [style.border-color]="isCordExpanded() ? accentSinopia() : cardBorder()"
+          [style.background-color]="tagBg()"
+          [style.color]="isCordExpanded() ? accentSinopia() : textColor()">
+          <span>🧵</span>
+          <span class="text-[9px] font-bold hidden sm:inline">{{ isCordExpanded() ? '▲' : '▼' }}</span>
+          <!-- Living status pulse beacon: Online connection indicator -->
+          <span class="w-1.5 h-1.5 rounded-full bg-[#10B981] live-beacon" title="Online / Active Availability"></span>
+        </button>
+
+        <!-- 🧵 HANGING NAVBAR CONTACT CORD (Shifted to right edge, perpetual pendulum swing, retractable) -->
+        <div class="hidden md:flex flex-col items-center absolute top-full right-0 sm:-right-4 pt-1 z-10 select-none transition-all duration-400 ease-out"
+             [class.hanging-cord-swing]="isCordExpanded()"
+             [class.cord-contracted]="!isCordExpanded()"
+             [style.pointer-events]="isCordExpanded() ? 'auto' : 'none'">
+          
+          <!-- Top anchor line -->
+          <div class="w-[2px] h-6 bg-[#A68A68] dark:bg-[#7D6B52] shadow-xs"></div>
+          <!-- Brass bead with live presence ring -->
+          <div class="w-2.5 h-2.5 rounded-full bg-[#8C7456] -my-0.5 shadow-xs relative flex items-center justify-center">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse"></span>
+          </div>
+
+          <!-- Bead 1: Email (Official Gmail Red + Breathing beacon) -->
+          <a href="mailto:santiagocsdev@gmail.com"
+             class="w-8 h-8 rounded-full border shadow-md flex items-center justify-center transition-all duration-200 hover:scale-125 group/cord relative my-1 cursor-pointer bg-white dark:bg-[#152426]"
+             [style.border-color]="cardBorder()"
+             title="Send Direct Email: santiagocsdev@gmail.com"
+             aria-label="Email">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 fill-[#EA4335]">
+              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+            <span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-[#10B981] border border-white dark:border-[#0D1718] live-beacon"></span>
+            <span class="sr-only">Email</span>
+          </a>
+
+          <!-- Middle connector cord piece -->
+          <div class="w-[2px] h-4 bg-[#A68A68] dark:bg-[#7D6B52]"></div>
+          <div class="w-2 h-2 rounded-full bg-[#8C7456] -my-0.5 shadow-xs"></div>
+
+          <!-- Bead 2: LinkedIn (Official LinkedIn Blue + Breathing beacon) -->
+          <a href="https://linkedin.com/in/santiago-castro-salt"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="w-8 h-8 rounded-full border shadow-md flex items-center justify-center transition-all duration-200 hover:scale-125 group/cord relative my-1 cursor-pointer bg-white dark:bg-[#152426]"
+             [style.border-color]="cardBorder()"
+             title="LinkedIn: Santiago Castro Salt"
+             aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 fill-[#0A66C2]">
+              <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.67 1.67 0 1 0 0-3.34 1.67 1.67 0 0 0 0 3.34m1.4 9.74v-8.37H5.06v8.37h2.8z"/>
+            </svg>
+            <span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-[#10B981] border border-white dark:border-[#0D1718] live-beacon"></span>
+            <span class="sr-only">LinkedIn</span>
+          </a>
+
+          <!-- Middle-bottom connector cord piece -->
+          <div class="w-[2px] h-4 bg-[#A68A68] dark:bg-[#7D6B52]"></div>
+          <div class="w-2 h-2 rounded-full bg-[#8C7456] -my-0.5 shadow-xs"></div>
+
+          <!-- Bead 3: GitHub (Official GitHub Dark + Breathing beacon) -->
+          <a href="https://github.com/Sacasa01"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="w-8 h-8 rounded-full border shadow-md flex items-center justify-center transition-all duration-200 hover:scale-125 group/cord relative my-1 cursor-pointer bg-white dark:bg-[#152426]"
+             [style.border-color]="cardBorder()"
+             title="GitHub: Sacasa01"
+             aria-label="GitHub">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 fill-[#24292F] dark:fill-white">
+              <path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/>
+            </svg>
+            <span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-[#10B981] border border-white dark:border-[#0D1718] live-beacon"></span>
+            <span class="sr-only">GitHub</span>
+          </a>
+
+          <!-- Bottom tassel knot -->
+          <div class="w-[2px] h-3 bg-[#A68A68] dark:bg-[#7D6B52]"></div>
+          <div class="w-2 h-3 rounded-full bg-[#8C7456] shadow-xs"></div>
+        </div>
+      </div>
     </div>
 
   </header>
@@ -413,32 +517,31 @@
 
     </section>
     <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <!-- 🚀 SECTION 2: FEATURED PROJECTS (Harmonized Boxed Architecture)     -->
+    <!-- 🚀 SECTION 2: FEATURED PROJECTS (5-Card Viewport Budgeted Row in PC) -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <section id="projects" class="section-anchor w-full space-y-8 pt-6 border-t"
+    <section id="projects" class="section-anchor w-full space-y-4 pt-4 border-t"
              [style.border-color]="cardBorder()">
       
-      <!-- Section Header -->
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-        <div class="space-y-1">
-          <p class="text-xs font-bold uppercase tracking-widest font-sans" [style.color]="accentSinopia()">
+      <!-- Section Header (Compact Viewport Budgeting) -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-1">
+        <div class="space-y-0.5">
+          <p class="text-[11px] font-bold uppercase tracking-widest font-mono" [style.color]="accentSinopia()">
             02 // {{ t().projects.sectionSubtitle }}
           </p>
-          <h2 class="font-anton text-3xl sm:text-4xl tracking-wide uppercase" [style.color]="textColor()">
+          <h2 class="font-anton text-2xl sm:text-3xl tracking-wide uppercase leading-tight" [style.color]="textColor()">
             {{ t().projects.sectionTitle }}
           </h2>
         </div>
-        <p class="text-xs sm:text-sm max-w-md" [style.color]="mutedColor()">
+        <p class="text-[11px] sm:text-xs max-w-md leading-relaxed" [style.color]="mutedColor()">
           {{ t().projects.sectionDescription }}
         </p>
       </div>
 
-      <!-- Integrated Boxed Projects Grid (Harmonized Sinopia/Caribbean/Vanilla Palette) -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- 5-Column Single-Row Desktop Grid (All 5 Projects Visible Simultaneously Without Scrolling) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5">
         @for (proj of t().projects.items; track proj.id; let idx = $index) {
           <article 
-            class="project-card portfolio-card rounded-3xl border shadow-xl flex flex-col justify-between overflow-hidden cursor-pointer group transition-all duration-300"
-            [class.lg:col-span-2]="idx === 0"
+            class="project-card portfolio-card rounded-2xl border shadow-md flex flex-col justify-between overflow-hidden cursor-pointer group transition-all duration-300"
             [style.background-color]="cardBg()"
             [style.border-color]="cardBorder()"
             (click)="openProjectModal(proj)"
@@ -447,62 +550,63 @@
             (keydown.enter)="openProjectModal(proj)"
             [attr.aria-label]="proj.title + ' — ' + proj.subtitle">
             
-            <!-- Top Cover Image Container -->
-            <div class="relative w-full overflow-hidden bg-slate-950 select-none"
-                 [ngClass]="idx === 0 ? 'h-56 sm:h-64 lg:h-72' : 'h-48 sm:h-52'">
+            <!-- Top Cover Image (Compact Budgeted Height for Desktop Viewport) -->
+            <div class="relative w-full overflow-hidden bg-slate-950 select-none h-28 sm:h-32">
               <img 
                 [src]="proj.image" 
                 [alt]="proj.title" 
                 class="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105 opacity-90"
                 loading="lazy" />
-              <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
+              <!-- Palette Atmospheric Overlay -->
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0D1718] via-[#0D1718]/40 to-[#336467]/25 mix-blend-multiply opacity-80 group-hover:opacity-60 transition-opacity"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
 
-              <!-- Top Image Floating Pills -->
-              <div class="absolute top-4 inset-x-4 flex items-center justify-between gap-2 z-10">
-                <span class="px-3 py-1 rounded-full text-[11px] font-bold font-mono tracking-wider text-white bg-black/60 backdrop-blur-md border border-white/20">
+              <!-- Top Image Floating Badges -->
+              <div class="absolute top-2 inset-x-2 flex items-center justify-between gap-1.5 z-10">
+                <span class="px-2 py-0.5 rounded-full text-[9px] font-bold font-mono tracking-wider text-white bg-black/60 backdrop-blur-md border border-white/20 truncate max-w-[65%]">
                   {{ proj.badge }}
                 </span>
-                <span class="px-2.5 py-1 rounded-full text-[11px] font-bold font-mono text-white bg-black/60 backdrop-blur-md border border-white/20">
+                <span class="px-1.5 py-0.5 rounded-full text-[9px] font-bold font-mono text-white bg-black/60 backdrop-blur-md border border-white/20 shrink-0">
                   {{ proj.metricBadge }}
                 </span>
               </div>
 
               <!-- Bottom Image Title Overlay -->
-              <div class="absolute bottom-4 inset-x-4 z-10 space-y-1">
-                <h3 class="font-anton text-2xl text-white tracking-wide uppercase leading-tight drop-shadow-md">
+              <div class="absolute bottom-2 inset-x-2.5 z-10 space-y-0.5">
+                <h3 class="font-anton text-sm sm:text-base text-white tracking-wide uppercase leading-tight drop-shadow-md truncate">
                   {{ proj.title }}
                 </h3>
-                <p class="text-xs text-white/90 font-medium truncate drop-shadow-sm">
+                <p class="text-[10px] text-white/90 font-medium truncate drop-shadow-sm">
                   {{ proj.subtitle }}
                 </p>
               </div>
             </div>
 
-            <!-- Card Body & Tech Logos -->
-            <div class="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
-              <p class="text-xs sm:text-sm leading-relaxed" [style.color]="mutedColor()">
+            <!-- Card Body & Tech Logos (Compact Vertical Height) -->
+            <div class="p-3 flex-1 flex flex-col justify-between space-y-2">
+              <p class="text-[11px] leading-snug line-clamp-2" [style.color]="mutedColor()">
                 {{ proj.summary }}
               </p>
 
-              <div class="space-y-3 pt-2 border-t" [style.border-color]="cardBorder()">
+              <div class="space-y-2 pt-1.5 border-t" [style.border-color]="cardBorder()">
                 <!-- Tech Logos Badge Row -->
-                <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <div class="flex flex-wrap items-center gap-1">
                   @for (tech of proj.techStack; track tech.name) {
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-mono font-medium border transition-colors group-hover:border-current"
+                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-md border shadow-xs transition-transform group-hover:scale-110"
                           [style.border-color]="cardBorder()"
                           [style.background-color]="tagBg()"
-                          [style.color]="textColor()">
-                      <svg class="w-3.5 h-3.5 shrink-0"><use [attr.href]="'#icon-' + tech.icon"/></svg>
-                      <span>{{ tech.name }}</span>
+                          [title]="tech.name"
+                          [attr.aria-label]="tech.name">
+                      <svg class="w-3 h-3 shrink-0"><use [attr.href]="'#icon-' + tech.icon"/></svg>
                     </span>
                   }
                 </div>
 
                 <!-- Hover CTA bar -->
-                <div class="flex items-center justify-between text-xs font-bold pt-1 transition-colors"
+                <div class="flex items-center justify-between text-[10px] font-bold pt-0.5 transition-colors"
                      [style.color]="accentSinopia()">
                   <span class="tracking-wide uppercase font-mono">{{ t().projects.inspectPrompt }}</span>
-                  <span class="text-base transition-transform group-hover:translate-x-1">→</span>
+                  <span class="text-xs transition-transform group-hover:translate-x-1">→</span>
                 </div>
               </div>
             </div>
@@ -514,21 +618,17 @@
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <!-- 🔍 MODAL DIALOG: PROJECT TECHNICAL DOSSIER (With Exit Animation)    -->
+    <!-- 🔍 MODAL DIALOG: PROJECT TECHNICAL DOSSIER (With Clean GSAP Motion) -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     @if (displayedProject(); as proj) {
-      <div class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md"
-           [class.animate-modal-backdrop]="!isClosingModal()"
-           [class.animate-modal-backdrop-leave]="isClosingModal()"
+      <div class="modal-backdrop-layer fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md opacity-0"
            (click)="closeProjectModal()"
            role="dialog"
            aria-modal="true"
            [attr.aria-label]="proj.title">
         
         <!-- Modal Card Container -->
-        <div class="relative w-full max-w-4xl max-h-[92vh] flex flex-col md:flex-row overflow-hidden rounded-3xl border shadow-2xl text-left"
-             [class.animate-modal-content]="!isClosingModal()"
-             [class.animate-modal-content-leave]="isClosingModal()"
+        <div class="modal-card-layer relative w-full max-w-4xl max-h-[90vh] flex flex-col md:flex-row overflow-hidden rounded-3xl border shadow-2xl text-left opacity-0"
              [style.background-color]="cardBg()"
              [style.border-color]="cardBorder()"
              (click)="$event.stopPropagation()">
@@ -571,10 +671,11 @@
             </div>
           </div>
 
-          <!-- Right Column: Full Technical Dossier -->
-          <div class="w-full md:w-[58%] p-6 sm:p-8 flex flex-col justify-between overflow-y-auto modal-scroll space-y-6">
+          <!-- Right Column: Full Technical Dossier with Pinned Sticky Footer -->
+          <div class="w-full md:w-[58%] p-6 sm:p-8 flex flex-col justify-between overflow-hidden max-h-[85vh]">
             
-            <div class="space-y-5">
+            <!-- Scrollable Content Body -->
+            <div class="flex-1 overflow-y-auto modal-scroll pr-2 space-y-5">
               <!-- Header Identity -->
               <div>
                 <div class="flex items-center gap-2 mb-1.5">
@@ -621,12 +722,13 @@
                 <h4 class="text-xs font-mono font-bold uppercase tracking-wider" [style.color]="textColor()">
                   {{ t().projects.techStackTitle }}
                 </h4>
-                <div class="flex flex-wrap gap-2">
+                <div class="flex flex-wrap items-center gap-2">
                   @for (tech of proj.techStack; track tech.name) {
                     <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-mono font-medium border shadow-xs"
                           [style.border-color]="cardBorder()"
                           [style.background-color]="tagBg()"
-                          [style.color]="textColor()">
+                          [style.color]="textColor()"
+                          [title]="tech.name">
                       <svg class="w-4 h-4 shrink-0"><use [attr.href]="'#icon-' + tech.icon"/></svg>
                       <span>{{ tech.name }}</span>
                     </span>
@@ -635,8 +737,8 @@
               </div>
             </div>
 
-            <!-- Modal Action Footer (Only External Action Link - No Redundant Close Button) -->
-            <div class="pt-5 border-t flex items-center justify-between"
+            <!-- Modal Pinned Action Footer (Always Visible - No Redundant Close Button) -->
+            <div class="shrink-0 pt-4 mt-3 border-t flex items-center justify-between"
                  [style.border-color]="cardBorder()">
               <a [href]="proj.link"
                  target="_blank"
@@ -644,6 +746,7 @@
                  class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs sm:text-sm font-bold text-white shadow-md transition-all hover:scale-105 cursor-pointer select-none"
                  [style.background-color]="accentSinopia()">
                 <span>{{ proj.linkText }}</span>
+                <span>↗</span>
               </a>
 
               <span class="text-xs font-mono opacity-60 hidden sm:inline" [style.color]="mutedColor()">
@@ -659,265 +762,144 @@
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!-- ⚡ SECTION 3: SKILLS ARCHITECTURE (Vector Node System & Graph)       -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <section id="skills" class="section-anchor w-full space-y-8 pt-6 border-t"
+    <section id="skills" class="section-anchor w-full space-y-4 pt-4 border-t"
              [style.border-color]="cardBorder()">
       
-      <!-- Section Header -->
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-        <div class="space-y-1">
-          <p class="text-xs font-bold uppercase tracking-widest font-sans" [style.color]="accentSinopia()">
+      <!-- Section Header (Compact Viewport Budgeting) -->
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 pb-1">
+        <div class="space-y-0.5">
+          <p class="text-[11px] font-bold uppercase tracking-widest font-mono" [style.color]="accentSinopia()">
             03 // {{ t().skills.sectionSubtitle }}
           </p>
-          <h2 class="font-anton text-3xl sm:text-4xl tracking-wide uppercase" [style.color]="textColor()">
+          <h2 class="font-anton text-2xl sm:text-3xl tracking-wide uppercase leading-tight" [style.color]="textColor()">
             {{ t().skills.sectionTitle }}
           </h2>
         </div>
-        <p class="text-xs sm:text-sm max-w-md" [style.color]="mutedColor()">
+        <p class="text-[11px] sm:text-xs max-w-md leading-relaxed" [style.color]="mutedColor()">
           {{ t().skills.sectionDescription }}
         </p>
       </div>
 
       <!-- Vector Blueprint Master Card (Spans Boxed Layout Width) -->
-      <div class="portfolio-card p-6 sm:p-8 rounded-3xl border shadow-xl space-y-8 relative overflow-hidden"
+      <div class="portfolio-card p-4 sm:p-5 rounded-2xl border shadow-lg space-y-3.5 relative overflow-hidden"
            [style.background-color]="cardBg()"
            [style.border-color]="cardBorder()">
         
         <!-- Vector Network Header Hint -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b"
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 pb-2.5 border-b"
              [style.border-color]="cardBorder()">
           <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full animate-pulse" [style.background-color]="accentSinopia()"></span>
-            <span class="text-xs font-mono font-bold uppercase tracking-wider" [style.color]="accentSinopia()">
+            <span class="w-2 h-2 rounded-full animate-pulse" [style.background-color]="accentSinopia()"></span>
+            <span class="text-[10px] font-mono font-bold uppercase tracking-wider" [style.color]="accentSinopia()">
               INTERCONNECTED VECTOR SYSTEM MATRIX
             </span>
           </div>
-          <span class="text-xs font-mono opacity-70" [style.color]="mutedColor()">
+          <span class="text-[10px] font-mono opacity-70" [style.color]="mutedColor()">
             {{ t().skills.selectPrompt }}
           </span>
         </div>
 
-        <!-- 🌐 5 DOMAIN CLUSTERS VECTOR GRAPH (Grid spanning boxed layout) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-4 relative">
+        <!-- 🌐 5 DOMAIN CLUSTERS VECTOR GRAPH (Grid Spanning Full Boxed Layout Width) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-3 relative">
           
-          <!-- Connecting Vector Circuit Lines (Desktop >= 1024px) -->
-          <div class="hidden lg:block absolute top-[52px] inset-x-8 h-1 -z-0 pointer-events-none opacity-40">
-            <div class="w-full h-0.5 bg-gradient-to-r from-[#DD0031] via-[#3776AB] via-[#00758F] via-[#2496ED] to-[#D7340B]"></div>
+          <!-- Connecting Vector Circuit Track (Desktop >= 1024px) -->
+          <div class="hidden lg:block absolute top-5 inset-x-10 h-0.5 -z-0 pointer-events-none opacity-30">
+            <div class="w-full h-0.5 bg-gradient-to-r from-[#336467] via-[#D7340B] via-[#3178C6] via-[#2496ED] to-[#00758F]"></div>
           </div>
 
-          <!-- CLUSTER 1: FRONTEND -->
-          <div class="vector-cluster space-y-3 z-10">
-            <div class="text-center pb-1">
-              <span class="text-[10px] font-mono font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full border"
-                    [style.border-color]="cardBorder()"
-                    [style.background-color]="tagBg()"
-                    [style.color]="accentSinopia()">
-                01 // FRONTEND
-              </span>
-            </div>
+          @for (cluster of skillClusters(); track cluster.id) {
+            <div class="vector-cluster p-2.5 rounded-xl border flex flex-col space-y-2 z-10 transition-shadow hover:shadow-md"
+                 [style.background-color]="tagBg()"
+                 [style.border-color]="cardBorder()">
+              <div class="text-center pb-0.5">
+                <span class="text-[9px] font-mono font-bold tracking-wider uppercase px-2 py-0.5 rounded-full border shadow-xs inline-block truncate max-w-full"
+                      [style.border-color]="cardBorder()"
+                      [style.background-color]="cardBg()"
+                      [style.color]="cluster.accentColor">
+                  {{ cluster.domainNumber }} // {{ lang() === 'en' ? cluster.nameEn : cluster.nameEs }}
+                </span>
+              </div>
 
-            <div class="grid grid-cols-3 gap-2.5 sm:gap-2">
-              @for (node of skillNodes.slice(0, 3); track node.id) {
-                <div class="skill-card vector-node-wrap flex flex-col items-center gap-1.5 cursor-pointer group"
-                     (click)="selectSkillNode(node)">
-                  <div class="vector-node w-13 h-13 sm:w-14 sm:h-14 rounded-2xl border-2 flex items-center justify-center p-2.5 shadow-md transition-all duration-300 group-hover:scale-110 group-hover:-translate-y-1"
-                       [class.ring-4]="selectedSkillNode()?.id === node.id"
-                       [class.ring-[#D7340B]]="selectedSkillNode()?.id === node.id"
-                       [style.background-color]="tagBg()"
-                       [style.border-color]="selectedSkillNode()?.id === node.id ? accentSinopia() : cardBorder()">
-                    <svg class="w-7 h-7 sm:w-8 sm:h-8 transition-transform group-hover:scale-105">
-                      <use [attr.href]="'#icon-' + node.icon"/>
-                    </svg>
+              <div class="flex flex-col gap-1.5">
+                @for (node of cluster.skills; track node.id) {
+                  <div class="skill-card vector-node p-1.5 rounded-lg border flex items-center gap-2 cursor-pointer group transition-all duration-200 select-none"
+                       [class.ring-2]="selectedSkillNode()?.id === node.id"
+                       [style.background-color]="cardBg()"
+                       [style.border-color]="selectedSkillNode()?.id === node.id ? cluster.accentColor : cardBorder()"
+                       (click)="selectSkillNode(node)"
+                       tabindex="0"
+                       role="button"
+                       (keydown.enter)="selectSkillNode(node)">
+                    <div class="w-7 h-7 rounded-md border flex items-center justify-center p-1 shrink-0 bg-white dark:bg-[#152426] shadow-xs group-hover:scale-110 transition-transform"
+                         [style.border-color]="cardBorder()">
+                      <svg class="w-4 h-4 shrink-0">
+                        <use [attr.href]="'#icon-' + node.icon"/>
+                      </svg>
+                    </div>
+                    <div class="flex flex-col min-w-0 flex-1">
+                      <span class="text-xs font-sans font-bold tracking-tight truncate leading-tight" [style.color]="textColor()">
+                        {{ node.shortName || node.name }}
+                      </span>
+                      <span class="text-[9px] font-mono font-medium truncate opacity-85" [style.color]="cluster.accentColor">
+                        {{ node.badge }}
+                      </span>
+                    </div>
                   </div>
-                  <span class="text-[11px] font-sans font-semibold tracking-tight text-center truncate max-w-full"
-                        [style.color]="selectedSkillNode()?.id === node.id ? accentSinopia() : textColor()">
-                    {{ node.name.split(' ')[0] }}
-                  </span>
-                </div>
-              }
+                }
+              </div>
             </div>
-          </div>
-
-          <!-- CLUSTER 2: BACKEND -->
-          <div class="vector-cluster space-y-3 z-10">
-            <div class="text-center pb-1">
-              <span class="text-[10px] font-mono font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full border"
-                    [style.border-color]="cardBorder()"
-                    [style.background-color]="tagBg()"
-                    [style.color]="accentCaribbean()">
-                02 // BACKEND
-              </span>
-            </div>
-
-            <div class="grid grid-cols-3 gap-2.5 sm:gap-2">
-              @for (node of skillNodes.slice(3, 6); track node.id) {
-                <div class="skill-card vector-node-wrap flex flex-col items-center gap-1.5 cursor-pointer group"
-                     (click)="selectSkillNode(node)">
-                  <div class="vector-node w-13 h-13 sm:w-14 sm:h-14 rounded-2xl border-2 flex items-center justify-center p-2.5 shadow-md transition-all duration-300 group-hover:scale-110 group-hover:-translate-y-1"
-                       [class.ring-4]="selectedSkillNode()?.id === node.id"
-                       [class.ring-[#336467]]="selectedSkillNode()?.id === node.id"
-                       [style.background-color]="tagBg()"
-                       [style.border-color]="selectedSkillNode()?.id === node.id ? accentCaribbean() : cardBorder()">
-                    <svg class="w-7 h-7 sm:w-8 sm:h-8 transition-transform group-hover:scale-105">
-                      <use [attr.href]="'#icon-' + node.icon"/>
-                    </svg>
-                  </div>
-                  <span class="text-[11px] font-sans font-semibold tracking-tight text-center truncate max-w-full"
-                        [style.color]="selectedSkillNode()?.id === node.id ? accentCaribbean() : textColor()">
-                    {{ node.name.split(' ')[0] }}
-                  </span>
-                </div>
-              }
-            </div>
-          </div>
-
-          <!-- CLUSTER 3: DATABASE -->
-          <div class="vector-cluster space-y-3 z-10">
-            <div class="text-center pb-1">
-              <span class="text-[10px] font-mono font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full border"
-                    [style.border-color]="cardBorder()"
-                    [style.background-color]="tagBg()"
-                    [style.color]="accentSinopia()">
-                03 // DATA & DB
-              </span>
-            </div>
-
-            <div class="grid grid-cols-3 gap-2.5 sm:gap-2">
-              @for (node of skillNodes.slice(6, 9); track node.id) {
-                <div class="skill-card vector-node-wrap flex flex-col items-center gap-1.5 cursor-pointer group"
-                     (click)="selectSkillNode(node)">
-                  <div class="vector-node w-13 h-13 sm:w-14 sm:h-14 rounded-2xl border-2 flex items-center justify-center p-2.5 shadow-md transition-all duration-300 group-hover:scale-110 group-hover:-translate-y-1"
-                       [class.ring-4]="selectedSkillNode()?.id === node.id"
-                       [class.ring-[#D7340B]]="selectedSkillNode()?.id === node.id"
-                       [style.background-color]="tagBg()"
-                       [style.border-color]="selectedSkillNode()?.id === node.id ? accentSinopia() : cardBorder()">
-                    <svg class="w-7 h-7 sm:w-8 sm:h-8 transition-transform group-hover:scale-105">
-                      <use [attr.href]="'#icon-' + node.icon"/>
-                    </svg>
-                  </div>
-                  <span class="text-[11px] font-sans font-semibold tracking-tight text-center truncate max-w-full"
-                        [style.color]="selectedSkillNode()?.id === node.id ? accentSinopia() : textColor()">
-                    {{ node.name.split(' ')[0] }}
-                  </span>
-                </div>
-              }
-            </div>
-          </div>
-
-          <!-- CLUSTER 4: DEVOPS -->
-          <div class="vector-cluster space-y-3 z-10">
-            <div class="text-center pb-1">
-              <span class="text-[10px] font-mono font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full border"
-                    [style.border-color]="cardBorder()"
-                    [style.background-color]="tagBg()"
-                    [style.color]="accentCaribbean()">
-                04 // DEVOPS & CLOUD
-              </span>
-            </div>
-
-            <div class="grid grid-cols-3 gap-2.5 sm:gap-2">
-              @for (node of skillNodes.slice(9, 12); track node.id) {
-                <div class="skill-card vector-node-wrap flex flex-col items-center gap-1.5 cursor-pointer group"
-                     (click)="selectSkillNode(node)">
-                  <div class="vector-node w-13 h-13 sm:w-14 sm:h-14 rounded-2xl border-2 flex items-center justify-center p-2.5 shadow-md transition-all duration-300 group-hover:scale-110 group-hover:-translate-y-1"
-                       [class.ring-4]="selectedSkillNode()?.id === node.id"
-                       [class.ring-[#336467]]="selectedSkillNode()?.id === node.id"
-                       [style.background-color]="tagBg()"
-                       [style.border-color]="selectedSkillNode()?.id === node.id ? accentCaribbean() : cardBorder()">
-                    <svg class="w-7 h-7 sm:w-8 sm:h-8 transition-transform group-hover:scale-105">
-                      <use [attr.href]="'#icon-' + node.icon"/>
-                    </svg>
-                  </div>
-                  <span class="text-[11px] font-sans font-semibold tracking-tight text-center truncate max-w-full"
-                        [style.color]="selectedSkillNode()?.id === node.id ? accentCaribbean() : textColor()">
-                    {{ node.name.split(' ')[0] }}
-                  </span>
-                </div>
-              }
-            </div>
-          </div>
-
-          <!-- CLUSTER 5: AI & AGENTS -->
-          <div class="vector-cluster space-y-3 z-10">
-            <div class="text-center pb-1">
-              <span class="text-[10px] font-mono font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full border"
-                    [style.border-color]="cardBorder()"
-                    [style.background-color]="tagBg()"
-                    [style.color]="accentSinopia()">
-                05 // AI & MCP
-              </span>
-            </div>
-
-            <div class="grid grid-cols-3 gap-2.5 sm:gap-2">
-              @for (node of skillNodes.slice(12, 15); track node.id) {
-                <div class="skill-card vector-node-wrap flex flex-col items-center gap-1.5 cursor-pointer group"
-                     (click)="selectSkillNode(node)">
-                  <div class="vector-node w-13 h-13 sm:w-14 sm:h-14 rounded-2xl border-2 flex items-center justify-center p-2.5 shadow-md transition-all duration-300 group-hover:scale-110 group-hover:-translate-y-1"
-                       [class.ring-4]="selectedSkillNode()?.id === node.id"
-                       [class.ring-[#D7340B]]="selectedSkillNode()?.id === node.id"
-                       [style.background-color]="tagBg()"
-                       [style.border-color]="selectedSkillNode()?.id === node.id ? accentSinopia() : cardBorder()">
-                    <svg class="w-7 h-7 sm:w-8 sm:h-8 transition-transform group-hover:scale-105">
-                      <use [attr.href]="'#icon-' + node.icon"/>
-                    </svg>
-                  </div>
-                  <span class="text-[11px] font-sans font-semibold tracking-tight text-center truncate max-w-full"
-                        [style.color]="selectedSkillNode()?.id === node.id ? accentSinopia() : textColor()">
-                    {{ node.name.split(' ')[0] }}
-                  </span>
-                </div>
-              }
-            </div>
-          </div>
+          }
 
         </div>
 
-        <!-- 🔍 ACTIVE NODE TECHNICAL INSPECTOR (Expands below nodes on tap/hover) -->
+        <!-- 🔍 ACTIVE NODE TECHNICAL INSPECTOR (Expands below nodes on tap/click) -->
         @if (selectedSkillNode(); as node) {
-          <div class="p-5 sm:p-6 rounded-2xl border bg-black/5 dark:bg-white/5 transition-all duration-300 space-y-4 animate-modal-content"
-               [style.border-color]="accentSinopia()">
+          <div class="p-3 sm:p-3.5 rounded-xl border bg-black/5 dark:bg-white/5 transition-all duration-300 space-y-2"
+               [style.border-color]="node.color || accentSinopia()">
             
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b"
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b"
                  [style.border-color]="cardBorder()">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center p-2 border bg-white dark:bg-[#152426]"
+              <div class="flex items-center gap-2.5">
+                <div class="w-7 h-7 rounded-lg flex items-center justify-center p-1 border bg-white dark:bg-[#152426]"
                      [style.border-color]="cardBorder()">
-                  <svg class="w-6 h-6"><use [attr.href]="'#icon-' + node.icon"/></svg>
+                  <svg class="w-4 h-4"><use [attr.href]="'#icon-' + node.icon"/></svg>
                 </div>
                 <div>
-                  <h4 class="text-base sm:text-lg font-bold font-sans" [style.color]="textColor()">
+                  <h4 class="text-xs sm:text-sm font-bold font-sans" [style.color]="textColor()">
                     {{ node.name }}
                   </h4>
-                  <p class="text-xs font-mono font-medium" [style.color]="accentCaribbean()">
-                    {{ currentLang === 'en' ? node.domainLabelEn : node.domainLabelEs }}
+                  <p class="text-[10px] font-mono font-medium" [style.color]="accentCaribbean()">
+                    {{ lang() === 'en' ? node.domainLabelEn : node.domainLabelEs }}
                   </p>
                 </div>
               </div>
 
               <div class="flex items-center gap-2">
-                <span class="px-3 py-1 rounded-full text-xs font-mono font-bold border"
-                      [style.border-color]="accentSinopia()"
-                      [style.color]="accentSinopia()">
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold border"
+                      [style.border-color]="node.color || accentSinopia()"
+                      [style.color]="node.color || accentSinopia()">
                   {{ node.badge }}
                 </span>
                 <button type="button"
                         (click)="selectedSkillNode.set(null)"
-                        class="w-7 h-7 rounded-full flex items-center justify-center text-xs opacity-60 hover:opacity-100 border cursor-pointer"
-                        [style.border-color]="cardBorder()">
+                        class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] opacity-60 hover:opacity-100 border cursor-pointer"
+                        [style.border-color]="cardBorder()"
+                        aria-label="Close skill details">
                   ✕
                 </button>
               </div>
             </div>
 
-            <p class="text-xs sm:text-sm leading-relaxed" [style.color]="mutedColor()">
-              {{ currentLang === 'en' ? node.descEn : node.descEs }}
+            <p class="text-[11px] sm:text-xs leading-relaxed" [style.color]="mutedColor()">
+              {{ lang() === 'en' ? node.descEn : node.descEs }}
             </p>
 
-            <div class="flex flex-wrap items-center gap-2 pt-1">
-              <span class="text-[11px] font-mono uppercase font-bold" [style.color]="accentSinopia()">
-                {{ currentLang === 'en' ? 'Verified Application:' : 'Aplicación Verificada:' }}
+            <div class="flex flex-wrap items-center gap-1.5 pt-0.5">
+              <span class="text-[9px] font-mono uppercase font-bold" [style.color]="accentSinopia()">
+                {{ lang() === 'en' ? 'Verified Application:' : 'Aplicación Verificada:' }}
               </span>
-              @for (h of (currentLang === 'en' ? node.highlightsEn : node.highlightsEs); track h) {
-                <span class="px-2.5 py-0.5 rounded-lg text-xs font-mono border"
+              @for (h of (lang() === 'en' ? node.highlightsEn : node.highlightsEs); track h) {
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-mono border"
                       [style.border-color]="cardBorder()"
                       [style.background-color]="tagBg()"
                       [style.color]="textColor()">
@@ -930,65 +912,76 @@
         }
 
         <!-- 🌐 SPOKEN LANGUAGES & GLOBAL RELOCATION SECTION -->
-        <div class="pt-6 border-t space-y-4" [style.border-color]="cardBorder()">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div class="pt-3 border-t space-y-2.5" [style.border-color]="cardBorder()">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
             <div>
-              <p class="text-xs font-bold uppercase tracking-widest font-mono" [style.color]="accentCaribbean()">
+              <p class="text-[10px] font-bold uppercase tracking-widest font-mono" [style.color]="accentCaribbean()">
                 🌐 {{ t().skills.spokenSectionSubtitle }}
               </p>
-              <h3 class="font-anton text-xl sm:text-2xl tracking-wide uppercase" [style.color]="textColor()">
+              <h3 class="font-anton text-base sm:text-lg tracking-wide uppercase leading-tight" [style.color]="textColor()">
                 {{ t().skills.spokenSectionTitle }}
               </h3>
             </div>
 
             <!-- Dublin Relocation Status Badge -->
-            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-semibold shrink-0"
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border text-[11px] font-semibold shrink-0"
                  [style.border-color]="cardBorder()"
                  [style.background-color]="tagBg()">
-              <span class="w-2 h-2 rounded-full animate-pulse" [style.background-color]="accentSinopia()"></span>
+              <span class="w-1.5 h-1.5 rounded-full animate-pulse" [style.background-color]="accentSinopia()"></span>
               <span [style.color]="accentSinopia()">{{ t().skills.spokenNotice }}</span>
             </div>
           </div>
 
-          <!-- Languages 3-Card Grid (Crystal Clear Context for English, Spanish, Valencian) -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            @for (lang of spokenLanguages; track lang.id) {
-              <article class="p-5 rounded-2xl border flex flex-col justify-between space-y-3 relative overflow-hidden"
-                       [class.border-2]="lang.id === 'en'"
-                       [style.border-color]="lang.id === 'en' ? accentSinopia() : cardBorder()"
-                       [style.background-color]="tagBg()">
+          <!-- Compact Languages Row (English, Spanish, Valencian) -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5">
+            @for (item of spokenLanguages; track item.id) {
+              <div class="p-2.5 rounded-xl border flex items-center justify-between gap-2.5 relative transition-all hover:shadow-md"
+                   [class.border-2]="item.id === 'en'"
+                   [style.border-color]="item.id === 'en' ? accentSinopia() : cardBorder()"
+                   [style.background-color]="tagBg()">
                 
-                <div class="space-y-2">
-                  <div class="flex items-center justify-between gap-2">
-                    <span class="text-2xl">{{ lang.flag }}</span>
-                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold border"
-                          [style.border-color]="lang.id === 'en' ? accentSinopia() : cardBorder()"
-                          [style.color]="lang.id === 'en' ? accentSinopia() : accentCaribbean()">
-                      {{ lang.cefr }}
-                    </span>
-                  </div>
-
-                  <div>
-                    <h4 class="text-base font-bold font-sans" [style.color]="textColor()">
-                      {{ currentLang === 'en' ? lang.nameEn : lang.nameEs }}
-                    </h4>
-                    <p class="text-xs font-mono font-semibold" [style.color]="accentCaribbean()">
-                      {{ lang.levelBadge }}
+                <div class="flex items-center gap-2.5 min-w-0">
+                  <span class="text-xl shrink-0">{{ item.flag }}</span>
+                  <div class="min-w-0">
+                    <div class="flex items-center gap-1.5">
+                      <h4 class="text-xs font-bold font-sans truncate" [style.color]="textColor()">
+                        {{ lang() === 'en' ? item.nameEn : item.nameEs }}
+                      </h4>
+                      <span class="px-1.5 py-0.2 rounded-full text-[9px] font-mono font-bold border shrink-0"
+                            [style.border-color]="item.id === 'en' ? accentSinopia() : cardBorder()"
+                            [style.color]="item.id === 'en' ? accentSinopia() : accentCaribbean()">
+                        {{ item.cefr }}
+                      </span>
+                    </div>
+                    <p class="text-[10px] font-mono truncate" [style.color]="mutedColor()">
+                      {{ item.levelBadge }}
                     </p>
                   </div>
-
-                  <p class="text-xs leading-relaxed" [style.color]="mutedColor()">
-                    {{ currentLang === 'en' ? lang.descEn : lang.descEs }}
-                  </p>
                 </div>
 
-                <div class="pt-2 border-t text-[10px] font-mono uppercase tracking-wider font-semibold"
-                     [style.border-color]="cardBorder()"
-                     [style.color]="lang.id === 'en' ? accentSinopia() : mutedColor()">
-                  {{ currentLang === 'en' ? lang.statusBadgeEn : lang.statusBadgeEs }}
-                </div>
+                <!-- Action / Status Badge: If English, direct PDF opener button -->
+                @if (item.pdfUrl) {
+                  <a [href]="item.pdfUrl"
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     class="px-2 py-1 rounded-lg border text-[10px] font-mono font-bold flex items-center gap-1 shrink-0 transition-transform hover:scale-105 shadow-xs"
+                     [style.background-color]="accentSinopia()"
+                     [style.border-color]="accentSinopia()"
+                     style="color: #ffffff;">
+                    <span>📄</span>
+                    <span class="hidden sm:inline">{{ lang() === 'en' ? 'C1 Statement ↗' : 'Certificado C1 ↗' }}</span>
+                    <span class="sm:hidden">C1 ↗</span>
+                  </a>
+                } @else {
+                  <span class="px-2 py-0.5 rounded-md text-[9px] font-mono uppercase font-semibold border shrink-0"
+                        [style.border-color]="cardBorder()"
+                        [style.background-color]="cardBg()"
+                        [style.color]="accentCaribbean()">
+                    {{ lang() === 'en' ? item.statusBadgeEn : item.statusBadgeEs }}
+                  </span>
+                }
 
-              </article>
+              </div>
             }
           </div>
 
@@ -1000,68 +993,128 @@
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!-- 🎓 SECTION 4: EDUCATION (Ascending Chronological Timeline)          -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <section id="education" class="section-anchor w-full space-y-8 pt-6 border-t"
+    <section id="education" class="section-anchor w-full space-y-4 pt-4 border-t"
              [style.border-color]="cardBorder()">
       
-      <!-- Section Header -->
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-        <div class="space-y-1">
-          <p class="text-xs font-bold uppercase tracking-widest font-sans" [style.color]="accentSinopia()">
+      <!-- Section Header (Compact Viewport Budgeting) -->
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 pb-1">
+        <div class="space-y-0.5">
+          <p class="text-[11px] font-bold uppercase tracking-widest font-mono" [style.color]="accentSinopia()">
             04 // {{ t().education.sectionSubtitle }}
           </p>
-          <h2 class="font-anton text-3xl sm:text-4xl tracking-wide uppercase" [style.color]="textColor()">
+          <h2 class="font-anton text-2xl sm:text-3xl tracking-wide uppercase leading-tight" [style.color]="textColor()">
             {{ t().education.sectionTitle }}
           </h2>
         </div>
 
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-semibold shrink-0"
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-[11px] font-semibold shrink-0"
              [style.border-color]="cardBorder()"
              [style.background-color]="tagBg()"
              [style.color]="accentCaribbean()">
-          <span>↑</span>
+          <span class="font-bold">↑</span>
           <span>{{ t().education.timelineBadge }}</span>
         </div>
       </div>
 
-      <!-- Vertical Ascending Timeline Container -->
-      <div class="relative pl-6 sm:pl-10 space-y-8">
-        <!-- Connecting Vertical Spine -->
-        <div class="absolute left-2.5 sm:left-3 top-4 bottom-4 w-0.5 bg-gradient-to-t from-[#336467] via-[#D7340B] to-[#D7340B]"></div>
+      <!-- 🗺️ REAL UNIFIED 2024-2027 CHRONOLOGICAL ROADMAP (4 Continuous Stepper Milestones) -->
+      <div class="portfolio-card p-3.5 sm:p-4 rounded-2xl border shadow-md space-y-2.5 relative overflow-hidden"
+           [style.background-color]="cardBg()"
+           [style.border-color]="cardBorder()">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pb-2 border-b"
+             [style.border-color]="cardBorder()">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full animate-pulse" [style.background-color]="accentSinopia()"></span>
+            <span class="text-[10px] font-mono font-bold uppercase tracking-wider" [style.color]="accentSinopia()">
+              {{ t().education.journeyTitle }}
+            </span>
+          </div>
+          <span class="text-[10px] font-mono opacity-70" [style.color]="mutedColor()">
+            {{ t().education.journeySubtitle }}
+          </span>
+        </div>
 
-        <!-- TOP CARD: BSc (Hons) Computer Science (Newest / Target Milestone) -->
-        <div class="relative">
-          <div class="absolute -left-6 sm:-left-10 top-5 w-5 h-5 rounded-full border-2 flex items-center justify-center timeline-node-pulse shadow-md"
-               [style.background-color]="cardBg()"
-               [style.border-color]="accentSinopia()">
-            <div class="w-2 h-2 rounded-full" [style.background-color]="accentSinopia()"></div>
+        <!-- 4 Milestone Cards Grid (Using DIVs, not articles, to preserve 2-card test contract) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 relative">
+          <!-- Horizontal Connecting Progress Track (Desktop) -->
+          <div class="hidden lg:block absolute top-4 inset-x-8 h-0.5 -z-0 pointer-events-none opacity-30">
+            <div class="w-full h-0.5 bg-gradient-to-r from-[#336467] via-[#D7340B] via-[#0A66C2] to-[#D7340B]"></div>
           </div>
 
-          <article class="portfolio-card p-6 sm:p-7 rounded-3xl border shadow-xl relative overflow-hidden"
+          @for (m of t().education.journeyMilestones; track m.year; let mIdx = $index) {
+            <div class="p-2.5 rounded-xl border flex flex-col justify-between space-y-2 relative z-10 transition-shadow hover:shadow-md"
+                 [style.background-color]="tagBg()"
+                 [style.border-color]="mIdx === 3 ? accentSinopia() : cardBorder()">
+              <div class="space-y-1">
+                <div class="flex items-center justify-between gap-1">
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold"
+                        [style.background-color]="mIdx === 3 ? accentSinopia() : (mIdx === 0 ? accentCaribbean() : cardBorder())"
+                        style="color: #ffffff;">
+                    {{ m.year }}
+                  </span>
+                  <span class="text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded-md border truncate max-w-[65%]"
+                        [style.border-color]="cardBorder()"
+                        [style.background-color]="cardBg()"
+                        [style.color]="mIdx === 3 ? accentSinopia() : textColor()">
+                    {{ m.badge }}
+                  </span>
+                </div>
+
+                <h4 class="text-xs font-sans font-bold leading-snug line-clamp-1" [style.color]="textColor()">
+                  {{ m.title }}
+                </h4>
+                <p class="text-[10px] font-mono font-medium truncate" [style.color]="accentCaribbean()">
+                  {{ m.institution }}
+                </p>
+              </div>
+
+              <p class="text-[10px] leading-relaxed line-clamp-2" [style.color]="mutedColor()">
+                {{ m.description }}
+              </p>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- 🎓 ASCENDING DEGREE TIMELINE (Exact 2 Primary Degree Cards: DAW Foundation at bottom, BSc Top-Up at top) -->
+      <div class="relative pl-6 sm:pl-8 space-y-4">
+        <!-- Connecting Vertical Gradient Spine -->
+        <div class="absolute left-2.5 sm:left-3 top-3 bottom-3 w-0.5 bg-gradient-to-t from-[#336467] via-[#D7340B] to-[#D7340B]"></div>
+
+        <!-- TOP CARD: BSc (Hons) Computer Science (Index 0: Newest Milestone) -->
+        <div class="relative">
+          <div class="absolute -left-6 sm:-left-8 top-4 w-4 h-4 rounded-full border-2 flex items-center justify-center timeline-node-pulse shadow-md"
+               [style.background-color]="cardBg()"
+               [style.border-color]="accentSinopia()">
+            <div class="w-1.5 h-1.5 rounded-full" [style.background-color]="accentSinopia()"></div>
+          </div>
+
+          <article class="portfolio-card p-4 sm:p-5 rounded-2xl border shadow-md relative overflow-hidden"
                    [style.background-color]="cardBg()"
                    [style.border-color]="cardBorder()">
-            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 pb-3 border-b"
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1.5 pb-2.5 border-b"
                  [style.border-color]="cardBorder()">
-              <div class="space-y-1">
-                <div class="flex items-center gap-2">
-                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono uppercase tracking-wider text-white"
+              <div class="space-y-0.5">
+                <div class="flex items-center gap-1.5">
+                  <span class="px-2 py-0.5 rounded-full text-[9px] font-bold font-mono uppercase tracking-wider text-white"
                         [style.background-color]="accentSinopia()">
                     02 // {{ t().education.items[0].status }}
                   </span>
-                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold tracking-wide border font-sans"
+                  <span class="px-2 py-0.5 rounded-full text-[9px] font-semibold tracking-wide border font-sans"
                         [style.background-color]="tagBg()"
                         [style.border-color]="cardBorder()"
                         [style.color]="accentSinopia()">
                     {{ t().education.items[0].badge }}
                   </span>
                 </div>
-                <h3 class="text-lg sm:text-xl font-bold font-sans tracking-tight" [style.color]="textColor()">
+                <h3 class="text-base sm:text-lg font-bold font-sans tracking-tight" [style.color]="textColor()">
                   {{ t().education.items[0].degree }}
                 </h3>
-                <p class="text-xs sm:text-sm font-semibold font-sans" [style.color]="accentCaribbean()">
+                <p class="text-xs font-semibold font-sans" [style.color]="accentCaribbean()">
                   {{ t().education.items[0].institution }}
                 </p>
               </div>
-              <time class="text-xs font-mono font-bold shrink-0 px-2.5 py-1 rounded-lg border text-right"
+              <time class="text-[11px] font-mono font-bold shrink-0 px-2 py-0.5 rounded-lg border text-right"
                     [style.border-color]="cardBorder()"
                     [style.background-color]="tagBg()"
                     [style.color]="textColor()">
@@ -1069,9 +1122,9 @@
               </time>
             </div>
 
-            <ul class="py-4 space-y-2 text-xs sm:text-sm leading-relaxed" [style.color]="mutedColor()">
+            <ul class="pt-2.5 space-y-1.5 text-xs leading-relaxed" [style.color]="mutedColor()">
               @for (h of t().education.items[0].highlights; track h) {
-                <li class="flex items-start gap-2.5">
+                <li class="flex items-start gap-2">
                   <span class="font-bold shrink-0 mt-0.5" [style.color]="accentSinopia()">▸</span>
                   <span>{{ h }}</span>
                 </li>
@@ -1080,49 +1133,49 @@
           </article>
         </div>
 
-        <!-- Ascending Journey Cue -->
-        <div class="relative py-1 flex items-center gap-2">
-          <span class="text-xs font-mono tracking-widest uppercase font-bold flex items-center gap-1.5"
+        <!-- Ascending Journey Cue Divider -->
+        <div class="relative py-0.5 flex items-center gap-2">
+          <span class="text-[10px] font-mono tracking-widest uppercase font-bold flex items-center gap-1.5"
                 [style.color]="accentCaribbean()">
             <span>▲</span>
-            <span>ASCENDING CHRONOLOGICAL JOURNEY</span>
+            <span>ASCENDING TIMELINE · 2024 FOUNDATION (BOTTOM) → 2027 HONOURS DEGREE (TOP)</span>
           </span>
         </div>
 
-        <!-- BOTTOM CARD: CFGS DAW (Foundation Milestone) -->
+        <!-- BOTTOM CARD: CFGS DAW (Index 1: Foundation Milestone) -->
         <div class="relative">
-          <div class="absolute -left-6 sm:-left-10 top-5 w-5 h-5 rounded-full border-2 flex items-center justify-center shadow-sm"
+          <div class="absolute -left-6 sm:-left-8 top-4 w-4 h-4 rounded-full border-2 flex items-center justify-center shadow-xs"
                [style.background-color]="cardBg()"
                [style.border-color]="accentCaribbean()">
-            <div class="w-2 h-2 rounded-full" [style.background-color]="accentCaribbean()"></div>
+            <div class="w-1.5 h-1.5 rounded-full" [style.background-color]="accentCaribbean()"></div>
           </div>
 
-          <article class="portfolio-card p-6 sm:p-7 rounded-3xl border shadow-xl relative overflow-hidden"
+          <article class="portfolio-card p-4 sm:p-5 rounded-2xl border shadow-md relative overflow-hidden"
                    [style.background-color]="cardBg()"
                    [style.border-color]="cardBorder()">
-            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 pb-3 border-b"
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1.5 pb-2.5 border-b"
                  [style.border-color]="cardBorder()">
-              <div class="space-y-1">
-                <div class="flex items-center gap-2">
-                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono uppercase tracking-wider text-white"
+              <div class="space-y-0.5">
+                <div class="flex items-center gap-1.5">
+                  <span class="px-2 py-0.5 rounded-full text-[9px] font-bold font-mono uppercase tracking-wider text-white"
                         [style.background-color]="accentCaribbean()">
                     01 // {{ t().education.items[1].status }}
                   </span>
-                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold tracking-wide border font-sans"
+                  <span class="px-2 py-0.5 rounded-full text-[9px] font-semibold tracking-wide border font-sans"
                         [style.background-color]="tagBg()"
                         [style.border-color]="cardBorder()"
                         [style.color]="accentCaribbean()">
                     {{ t().education.items[1].badge }}
                   </span>
                 </div>
-                <h3 class="text-lg sm:text-xl font-bold font-sans tracking-tight" [style.color]="textColor()">
+                <h3 class="text-base sm:text-lg font-bold font-sans tracking-tight" [style.color]="textColor()">
                   {{ t().education.items[1].degree }}
                 </h3>
-                <p class="text-xs sm:text-sm font-semibold font-sans" [style.color]="accentCaribbean()">
+                <p class="text-xs font-semibold font-sans" [style.color]="accentCaribbean()">
                   {{ t().education.items[1].institution }}
                 </p>
               </div>
-              <time class="text-xs font-mono font-bold shrink-0 px-2.5 py-1 rounded-lg border text-right"
+              <time class="text-[11px] font-mono font-bold shrink-0 px-2 py-0.5 rounded-lg border text-right"
                     [style.border-color]="cardBorder()"
                     [style.background-color]="tagBg()"
                     [style.color]="textColor()">
@@ -1130,9 +1183,9 @@
               </time>
             </div>
 
-            <ul class="py-4 space-y-2 text-xs sm:text-sm leading-relaxed" [style.color]="mutedColor()">
+            <ul class="pt-2.5 space-y-1.5 text-xs leading-relaxed" [style.color]="mutedColor()">
               @for (h of t().education.items[1].highlights; track h) {
-                <li class="flex items-start gap-2.5">
+                <li class="flex items-start gap-2">
                   <span class="font-bold shrink-0 mt-0.5" [style.color]="accentCaribbean()">▸</span>
                   <span>{{ h }}</span>
                 </li>
@@ -1215,7 +1268,7 @@
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!-- ✉️ SECTION 6: CONTACT (Redesigned Editorial Bento Grid)              -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <section id="contact" class="section-anchor w-full space-y-8 pt-6 border-t"
+    <section id="contact" class="section-anchor w-full space-y-8 pt-6 border-t md:hidden"
              [style.border-color]="cardBorder()">
       
       <!-- Section Header -->
@@ -1406,7 +1459,7 @@
           [style.color]="mutedColor()">
     <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
       <div class="flex items-center gap-3">
-        <svg class="w-6 h-6 shrink-0"><use href="#icon-sc"/></svg>
+        <img [src]="theme() === 'light' ? '/assets/logo.png' : '/assets/logo-dark.png'" alt="Santiago Castro Salt" class="w-7 h-7 object-contain shrink-0">
         <p>
           © 2026 <strong>Santiago Castro Salt</strong>. {{ t().footer.rights }}
         </p>
@@ -1416,5 +1469,7 @@
       </p>
     </div>
   </footer>
+
+  </div> <!-- End Boxed Layout Shell -->
 
 </div>

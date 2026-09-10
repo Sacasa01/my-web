@@ -25,7 +25,7 @@ html {
 body {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   overflow-x: hidden;
-  user-select: none;
+  user-select: auto;
   margin: 0;
   padding: 0;
 }
@@ -65,4 +65,48 @@ body {
   scrollbar-color: rgba(51, 100, 103, 0.25) transparent;
 }
 
+/* Green Status Dot Slow Breathing Glow */
+@keyframes slowBreathe {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 10px 3px rgba(16, 185, 129, 0.45);
+    transform: scale(1.08);
+  }
+}
 
+.animate-status-dot {
+  animation: slowBreathe 3.5s ease-in-out infinite;
+}
+
+/* Hanging Navbar Cord Interactive Sway */
+@keyframes cordSway {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(2deg);
+  }
+  75% {
+    transform: rotate(-1.5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.hanging-cord-group {
+  transform-origin: top center;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hanging-cord-group:hover {
+  animation: cordSway 3s ease-in-out infinite;
+}
+
+/* Language Cross-Fade Transition */
+.lang-fade {
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}

@@ -1,5 +1,6 @@
 import { Component, signal, computed, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import gsap from 'gsap';
 
 export type Lang = 'en' | 'es';
 export type Theme = 'light' | 'dark';
@@ -25,6 +26,7 @@ export interface ProjectItem {
 export interface SkillNode {
   id: string;
   name: string;
+  shortName?: string;
   domain: 'frontend' | 'backend' | 'database' | 'devops' | 'ai';
   domainLabelEn: string;
   domainLabelEs: string;
@@ -35,6 +37,15 @@ export interface SkillNode {
   descEs: string;
   highlightsEn: string[];
   highlightsEs: string[];
+}
+
+export interface SkillCluster {
+  id: string;
+  domainNumber: string;
+  nameEn: string;
+  nameEs: string;
+  accentColor: string;
+  skills: SkillNode[];
 }
 
 export interface SpokenLanguage {
@@ -48,6 +59,9 @@ export interface SpokenLanguage {
   descEs: string;
   cefr: string;
   flag: string;
+  pdfUrl?: string;
+  pdfLabelEn?: string;
+  pdfLabelEs?: string;
 }
 
 @Component({
@@ -66,11 +80,17 @@ export class AppComponent {
   isClosingModal = signal<boolean>(false);
   selectedSkillNode = signal<SkillNode | null>(null);
   avatarState = signal<'TYPING' | 'IDLE'>('TYPING');
+  isCordExpanded = signal<boolean>(true);
+
+  toggleCord() {
+    this.isCordExpanded.update(v => !v);
+  }
 
   get currentLang(): Lang {
     return this.lang();
   }
 
+  outerBg = computed(() => this.theme() === 'light' ? '#EAE6D6' : '#070E0F');
   bgColor = computed(() => this.theme() === 'light' ? '#F5F3E7' : '#0D1718');
   cardBg = computed(() => this.theme() === 'light' ? '#FFFFFF' : '#152426');
   cardBorder = computed(() => this.theme() === 'light' ? 'rgba(51, 100, 103, 0.16)' : 'rgba(224, 221, 174, 0.14)');
@@ -242,7 +262,7 @@ export class AppComponent {
               { name: 'Python', icon: 'python' },
               { name: 'Pandas', icon: 'pandas' },
               { name: 'Leaflet', icon: 'leaflet' },
-              { name: 'GeoJSON', icon: 'python' }
+              { name: 'GeoJSON', icon: 'geojson' }
             ],
             link: 'https://github.com/Sacasa01/legacy-land-mapper',
             linkText: 'View Repository ↗'
@@ -307,6 +327,46 @@ export class AppComponent {
         sectionTitle: 'Academic Education',
         sectionSubtitle: 'Chronological Progression · Ascending Timeline (Bottom to Top)',
         timelineBadge: 'Ascending Trajectory (Bottom = Foundation → Top = Current)',
+        journeyTitle: 'Real Engineering Journey (2024 – 2027)',
+        journeySubtitle: 'Continuous Timeline: Academic Foundation → AWS/Google AI Certs → Clinical Practice → BSc Degree',
+        journeyMilestones: [
+          {
+            year: '2024',
+            title: 'CFGS DAW — Web Application Development',
+            institution: 'La Florida Universitaria, Valencia',
+            category: 'academic',
+            badge: 'Foundation · Grade 7.0',
+            description: 'Started enterprise software development degree: PHP 8/Symfony 7, MySQL relational schemas, and modern TypeScript.',
+            icon: 'academic'
+          },
+          {
+            year: '2025',
+            title: 'AWS Cloud & Google AI Certifications',
+            institution: 'Amazon Web Services & Santander / Google',
+            category: 'certification',
+            badge: 'AWS & Google AI Certs',
+            description: 'Achieved AWS Cloud Practitioner fundamentals and Google Artificial Intelligence & Productivity certification.',
+            icon: 'cert'
+          },
+          {
+            year: '2026',
+            title: 'Clinical AI Practice & English C1 (IELTS 8.0)',
+            institution: 'Hospital La Fe / Fertoolity & Official IELTS',
+            category: 'practice',
+            badge: 'Clinical FCT & C1 IELTS',
+            description: 'Completed hospital clinical AI medical imaging internship (PyTorch/MONAI) and official English C1 accreditation.',
+            icon: 'clinical'
+          },
+          {
+            year: '2026 – 2027',
+            title: 'BSc (Hons) in Computer Science (Top-Up)',
+            institution: 'Canterbury Christ Church University / MSMK',
+            category: 'degree',
+            badge: 'Current University Degree',
+            description: 'Pursuing British Honours degree taught 100% in English: Advanced Software Engineering and AI Systems Integration.',
+            icon: 'university'
+          }
+        ],
         items: [
           {
             degree: 'BSc (Hons) in Computer Science (Top-Up)',
@@ -548,7 +608,7 @@ export class AppComponent {
               { name: 'Python', icon: 'python' },
               { name: 'Pandas', icon: 'pandas' },
               { name: 'Leaflet', icon: 'leaflet' },
-              { name: 'GeoJSON', icon: 'python' }
+              { name: 'GeoJSON', icon: 'geojson' }
             ],
             link: 'https://github.com/Sacasa01/legacy-land-mapper',
             linkText: 'Ver Repositorio ↗'
@@ -613,6 +673,46 @@ export class AppComponent {
         sectionTitle: 'Formación Académica',
         sectionSubtitle: 'Progresión Académica · Línea de Tiempo de Abajo hacia Arriba',
         timelineBadge: 'Cronología Ascendente (Abajo = Más antigua → Arriba = Más nueva)',
+        journeyTitle: 'Trayectoria Real de Ingeniería y Formación',
+        journeySubtitle: '2024 – 2027 · Cronología Continua de Progresión Técnica',
+        journeyMilestones: [
+          {
+            year: '2024',
+            title: 'CFGS DAW — Desarrollo de Aplicaciones Web',
+            institution: 'La Florida Universitaria, Valencia',
+            category: 'academic',
+            badge: 'Base Troncal · Nota 7.0',
+            description: 'Inicio de la ingeniería de software profesional: PHP 8/Symfony 7, esquemas relacionales MySQL y TypeScript moderno.',
+            icon: 'academic'
+          },
+          {
+            year: '2025',
+            title: 'Certificaciones Cloud AWS y Google IA',
+            institution: 'Amazon Web Services & Santander / Google',
+            category: 'certification',
+            badge: 'AWS & Google IA Certificados',
+            description: 'Taller oficial AWS Cloud Practitioner y fundamentos, más certificación en Inteligencia Artificial y Productividad de Google.',
+            icon: 'cert'
+          },
+          {
+            year: '2026',
+            title: 'Prácticas de IA Clínica e Inglés C1 (IELTS 8.0)',
+            institution: 'Hospital La Fe / Fertoolity & Examen Oficial IELTS',
+            category: 'practice',
+            badge: 'FCT Hospitalaria & C1 IELTS',
+            description: 'Prácticas hospitalarias con pipelines de visión e IA médica con PyTorch/MONAI, y obtención de la certificación C1 de inglés.',
+            icon: 'clinical'
+          },
+          {
+            year: '2026 – 2027',
+            title: 'Grado BSc (Hons) in Computer Science (Top-Up)',
+            institution: 'Canterbury Christ Church University / MSMK',
+            category: 'degree',
+            badge: 'Grado Universitario Actual',
+            description: 'Grado británico impartido 100% en inglés: Ingeniería Avanzada de Software, Sistemas Distribuidos e Integración de IA.',
+            icon: 'university'
+          }
+        ],
         items: [
           {
             degree: 'BSc (Hons) in Computer Science (Top-Up)',
@@ -700,6 +800,7 @@ export class AppComponent {
     {
       id: 'angular',
       name: 'Angular 19',
+      shortName: 'Angular',
       domain: 'frontend',
       domainLabelEn: 'Frontend Architecture',
       domainLabelEs: 'Arquitectura Frontend',
@@ -714,6 +815,7 @@ export class AppComponent {
     {
       id: 'typescript',
       name: 'TypeScript',
+      shortName: 'TypeScript',
       domain: 'frontend',
       domainLabelEn: 'Frontend Architecture',
       domainLabelEs: 'Arquitectura Frontend',
@@ -728,6 +830,7 @@ export class AppComponent {
     {
       id: 'tailwind',
       name: 'Tailwind CSS',
+      shortName: 'Tailwind',
       domain: 'frontend',
       domainLabelEn: 'Frontend Architecture',
       domainLabelEs: 'Arquitectura Frontend',
@@ -743,6 +846,7 @@ export class AppComponent {
     {
       id: 'python',
       name: 'Python 3',
+      shortName: 'Python',
       domain: 'backend',
       domainLabelEn: 'Backend Microservices',
       domainLabelEs: 'Microservicios Backend',
@@ -757,6 +861,7 @@ export class AppComponent {
     {
       id: 'fastapi',
       name: 'FastAPI',
+      shortName: 'FastAPI',
       domain: 'backend',
       domainLabelEn: 'Backend Microservices',
       domainLabelEs: 'Microservicios Backend',
@@ -771,6 +876,7 @@ export class AppComponent {
     {
       id: 'php',
       name: 'PHP 8 / Symfony 7',
+      shortName: 'Symfony / PHP',
       domain: 'backend',
       domainLabelEn: 'Backend Microservices',
       domainLabelEs: 'Microservicios Backend',
@@ -786,6 +892,7 @@ export class AppComponent {
     {
       id: 'mysql',
       name: 'MySQL 8',
+      shortName: 'MySQL',
       domain: 'database',
       domainLabelEn: 'Data & Storage',
       domainLabelEs: 'Datos y Almacenamiento',
@@ -800,6 +907,7 @@ export class AppComponent {
     {
       id: 'postgresql',
       name: 'PostgreSQL & pgvector',
+      shortName: 'PostgreSQL',
       domain: 'database',
       domainLabelEn: 'Data & Storage',
       domainLabelEs: 'Datos y Almacenamiento',
@@ -814,6 +922,7 @@ export class AppComponent {
     {
       id: 'pandas',
       name: 'Pandas & GeoJSON',
+      shortName: 'Pandas',
       domain: 'database',
       domainLabelEn: 'Data & Storage',
       domainLabelEs: 'Datos y Almacenamiento',
@@ -829,6 +938,7 @@ export class AppComponent {
     {
       id: 'docker',
       name: 'Docker & Compose v2',
+      shortName: 'Docker',
       domain: 'devops',
       domainLabelEn: 'DevOps & Infrastructure',
       domainLabelEs: 'DevOps e Infraestructura',
@@ -843,6 +953,7 @@ export class AppComponent {
     {
       id: 'aws',
       name: 'AWS Cloud',
+      shortName: 'AWS Cloud',
       domain: 'devops',
       domainLabelEn: 'DevOps & Infrastructure',
       domainLabelEs: 'DevOps e Infraestructura',
@@ -857,6 +968,7 @@ export class AppComponent {
     {
       id: 'git',
       name: 'GitOps & CI/CD',
+      shortName: 'GitOps',
       domain: 'devops',
       domainLabelEn: 'DevOps & Infrastructure',
       domainLabelEs: 'DevOps e Infraestructura',
@@ -872,6 +984,7 @@ export class AppComponent {
     {
       id: 'mcp',
       name: 'Model Context Protocol (MCP)',
+      shortName: 'MCP Ecosystem',
       domain: 'ai',
       domainLabelEn: 'AI Systems & Agents',
       domainLabelEs: 'Sistemas de IA y Agentes',
@@ -886,6 +999,7 @@ export class AppComponent {
     {
       id: 'pytorch',
       name: 'PyTorch & MONAI',
+      shortName: 'PyTorch / MONAI',
       domain: 'ai',
       domainLabelEn: 'AI Systems & Agents',
       domainLabelEs: 'Sistemas de IA y Agentes',
@@ -900,6 +1014,7 @@ export class AppComponent {
     {
       id: 'agentic',
       name: 'ReAct Agentic Workflows',
+      shortName: 'AI Agents',
       domain: 'ai',
       domainLabelEn: 'AI Systems & Agents',
       domainLabelEs: 'Sistemas de IA y Agentes',
@@ -913,18 +1028,64 @@ export class AppComponent {
     }
   ];
 
+  skillClusters = computed<SkillCluster[]>(() => [
+    {
+      id: 'backend',
+      domainNumber: '01',
+      nameEn: 'Backend Architecture',
+      nameEs: 'Arquitectura Backend',
+      accentColor: '#336467',
+      skills: this.skillNodes.filter(s => s.domain === 'backend')
+    },
+    {
+      id: 'ai',
+      domainNumber: '02',
+      nameEn: 'AI Systems & MCP Agents',
+      nameEs: 'Sistemas de IA y MCP',
+      accentColor: '#D7340B',
+      skills: this.skillNodes.filter(s => s.domain === 'ai')
+    },
+    {
+      id: 'frontend',
+      domainNumber: '03',
+      nameEn: 'Frontend Architecture',
+      nameEs: 'Arquitectura Frontend',
+      accentColor: '#3178C6',
+      skills: this.skillNodes.filter(s => s.domain === 'frontend')
+    },
+    {
+      id: 'devops',
+      domainNumber: '04',
+      nameEn: 'DevOps & Cloud Systems',
+      nameEs: 'DevOps e Infraestructura',
+      accentColor: '#2496ED',
+      skills: this.skillNodes.filter(s => s.domain === 'devops')
+    },
+    {
+      id: 'database',
+      domainNumber: '05',
+      nameEn: 'Data Modeling & GIS',
+      nameEs: 'Modelado de Datos y GIS',
+      accentColor: '#00758F',
+      skills: this.skillNodes.filter(s => s.domain === 'database')
+    }
+  ]);
+
   spokenLanguages: SpokenLanguage[] = [
     {
       id: 'en',
       nameEn: 'English',
       nameEs: 'Inglés',
       cefr: 'C1 Advanced',
-      levelBadge: 'Full Professional Proficiency',
+      levelBadge: 'Full Professional Proficiency (IELTS 8.0 Eq.)',
       statusBadgeEn: 'Target: Dublin On-Site (Sep 2026)',
       statusBadgeEs: 'Objetivo: Presencial en Dublín (Sep 2026)',
       descEn: 'Official IELTS 8.0 standard. Completely fluent in technical architecture debates, daily async communication, code reviews, and international team leadership.',
       descEs: 'Nivel equivalente a IELTS 8.0 / C1 Oficial. Totalmente fluido en debates de arquitectura técnica, revisiones de código, reuniones diarias y liderazgo técnico internacional.',
-      flag: '🇬🇧'
+      flag: '🇬🇧',
+      pdfUrl: '/assets/santiago-castro-cate-c1.pdf',
+      pdfLabelEn: 'View Official CATE C1 Statement (PDF) ↗',
+      pdfLabelEs: 'Ver Certificado Oficial CATE C1 (PDF) ↗'
     },
     {
       id: 'es',
@@ -954,7 +1115,35 @@ export class AppComponent {
 
   t = computed(() => this.content[this.lang()]);
 
+  scrollToTop(event?: Event) {
+    if (event) {
+      event.preventDefault();
+    }
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
   toggleLang() {
+    if (typeof document !== 'undefined') {
+      const elements = document.querySelectorAll('.lang-fade');
+      if (elements.length > 0) {
+        gsap.to(elements, {
+          opacity: 0,
+          duration: 0.16,
+          ease: 'power1.in',
+          onComplete: () => {
+            this.lang.update(current => current === 'en' ? 'es' : 'en');
+            gsap.to(elements, {
+              opacity: 1,
+              duration: 0.26,
+              ease: 'power1.out'
+            });
+          }
+        });
+        return;
+      }
+    }
     this.lang.update(current => current === 'en' ? 'es' : 'en');
   }
 
@@ -985,12 +1174,45 @@ export class AppComponent {
     }
   }
 
+  activeInquiryTopic = signal<'dublin-hiring' | 'clinical-ai' | 'backend-arch'>('dublin-hiring');
+
+  get mailtoSubject(): string {
+    const subjects = {
+      en: {
+        'dublin-hiring': 'Software Engineering Opportunity in Dublin — Santiago Castro Salt',
+        'clinical-ai': 'Clinical AI & Medical Imaging Diagnostics Inquiry — Santiago Castro Salt',
+        'backend-arch': 'Backend Microservices & MCP Integration — Santiago Castro Salt'
+      },
+      es: {
+        'dublin-hiring': 'Oportunidad de Ingeniería de Software en Dublín — Santiago Castro Salt',
+        'clinical-ai': 'Consulta de IA Clínica e Imagen Médica — Santiago Castro Salt',
+        'backend-arch': 'Consulta de Arquitectura Backend y MCP — Santiago Castro Salt'
+      }
+    };
+    return encodeURIComponent(subjects[this.lang()][this.activeInquiryTopic()]);
+  }
+
+  setInquiryTopic(topic: 'dublin-hiring' | 'clinical-ai' | 'backend-arch') {
+    this.activeInquiryTopic.set(topic);
+  }
+
   openProjectModal(project: ProjectItem) {
     this.isClosingModal.set(false);
     this.selectedProject.set(project);
     this.displayedProject.set(project);
     if (typeof document !== 'undefined') {
       document.body.style.overflow = 'hidden';
+      requestAnimationFrame(() => {
+        const backdrop = document.querySelector('.modal-backdrop-layer');
+        const card = document.querySelector('.modal-card-layer');
+        if (backdrop && card) {
+          gsap.fromTo(backdrop, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: 'power2.out' });
+          gsap.fromTo(card, 
+            { opacity: 0, scale: 0.94, y: 20 }, 
+            { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: 'power3.out' }
+          );
+        }
+      });
     }
   }
 
@@ -998,13 +1220,28 @@ export class AppComponent {
     if (this.isClosingModal()) return;
     this.selectedProject.set(null);
     this.isClosingModal.set(true);
-    setTimeout(() => {
-      this.displayedProject.set(null);
-      this.isClosingModal.set(false);
-      if (typeof document !== 'undefined') {
-        document.body.style.overflow = '';
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = '';
+      const backdrop = document.querySelector('.modal-backdrop-layer');
+      const card = document.querySelector('.modal-card-layer');
+      if (backdrop && card) {
+        gsap.to(backdrop, { opacity: 0, duration: 0.2, ease: 'power2.in' });
+        gsap.to(card, {
+          opacity: 0,
+          scale: 0.95,
+          y: 12,
+          duration: 0.2,
+          ease: 'power2.in',
+          onComplete: () => {
+            this.displayedProject.set(null);
+            this.isClosingModal.set(false);
+          }
+        });
+        return;
       }
-    }, 280);
+    }
+    this.displayedProject.set(null);
+    this.isClosingModal.set(false);
   }
 
   selectSkillNode(node: SkillNode) {

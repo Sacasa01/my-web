@@ -197,3 +197,51 @@
     box-shadow: 0 0 0 6px rgba(215, 52, 11, 0);
   }
 }
+
+/* ═══════════════════════════════════════════════ */
+/* 🧵 Hanging Contact Cord Kinetic Physics         */
+/* ═══════════════════════════════════════════════ */
+@keyframes cordPendulum {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(1.8deg);
+  }
+  75% {
+    transform: rotate(-1.8deg);
+  }
+}
+
+.hanging-cord-swing {
+  transform-origin: top center;
+  animation: cordPendulum 4s ease-in-out infinite;
+  will-change: transform;
+}
+
+.hanging-cord-swing:hover {
+  animation-duration: 2s;
+}
+
+.cord-contracted {
+  transform: translateY(-120%) scaleY(0.1) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+@keyframes liveBeaconPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.15);
+    box-shadow: 0 0 0 5px rgba(16, 185, 129, 0);
+  }
+}
+
+.live-beacon {
+  animation: liveBeaconPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
