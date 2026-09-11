@@ -143,7 +143,7 @@ describe('AppComponent', () => {
     expect(heroJumpButtons?.length || 0).toBe(0);
   });
 
-  it('should render all 5 navigation links in the header navbar (with contact in hanging cord)', () => {
+  it('should render all 4 navigation links in the header navbar (with contact in hanging cord and merged education/certifications)', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
@@ -155,8 +155,7 @@ describe('AppComponent', () => {
       '#experience',
       '#projects',
       '#skills',
-      '#education',
-      '#certifications'
+      '#education'
     ]);
   });
 

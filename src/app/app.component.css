@@ -61,7 +61,7 @@
 /* ⚡ Section Anchor Smooth Offsets                */
 /* ═══════════════════════════════════════════════ */
 .section-anchor {
-  scroll-margin-top: 6rem;
+  scroll-margin-top: 7.5rem;
 }
 
 /* ═══════════════════════════════════════════════ */
@@ -217,10 +217,6 @@
   transform-origin: top center;
   animation: cordPendulum 4s ease-in-out infinite;
   will-change: transform;
-}
-
-.hanging-cord-swing:hover {
-  animation-duration: 2s;
 }
 
 .cord-container {

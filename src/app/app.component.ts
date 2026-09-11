@@ -100,7 +100,7 @@ export class AppComponent {
   tagBg = computed(() => this.theme() === 'light' ? 'rgba(51, 100, 103, 0.08)' : 'rgba(224, 221, 174, 0.08)');
   accentSinopia = computed(() => this.theme() === 'light' ? '#D7340B' : '#E64319');
   accentCaribbean = computed(() => this.theme() === 'light' ? '#336467' : '#4E898D');
-  navBg = computed(() => this.theme() === 'light' ? 'rgba(245, 243, 231, 0.92)' : 'rgba(13, 23, 24, 0.92)');
+  navBg = computed(() => this.theme() === 'light' ? 'rgba(245, 243, 231, 0.98)' : 'rgba(13, 23, 24, 0.98)');
 
   content = {
     en: {
@@ -110,6 +110,7 @@ export class AppComponent {
         skills: 'Skills',
         education: 'Education',
         certifications: 'Certifications',
+        educationAndCertifications: 'Education & Certifications',
         contact: 'Contact'
       },
       hero: {
@@ -421,6 +422,7 @@ export class AppComponent {
         skills: 'Habilidades',
         education: 'Educación',
         certifications: 'Certificaciones',
+        educationAndCertifications: 'Educación & Certificaciones',
         contact: 'Contacto'
       },
       hero: {
@@ -1140,17 +1142,6 @@ export class AppComponent {
     this.displayedProject.set(project);
     if (typeof document !== 'undefined') {
       document.body.style.overflow = 'hidden';
-      requestAnimationFrame(() => {
-        const backdrop = document.querySelector('.modal-backdrop-layer');
-        const card = document.querySelector('.modal-card-layer');
-        if (backdrop && card) {
-          gsap.fromTo(backdrop, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: 'power2.out' });
-          gsap.fromTo(card, 
-            { opacity: 0, scale: 0.94, y: 20 }, 
-            { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: 'power3.out' }
-          );
-        }
-      });
     }
   }
 
@@ -1160,26 +1151,14 @@ export class AppComponent {
     this.isClosingModal.set(true);
     if (typeof document !== 'undefined') {
       document.body.style.overflow = '';
-      const backdrop = document.querySelector('.modal-backdrop-layer');
-      const card = document.querySelector('.modal-card-layer');
-      if (backdrop && card) {
-        gsap.to(backdrop, { opacity: 0, duration: 0.2, ease: 'power2.in' });
-        gsap.to(card, {
-          opacity: 0,
-          scale: 0.95,
-          y: 12,
-          duration: 0.2,
-          ease: 'power2.in',
-          onComplete: () => {
-            this.displayedProject.set(null);
-            this.isClosingModal.set(false);
-          }
-        });
-        return;
-      }
+      setTimeout(() => {
+        this.displayedProject.set(null);
+        this.isClosingModal.set(false);
+      }, 230);
+    } else {
+      this.displayedProject.set(null);
+      this.isClosingModal.set(false);
     }
-    this.displayedProject.set(null);
-    this.isClosingModal.set(false);
   }
 
   selectSkillNode(node: SkillNode) {
