@@ -154,8 +154,8 @@ describe('AppComponent', () => {
     expect(navLinks).toEqual([
       '#experience',
       '#projects',
-      '#skills',
-      '#education'
+      '#education',
+      '#skills'
     ]);
   });
 

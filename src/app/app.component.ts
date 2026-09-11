@@ -369,9 +369,11 @@ export class AppComponent {
         items: [
           {
             title: 'English: C1 Certified (IELTS 8.0 Equivalent)',
-            issuer: 'Official IELTS Examination',
+            issuer: 'Official IELTS Examination / CATE',
             year: '2026',
             badge: 'C1 Fluent · CEFR',
+            icon: 'cert-english',
+            pdfUrl: '/certificates/english-cate-certificate.pdf',
             description: 'Advanced academic and professional English fluency for international engineering collaboration, technical interviews, and systems architecture.'
           },
           {
@@ -379,6 +381,8 @@ export class AppComponent {
             issuer: 'Santander Open Academy & Google',
             year: 'Jan 2025',
             badge: 'Google AI · Certified',
+            icon: 'cert-google',
+            pdfUrl: '/certificates/google-santander-ai-certificate.pdf',
             description: 'Modern generative AI integration, prompt engineering architectures, and automated developer productivity pipelines.'
           },
           {
@@ -386,6 +390,8 @@ export class AppComponent {
             issuer: 'Amazon Web Services (AWS)',
             year: '2025',
             badge: 'AWS Cloud · Workshop',
+            icon: 'cert-aws',
+            pdfUrl: '/certificates/aws-workshop-certificate.pdf',
             description: 'Hands-on cloud architecture workshop covering AWS core services (EC2, S3, RDS, Lambda), security compliance, and deployment strategies.'
           }
         ]
@@ -681,9 +687,11 @@ export class AppComponent {
         items: [
           {
             title: 'Inglés: Certificación C1 (IELTS 8.0 Equivalente)',
-            issuer: 'Official IELTS Examination',
+            issuer: 'Official IELTS Examination / CATE',
             year: '2026',
             badge: 'C1 Fluido · MCER',
+            icon: 'cert-english',
+            pdfUrl: '/certificates/english-cate-certificate.pdf',
             description: 'Fluidez académica y profesional avanzada en inglés técnico para liderazgo y comunicación en equipos internacionales.'
           },
           {
@@ -691,6 +699,8 @@ export class AppComponent {
             issuer: 'Santander Open Academy y Google',
             year: 'Ene 2025',
             badge: 'Google AI · Certificado',
+            icon: 'cert-google',
+            pdfUrl: '/certificates/google-santander-ai-certificate.pdf',
             description: 'Integración de IA generativa, diseño de prompts y automatización de flujos de productividad de desarrollo.'
           },
           {
@@ -698,6 +708,8 @@ export class AppComponent {
             issuer: 'Amazon Web Services (AWS)',
             year: '2025',
             badge: 'AWS Cloud · Taller',
+            icon: 'cert-aws',
+            pdfUrl: '/certificates/aws-workshop-certificate.pdf',
             description: 'Taller práctico de arquitectura cloud en AWS (EC2, S3, RDS, Lambda), seguridad en la nube y estrategias de despliegue en producción.'
           }
         ]
@@ -729,7 +741,83 @@ export class AppComponent {
     }
   };
   skillNodes: SkillNode[] = [
-    // 01 FRONTEND
+    // 01 BACKEND
+    {
+      id: 'python',
+      name: 'Python 3',
+      shortName: 'Python',
+      domain: 'backend',
+      domainLabelEn: 'Backend Architecture',
+      domainLabelEs: 'Arquitectura Backend',
+      badge: 'AsyncIO · 3.11+',
+      color: '#3776AB',
+      icon: 'python',
+      descEn: 'AsyncIO programming, multithreading, concurrent task execution, data pipelines, and numerical algorithms.',
+      descEs: 'Programación asíncrona AsyncIO, multihilo, ejecución de tareas concurrentes, pipelines de datos y algoritmos numéricos.',
+      highlightsEn: ['20-worker Cadastre pipeline', 'Pandas spatial GeoJSON parsing', 'Clinical inference microservices'],
+      highlightsEs: ['Pipeline catastral con 20 workers', 'Parseo GeoJSON espacial con Pandas', 'Microservicios de inferencia clínica']
+    },
+    {
+      id: 'fastapi',
+      name: 'FastAPI',
+      shortName: 'FastAPI',
+      domain: 'backend',
+      domainLabelEn: 'Backend Architecture',
+      domainLabelEs: 'Arquitectura Backend',
+      badge: 'REST · OpenAPI',
+      color: '#009688',
+      icon: 'fastapi',
+      descEn: 'High-speed asynchronous RESTful APIs with Pydantic data validation, OpenAPI specs, and dependency injection.',
+      descEs: 'APIs RESTful asíncronas de alta velocidad con validación de datos por Pydantic, OpenAPI e inyección de dependencias.',
+      highlightsEn: ['Low-latency GPU endpoints', 'Automated Swagger documentation', 'Asynchronous streaming payloads'],
+      highlightsEs: ['Endpoints GPU de baja latencia', 'Documentación Swagger automática', 'Streaming de datos asíncrono']
+    },
+    {
+      id: 'php',
+      name: 'PHP 8 / Symfony 7',
+      shortName: 'Symfony / PHP',
+      domain: 'backend',
+      domainLabelEn: 'Backend Architecture',
+      domainLabelEs: 'Arquitectura Backend',
+      badge: 'Symfony 7 · DDD',
+      color: '#777BB4',
+      icon: 'symfony',
+      descEn: 'Decoupled REST API engineering, Domain-Driven Design principles, JWT stateless authentication, and fine-grained RBAC.',
+      descEs: 'Ingeniería de APIs REST desacopladas, principios DDD, autenticación sin estado con JWT y control de acceso RBAC granular.',
+      highlightsEn: ['33 secured FitForge endpoints', 'Doctrine ORM & migrations', 'Clean Architecture separation'],
+      highlightsEs: ['33 endpoints seguros en FitForge', 'Doctrine ORM y migraciones', 'Separación Clean Architecture']
+    },
+    {
+      id: 'mysql',
+      name: 'MySQL 8',
+      shortName: 'MySQL',
+      domain: 'backend',
+      domainLabelEn: 'Backend Architecture',
+      domainLabelEs: 'Arquitectura Backend',
+      badge: '3NF Relational',
+      color: '#00758F',
+      icon: 'mysql',
+      descEn: 'Relational data modeling, 3NF schema normalization, ACID transaction integrity, and index optimization.',
+      descEs: 'Modelado de datos relacional, normalización en 3NF, integridad transaccional ACID y optimización de índices.',
+      highlightsEn: ['14-table FitForge schema', 'Foreign key cascades & constraints', 'Query execution plan analysis'],
+      highlightsEs: ['Esquema de 14 tablas en FitForge', 'Claves foráneas y restricciones', 'Análisis de planes de ejecución']
+    },
+    {
+      id: 'postgresql',
+      name: 'PostgreSQL & pgvector',
+      shortName: 'PostgreSQL',
+      domain: 'backend',
+      domainLabelEn: 'Backend Architecture',
+      domainLabelEs: 'Arquitectura Backend',
+      badge: 'Vector Search',
+      color: '#336791',
+      icon: 'postgresql',
+      descEn: 'Advanced relational modeling with vector search extensions for semantic document retrieval and embedding stores.',
+      descEs: 'Modelado relacional avanzado con extensiones de búsqueda vectorial para recuperación semántica de documentos y embeddings.',
+      highlightsEn: ['Cosine distance indexing', 'Vector embeddings integration', 'PostGIS spatial queries'],
+      highlightsEs: ['Indexación por distancia coseno', 'Integración de embeddings vectoriales', 'Consultas espaciales PostGIS']
+    },
+    // 02 FRONTEND
     {
       id: 'angular',
       name: 'Angular 19',
@@ -775,97 +863,66 @@ export class AppComponent {
       highlightsEn: ['Editorial boxed layouts', 'Micro-interactions & transitions', 'Accessible color contrast'],
       highlightsEs: ['Layouts boxed editoriales', 'Micro-interacciones y transiciones', 'Contraste accesible de color']
     },
-    // 02 BACKEND
     {
-      id: 'python',
-      name: 'Python 3',
-      shortName: 'Python',
-      domain: 'backend',
-      domainLabelEn: 'Backend Microservices',
-      domainLabelEs: 'Microservicios Backend',
-      badge: '3.11+',
-      color: '#3776AB',
-      icon: 'python',
-      descEn: 'AsyncIO programming, multithreading, concurrent task execution, data pipelines, and numerical algorithms.',
-      descEs: 'Programación asíncrona AsyncIO, multihilo, ejecución de tareas concurrentes, pipelines de datos y algoritmos numéricos.',
-      highlightsEn: ['20-worker Cadastre pipeline', 'Pandas spatial GeoJSON parsing', 'Clinical inference microservices'],
-      highlightsEs: ['Pipeline catastral con 20 workers', 'Parseo GeoJSON espacial con Pandas', 'Microservicios de inferencia clínica']
+      id: 'html-css',
+      name: 'HTML5 & CSS3',
+      shortName: 'HTML5 / CSS3',
+      domain: 'frontend',
+      domainLabelEn: 'Frontend Architecture',
+      domainLabelEs: 'Arquitectura Frontend',
+      badge: 'Web Standards',
+      color: '#E34F26',
+      icon: 'html5',
+      descEn: 'Semantic markup, accessibility (a11y), modern flexbox/grid architectures, and cross-browser responsiveness.',
+      descEs: 'Marcado semántico, accesibilidad (a11y), arquitecturas modernas con flexbox/grid y responsividad multiplataforma.',
+      highlightsEn: ['Semantic HTML semantics', 'Accessible contrast ratios', 'Mobile-first responsive design'],
+      highlightsEs: ['Semántica HTML estándar', 'Ratios de contraste accesibles', 'Diseño responsive mobile-first']
+    },
+    // 03 AI SYSTEM AGENTS
+    {
+      id: 'mcp',
+      name: 'Model Context Protocol (MCP)',
+      shortName: 'MCP Protocol',
+      domain: 'ai',
+      domainLabelEn: 'AI System Agents',
+      domainLabelEs: 'Agentes de Sistemas de IA',
+      badge: 'Anthropic Protocol',
+      color: '#D7340B',
+      icon: 'mcp',
+      descEn: 'Engineering custom MCP servers exposing tools, resources, and database queries to LLMs with strict safety boundaries.',
+      descEs: 'Creación de servidores MCP personalizados que exponen herramientas, recursos y consultas a LLMs con validación estricta.',
+      highlightsEn: ['Local & remote tool execution', 'Human-in-the-Loop guardrails', 'Deterministic JSON-RPC schema'],
+      highlightsEs: ['Ejecución de herramientas local y remota', 'Barreras de seguridad Human-in-the-Loop', 'Esquema determinista JSON-RPC']
     },
     {
-      id: 'fastapi',
-      name: 'FastAPI',
-      shortName: 'FastAPI',
-      domain: 'backend',
-      domainLabelEn: 'Backend Microservices',
-      domainLabelEs: 'Microservicios Backend',
-      badge: '0.110+',
-      color: '#009688',
-      icon: 'fastapi',
-      descEn: 'High-speed asynchronous RESTful APIs with Pydantic data validation, OpenAPI specs, and dependency injection.',
-      descEs: 'APIs RESTful asíncronas de alta velocidad con validación de datos por Pydantic, OpenAPI e inyección de dependencias.',
-      highlightsEn: ['Low-latency GPU endpoints', 'Automated Swagger documentation', 'Asynchronous streaming payloads'],
-      highlightsEs: ['Endpoints GPU de baja latencia', 'Documentación Swagger automática', 'Streaming de datos asíncrono']
+      id: 'agentic',
+      name: 'ReAct Agentic Workflows',
+      shortName: 'AI Agents',
+      domain: 'ai',
+      domainLabelEn: 'AI System Agents',
+      domainLabelEs: 'Agentes de Sistemas de IA',
+      badge: 'Autonomous Systems',
+      color: '#336467',
+      icon: 'agentic',
+      descEn: 'Autonomous multi-step reasoning, dynamic tool selection, memory retention, and Human-in-the-Loop approval patterns.',
+      descEs: 'Razonamiento autónomo en múltiples pasos, selección dinámica de herramientas, retención de memoria y patrones Human-in-the-Loop.',
+      highlightsEn: ['Structured function calling', 'Self-correcting code execution', 'Enterprise approval gates'],
+      highlightsEs: ['Llamada estructurada a funciones', 'Ejecución auto-correctiva de código', 'Compuertas de aprobación corporativas']
     },
     {
-      id: 'php',
-      name: 'PHP 8 / Symfony 7',
-      shortName: 'Symfony / PHP',
-      domain: 'backend',
-      domainLabelEn: 'Backend Microservices',
-      domainLabelEs: 'Microservicios Backend',
-      badge: '6.x / 8.x',
-      color: '#777BB4',
-      icon: 'symfony',
-      descEn: 'Decoupled REST API engineering, Domain-Driven Design principles, JWT stateless authentication, and fine-grained RBAC.',
-      descEs: 'Ingeniería de APIs REST desacopladas, principios DDD, autenticación sin estado con JWT y control de acceso RBAC granular.',
-      highlightsEn: ['33 secured FitForge endpoints', 'Doctrine ORM & migrations', 'Clean Architecture separation'],
-      highlightsEs: ['33 endpoints seguros en FitForge', 'Doctrine ORM y migraciones', 'Separación Clean Architecture']
-    },
-    // 03 DATABASE
-    {
-      id: 'mysql',
-      name: 'MySQL 8',
-      shortName: 'MySQL',
-      domain: 'database',
-      domainLabelEn: 'Data & Storage',
-      domainLabelEs: 'Datos y Almacenamiento',
-      badge: '3NF Normalized',
-      color: '#00758F',
-      icon: 'mysql',
-      descEn: 'Relational data modeling, 3NF schema normalization, ACID transaction integrity, and index optimization.',
-      descEs: 'Modelado de datos relacional, normalización en 3NF, integridad transaccional ACID y optimización de índices.',
-      highlightsEn: ['14-table FitForge schema', 'Foreign key cascades & constraints', 'Query execution plan analysis'],
-      highlightsEs: ['Esquema de 14 tablas en FitForge', 'Claves foráneas y restricciones', 'Análisis de planes de ejecución']
-    },
-    {
-      id: 'postgresql',
-      name: 'PostgreSQL & pgvector',
-      shortName: 'PostgreSQL',
-      domain: 'database',
-      domainLabelEn: 'Data & Storage',
-      domainLabelEs: 'Datos y Almacenamiento',
-      badge: 'Vector Search',
-      color: '#336791',
-      icon: 'postgresql',
-      descEn: 'Advanced relational modeling with vector search extensions for semantic document retrieval and embedding stores.',
-      descEs: 'Modelado relacional avanzado con extensiones de búsqueda vectorial para recuperación semántica de documentos y embeddings.',
-      highlightsEn: ['Cosine distance indexing', 'Vector embeddings integration', 'PostGIS spatial queries'],
-      highlightsEs: ['Indexación por distancia coseno', 'Integración de embeddings vectoriales', 'Consultas espaciales PostGIS']
-    },
-    {
-      id: 'pandas',
-      name: 'Pandas & GeoJSON',
-      shortName: 'Pandas',
-      domain: 'database',
-      domainLabelEn: 'Data & Storage',
-      domainLabelEs: 'Datos y Almacenamiento',
-      badge: 'Data Pipelines',
-      color: '#150458',
-      icon: 'pandas',
-      descEn: 'Tabular ETL data wrangling, GeoJSON feature generation, and Cadastre WFS XML transformation.',
-      descEs: 'Extracción, transformación y carga (ETL) de datos tabulares, generación de GeoJSON y transformación XML de catastro.',
-      highlightsEn: ['Batch cadastral record parsing', 'Polygon surface area computation', 'High-speed CSV/Excel digestion'],
-      highlightsEs: ['Parseo por lotes de parcelas', 'Cálculo de superficies de polígonos', 'Ingestión rápida de CSV/Excel']
+      id: 'pytorch',
+      name: 'PyTorch & MONAI',
+      shortName: 'PyTorch / MONAI',
+      domain: 'ai',
+      domainLabelEn: 'AI System Agents',
+      domainLabelEs: 'Agentes de Sistemas de IA',
+      badge: 'Clinical Deep Learning',
+      color: '#EE4C2C',
+      icon: 'pytorch',
+      descEn: 'Medical image preprocessing, organ segmentation pipelines, tensor transformations, and GPU-accelerated inference.',
+      descEs: 'Preprocesamiento de imagen médica, pipelines de segmentación de órganos, transformaciones de tensores e inferencia por GPU.',
+      highlightsEn: ['Hospital La Fe clinical pipeline', 'MONAI neural segmentation models', 'Real-time inference microservice'],
+      highlightsEs: ['Pipeline clínico en el Hospital La Fe', 'Modelos neuronales MONAI de segmentación', 'Microservicio de inferencia en tiempo real']
     },
     // 04 DEVOPS & CLOUD
     {
@@ -873,8 +930,8 @@ export class AppComponent {
       name: 'Docker & Compose v2',
       shortName: 'Docker',
       domain: 'devops',
-      domainLabelEn: 'DevOps & Infrastructure',
-      domainLabelEs: 'DevOps e Infraestructura',
+      domainLabelEn: 'DevOps & Cloud',
+      domainLabelEs: 'DevOps & Cloud',
       badge: 'Multi-Stage',
       color: '#2496ED',
       icon: 'docker',
@@ -888,8 +945,8 @@ export class AppComponent {
       name: 'AWS Cloud',
       shortName: 'AWS Cloud',
       domain: 'devops',
-      domainLabelEn: 'DevOps & Infrastructure',
-      domainLabelEs: 'DevOps e Infraestructura',
+      domainLabelEn: 'DevOps & Cloud',
+      domainLabelEs: 'DevOps & Cloud',
       badge: 'Cloud Architecture',
       color: '#FF9900',
       icon: 'aws',
@@ -903,8 +960,8 @@ export class AppComponent {
       name: 'GitOps & CI/CD',
       shortName: 'GitOps',
       domain: 'devops',
-      domainLabelEn: 'DevOps & Infrastructure',
-      domainLabelEs: 'DevOps e Infraestructura',
+      domainLabelEn: 'DevOps & Cloud',
+      domainLabelEs: 'DevOps & Cloud',
       badge: 'Automated Pipelines',
       color: '#F05032',
       icon: 'git',
@@ -913,51 +970,20 @@ export class AppComponent {
       highlightsEn: ['GitOps pipeline on self-hosted server', 'Automated test suites on PR', 'Linting & bundle verification'],
       highlightsEs: ['Pipeline GitOps en servidor propio', 'Suites de tests automatizados en PR', 'Linters y comprobación de bundles']
     },
-    // 05 AI SYSTEMS & AGENTS
     {
-      id: 'mcp',
-      name: 'Model Context Protocol (MCP)',
-      shortName: 'MCP Ecosystem',
-      domain: 'ai',
-      domainLabelEn: 'AI Systems & Agents',
-      domainLabelEs: 'Sistemas de IA y Agentes',
-      badge: 'Anthropic Open Standard',
-      color: '#D7340B',
-      icon: 'mcp',
-      descEn: 'Engineering custom MCP servers exposing tools, resources, and database queries to LLMs with strict safety boundaries.',
-      descEs: 'Creación de servidores MCP personalizados que exponen herramientas, recursos y consultas a LLMs con validación estricta.',
-      highlightsEn: ['Local & remote tool execution', 'Human-in-the-Loop guardrails', 'Deterministic JSON-RPC schema'],
-      highlightsEs: ['Ejecución de herramientas local y remota', 'Barreras de seguridad Human-in-the-Loop', 'Esquema determinista JSON-RPC']
-    },
-    {
-      id: 'pytorch',
-      name: 'PyTorch & MONAI',
-      shortName: 'PyTorch / MONAI',
-      domain: 'ai',
-      domainLabelEn: 'AI Systems & Agents',
-      domainLabelEs: 'Sistemas de IA y Agentes',
-      badge: 'Clinical Deep Learning',
-      color: '#EE4C2C',
-      icon: 'pytorch',
-      descEn: 'Medical image preprocessing, organ segmentation pipelines, tensor transformations, and GPU-accelerated inference.',
-      descEs: 'Preprocesamiento de imagen médica, pipelines de segmentación de órganos, transformaciones de tensores e inferencia por GPU.',
-      highlightsEn: ['Hospital La Fe clinical pipeline', 'MONAI neural segmentation models', 'Real-time inference microservice'],
-      highlightsEs: ['Pipeline clínico en el Hospital La Fe', 'Modelos neuronales MONAI de segmentación', 'Microservicio de inferencia en tiempo real']
-    },
-    {
-      id: 'agentic',
-      name: 'ReAct Agentic Workflows',
-      shortName: 'AI Agents',
-      domain: 'ai',
-      domainLabelEn: 'AI Systems & Agents',
-      domainLabelEs: 'Sistemas de IA y Agentes',
-      badge: 'Autonomous Systems',
-      color: '#336467',
-      icon: 'agentic',
-      descEn: 'Autonomous multi-step reasoning, dynamic tool selection, memory retention, and Human-in-the-Loop approval patterns.',
-      descEs: 'Razonamiento autónomo en múltiples pasos, selección dinámica de herramientas, retención de memoria y patrones Human-in-the-Loop.',
-      highlightsEn: ['Structured function calling', 'Self-correcting code execution', 'Enterprise approval gates'],
-      highlightsEs: ['Llamada estructurada a funciones', 'Ejecución auto-correctiva de código', 'Compuertas de aprobación corporativas']
+      id: 'linux',
+      name: 'Linux & Self-Hosted',
+      shortName: 'Linux Server',
+      domain: 'devops',
+      domainLabelEn: 'DevOps & Cloud',
+      domainLabelEs: 'DevOps & Cloud',
+      badge: 'Server Admin',
+      color: '#FCC624',
+      icon: 'linux',
+      descEn: 'Debian/Ubuntu server administration, systemd service management, reverse proxies, and hardened networking.',
+      descEs: 'Administración de servidores Debian/Ubuntu, gestión con systemd, proxies inversos y redes seguras.',
+      highlightsEn: ['Hardened production VPS', 'Systemd daemon services', 'SSL/TLS certificate automation'],
+      highlightsEs: ['VPS en producción securizado', 'Servicios demonio systemd', 'Automatización de certificados SSL/TLS']
     }
   ];
 
@@ -965,50 +991,42 @@ export class AppComponent {
     {
       id: 'backend',
       domainNumber: '01',
-      nameEn: 'Backend Architecture',
-      nameEs: 'Arquitectura Backend',
+      nameEn: 'Backend',
+      nameEs: 'Backend',
       accentColor: '#336467',
       skills: this.skillNodes.filter(s => s.domain === 'backend')
     },
     {
-      id: 'ai',
-      domainNumber: '02',
-      nameEn: 'AI Systems & MCP Agents',
-      nameEs: 'Sistemas de IA y MCP',
-      accentColor: '#D7340B',
-      skills: this.skillNodes.filter(s => s.domain === 'ai')
-    },
-    {
       id: 'frontend',
-      domainNumber: '03',
-      nameEn: 'Frontend Architecture',
-      nameEs: 'Arquitectura Frontend',
+      domainNumber: '02',
+      nameEn: 'Frontend',
+      nameEs: 'Frontend',
       accentColor: '#3178C6',
       skills: this.skillNodes.filter(s => s.domain === 'frontend')
     },
     {
-      id: 'devops',
-      domainNumber: '04',
-      nameEn: 'DevOps & Cloud Systems',
-      nameEs: 'DevOps e Infraestructura',
-      accentColor: '#2496ED',
-      skills: this.skillNodes.filter(s => s.domain === 'devops')
+      id: 'ai',
+      domainNumber: '03',
+      nameEn: 'AI System Agents',
+      nameEs: 'AI System Agents',
+      accentColor: '#D7340B',
+      skills: this.skillNodes.filter(s => s.domain === 'ai')
     },
     {
-      id: 'database',
-      domainNumber: '05',
-      nameEn: 'Data Modeling & GIS',
-      nameEs: 'Modelado de Datos y GIS',
-      accentColor: '#00758F',
-      skills: this.skillNodes.filter(s => s.domain === 'database')
+      id: 'devops',
+      domainNumber: '04',
+      nameEn: 'DevOps & Cloud',
+      nameEs: 'DevOps & Cloud',
+      accentColor: '#2496ED',
+      skills: this.skillNodes.filter(s => s.domain === 'devops')
     }
   ]);
 
   backendCluster = computed(() => this.skillClusters().find(c => c.id === 'backend')!);
-  aiCluster = computed(() => this.skillClusters().find(c => c.id === 'ai')!);
   frontendCluster = computed(() => this.skillClusters().find(c => c.id === 'frontend')!);
+  aiCluster = computed(() => this.skillClusters().find(c => c.id === 'ai')!);
   devopsCluster = computed(() => this.skillClusters().find(c => c.id === 'devops')!);
-  databaseCluster = computed(() => this.skillClusters().find(c => c.id === 'database')!);
+  databaseCluster = computed(() => this.backendCluster());
 
 
   spokenLanguages: SpokenLanguage[] = [
