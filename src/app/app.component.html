@@ -176,36 +176,26 @@
 </svg>
 
 <!-- ═════════════════════════════════════════════════════════════════════ -->
-<!-- 📦 BOXED-LAYOUT ROOT CONTAINER (Horizontally Centered & Framed)       -->
+<!-- 🌐 FULL-WIDTH ROOT CONTAINER (Full-Bleed Clean Modern Canvas)         -->
 <!-- ═════════════════════════════════════════════════════════════════════ -->
 <div class="min-h-screen w-full theme-surface font-body selection:bg-[#D7340B] selection:text-white flex flex-col items-center relative overflow-x-hidden transition-colors duration-300"
-     [style.background-color]="outerBg()"
+     [style.background-color]="bgColor()"
      [style.color]="textColor()">
 
-  <!-- 🛡️ TOP VIEWPORT SCROLL MASK (Conceals scrolling content above navbar equator) -->
-  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)] max-w-6xl h-[33px] sm:h-[41px] z-40 pointer-events-none transition-colors duration-300"
-       [style.background-color]="outerBg()"
-       aria-hidden="true">
-  </div>
-
-  <!-- 📦 BOXED-LAYOUT SHELL (Centered Column with Rounded Bottom Edges & Elevated Shadow) -->
-  <div class="w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)] max-w-6xl min-h-screen mt-[33px] sm:mt-[41px] mb-6 rounded-b-[2rem] sm:rounded-b-[2.5rem] rounded-t-none border-x border-b sm:border-x sm:border-b shadow-2xl flex flex-col items-center relative transition-colors duration-300 overflow-hidden"
-       [style.background-color]="bgColor()"
-       [style.border-color]="cardBorder()">
-
   <!-- ═════════════════════════════════════════════════════════════════════ -->
-  <!-- 📌 FLOATING CENTERED TOP NAVIGATION BAR (Boxed Layout Aligned)        -->
+  <!-- 📌 FULL-WIDTH TOP NAVIGATION BAR (Edge-to-Edge with Border-B)        -->
   <!-- ═════════════════════════════════════════════════════════════════════ -->
-  <header class="fixed top-2.5 sm:top-3.5 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)] max-w-6xl flex items-center justify-between px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full backdrop-blur-2xl border shadow-xl transition-all duration-300"
+  <header class="fixed top-0 left-0 right-0 w-full z-50 border-b backdrop-blur-2xl transition-all duration-300 shadow-xs"
           [style.background-color]="navBg()"
           [style.border-color]="cardBorder()">
+    <div class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-2 sm:py-2.5 relative">
     
     <!-- Top-Left Profile Photo & Brand Identity -->
     <a href="#hero" (click)="scrollToTop($event)" class="flex items-center gap-2.5 sm:gap-3 group cursor-pointer select-none">
       <div class="relative shrink-0">
         <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden border-2 transition-all group-hover:scale-105 shadow-md"
              [style.border-color]="accentSinopia()">
-          <img src="/assets/me-face.png" alt="Santiago Castro Salt" class="w-full h-full object-cover object-center">
+          <img src="/assets/me-face.png" alt="Santiago Castro Salt" class="w-full h-full object-cover object-center" width="36" height="36" loading="eager" decoding="sync">
         </div>
         <!-- 🟢 Green status dot OUTSIDE the circular border with slow breathing glow -->
         <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-[#10B981] border-2 border-white dark:border-[#0D1718] animate-status-dot shadow-sm"></span>
@@ -358,18 +348,19 @@
         </div>
       </div>
     </div>
+    </div> <!-- Close max-w-6xl inner header container -->
 
   </header>
 
   <!-- ═════════════════════════════════════════════════════════════════════ -->
-  <!-- 🏛️ UNIFIED BOXED-LAYOUT MAIN CONTAINER (Max-W-6XL Centered)         -->
+  <!-- 🏛️ FULL-WIDTH MAIN CONTAINER (Max-W-6XL Centered Content)            -->
   <!-- ═════════════════════════════════════════════════════════════════════ -->
-  <main class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-10 pb-16 space-y-16 sm:space-y-24">
+  <main class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-16 space-y-16 sm:space-y-24">
 
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!-- 🌟 HERO SECTION (Native Avatar with Real Ground Shadow)             -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <section id="hero" class="min-h-[calc(100vh-3.5rem)] flex flex-col justify-center py-2 sm:py-3">
+    <section id="hero" class="min-h-[calc(100vh-5rem)] flex flex-col justify-center py-2 sm:py-3">
       <div class="w-full flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-10">
 
         <!-- LEFT: Character Cutout with REAL Studio Floor Shadow (From Reference Photo) -->
@@ -378,6 +369,8 @@
             src="/assets/santiago-character.png" 
             alt="Santiago Castro Salt — Software Engineer & AI Integrator Avatar"
             class="character-img relative z-10 w-[235px] sm:w-[275px] md:w-[315px] lg:w-[355px] xl:w-[380px] max-h-[72vh] h-auto object-contain select-none pointer-events-none"
+            width="380"
+            height="570"
             loading="eager"
             decoding="sync" />
         </div>
@@ -444,7 +437,7 @@
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!-- 💼 SECTION 1: WORK EXPERIENCE (Hospital La Fe Clinical FCT)         -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <section id="experience" class="section-anchor w-full min-h-[calc(100vh-5rem)] flex flex-col justify-center scroll-mt-28 py-4 border-t"
+    <section id="experience" class="section-anchor w-full min-h-[calc(100vh-5rem)] flex flex-col justify-center scroll-mt-20 sm:scroll-mt-24 py-4 border-t"
              [style.border-color]="cardBorder()">
       
       <!-- Section Header -->
@@ -529,7 +522,7 @@
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!-- 🚀 SECTION 2: FEATURED PROJECTS (Expanded Bento Grid + Recuadros)   -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <section id="projects" class="section-anchor w-full min-h-[calc(100vh-5rem)] flex flex-col justify-center scroll-mt-28 py-4 border-t"
+    <section id="projects" class="section-anchor w-full min-h-[calc(100vh-5rem)] flex flex-col justify-center scroll-mt-20 sm:scroll-mt-24 py-4 border-t"
              [style.border-color]="cardBorder()">
       
       <!-- Section Header (Preserved Viewport Budgeting) -->
@@ -570,7 +563,10 @@
                 [src]="fitforge.image" 
                 [alt]="fitforge.title" 
                 class="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105 opacity-90"
-                loading="lazy" />
+                width="600"
+                height="340"
+                loading="lazy"
+                decoding="async" />
               <div class="absolute inset-0 bg-gradient-to-t from-[#0D1718] via-[#0D1718]/40 to-[#D7340B]/20 mix-blend-multiply opacity-80 group-hover:opacity-60 transition-opacity"></div>
               <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
 
@@ -720,7 +716,10 @@
                   [src]="visionrest.image" 
                   [alt]="visionrest.title" 
                   class="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105 opacity-90"
-                  loading="lazy" />
+                  width="400"
+                  height="260"
+                  loading="lazy"
+                  decoding="async" />
                 <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent hidden sm:block"></div>
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent sm:hidden"></div>
                 <div class="absolute inset-0 bg-[#336467]/20 mix-blend-multiply opacity-80"></div>
@@ -902,7 +901,11 @@
           <div class="w-full md:w-[42%] relative flex flex-col justify-between overflow-hidden bg-slate-950 p-6 shrink-0 min-h-[240px] md:min-h-auto select-none">
             <img [src]="proj.image" 
                  [alt]="proj.title" 
-                 class="absolute inset-0 w-full h-full object-cover opacity-90" />
+                 class="absolute inset-0 w-full h-full object-cover opacity-90"
+                 width="450"
+                 height="550"
+                 loading="lazy"
+                 decoding="async" />
             <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/30"></div>
 
             <!-- Top Badge in Image -->
@@ -1018,7 +1021,7 @@
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!-- ⚡ SECTION 3: SKILLS ARCHITECTURE (Constellation Vector Graph)       -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <section id="skills" class="section-anchor w-full min-h-[calc(100vh-5rem)] flex flex-col justify-center scroll-mt-28 py-4 border-t"
+    <section id="skills" class="section-anchor w-full min-h-[calc(100vh-5rem)] flex flex-col justify-center scroll-mt-20 sm:scroll-mt-24 py-4 border-t"
              [style.border-color]="cardBorder()">
       
       <!-- Section Header (Preserved Viewport Budgeting) -->
@@ -1530,7 +1533,7 @@
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!-- 🎓 SECTION 4: EDUCATION (Ascending Chronological Timeline)          -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <section id="education" class="section-anchor w-full min-h-[calc(100vh-5rem)] flex flex-col justify-center scroll-mt-28 py-4 border-t"
+    <section id="education" class="section-anchor w-full min-h-[calc(100vh-5rem)] flex flex-col justify-center scroll-mt-20 sm:scroll-mt-24 py-4 border-t"
              [style.border-color]="cardBorder()">
       
       <!-- Section Header (Compact Viewport Budgeting) -->
@@ -1737,7 +1740,7 @@
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!-- 🏅 SECTION 5: CERTIFICATIONS (3 Verified Credentials)                -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <section id="certifications" class="section-anchor w-full min-h-[calc(100vh-5rem)] flex flex-col justify-center scroll-mt-28 py-4 border-t space-y-5"
+    <section id="certifications" class="section-anchor w-full min-h-[calc(100vh-5rem)] flex flex-col justify-center scroll-mt-20 sm:scroll-mt-24 py-4 border-t space-y-5"
              [style.border-color]="cardBorder()">
       
       <!-- Section Header -->
@@ -1996,7 +1999,7 @@
           [style.color]="mutedColor()">
     <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
       <div class="flex items-center gap-3">
-        <img [src]="theme() === 'light' ? '/assets/logo.png' : '/assets/logo-dark.png'" alt="Santiago Castro Salt" class="w-7 h-7 object-contain shrink-0">
+        <img [src]="theme() === 'light' ? '/assets/logo.png' : '/assets/logo-dark.png'" alt="Santiago Castro Salt" class="w-7 h-7 object-contain shrink-0" width="28" height="28" loading="lazy" decoding="async">
         <p>
           © 2026 <strong>Santiago Castro Salt</strong>. {{ t().footer.rights }}
         </p>
@@ -2006,7 +2009,5 @@
       </p>
     </div>
   </footer>
-
-  </div> <!-- End Boxed Layout Shell -->
 
 </div>
