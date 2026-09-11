@@ -155,6 +155,11 @@ export class AppComponent {
         inspectPrompt: 'Inspect Dossier',
         highlightsTitle: 'Key Technical Achievements',
         techStackTitle: 'Technologies & Architecture',
+        upcomingBadge: '✦ R&D Lab // In Pipeline',
+        upcomingTitle: 'Autonomous MCP Agents Orchestrator',
+        upcomingSubtitle: 'Multi-Agent Autonomous Execution & Deterministic Tool Runtime',
+        upcomingDesc: 'Next-generation orchestration runtime integrating model context protocols, strict tool sandboxing, and Human-in-the-Loop approval gates.',
+        upcomingStatus: 'Architecture in Design Phase · 2026 Q4',
         items: [
           {
             id: 'fitforge',
@@ -461,6 +466,11 @@ export class AppComponent {
         inspectPrompt: 'Ver Ficha',
         highlightsTitle: 'Hitos de Ingeniería y Arquitectura',
         techStackTitle: 'Tecnologías y Arquitectura',
+        upcomingBadge: '✦ R&D Lab // En Pipeline',
+        upcomingTitle: 'Orquestador Autónomo de Agentes MCP',
+        upcomingSubtitle: 'Arquitectura de Ejecución Multi-Agente y Runtime Determinista',
+        upcomingDesc: 'Runtime de orquestación de próxima generación integrando protocolos de contexto de modelo, sandboxing estricto de herramientas y compuertas Human-in-the-Loop.',
+        upcomingStatus: 'Fase de Diseño de Arquitectura · 2026 Q4',
         items: [
           {
             id: 'fitforge',
@@ -771,7 +781,7 @@ export class AppComponent {
       domain: 'backend',
       domainLabelEn: 'Backend Microservices',
       domainLabelEs: 'Microservicios Backend',
-      badge: 'High-Throughput',
+      badge: '3.11+',
       color: '#3776AB',
       icon: 'python',
       descEn: 'AsyncIO programming, multithreading, concurrent task execution, data pipelines, and numerical algorithms.',
@@ -786,7 +796,7 @@ export class AppComponent {
       domain: 'backend',
       domainLabelEn: 'Backend Microservices',
       domainLabelEs: 'Microservicios Backend',
-      badge: 'Async REST APIs',
+      badge: '0.110+',
       color: '#009688',
       icon: 'fastapi',
       descEn: 'High-speed asynchronous RESTful APIs with Pydantic data validation, OpenAPI specs, and dependency injection.',
@@ -801,7 +811,7 @@ export class AppComponent {
       domain: 'backend',
       domainLabelEn: 'Backend Microservices',
       domainLabelEs: 'Microservicios Backend',
-      badge: 'Enterprise APIs',
+      badge: '6.x / 8.x',
       color: '#777BB4',
       icon: 'symfony',
       descEn: 'Decoupled REST API engineering, Domain-Driven Design principles, JWT stateless authentication, and fine-grained RBAC.',
@@ -991,6 +1001,13 @@ export class AppComponent {
       skills: this.skillNodes.filter(s => s.domain === 'database')
     }
   ]);
+
+  backendCluster = computed(() => this.skillClusters().find(c => c.id === 'backend')!);
+  aiCluster = computed(() => this.skillClusters().find(c => c.id === 'ai')!);
+  frontendCluster = computed(() => this.skillClusters().find(c => c.id === 'frontend')!);
+  devopsCluster = computed(() => this.skillClusters().find(c => c.id === 'devops')!);
+  databaseCluster = computed(() => this.skillClusters().find(c => c.id === 'database')!);
+
 
   spokenLanguages: SpokenLanguage[] = [
     {
