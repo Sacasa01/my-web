@@ -182,10 +182,15 @@
      [style.background-color]="outerBg()"
      [style.color]="textColor()">
 
-  <!-- 🛡️ TOP VIEWPORT SCROLL MASK (Hides scrolled content in the gap above floating navbar) -->
-  <div class="fixed top-0 inset-x-0 h-3 sm:h-4 z-40 pointer-events-none transition-colors duration-300"
+  <!-- 🛡️ TOP VIEWPORT SCROLL MASK (Cuts portfolio at navbar horizontal midline with depth shadow) -->
+  <div class="fixed top-0 inset-x-0 h-[33px] sm:h-[41px] z-40 pointer-events-none transition-colors duration-300"
        [style.background-color]="outerBg()"
        aria-hidden="true">
+    <!-- Frame border and depth shadow at the navbar equator matching portfolio depth -->
+    <div class="w-full max-w-6xl mx-auto h-full border-b transition-colors duration-300 relative"
+         [style.border-color]="cardBorder()"
+         [style.box-shadow]="theme() === 'light' ? '0 10px 25px -4px rgba(0, 0, 0, 0.12)' : '0 10px 25px -4px rgba(0, 0, 0, 0.45)'">
+    </div>
   </div>
 
   <!-- 📦 BOXED-LAYOUT SHELL (Centered Column with Rounded Top/Bottom Edges & Elevated Shadow) -->
