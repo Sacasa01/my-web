@@ -91,7 +91,7 @@ export class AppComponent {
     return this.lang();
   }
 
-  outerBg = computed(() => this.bgColor());
+  outerBg = computed(() => this.theme() === 'light' ? '#EAE6D6' : '#070E0F');
   bgColor = computed(() => this.theme() === 'light' ? '#F5F3E7' : '#0D1718');
   cardBg = computed(() => this.theme() === 'light' ? '#FFFFFF' : '#152426');
   cardBorder = computed(() => this.theme() === 'light' ? 'rgba(51, 100, 103, 0.16)' : 'rgba(224, 221, 174, 0.14)');

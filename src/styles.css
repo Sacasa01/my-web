@@ -20,10 +20,6 @@
 
 html {
   scroll-behavior: smooth;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  min-height: 100%;
 }
 
 body {
@@ -32,8 +28,6 @@ body {
   user-select: auto;
   margin: 0;
   padding: 0;
-  width: 100%;
-  min-height: 100%;
 }
 
 /* Typography styles */
@@ -47,16 +41,28 @@ body {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* Global Scrollbar Hiding (Preserves smooth scrolling across all devices & browsers) */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  display: none;
-  width: 0px;
-  height: 0px;
+  width: 6px;
+  height: 6px;
 }
 
-html, body, * {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none;    /* Firefox */
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(51, 100, 103, 0.25);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D7340B;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(51, 100, 103, 0.25) transparent;
 }
 
 /* Green Status Dot Slow Breathing Glow */
