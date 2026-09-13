@@ -956,7 +956,7 @@
         </div>
 
         <!-- 2024 - 2027 Trajectory Badge -->
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-mono font-bold shrink-0 shadow-xs"
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-mono font-bold shrink-0 shadow-xs self-start sm:self-auto"
              [style.border-color]="cardBorder()"
              [style.background-color]="tagBg()"
              [style.color]="accentSinopia()">
@@ -985,29 +985,41 @@
         </div>
 
         <!-- Continuous Connected Horizontal Timeline Track (Synchronously scrolls on Mobile/Tablet, 5-column grid on Desktop) -->
-        <div class="flex lg:grid lg:grid-cols-5 gap-3.5 items-stretch overflow-x-auto snap-x snap-mandatory lg:overflow-visible pb-3 pt-1 scrollbar-none">
+        <div class="flex lg:grid lg:grid-cols-5 gap-3.5 items-stretch overflow-x-auto snap-x snap-mandatory lg:overflow-visible pb-3 pt-1 scrollbar-none relative">
+          
+          <!-- Desktop Continuous Global Connector Track (Seamless 1-piece gradient line from center of Node 1 to center of Node 5) -->
+          <div class="hidden lg:block absolute top-[18px] left-[10%] right-[10%] h-[3px] rounded-full pointer-events-none z-0"
+               style="background: linear-gradient(90deg, #336467 0%, #3178C6 35%, #D7340B 100%);">
+          </div>
+
           @for (m of t().education.milestones; track m.id; let idx = $index) {
             <div class="w-[270px] sm:w-[290px] lg:w-auto shrink-0 snap-start flex flex-col justify-between space-y-2 relative">
               
               <!-- Milestone Connector Node Axis (Forms continuous horizontal line across all 5 nodes) -->
               <div class="relative flex items-center justify-center py-1 select-none">
-                <!-- Track Line Segment -->
-                <div class="absolute top-1/2 -translate-y-1/2 h-[3px] pointer-events-none rounded-full"
-                     [ngClass]="{
-                       'left-1/2 right-0': idx === 0,
-                       'left-0 right-1/2': idx === 4,
-                       'left-0 right-0': idx > 0 && idx < 4
-                     }"
-                     style="background: linear-gradient(90deg, #336467, #D7340B);">
-                </div>
+                
+                <!-- Mobile/Tablet Inter-Card Connector Track Segment (Bridges the 14px inter-column gap seamlessly) -->
+                @if (idx === 0) {
+                  <div class="lg:hidden absolute top-1/2 -translate-y-1/2 left-1/2 -right-3.5 h-[3px] pointer-events-none rounded-full z-0"
+                       style="background: linear-gradient(90deg, #336467, #3178C6);">
+                  </div>
+                } @else if (idx === 4) {
+                  <div class="lg:hidden absolute top-1/2 -translate-y-1/2 left-0 right-1/2 h-[3px] pointer-events-none rounded-full z-0"
+                       style="background: linear-gradient(90deg, #b04620, #D7340B);">
+                  </div>
+                } @else {
+                  <div class="lg:hidden absolute top-1/2 -translate-y-1/2 left-0 -right-3.5 h-[3px] pointer-events-none rounded-full z-0"
+                       style="background: linear-gradient(90deg, #3178C6, #D7340B);">
+                  </div>
+                }
 
                 <!-- Milestone Year Pill Node -->
                 <div class="relative z-10 flex items-center gap-1.5 px-3 py-0.5 rounded-full border shadow-xs text-[11px] font-mono font-bold"
                      [style.background-color]="cardBg()"
-                     [style.border-color]="m.type === 'degree' ? (m.id === 'bsc' ? accentSinopia() : accentCaribbean()) : cardBorder()"
-                     [style.color]="m.type === 'degree' ? (m.id === 'bsc' ? accentSinopia() : accentCaribbean()) : textColor()">
+                     [style.border-color]="m.type === 'degree' ? ((m.id === 'bsc' || m.id === 'bsc-hons') ? accentSinopia() : accentCaribbean()) : cardBorder()"
+                     [style.color]="m.type === 'degree' ? ((m.id === 'bsc' || m.id === 'bsc-hons') ? accentSinopia() : accentCaribbean()) : textColor()">
                   <span class="w-2 h-2 rounded-full shrink-0"
-                        [style.background-color]="m.id === 'bsc' ? accentSinopia() : (m.id === 'daw' ? accentCaribbean() : '#4285F4')"></span>
+                        [style.background-color]="(m.id === 'bsc' || m.id === 'bsc-hons') ? accentSinopia() : (m.id === 'daw' ? accentCaribbean() : '#4285F4')"></span>
                   <span>{{ m.year }}</span>
                 </div>
               </div>
@@ -1015,18 +1027,18 @@
               <!-- Milestone Card Container -->
               <div class="portfolio-card flex-1 p-3.5 rounded-2xl border shadow-xs flex flex-col justify-between space-y-3 relative group transition-all duration-300 hover:-translate-y-1 hover:shadow-md overflow-hidden"
                    [style.background-color]="tagBg()"
-                   [style.border-color]="m.type === 'degree' ? (m.id === 'bsc' ? accentSinopia() : accentCaribbean()) : cardBorder()">
+                   [style.border-color]="m.type === 'degree' ? ((m.id === 'bsc' || m.id === 'bsc-hons') ? accentSinopia() : accentCaribbean()) : cardBorder()">
                 
                 <!-- Category Badge & Verification Status -->
                 <div class="flex items-center justify-between gap-1.5">
                   <span class="text-[9px] font-mono font-semibold px-2 py-0.5 rounded border truncate"
                         [style.border-color]="cardBorder()"
                         [style.background-color]="cardBg()"
-                        [style.color]="m.type === 'degree' ? (m.id === 'bsc' ? accentSinopia() : accentCaribbean()) : textColor()">
+                        [style.color]="m.type === 'degree' ? ((m.id === 'bsc' || m.id === 'bsc-hons') ? accentSinopia() : accentCaribbean()) : textColor()">
                     {{ m.type === 'degree' ? (lang() === 'en' ? 'Degree' : 'Titulación') : (lang() === 'en' ? 'Verified Cert' : 'Certificado') }}
                   </span>
                   <span class="text-[9px] font-bold px-1.5 py-0.5 rounded font-mono shrink-0"
-                        [style.color]="m.id === 'bsc-hons' || m.id === 'bsc' ? accentSinopia() : '#10B981'">
+                        [style.color]="(m.id === 'bsc-hons' || m.id === 'bsc') ? accentSinopia() : '#10B981'">
                     @if (m.id === 'bsc-hons' || m.id === 'bsc') {
                       <span>● {{ lang() === 'en' ? 'Enrolled' : 'En Curso' }}</span>
                     } @else {
@@ -1055,7 +1067,7 @@
                             (click)="openEducationModal(m.educationId || 'daw')"
                             class="w-12 h-12 rounded-2xl border flex items-center justify-center shrink-0 shadow-sm transition-all duration-300 group-hover:scale-110 cursor-pointer hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#D7340B]"
                             [style.background-color]="cardBg()"
-                            [style.border-color]="m.id === 'bsc' ? accentSinopia() : accentCaribbean()"
+                            [style.border-color]="(m.id === 'bsc' || m.id === 'bsc-hons') ? accentSinopia() : accentCaribbean()"
                             [title]="(lang() === 'en' ? 'View curriculum details: ' : 'Ver plan de estudios: ') + m.title"
                             [attr.aria-label]="m.title">
                       <svg class="w-7 h-7 shrink-0 transition-transform duration-300 group-hover:scale-105">
@@ -1081,7 +1093,7 @@
                         {{ m.title }}
                       </button>
                     }
-                    <p class="text-[10px] font-mono font-medium truncate mt-0.5" [style.color]="m.type === 'degree' ? (m.id === 'bsc' ? accentSinopia() : accentCaribbean()) : mutedColor()">
+                    <p class="text-[10px] font-mono font-medium truncate mt-0.5" [style.color]="m.type === 'degree' ? ((m.id === 'bsc' || m.id === 'bsc-hons') ? accentSinopia() : accentCaribbean()) : mutedColor()">
                       {{ m.institution }}
                     </p>
                   </div>
@@ -1140,7 +1152,7 @@
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!-- ⚡ SECTION 4: SKILLS (4 Clean Categories: Backend, Frontend, AI, DevOps) -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <section id="skills" class="section-anchor w-full scroll-mt-28 py-6 sm:py-8 border-t space-y-6"
+    <section id="skills" class="section-anchor w-full scroll-mt-28 py-6 sm:py-8 border-t space-y-6 md:!mb-0"
              [style.border-color]="cardBorder()">
       
       <!-- Section Header -->
@@ -1516,8 +1528,8 @@
         <!-- Right Column: Full Technical Dossier with Pinned Header & Pinned Sticky Footer -->
         <div class="w-full md:w-[58%] flex flex-col justify-between overflow-hidden max-h-[calc(92vh-10rem)] md:max-h-[85vh]">
           
-          <!-- Pinned Header in Right Column (pr-14 guarantees zero overlap with close button) -->
-          <div class="p-4 sm:p-6 md:p-7 pb-3.5 border-b shrink-0 pr-14"
+          <!-- Pinned Header in Right Column (pr-4 md:pr-14 guarantees safety zone for close button on desktop without squishing mobile) -->
+          <div class="p-4 sm:p-6 md:p-7 pb-3.5 border-b shrink-0 pr-4 md:pr-14"
                [style.border-color]="cardBorder()">
             <div class="flex items-center gap-2 mb-1">
               <span class="w-2.5 h-2.5 rounded-full" [style.background-color]="accentSinopia()"></span>
@@ -1590,7 +1602,6 @@
                class="inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs sm:text-sm font-bold text-white shadow-md transition-all hover:scale-105 cursor-pointer select-none"
                [style.background-color]="accentSinopia()">
               <span>{{ proj.linkText }}</span>
-              <span>↗</span>
             </a>
 
             <span class="text-[11px] font-mono opacity-60 hidden sm:inline" [style.color]="mutedColor()">

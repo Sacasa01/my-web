@@ -119,6 +119,39 @@ export class AppComponent {
   avatarState = signal<'TYPING' | 'IDLE'>('TYPING');
   isCordExpanded = signal<boolean>(true);
 
+  // 3D Interactive Hero Card Signals
+  cardRotateX = signal<number>(0);
+  cardRotateY = signal<number>(0);
+  cardGlareX = signal<number>(50);
+  cardGlareY = signal<number>(50);
+  cardHovered = signal<boolean>(false);
+
+  onCardMouseMove(event: MouseEvent) {
+    const card = event.currentTarget as HTMLElement;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width;
+    const y = (event.clientY - rect.top) / rect.height;
+    const boundedX = Math.min(Math.max(x, 0), 1);
+    const boundedY = Math.min(Math.max(y, 0), 1);
+    const offsetX = boundedX - 0.5;
+    const offsetY = boundedY - 0.5;
+
+    this.cardGlareX.set(Math.round(boundedX * 100));
+    this.cardGlareY.set(Math.round(boundedY * 100));
+    this.cardRotateX.set(Math.round(offsetY * -12));
+    this.cardRotateY.set(Math.round(offsetX * 12));
+    this.cardHovered.set(true);
+  }
+
+  onCardMouseLeave() {
+    this.cardRotateX.set(0);
+    this.cardRotateY.set(0);
+    this.cardGlareX.set(50);
+    this.cardGlareY.set(50);
+    this.cardHovered.set(false);
+  }
+
   toggleCord() {
     this.isCordExpanded.update(v => !v);
   }
@@ -127,16 +160,24 @@ export class AppComponent {
     return this.lang();
   }
 
-  outerBg = computed(() => this.theme() === 'light' ? '#EAE6D6' : '#070E0F');
-  bgColor = computed(() => this.theme() === 'light' ? '#F5F3E7' : '#0D1718');
-  cardBg = computed(() => this.theme() === 'light' ? '#FFFFFF' : '#152426');
-  cardBorder = computed(() => this.theme() === 'light' ? 'rgba(51, 100, 103, 0.16)' : 'rgba(224, 221, 174, 0.14)');
-  textColor = computed(() => this.theme() === 'light' ? '#1A3537' : '#E0DDAE');
-  mutedColor = computed(() => this.theme() === 'light' ? '#5C7476' : '#8AA2A4');
-  tagBg = computed(() => this.theme() === 'light' ? 'rgba(51, 100, 103, 0.08)' : 'rgba(224, 221, 174, 0.08)');
-  accentSinopia = computed(() => this.theme() === 'light' ? '#D7340B' : '#E64319');
-  accentCaribbean = computed(() => this.theme() === 'light' ? '#336467' : '#4E898D');
-  navBg = computed(() => this.theme() === 'light' ? 'rgba(245, 243, 231, 0.98)' : 'rgba(13, 23, 24, 0.98)');
+  // 4-Color Palette Reactive Signals (Vanilla, Dark Slate, Auburn, Hunyadi)
+  colorVanilla = computed(() => '#FFF3B0');
+  colorSlate = computed(() => '#335C67');
+  colorAuburn = computed(() => '#9E2A2B');
+  colorHunyadi = computed(() => '#E09F3E');
+
+  outerBg = computed(() => this.theme() === 'light' ? '#FAF2BF' : '#1F373E');
+  bgColor = computed(() => this.theme() === 'light' ? '#FFF3B0' : '#27474F');
+  cardBg = computed(() => this.theme() === 'light' ? '#FFFBE5' : '#335C67');
+  cardBorder = computed(() => this.theme() === 'light' ? 'rgba(51, 92, 103, 0.22)' : 'rgba(255, 243, 176, 0.22)');
+  textColor = computed(() => this.theme() === 'light' ? '#335C67' : '#FFF3B0');
+  mutedColor = computed(() => this.theme() === 'light' ? 'rgba(51, 92, 103, 0.78)' : 'rgba(255, 243, 176, 0.75)');
+  tagBg = computed(() => this.theme() === 'light' ? 'rgba(51, 92, 103, 0.09)' : 'rgba(255, 243, 176, 0.11)');
+  accentSinopia = computed(() => this.theme() === 'light' ? '#9E2A2B' : '#E09F3E');
+  accentCaribbean = computed(() => this.theme() === 'light' ? '#335C67' : '#E09F3E');
+  accentAuburn = computed(() => '#9E2A2B');
+  accentHunyadi = computed(() => '#E09F3E');
+  navBg = computed(() => this.theme() === 'light' ? 'rgba(255, 243, 176, 0.94)' : 'rgba(39, 71, 79, 0.94)');
 
   content = {
     en: {
@@ -333,44 +374,6 @@ export class AppComponent {
         journeyTitle: 'Real Engineering Journey (2024 – 2027)',
         journeySubtitle: 'Interactive Horizontal Roadmap: Academic Foundation → AWS & Google AI Certs → Clinical Practice → BSc Degree',
         timelineHint: 'Click icons to inspect verified certificate PDFs or full degree curriculum',
-        journeyMilestones: [
-          {
-            year: '2024',
-            title: 'CFGS DAW — Web Application Development',
-            institution: 'La Florida Universitaria, Valencia',
-            category: 'academic',
-            badge: 'Foundation · Grade 7.0',
-            description: 'Started enterprise software development degree: PHP 8/Symfony 7, MySQL relational schemas, and modern TypeScript.',
-            icon: 'academic'
-          },
-          {
-            year: '2025',
-            title: 'AWS Cloud & Google AI Certifications',
-            institution: 'Amazon Web Services & Santander / Google',
-            category: 'certification',
-            badge: 'AWS & Google AI Certs',
-            description: 'Achieved AWS Cloud Practitioner fundamentals and Google Artificial Intelligence & Productivity certification.',
-            icon: 'cert'
-          },
-          {
-            year: '2026',
-            title: 'Clinical AI Practice & English C1 (IELTS 8.0)',
-            institution: 'Hospital La Fe / Fertoolity & Official IELTS',
-            category: 'practice',
-            badge: 'Clinical FCT & C1 IELTS',
-            description: 'Completed hospital clinical AI medical imaging internship (PyTorch/MONAI) and official English C1 accreditation.',
-            icon: 'clinical'
-          },
-          {
-            year: '2026 – 2027',
-            title: 'BSc (Hons) in Computer Science (Top-Up)',
-            institution: 'Canterbury Christ Church University / MSMK',
-            category: 'degree',
-            badge: 'Current University Degree',
-            description: 'Pursuing British Honours degree taught 100% in English: Advanced Software Engineering and AI Systems Integration.',
-            icon: 'university'
-          }
-        ],
         milestones: [
           {
             id: 'daw',
@@ -417,7 +420,7 @@ export class AppComponent {
             pdfUrl: '/certificates/english-cate-certificate.pdf'
           },
           {
-            id: 'bsc-hons',
+            id: 'bsc',
             year: '2026 – 2027',
             title: 'BSc (Hons) in Computer Science (Top-Up)',
             institution: 'Canterbury Christ Church University / MSMK',
@@ -782,44 +785,6 @@ export class AppComponent {
         journeyTitle: 'Trayectoria Real de Ingeniería (2024 – 2027)',
         journeySubtitle: 'Línea del Tiempo Horizontal e Interactiva: Formación Base → Certificaciones AWS y Google IA → Práctica Clínica → Grado BSc',
         timelineHint: 'Pulsa en los iconos para ver los certificados PDF oficiales o el plan de estudios completo',
-        journeyMilestones: [
-          {
-            year: '2024',
-            title: 'CFGS DAW — Desarrollo de Aplicaciones Web',
-            institution: 'La Florida Universitaria, Valencia',
-            category: 'academic',
-            badge: 'Base Troncal · Nota 7.0',
-            description: 'Inicio de la ingeniería de software profesional: PHP 8/Symfony 7, esquemas relacionales MySQL y TypeScript moderno.',
-            icon: 'academic'
-          },
-          {
-            year: '2025',
-            title: 'Certificaciones Cloud AWS y Google IA',
-            institution: 'Amazon Web Services & Santander / Google',
-            category: 'certification',
-            badge: 'AWS & Google IA Certificados',
-            description: 'Taller oficial AWS Cloud Practitioner y fundamentos, más certificación en Inteligencia Artificial y Productividad de Google.',
-            icon: 'cert'
-          },
-          {
-            year: '2026',
-            title: 'Prácticas de IA Clínica e Inglés C1 (IELTS 8.0)',
-            institution: 'Hospital La Fe / Fertoolity & Examen Oficial IELTS',
-            category: 'practice',
-            badge: 'FCT Hospitalaria & C1 IELTS',
-            description: 'Prácticas hospitalarias con pipelines de visión e IA médica con PyTorch/MONAI, y obtención de la certificación C1 de inglés.',
-            icon: 'clinical'
-          },
-          {
-            year: '2026 – 2027',
-            title: 'Grado BSc (Hons) in Computer Science (Top-Up)',
-            institution: 'Canterbury Christ Church University / MSMK',
-            category: 'degree',
-            badge: 'Grado Universitario Actual',
-            description: 'Grado británico impartido 100% en inglés: Ingeniería Avanzada de Software, Sistemas Distribuidos e Integración de IA.',
-            icon: 'university'
-          }
-        ],
         milestones: [
           {
             id: 'daw',
@@ -866,7 +831,7 @@ export class AppComponent {
             pdfUrl: '/certificates/english-cate-certificate.pdf'
           },
           {
-            id: 'bsc-hons',
+            id: 'bsc',
             year: '2026 – 2027',
             title: 'BSc (Hons) in Computer Science (Top-Up)',
             institution: 'Canterbury Christ Church University / MSMK',
