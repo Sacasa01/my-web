@@ -980,140 +980,145 @@
             </span>
           </div>
           <span class="text-[10px] font-mono opacity-70 hidden sm:inline" [style.color]="mutedColor()">
-            Interactive Roadmap · 2024 → 2027
+            {{ lang() === 'en' ? 'Interactive Roadmap · 2024 → 2027' : 'Hoja de Ruta Interactiva · 2024 → 2027' }}
           </span>
         </div>
 
-        <!-- Continuous Horizontal Progress Axis (Always visible on all screen widths) -->
-        <div class="relative my-2 px-2 sm:px-4">
-          <div class="w-full h-1.5 rounded-full bg-black/10 dark:bg-white/10 relative overflow-hidden">
-            <div class="absolute inset-0 rounded-full bg-gradient-to-r from-[#336467] via-[#D7340B] via-[#4E898D] to-[#D7340B]"></div>
-          </div>
-          <!-- Year Tick Marks (Directly anchored to 2024, 2025, 2026, 2027) -->
-          <div class="flex justify-between items-center text-[10px] font-mono font-bold mt-1.5 px-0.5"
-               [style.color]="mutedColor()">
-            <span class="flex items-center gap-1">
-              <span class="w-1.5 h-1.5 rounded-full" [style.background-color]="accentCaribbean()"></span>
-              <span>2024</span>
-            </span>
-            <span class="flex items-center gap-1">
-              <span class="w-1.5 h-1.5 rounded-full bg-[#4285F4]"></span>
-              <span>2025</span>
-            </span>
-            <span class="flex items-center gap-1">
-              <span class="w-1.5 h-1.5 rounded-full bg-[#012169]"></span>
-              <span>2026</span>
-            </span>
-            <span class="flex items-center gap-1">
-              <span class="w-1.5 h-1.5 rounded-full" [style.background-color]="accentSinopia()"></span>
-              <span>2027</span>
-            </span>
-          </div>
-        </div>
-
-        <!-- Horizontal Scrollable Timeline Track (Smooth snap-scroll on Mobile/Tablet, 5-column single row on Desktop) -->
+        <!-- Continuous Connected Horizontal Timeline Track (Synchronously scrolls on Mobile/Tablet, 5-column grid on Desktop) -->
         <div class="flex lg:grid lg:grid-cols-5 gap-3.5 items-stretch overflow-x-auto snap-x snap-mandatory lg:overflow-visible pb-3 pt-1 scrollbar-none">
           @for (m of t().education.milestones; track m.id; let idx = $index) {
-            <div class="portfolio-card w-[270px] sm:w-[290px] lg:w-auto shrink-0 snap-start p-3.5 rounded-2xl border shadow-xs flex flex-col justify-between space-y-3 relative group transition-all duration-300 hover:-translate-y-1 hover:shadow-md overflow-hidden"
-                 [style.background-color]="tagBg()"
-                 [style.border-color]="m.type === 'degree' ? (m.id === 'bsc' ? accentSinopia() : accentCaribbean()) : cardBorder()">
+            <div class="w-[270px] sm:w-[290px] lg:w-auto shrink-0 snap-start flex flex-col justify-between space-y-2 relative">
               
-              <!-- Top Milestone Year & Category Badge -->
-              <div class="flex items-center justify-between gap-1.5">
-                <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold text-white shadow-xs"
-                      [style.background-color]="m.id === 'bsc' ? accentSinopia() : (m.id === 'daw' ? accentCaribbean() : '#152426')">
-                  {{ m.year }}
-                </span>
-                <span class="text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded border truncate max-w-[55%]"
-                      [style.border-color]="cardBorder()"
-                      [style.background-color]="cardBg()"
-                      [style.color]="m.type === 'degree' ? (m.id === 'bsc' ? accentSinopia() : accentCaribbean()) : textColor()">
-                  {{ m.type === 'degree' ? (lang() === 'en' ? 'Degree' : 'Titulación') : (lang() === 'en' ? 'Verified Cert' : 'Certificado') }}
-                </span>
+              <!-- Milestone Connector Node Axis (Forms continuous horizontal line across all 5 nodes) -->
+              <div class="relative flex items-center justify-center py-1 select-none">
+                <!-- Track Line Segment -->
+                <div class="absolute top-1/2 -translate-y-1/2 h-[3px] pointer-events-none rounded-full"
+                     [ngClass]="{
+                       'left-1/2 right-0': idx === 0,
+                       'left-0 right-1/2': idx === 4,
+                       'left-0 right-0': idx > 0 && idx < 4
+                     }"
+                     style="background: linear-gradient(90deg, #336467, #D7340B);">
+                </div>
+
+                <!-- Milestone Year Pill Node -->
+                <div class="relative z-10 flex items-center gap-1.5 px-3 py-0.5 rounded-full border shadow-xs text-[11px] font-mono font-bold"
+                     [style.background-color]="cardBg()"
+                     [style.border-color]="m.type === 'degree' ? (m.id === 'bsc' ? accentSinopia() : accentCaribbean()) : cardBorder()"
+                     [style.color]="m.type === 'degree' ? (m.id === 'bsc' ? accentSinopia() : accentCaribbean()) : textColor()">
+                  <span class="w-2 h-2 rounded-full shrink-0"
+                        [style.background-color]="m.id === 'bsc' ? accentSinopia() : (m.id === 'daw' ? accentCaribbean() : '#4285F4')"></span>
+                  <span>{{ m.year }}</span>
+                </div>
               </div>
 
-              <!-- Interactive Milestone Icon & Clickable Title -->
-              <div class="flex items-center gap-3 pt-1">
-                @if (m.type === 'certification' && m.pdfUrl) {
-                  <a [href]="m.pdfUrl"
-                     target="_blank"
-                     rel="noopener noreferrer"
-                     class="w-12 h-12 rounded-2xl border flex items-center justify-center shrink-0 shadow-sm transition-all duration-300 group-hover:scale-110 cursor-pointer hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#D7340B]"
-                     [style.background-color]="cardBg()"
-                     [style.border-color]="cardBorder()"
-                     [title]="(lang() === 'en' ? 'Open official PDF certificate: ' : 'Abrir certificado PDF oficial: ') + m.title"
-                     [attr.aria-label]="m.title">
-                    <svg class="w-7 h-7 shrink-0 transition-transform duration-300 group-hover:scale-105">
-                      <use [attr.href]="'#icon-' + m.icon"/>
-                    </svg>
-                  </a>
-                } @else if (m.type === 'degree') {
-                  <button type="button"
-                          (click)="openEducationModal(m.educationId || 'daw')"
-                          class="w-12 h-12 rounded-2xl border flex items-center justify-center shrink-0 shadow-sm transition-all duration-300 group-hover:scale-110 cursor-pointer hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#D7340B]"
-                          [style.background-color]="cardBg()"
-                          [style.border-color]="m.id === 'bsc' ? accentSinopia() : accentCaribbean()"
-                          [title]="(lang() === 'en' ? 'View curriculum details: ' : 'Ver plan de estudios: ') + m.title"
-                          [attr.aria-label]="m.title">
-                    <svg class="w-7 h-7 shrink-0 transition-transform duration-300 group-hover:scale-105">
-                      <use [attr.href]="'#icon-' + m.icon"/>
-                    </svg>
-                  </button>
-                }
+              <!-- Milestone Card Container -->
+              <div class="portfolio-card flex-1 p-3.5 rounded-2xl border shadow-xs flex flex-col justify-between space-y-3 relative group transition-all duration-300 hover:-translate-y-1 hover:shadow-md overflow-hidden"
+                   [style.background-color]="tagBg()"
+                   [style.border-color]="m.type === 'degree' ? (m.id === 'bsc' ? accentSinopia() : accentCaribbean()) : cardBorder()">
+                
+                <!-- Category Badge & Verification Status -->
+                <div class="flex items-center justify-between gap-1.5">
+                  <span class="text-[9px] font-mono font-semibold px-2 py-0.5 rounded border truncate"
+                        [style.border-color]="cardBorder()"
+                        [style.background-color]="cardBg()"
+                        [style.color]="m.type === 'degree' ? (m.id === 'bsc' ? accentSinopia() : accentCaribbean()) : textColor()">
+                    {{ m.type === 'degree' ? (lang() === 'en' ? 'Degree' : 'Titulación') : (lang() === 'en' ? 'Verified Cert' : 'Certificado') }}
+                  </span>
+                  <span class="text-[9px] font-bold px-1.5 py-0.5 rounded font-mono shrink-0"
+                        [style.color]="m.id === 'bsc-hons' || m.id === 'bsc' ? accentSinopia() : '#10B981'">
+                    @if (m.id === 'bsc-hons' || m.id === 'bsc') {
+                      <span>● {{ lang() === 'en' ? 'Enrolled' : 'En Curso' }}</span>
+                    } @else {
+                      <span>✓ {{ lang() === 'en' ? 'Verified' : 'Verificado' }}</span>
+                    }
+                  </span>
+                </div>
 
-                <div class="min-w-0 flex-1">
+                <!-- Interactive Milestone Icon & Clickable Title -->
+                <div class="flex items-center gap-3 pt-0.5">
                   @if (m.type === 'certification' && m.pdfUrl) {
                     <a [href]="m.pdfUrl"
                        target="_blank"
                        rel="noopener noreferrer"
-                       class="text-xs sm:text-[13px] font-bold font-sans leading-snug line-clamp-2 hover:underline block cursor-pointer"
-                       [style.color]="textColor()">
-                      {{ m.title }}
+                       class="w-12 h-12 rounded-2xl border flex items-center justify-center shrink-0 shadow-sm transition-all duration-300 group-hover:scale-110 cursor-pointer hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#D7340B]"
+                       [style.background-color]="cardBg()"
+                       [style.border-color]="cardBorder()"
+                       [title]="(lang() === 'en' ? 'Open official PDF certificate: ' : 'Abrir certificado PDF oficial: ') + m.title"
+                       [attr.aria-label]="m.title">
+                      <svg class="w-7 h-7 shrink-0 transition-transform duration-300 group-hover:scale-105">
+                        <use [attr.href]="'#icon-' + m.icon"/>
+                      </svg>
                     </a>
                   } @else if (m.type === 'degree') {
                     <button type="button"
                             (click)="openEducationModal(m.educationId || 'daw')"
-                            class="text-xs sm:text-[13px] font-bold font-sans leading-snug line-clamp-2 hover:underline text-left block cursor-pointer"
-                            [style.color]="textColor()">
-                      {{ m.title }}
+                            class="w-12 h-12 rounded-2xl border flex items-center justify-center shrink-0 shadow-sm transition-all duration-300 group-hover:scale-110 cursor-pointer hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#D7340B]"
+                            [style.background-color]="cardBg()"
+                            [style.border-color]="m.id === 'bsc' ? accentSinopia() : accentCaribbean()"
+                            [title]="(lang() === 'en' ? 'View curriculum details: ' : 'Ver plan de estudios: ') + m.title"
+                            [attr.aria-label]="m.title">
+                      <svg class="w-7 h-7 shrink-0 transition-transform duration-300 group-hover:scale-105">
+                        <use [attr.href]="'#icon-' + m.icon"/>
+                      </svg>
                     </button>
                   }
-                  <p class="text-[10px] font-mono font-medium truncate mt-0.5" [style.color]="m.type === 'degree' ? (m.id === 'bsc' ? accentSinopia() : accentCaribbean()) : mutedColor()">
-                    {{ m.institution }}
-                  </p>
+
+                  <div class="min-w-0 flex-1">
+                    @if (m.type === 'certification' && m.pdfUrl) {
+                      <a [href]="m.pdfUrl"
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         class="text-xs sm:text-[13px] font-bold font-sans leading-snug line-clamp-2 hover:underline block cursor-pointer"
+                         [style.color]="textColor()">
+                        {{ m.title }}
+                      </a>
+                    } @else if (m.type === 'degree') {
+                      <button type="button"
+                              (click)="openEducationModal(m.educationId || 'daw')"
+                              class="text-xs sm:text-[13px] font-bold font-sans leading-snug line-clamp-2 hover:underline text-left block cursor-pointer"
+                              [style.color]="textColor()">
+                        {{ m.title }}
+                      </button>
+                    }
+                    <p class="text-[10px] font-mono font-medium truncate mt-0.5" [style.color]="m.type === 'degree' ? (m.id === 'bsc' ? accentSinopia() : accentCaribbean()) : mutedColor()">
+                      {{ m.institution }}
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              <!-- Compact Narrative Summary -->
-              <p class="text-[11px] leading-relaxed line-clamp-2" [style.color]="mutedColor()">
-                {{ m.description }}
-              </p>
+                <!-- Compact Narrative Summary -->
+                <p class="text-[11px] leading-relaxed line-clamp-2" [style.color]="mutedColor()">
+                  {{ m.description }}
+                </p>
 
-              <!-- Card Action Button Footer -->
-              <div class="pt-2 border-t flex items-center justify-between gap-1 text-[10px] font-mono"
-                   [style.border-color]="cardBorder()">
-                @if (m.type === 'certification' && m.pdfUrl) {
-                  <a [href]="m.pdfUrl"
-                     target="_blank"
-                     rel="noopener noreferrer"
-                     class="inline-flex items-center gap-1 font-bold transition-transform group-hover:translate-x-0.5 hover:underline cursor-pointer"
-                     [style.color]="accentSinopia()">
-                    <span>📄 {{ lang() === 'en' ? 'PDF Certificate' : 'Certificado PDF' }}</span>
-                    <span>↗</span>
-                  </a>
-                  <span class="text-[9px] text-[#10B981] font-bold">✓</span>
-                } @else if (m.type === 'degree') {
-                  <button type="button"
-                          (click)="openEducationModal(m.educationId || 'daw')"
-                          class="inline-flex items-center gap-1 font-bold transition-transform group-hover:translate-x-0.5 hover:underline cursor-pointer"
-                          [style.color]="m.id === 'bsc' ? accentSinopia() : accentCaribbean()">
-                    <span>🔍 {{ lang() === 'en' ? 'Curriculum & Info' : 'Plan de Estudios' }}</span>
-                    <span>→</span>
-                  </button>
-                  <span class="text-[9px] font-bold px-1 rounded" [style.color]="m.id === 'bsc' ? accentSinopia() : accentCaribbean()">
-                    {{ m.badge.includes('Completed') || m.badge.includes('Finalizado') ? '✓' : '●' }}
-                  </span>
-                }
+                <!-- Card Action Button Footer -->
+                <div class="pt-2 border-t flex items-center justify-between gap-1 text-[10px] font-mono"
+                     [style.border-color]="cardBorder()">
+                  @if (m.type === 'certification' && m.pdfUrl) {
+                    <a [href]="m.pdfUrl"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="inline-flex items-center gap-1 font-bold transition-transform group-hover:translate-x-0.5 hover:underline cursor-pointer"
+                       [style.color]="accentSinopia()">
+                      <span>📄 {{ lang() === 'en' ? 'PDF Certificate' : 'Certificado PDF' }}</span>
+                      <span>↗</span>
+                    </a>
+                    <span class="text-[9px] text-[#10B981] font-bold">✓</span>
+                  } @else if (m.type === 'degree') {
+                    <button type="button"
+                            (click)="openEducationModal(m.educationId || 'daw')"
+                            class="inline-flex items-center gap-1 font-bold transition-transform group-hover:translate-x-0.5 hover:underline cursor-pointer"
+                            [style.color]="m.id === 'bsc-hons' || m.id === 'bsc' ? accentSinopia() : accentCaribbean()">
+                      <span>🔍 {{ lang() === 'en' ? 'Curriculum & Info' : 'Plan de Estudios' }}</span>
+                      <span>→</span>
+                    </button>
+                    <span class="text-[9px] font-bold px-1 rounded" [style.color]="m.id === 'bsc-hons' || m.id === 'bsc' ? accentSinopia() : accentCaribbean()">
+                      {{ m.id === 'bsc-hons' || m.id === 'bsc' ? '●' : '✓' }}
+                    </span>
+                  }
+                </div>
+
               </div>
 
             </div>
@@ -1279,7 +1284,7 @@
           
           <div class="space-y-3">
             <span class="text-xs font-mono font-bold uppercase tracking-widest" [style.color]="accentSinopia()">
-              Direct Communication
+              {{ lang() === 'en' ? 'Direct Communication' : 'Comunicación Directa' }}
             </span>
             <h3 class="font-anton text-2xl sm:text-4xl uppercase tracking-wide leading-tight" [style.color]="textColor()">
               {{ t().contact.heading }}
@@ -1417,7 +1422,7 @@
                 {{ t().contact.location }}
               </h4>
               <p class="text-xs font-mono" [style.color]="accentCaribbean()">
-                Available On-Site from Sept 30, 2026
+                {{ lang() === 'en' ? 'Available On-Site from Sept 30, 2026' : 'Disponible Presencial desde el 30 de Septiembre de 2026' }}
               </p>
             </div>
           </div>
@@ -1475,19 +1480,19 @@
         <button type="button"
                 (click)="closeProjectModal()"
                 class="absolute top-3.5 right-3.5 z-30 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/70 hover:bg-black/95 text-white flex items-center justify-center backdrop-blur-md border border-white/20 transition-transform hover:scale-110 cursor-pointer select-none text-base font-bold shadow-lg focus:outline-none focus:ring-2 focus:ring-white"
-                title="Close (Esc)"
-                aria-label="Close modal">
+                [attr.title]="lang() === 'en' ? 'Close (Esc)' : 'Cerrar (Esc)'"
+                [attr.aria-label]="lang() === 'en' ? 'Close modal' : 'Cerrar modal'">
           ✕
         </button>
 
-        <!-- Left Column: Project Cover Art & Quick Highlights -->
-        <div class="w-full md:w-[42%] relative flex flex-col justify-between overflow-hidden bg-slate-950 p-5 sm:p-6 shrink-0 h-40 sm:h-48 md:h-auto select-none">
+        <!-- Left Column: Project Cover Art & Visual Telemetry -->
+        <div class="w-full md:w-[42%] relative flex flex-col justify-between overflow-hidden bg-slate-950 p-4 sm:p-5 md:p-6 shrink-0 h-36 sm:h-44 md:h-auto select-none">
           <img [src]="proj.image" 
                [alt]="proj.title" 
                class="absolute inset-0 w-full h-full object-cover opacity-90" />
           <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/30"></div>
 
-          <!-- Top Badge in Image -->
+          <!-- Top Badges in Image -->
           <div class="relative z-10 flex items-center justify-between gap-2 pr-12 md:pr-0">
             <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono tracking-wider text-white bg-black/60 backdrop-blur-md border border-white/25">
               {{ proj.badge }}
@@ -1497,39 +1502,40 @@
             </span>
           </div>
 
-          <!-- Bottom Info in Image -->
-          <div class="relative z-10 space-y-1 mt-auto pt-3">
-            <p class="text-[11px] font-mono text-white/70">{{ proj.period }}</p>
-            <h3 class="font-anton text-xl sm:text-2xl md:text-3xl text-white tracking-wide uppercase leading-tight">
-              {{ proj.title }}
-            </h3>
-            <p class="text-[11px] sm:text-xs text-white/90 font-medium leading-relaxed line-clamp-2 md:line-clamp-none">
-              {{ proj.subtitle }}
+          <!-- Bottom Visual Telemetry: Period & Tech highlights on Desktop -->
+          <div class="relative z-10 space-y-1 mt-auto pt-3 hidden md:block">
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded border border-white/20 bg-black/50 text-white/90">
+              {{ proj.period }}
+            </span>
+            <p class="text-xs text-white/80 font-mono tracking-wide pt-1">
+              {{ proj.techStack.length }} Core Technologies
             </p>
           </div>
         </div>
 
-        <!-- Right Column: Full Technical Dossier with Pinned Sticky Footer -->
-        <div class="w-full md:w-[58%] p-4 sm:p-6 md:p-7 flex flex-col justify-between overflow-hidden max-h-[calc(92vh-10rem)] md:max-h-[85vh]">
+        <!-- Right Column: Full Technical Dossier with Pinned Header & Pinned Sticky Footer -->
+        <div class="w-full md:w-[58%] flex flex-col justify-between overflow-hidden max-h-[calc(92vh-10rem)] md:max-h-[85vh]">
           
-          <!-- Scrollable Content Body -->
-          <div class="flex-1 overflow-y-auto modal-scroll pr-1 sm:pr-1.5 space-y-4">
-            <!-- Header Identity -->
-            <div>
-              <div class="flex items-center gap-2 mb-1">
-                <span class="w-2.5 h-2.5 rounded-full" [style.background-color]="accentSinopia()"></span>
-                <span class="text-xs font-mono font-bold uppercase tracking-widest" [style.color]="accentCaribbean()">
-                  {{ proj.badge }}
-                </span>
-              </div>
-              <h3 class="font-anton text-2xl sm:text-3xl tracking-wide uppercase" [style.color]="textColor()">
-                {{ proj.title }}
-              </h3>
-              <p class="text-xs sm:text-sm font-semibold mt-0.5" [style.color]="accentSinopia()">
-                {{ proj.subtitle }}
-              </p>
+          <!-- Pinned Header in Right Column (pr-14 guarantees zero overlap with close button) -->
+          <div class="p-4 sm:p-6 md:p-7 pb-3.5 border-b shrink-0 pr-14"
+               [style.border-color]="cardBorder()">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="w-2.5 h-2.5 rounded-full" [style.background-color]="accentSinopia()"></span>
+              <span class="text-xs font-mono font-bold uppercase tracking-widest" [style.color]="accentCaribbean()">
+                {{ proj.badge }}
+              </span>
+              <span class="text-[10px] font-mono opacity-60 md:hidden">· {{ proj.period }}</span>
             </div>
+            <h3 class="font-anton text-2xl sm:text-3xl tracking-wide uppercase leading-tight" [style.color]="textColor()">
+              {{ proj.title }}
+            </h3>
+            <p class="text-xs sm:text-sm font-semibold mt-0.5 truncate" [style.color]="accentSinopia()">
+              {{ proj.subtitle }}
+            </p>
+          </div>
 
+          <!-- Scrollable Content Body (Starts strictly below header border, eliminating scrollbar collision) -->
+          <div class="flex-1 overflow-y-auto modal-scroll p-4 sm:p-6 md:p-7 pt-3.5 space-y-4">
             <!-- Full Narrative Description -->
             <div class="text-xs sm:text-sm leading-relaxed" [style.color]="mutedColor()">
               <p class="font-medium" [style.color]="textColor()">
@@ -1576,7 +1582,7 @@
           </div>
 
           <!-- Modal Pinned Action Footer -->
-          <div class="shrink-0 pt-3 mt-3 border-t flex items-center justify-between gap-2"
+          <div class="shrink-0 p-4 sm:p-6 md:p-7 py-3 border-t flex items-center justify-between gap-2"
                [style.border-color]="cardBorder()">
             <a [href]="proj.link"
                target="_blank"
@@ -1588,7 +1594,7 @@
             </a>
 
             <span class="text-[11px] font-mono opacity-60 hidden sm:inline" [style.color]="mutedColor()">
-              Press Esc or ✕ to dismiss
+              {{ lang() === 'en' ? 'Press Esc or ✕ to dismiss' : 'Pulsa Esc o ✕ para cerrar' }}
             </span>
           </div>
 
@@ -1622,8 +1628,8 @@
         <button type="button"
                 (click)="closeEducationModal()"
                 class="absolute top-4 right-4 z-30 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/70 hover:bg-black/95 text-white flex items-center justify-center backdrop-blur-md border border-white/20 transition-transform hover:scale-110 cursor-pointer select-none text-base font-bold shadow-lg focus:outline-none focus:ring-2 focus:ring-white"
-                title="Close (Esc)"
-                aria-label="Close modal">
+                [attr.title]="lang() === 'en' ? 'Close (Esc)' : 'Cerrar (Esc)'"
+                [attr.aria-label]="lang() === 'en' ? 'Close modal' : 'Cerrar modal'">
           ✕
         </button>
 
@@ -1729,7 +1735,7 @@
 
         <!-- Pinned Modal Action Footer -->
         @if (edu.officialUrl) {
-          <div class="shrink-0 p-4 sm:p-5 border-t flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+          <div class="shrink-0 p-4 sm:p-5 border-t flex items-center justify-between gap-3"
                [style.border-color]="cardBorder()">
             <a [href]="edu.officialUrl"
                target="_blank"
@@ -1739,8 +1745,8 @@
               <span>{{ edu.officialUrlText || (lang() === 'en' ? 'Visit Institution Page' : 'Visitar Web Oficial') }}</span>
               <span>↗</span>
             </a>
-            <span class="text-xs font-mono opacity-60" [style.color]="mutedColor()">
-              Press Esc or ✕ to dismiss
+            <span class="text-xs font-mono opacity-60 hidden sm:inline" [style.color]="mutedColor()">
+              {{ lang() === 'en' ? 'Press Esc or ✕ to dismiss' : 'Pulsa Esc o ✕ para cerrar' }}
             </span>
           </div>
         }
