@@ -45,8 +45,41 @@ export interface SkillCluster {
   domainNumber: string;
   nameEn: string;
   nameEs: string;
+  disciplineEn: string;
+  disciplineEs: string;
   accentColor: string;
   skills: SkillNode[];
+}
+
+export interface EducationDetail {
+  id: string;
+  degree: string;
+  institution: string;
+  location: string;
+  period: string;
+  badge: string;
+  status: string;
+  grade?: string;
+  summary: string;
+  fullDescription: string;
+  highlights: string[];
+  syllabus: string[];
+  techStack: { name: string; icon: string }[];
+  officialUrl?: string;
+  officialUrlText?: string;
+}
+
+export interface TimelineMilestone {
+  id: string;
+  year: string;
+  title: string;
+  institution: string;
+  badge: string;
+  type: 'degree' | 'certification';
+  icon: string;
+  description: string;
+  pdfUrl?: string;
+  educationId?: 'daw' | 'bsc';
 }
 
 export interface SpokenLanguage {
@@ -79,6 +112,9 @@ export class AppComponent {
   selectedProject = signal<ProjectItem | null>(null);
   displayedProject = signal<ProjectItem | null>(null);
   isClosingModal = signal<boolean>(false);
+  selectedEducationItem = signal<EducationDetail | null>(null);
+  displayedEducationItem = signal<EducationDetail | null>(null);
+  isClosingEducationModal = signal<boolean>(false);
   selectedSkillNode = signal<SkillNode | null>(null);
   avatarState = signal<'TYPING' | 'IDLE'>('TYPING');
   isCordExpanded = signal<boolean>(true);
@@ -291,11 +327,12 @@ export class AppComponent {
         ]
       },
       education: {
-        sectionTitle: 'Academic Education',
-        sectionSubtitle: 'Chronological Progression · Ascending Timeline (Bottom to Top)',
-        timelineBadge: 'Ascending Trajectory (Bottom = Foundation → Top = Current)',
+        sectionTitle: 'Education & Certifications',
+        sectionSubtitle: 'Real Engineering Journey (2024 – 2027)',
+        timelineBadge: 'Chronological Roadmap (2024 ➔ 2027)',
         journeyTitle: 'Real Engineering Journey (2024 – 2027)',
-        journeySubtitle: 'Continuous Timeline: Academic Foundation → AWS/Google AI Certs → Clinical Practice → BSc Degree',
+        journeySubtitle: 'Interactive Horizontal Roadmap: Academic Foundation → AWS & Google AI Certs → Clinical Practice → BSc Degree',
+        timelineHint: 'Click icons to inspect verified certificate PDFs or full degree curriculum',
         journeyMilestones: [
           {
             year: '2024',
@@ -334,6 +371,136 @@ export class AppComponent {
             icon: 'university'
           }
         ],
+        milestones: [
+          {
+            id: 'daw',
+            year: '2024 – 2026',
+            title: 'CFGS DAW — Web Application Development',
+            institution: 'La Florida Universitària',
+            badge: 'Grade: 7.00 / 10 · Completed',
+            type: 'degree',
+            icon: 'degree-daw',
+            description: 'Enterprise backend architecture (PHP 8/Symfony 7, MySQL/PostgreSQL) and modern reactive frontend with Angular 19 & TypeScript.',
+            educationId: 'daw'
+          },
+          {
+            id: 'google-ai',
+            year: 'Jan 2025',
+            title: 'Google AI & Productivity',
+            institution: 'Santander Open Academy & Google',
+            badge: 'Google AI · Certified',
+            type: 'certification',
+            icon: 'cert-google',
+            description: 'Generative AI integration, prompt engineering architectures, and automated developer productivity pipelines.',
+            pdfUrl: '/certificates/google-santander-ai-certificate.pdf'
+          },
+          {
+            id: 'aws-cloud',
+            year: '2025',
+            title: 'AWS Cloud Workshop',
+            institution: 'Amazon Web Services (AWS)',
+            badge: 'Cloud Practitioner Fundamentals',
+            type: 'certification',
+            icon: 'cert-aws',
+            description: 'Hands-on cloud architecture workshop covering AWS core services (EC2, S3, RDS, Lambda), security compliance, and deployments.',
+            pdfUrl: '/certificates/aws-workshop-certificate.pdf'
+          },
+          {
+            id: 'english-c1',
+            year: '2026',
+            title: 'English C1 Certified',
+            institution: 'Official IELTS Examination / CATE',
+            badge: 'CEFR C1 Fluent · IELTS 8.0 Eq.',
+            type: 'certification',
+            icon: 'cert-english',
+            description: 'Advanced academic and professional fluency for international engineering collaboration, architecture debates, and code reviews.',
+            pdfUrl: '/certificates/english-cate-certificate.pdf'
+          },
+          {
+            id: 'bsc-hons',
+            year: '2026 – 2027',
+            title: 'BSc (Hons) in Computer Science (Top-Up)',
+            institution: 'Canterbury Christ Church University / MSMK',
+            badge: 'Taught 100% in English · Enrolled',
+            type: 'degree',
+            icon: 'degree-bsc',
+            description: 'British Honours degree: Advanced Software Engineering, Cloud Systems, Distributed Architecture, Cybersecurity & AI Systems Integration.',
+            educationId: 'bsc'
+          }
+        ],
+        degrees: {
+          daw: {
+            id: 'daw',
+            degree: 'CFGS DAW — Web Application Development',
+            institution: 'La Florida Universitària',
+            location: 'Valencia, Spain',
+            period: '2024 – 2026',
+            badge: 'Grade Average: 7.00 / 10 · Completed',
+            status: 'Higher Vocational Degree',
+            summary: 'Comprehensive software development degree emphasizing enterprise backend systems, relational databases, clean architecture, and modern reactive frontends.',
+            fullDescription: 'Two-year intensive engineering curriculum covering modern software development methodologies. Designed and implemented enterprise applications using Symfony 7, PHP 8, and MySQL/PostgreSQL databases with strict 3NF normalization. Developed decoupled single-page applications using Angular and TypeScript, containerizing deployments with Docker Compose and maintaining rigorous Git workflows.',
+            highlights: [
+              'Rigorous enterprise backend architecture (PHP 8/Symfony 7, MySQL/PostgreSQL relational schema modeling).',
+              'Modern frontend engineering with TypeScript/Angular 19, reactive state management, and Clean Code practices.',
+              'Multi-service containerization with Docker Compose and automated testing practices.',
+              'FitForge Capstone Project: 33 secured REST endpoints, JWT authentication, and recommendation algorithms.'
+            ],
+            syllabus: [
+              'Backend Systems: PHP 8.2+, Symfony 7, RESTful APIs, JWT Authentication, RBAC, Doctrine ORM',
+              'Database Architecture: MySQL 8, PostgreSQL, 3NF Normalization, Indexing, ACID Transactions',
+              'Frontend Engineering: TypeScript, Angular 19 Standalone Components, Reactive Signals, Tailwind CSS',
+              'DevOps & Infrastructure: Docker, Docker Compose, Git feature-branch workflows, Nginx',
+              'Software Engineering: Clean Code, SOLID principles, automated unit testing, security validation'
+            ],
+            techStack: [
+              { name: 'PHP', icon: 'php' },
+              { name: 'Symfony', icon: 'symfony' },
+              { name: 'MySQL', icon: 'mysql' },
+              { name: 'PostgreSQL', icon: 'postgresql' },
+              { name: 'Angular', icon: 'angular' },
+              { name: 'TypeScript', icon: 'typescript' },
+              { name: 'Docker', icon: 'docker' },
+              { name: 'Git', icon: 'git' }
+            ],
+            officialUrl: 'https://www.floridauniversitaria.es/es-es/titulaciones/ciclos-formativos/daw-desarrollo-de-aplicaciones-web',
+            officialUrlText: 'La Florida Universitària'
+          },
+          bsc: {
+            id: 'bsc',
+            degree: 'BSc (Hons) in Computer Science (Top-Up)',
+            institution: 'Canterbury Christ Church University (MSMK Madrid Campus)',
+            location: 'Madrid, Spain (British Curriculum)',
+            period: 'Sep 2026 – Jun 2027',
+            badge: 'Taught 100% in English · Enrolled',
+            status: 'British Honours Bachelor Degree',
+            summary: 'British University Honours degree delivering advanced computer science education, distributed systems, cybersecurity, and applied artificial intelligence engineering.',
+            fullDescription: 'Pursuing a British Bachelor of Science with Honours in Computer Science accredited by Canterbury Christ Church University at MSMK University Madrid campus. Delivered 100% in English, the programme builds directly upon enterprise development to master distributed systems, cloud computing infrastructure, cybersecurity principles, and AI system agent integration.',
+            highlights: [
+              'Dual British and Spanish university training focused on high-impact software engineering roles.',
+              'Specializations: Advanced Software Engineering, Cloud Systems, Cybersecurity and AI Systems Integration.',
+              'International academic setting taught 100% in English with focus on research and systems architecture.',
+              'Honours Capstone Project focusing on autonomous agentic systems and deterministic runtime tooling.'
+            ],
+            syllabus: [
+              'Advanced Software Engineering & Enterprise Architecture Patterns',
+              'Distributed Systems, Cloud Architecture & Scalable Microservices',
+              'Cybersecurity, Threat Modeling & Secure Application Design',
+              'Artificial Intelligence Systems, Autonomous Agents & Machine Learning Integration',
+              'Research Methodologies & Honours Capstone Project'
+            ],
+            techStack: [
+              { name: 'Python', icon: 'python' },
+              { name: 'FastAPI', icon: 'fastapi' },
+              { name: 'AWS', icon: 'aws' },
+              { name: 'Docker', icon: 'docker' },
+              { name: 'PyTorch', icon: 'pytorch' },
+              { name: 'TypeScript', icon: 'typescript' },
+              { name: 'Git', icon: 'git' }
+            ],
+            officialUrl: 'https://www.canterbury.ac.uk/study-here/courses/undergraduate/computer-science',
+            officialUrlText: 'Canterbury Christ Church University'
+          }
+        },
         items: [
           {
             degree: 'BSc (Hons) in Computer Science (Top-Up)',
@@ -609,11 +776,12 @@ export class AppComponent {
         ]
       },
       education: {
-        sectionTitle: 'Formación Académica',
-        sectionSubtitle: 'Progresión Académica · Línea de Tiempo de Abajo hacia Arriba',
-        timelineBadge: 'Cronología Ascendente (Abajo = Más antigua → Arriba = Más nueva)',
-        journeyTitle: 'Trayectoria Real de Ingeniería y Formación',
-        journeySubtitle: '2024 – 2027 · Cronología Continua de Progresión Técnica',
+        sectionTitle: 'Educación & Certificaciones',
+        sectionSubtitle: 'Trayectoria Real de Ingeniería (2024 – 2027)',
+        timelineBadge: 'Cronología Continua (2024 ➔ 2027)',
+        journeyTitle: 'Trayectoria Real de Ingeniería (2024 – 2027)',
+        journeySubtitle: 'Línea del Tiempo Horizontal e Interactiva: Formación Base → Certificaciones AWS y Google IA → Práctica Clínica → Grado BSc',
+        timelineHint: 'Pulsa en los iconos para ver los certificados PDF oficiales o el plan de estudios completo',
         journeyMilestones: [
           {
             year: '2024',
@@ -652,6 +820,136 @@ export class AppComponent {
             icon: 'university'
           }
         ],
+        milestones: [
+          {
+            id: 'daw',
+            year: '2024 – 2026',
+            title: 'CFGS DAW — Desarrollo de Aplicaciones Web',
+            institution: 'La Florida Universitària',
+            badge: 'Nota Media: 7.00 / 10 · Finalizado',
+            type: 'degree',
+            icon: 'degree-daw',
+            description: 'Arquitectura empresarial backend (PHP 8/Symfony 7, MySQL/PostgreSQL) e ingeniería frontend reactiva con Angular 19 y TypeScript.',
+            educationId: 'daw'
+          },
+          {
+            id: 'google-ai',
+            year: 'Ene 2025',
+            title: 'Google IA y Productividad',
+            institution: 'Santander Open Academy y Google',
+            badge: 'Google IA · Certificado',
+            type: 'certification',
+            icon: 'cert-google',
+            description: 'Integración de IA generativa, diseño de arquitecturas de prompts y automatización de pipelines de productividad.',
+            pdfUrl: '/certificates/google-santander-ai-certificate.pdf'
+          },
+          {
+            id: 'aws-cloud',
+            year: '2025',
+            title: 'Taller Cloud AWS',
+            institution: 'Amazon Web Services (AWS)',
+            badge: 'Fundamentos Cloud Practitioner',
+            type: 'certification',
+            icon: 'cert-aws',
+            description: 'Taller práctico de arquitectura en AWS (EC2, S3, RDS, Lambda serverless), políticas IAM y seguridad cloud.',
+            pdfUrl: '/certificates/aws-workshop-certificate.pdf'
+          },
+          {
+            id: 'english-c1',
+            year: '2026',
+            title: 'Certificación Inglés C1',
+            institution: 'Examen Oficial IELTS / CATE',
+            badge: 'C1 Fluido · IELTS 8.0 Eq.',
+            type: 'certification',
+            icon: 'cert-english',
+            description: 'Competencia académica y profesional completa en inglés técnico para entornos internacionales, debates de arquitectura y code reviews.',
+            pdfUrl: '/certificates/english-cate-certificate.pdf'
+          },
+          {
+            id: 'bsc-hons',
+            year: '2026 – 2027',
+            title: 'BSc (Hons) in Computer Science (Top-Up)',
+            institution: 'Canterbury Christ Church University / MSMK',
+            badge: '100% en Inglés · En Curso',
+            type: 'degree',
+            icon: 'degree-bsc',
+            description: 'Grado británico oficial: Ingeniería Avanzada de Software, Sistemas Distribuidos, Ciberseguridad e Integración de Sistemas de IA.',
+            educationId: 'bsc'
+          }
+        ],
+        degrees: {
+          daw: {
+            id: 'daw',
+            degree: 'CFGS DAW — Desarrollo de Aplicaciones Web',
+            institution: 'La Florida Universitària',
+            location: 'Valencia, España',
+            period: '2024 – 2026',
+            badge: 'Nota Media: 7.00 / 10 · Finalizado',
+            status: 'Ciclo Formativo de Grado Superior',
+            summary: 'Formación técnica superior integral focalizada en sistemas backend empresariales, bases de datos relacionales normalizadas, arquitectura limpia y frontend moderno.',
+            fullDescription: 'Programa oficial intensivo de dos años enfocado en ingeniería de software robusta. Diseño e implementación de APIs desacopladas con Symfony 7 y PHP 8, esquemas MySQL y PostgreSQL con normalización estricta en 3FN y control de transacciones ACID. Desarrollo de SPAs con Angular 19 y TypeScript con Signal reactivity, y contenerización multi-servicio con Docker Compose siguiendo flujos Git con ramas temáticas.',
+            highlights: [
+              'Enfoque riguroso en arquitecturas empresariales de backend (PHP 8/Symfony 7, esquemas relacionales MySQL/PostgreSQL).',
+              'Ingeniería frontend moderna con TypeScript/Angular 19, reactividad por Signals y principios Clean Code.',
+              'Contenerización de entornos con Docker Compose y testing automatizado.',
+              'Proyecto TFG FitForge: 33 endpoints REST asegurados con JWT y algoritmos de recomendación dinámica.'
+            ],
+            syllabus: [
+              'Sistemas Backend: PHP 8.2+, Symfony 7, APIs RESTful, JWT, RBAC granular, Doctrine ORM',
+              'Arquitectura de Bases de Datos: MySQL 8, PostgreSQL, 3FN, Índices, Transacciones ACID, Migraciones',
+              'Ingeniería Frontend: TypeScript, Componentes Standalone de Angular 19, Signals, Tailwind CSS',
+              'DevOps e Infraestructura: Docker, Docker Compose, Flujos Git con feature-branches, Nginx',
+              'Ingeniería de Software: Clean Code, Principios SOLID, Testing automatizado y Validación de seguridad'
+            ],
+            techStack: [
+              { name: 'PHP', icon: 'php' },
+              { name: 'Symfony', icon: 'symfony' },
+              { name: 'MySQL', icon: 'mysql' },
+              { name: 'PostgreSQL', icon: 'postgresql' },
+              { name: 'Angular', icon: 'angular' },
+              { name: 'TypeScript', icon: 'typescript' },
+              { name: 'Docker', icon: 'docker' },
+              { name: 'Git', icon: 'git' }
+            ],
+            officialUrl: 'https://www.floridauniversitaria.es/es-es/titulaciones/ciclos-formativos/daw-desarrollo-de-aplicaciones-web',
+            officialUrlText: 'Página Oficial La Florida Universitària'
+          },
+          bsc: {
+            id: 'bsc',
+            degree: 'BSc (Hons) in Computer Science (Top-Up)',
+            institution: 'Canterbury Christ Church University (Campus Madrid en MSMK)',
+            location: 'Madrid, España (Currículo Británico)',
+            period: 'Sep 2026 – Jun 2027',
+            badge: 'Impartido 100% en Inglés · En Curso',
+            status: 'Grado Universitario Oficial Británico',
+            summary: 'Grado británico Bachelor of Science con honores enfocado en ciencias de la computación avanzadas, sistemas distribuidos, ciberseguridad e integración de agentes de IA.',
+            fullDescription: 'Cursando el Grado Británico Oficial Bachelor of Science with Honours in Computer Science por Canterbury Christ Church University en la sede de MSMK University Madrid. Impartido íntegramente en inglés, este programa de alto rendimiento profundiza en ingeniería avanzada de software empresarial, sistemas distribuidos en la nube, ciberseguridad e integración de sistemas agénticos de inteligencia artificial.',
+            highlights: [
+              'Formación universitaria británica y española orientada a roles de ingeniería de software de alto impacto.',
+              'Especializaciones: Advanced Software Engineering, Cloud Systems, Cybersecurity y AI System Integration.',
+              'Entorno académico internacional 100% en inglés con foco en investigación y arquitectura técnica.',
+              'Proyecto Final Honours orientado a orquestación de agentes autónomos y herramientas en sandboxes deterministas.'
+            ],
+            syllabus: [
+              'Ingeniería de Software Avanzada y Patrones de Arquitectura Empresarial',
+              'Sistemas Distribuidos, Arquitectura Cloud y Microservicios Escalables',
+              'Ciberseguridad, Modelado de Amenazas y Diseño de Software Seguro',
+              'Sistemas de Inteligencia Artificial, Agentes Autónomos e Integración Machine Learning',
+              'Metodologías de Investigación y Proyecto Fin de Grado Honours'
+            ],
+            techStack: [
+              { name: 'Python', icon: 'python' },
+              { name: 'FastAPI', icon: 'fastapi' },
+              { name: 'AWS', icon: 'aws' },
+              { name: 'Docker', icon: 'docker' },
+              { name: 'PyTorch', icon: 'pytorch' },
+              { name: 'TypeScript', icon: 'typescript' },
+              { name: 'Git', icon: 'git' }
+            ],
+            officialUrl: 'https://www.canterbury.ac.uk/study-here/courses/undergraduate/computer-science',
+            officialUrlText: 'Página Oficial Canterbury Christ Church University'
+          }
+        },
         items: [
           {
             degree: 'BSc (Hons) in Computer Science (Top-Up)',
@@ -993,6 +1291,8 @@ export class AppComponent {
       domainNumber: '01',
       nameEn: 'Backend',
       nameEs: 'Backend',
+      disciplineEn: 'Core Systems, REST APIs & Databases',
+      disciplineEs: 'Sistemas Troncales, APIs REST y Bases de Datos',
       accentColor: '#336467',
       skills: this.skillNodes.filter(s => s.domain === 'backend')
     },
@@ -1001,6 +1301,8 @@ export class AppComponent {
       domainNumber: '02',
       nameEn: 'Frontend',
       nameEs: 'Frontend',
+      disciplineEn: 'Reactive Architectures & Web Standards',
+      disciplineEs: 'Arquitecturas Reactivas y Estándares Web',
       accentColor: '#3178C6',
       skills: this.skillNodes.filter(s => s.domain === 'frontend')
     },
@@ -1009,6 +1311,8 @@ export class AppComponent {
       domainNumber: '03',
       nameEn: 'AI System Agents',
       nameEs: 'AI System Agents',
+      disciplineEn: 'Autonomous Agents, Protocols & Deep Learning',
+      disciplineEs: 'Agentes Autónomos, Protocolos y Deep Learning',
       accentColor: '#D7340B',
       skills: this.skillNodes.filter(s => s.domain === 'ai')
     },
@@ -1017,6 +1321,8 @@ export class AppComponent {
       domainNumber: '04',
       nameEn: 'DevOps & Cloud',
       nameEs: 'DevOps & Cloud',
+      disciplineEn: 'Containerization, Cloud Services & Linux CI/CD',
+      disciplineEs: 'Contenedores, Servicios Cloud y CI/CD en Linux',
       accentColor: '#2496ED',
       skills: this.skillNodes.filter(s => s.domain === 'devops')
     }
@@ -1092,6 +1398,7 @@ export class AppComponent {
           ease: 'power1.in',
           onComplete: () => {
             this.lang.update(current => current === 'en' ? 'es' : 'en');
+            this.syncOpenModalLanguage();
             gsap.to(elements, {
               opacity: 1,
               duration: 0.26,
@@ -1103,6 +1410,27 @@ export class AppComponent {
       }
     }
     this.lang.update(current => current === 'en' ? 'es' : 'en');
+    this.syncOpenModalLanguage();
+  }
+
+  private syncOpenModalLanguage() {
+    const currEdu = this.selectedEducationItem();
+    if (currEdu) {
+      const degrees = this.t().education.degrees as Record<string, EducationDetail> | undefined;
+      const newEdu = degrees?.[currEdu.id];
+      if (newEdu) {
+        this.selectedEducationItem.set(newEdu);
+        this.displayedEducationItem.set(newEdu);
+      }
+    }
+    const currProj = this.selectedProject();
+    if (currProj) {
+      const newProj = this.t().projects.items.find(p => p.id === currProj.id);
+      if (newProj) {
+        this.selectedProject.set(newProj);
+        this.displayedProject.set(newProj);
+      }
+    }
   }
 
   toggleTheme() {
@@ -1126,6 +1454,9 @@ export class AppComponent {
   handleEscape() {
     if (this.selectedProject()) {
       this.closeProjectModal();
+    }
+    if (this.selectedEducationItem()) {
+      this.closeEducationModal();
     }
     if (this.selectedSkillNode()) {
       this.selectedSkillNode.set(null);
@@ -1176,6 +1507,34 @@ export class AppComponent {
     } else {
       this.displayedProject.set(null);
       this.isClosingModal.set(false);
+    }
+  }
+
+  openEducationModal(id: string) {
+    const degrees = this.t().education.degrees as Record<string, EducationDetail> | undefined;
+    const item = degrees?.[id];
+    if (!item) return;
+    this.isClosingEducationModal.set(false);
+    this.selectedEducationItem.set(item);
+    this.displayedEducationItem.set(item);
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  closeEducationModal() {
+    if (this.isClosingEducationModal()) return;
+    this.selectedEducationItem.set(null);
+    this.isClosingEducationModal.set(true);
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        this.displayedEducationItem.set(null);
+        this.isClosingEducationModal.set(false);
+      }, 230);
+    } else {
+      this.displayedEducationItem.set(null);
+      this.isClosingEducationModal.set(false);
     }
   }
 

@@ -174,34 +174,64 @@ describe('AppComponent', () => {
     expect(svgs?.length).toBeGreaterThanOrEqual(12);
   });
 
-  it('should render Education with ascending timeline nodes in the DOM', () => {
+  it('should render the horizontal timeline with 5 chronological milestones (2024 to 2027) in the DOM', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     const eduSection = compiled.querySelector('#education');
 
     expect(eduSection).not.toBeNull();
-    const eduCards = eduSection?.querySelectorAll('article');
-    expect(eduCards?.length).toBe(2);
+    expect(eduSection?.textContent).toContain('2024 – 2027');
+    expect(eduSection?.textContent).toContain('Real Engineering Journey');
 
-    // Top card should be BSc Computer Science
-    const topCardText = eduCards?.[0]?.textContent || '';
-    expect(topCardText).toContain('BSc (Hons)');
-
-    // Bottom card should be CFGS DAW
-    const bottomCardText = eduCards?.[1]?.textContent || '';
-    expect(bottomCardText).toContain('CFGS DAW');
+    // Milestones include DAW, Google AI, AWS Cloud, English C1, and BSc
+    expect(eduSection?.textContent).toContain('CFGS DAW');
+    expect(eduSection?.textContent).toContain('Google AI');
+    expect(eduSection?.textContent).toContain('AWS Cloud');
+    expect(eduSection?.textContent).toContain('English C1');
+    expect(eduSection?.textContent).toContain('BSc (Hons)');
   });
 
-  it('should render exactly 3 Certification cards in the DOM', () => {
+  it('should remove separate #certifications section and embed clickable certificate links inside #education', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    const certSection = compiled.querySelector('#certifications');
 
-    expect(certSection).not.toBeNull();
-    const certCards = certSection?.querySelectorAll('article');
-    expect(certCards?.length).toBe(3);
+    // Separate certifications section must NOT exist
+    expect(compiled.querySelector('#certifications')).toBeNull();
+
+    // The official certificate PDF links must exist inside #education
+    const eduSection = compiled.querySelector('#education');
+    const pdfLinks = Array.from(eduSection?.querySelectorAll('a[href^="/certificates/"]') || []);
+    expect(pdfLinks.length).toBeGreaterThanOrEqual(3);
+  });
+
+  it('should open and close the education detail modal for DAW and BSc degrees', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    fixture.detectChanges();
+
+    expect(app.selectedEducationItem()).toBeNull();
+
+    // Open DAW modal
+    app.openEducationModal('daw');
+    expect(app.selectedEducationItem()?.id).toBe('daw');
+    expect(app.selectedEducationItem()?.degree).toContain('CFGS DAW');
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const modalTitle = compiled.querySelector('[role="dialog"] h3');
+    expect(modalTitle?.textContent).toContain('CFGS DAW');
+
+    // Close via closeEducationModal
+    app.closeEducationModal();
+    expect(app.selectedEducationItem()).toBeNull();
+
+    // Open BSc modal and close via escape
+    app.openEducationModal('bsc');
+    expect(app.selectedEducationItem()?.id).toBe('bsc');
+    app.handleEscape();
+    expect(app.selectedEducationItem()).toBeNull();
   });
 
   it('should render the redesigned Contact section with email copy and direct channels in the DOM', () => {
@@ -237,13 +267,11 @@ describe('AppComponent', () => {
     const hero = hostEl.querySelector('#hero') as HTMLElement;
     const skills = hostEl.querySelector('#skills') as HTMLElement;
     const education = hostEl.querySelector('#education') as HTMLElement;
-    const certs = hostEl.querySelector('#certifications') as HTMLElement;
     const contact = hostEl.querySelector('#contact') as HTMLElement;
 
     expect(hero).toBeTruthy();
     expect(skills).toBeTruthy();
     expect(education).toBeTruthy();
-    expect(certs).toBeTruthy();
     expect(contact).toBeTruthy();
 
     // Verify container scrollWidth doesn't cause excessive overflow
@@ -265,13 +293,11 @@ describe('AppComponent', () => {
     const hero = hostEl.querySelector('#hero') as HTMLElement;
     const skills = hostEl.querySelector('#skills') as HTMLElement;
     const education = hostEl.querySelector('#education') as HTMLElement;
-    const certs = hostEl.querySelector('#certifications') as HTMLElement;
     const contact = hostEl.querySelector('#contact') as HTMLElement;
 
     expect(hero).toBeTruthy();
     expect(skills).toBeTruthy();
     expect(education).toBeTruthy();
-    expect(certs).toBeTruthy();
     expect(contact).toBeTruthy();
 
     expect(hostEl.clientWidth).toBe(768);

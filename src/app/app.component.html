@@ -224,6 +224,22 @@
       <path d="M11 16c-1 .6-1.8.8-2.7.8-1.7 0-2.8-1.1-2.8-3 0-2 1.3-3.3 3.1-3.3.9 0 1.6.3 2.4.6v4.9zm2-7.8h-2v1.3c-.7-.5-1.6-.9-2.7-.9-3 0-5.1 2-5.1 5.3 0 3 1.8 5 4.8 5 1.1 0 2.2-.3 3-1v.8h2V8.2zm4.7 8.4l2-7h-2.1l-1.2 4.8-1.2-4.8h-2.2l2 7h2.7zm5.7.3c1.6 0 2.6-.8 2.6-2 0-1.4-1-1.7-2.6-2.1-1.3-.3-1.9-.6-1.9-1.3 0-.7.6-1.2 1.6-1.2.9 0 1.9.3 2.6 1l1-1.3c-.9-.8-2.2-1.2-3.6-1.2-2.2 0-3.6 1.3-3.6 2.9 0 1.4 1 1.9 2.4 2.2 1.3.3 2 .6 2 1.3 0 .8-.7 1.3-1.9 1.3-1 0-2.2-.4-3-1.3l-1.1 1.3c1.2 1.2 2.7 1.6 4.3 1.6z" fill="#FFFFFF"/>
       <path d="M24 22c-2.8 1.7-6.4 2.7-10 2.7-5 0-9.5-1.9-12.6-5-.3-.3-.1-.6.3-.4 3.3 1.7 7.2 2.8 11.5 2.8 3.3 0 6.7-.7 9.5-2.2.4-.3.8.3.3.6z" fill="#FF9900"/>
     </symbol>
+
+    <!-- Degree Badge: CFGS DAW -->
+    <symbol id="icon-degree-daw" viewBox="0 0 32 32">
+      <rect width="32" height="32" rx="7" fill="#152426" stroke="#336467" stroke-width="1.8"/>
+      <path d="M7 11l5 5-5 5M14 21h11" stroke="#336467" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="23" cy="11" r="2" fill="#D7340B"/>
+    </symbol>
+
+    <!-- Degree Badge: BSc (Hons) Computer Science -->
+    <symbol id="icon-degree-bsc" viewBox="0 0 32 32">
+      <rect width="32" height="32" rx="7" fill="#152426" stroke="#D7340B" stroke-width="1.8"/>
+      <path d="M16 6L4 12l12 6 12-6-12-6z" fill="#D7340B"/>
+      <path d="M8 14.5v6c0 3 3.5 5.5 8 5.5s8-2.5 8-5.5v-6" fill="none" stroke="#E0DDAE" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M26 13v7" stroke="#D7340B" stroke-width="1.6" stroke-linecap="round"/>
+      <circle cx="26" cy="20.5" r="1.5" fill="#E0DDAE"/>
+    </symbol>
   </defs>
 </svg>
 
@@ -416,7 +432,7 @@
   <!-- ═════════════════════════════════════════════════════════════════════ -->
   <!-- 🏛️ UNIFIED BOXED-LAYOUT MAIN CONTAINER (Max-W-6XL Centered)         -->
   <!-- ═════════════════════════════════════════════════════════════════════ -->
-  <main class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-10 pb-16 space-y-16 sm:space-y-24">
+  <main class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-10 pb-6 sm:pb-8 space-y-12 sm:space-y-20">
 
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!-- 🌟 HERO SECTION (Native Avatar with Real Ground Shadow)             -->
@@ -922,465 +938,204 @@
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <!-- 🔍 MODAL DIALOG: PROJECT TECHNICAL DOSSIER (With Clean GSAP Motion) -->
+    <!-- 🎓 SECTION 3: EDUCATION & CERTIFICATIONS (Horizontal 2024–2027 Timeline) -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
-    @if (displayedProject(); as proj) {
-      <div class="modal-backdrop-layer fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md"
-           [class.animate-modal-backdrop]="!isClosingModal()"
-           [class.animate-modal-backdrop-leave]="isClosingModal()"
-           (click)="closeProjectModal()"
-           role="dialog"
-           aria-modal="true"
-           [attr.aria-label]="proj.title">
-        
-        <!-- Modal Card Container -->
-        <div class="modal-card-layer relative w-full max-w-4xl max-h-[90vh] flex flex-col md:flex-row overflow-hidden rounded-3xl border shadow-2xl text-left"
-             [class.animate-modal-content]="!isClosingModal()"
-             [class.animate-modal-content-leave]="isClosingModal()"
-             [style.background-color]="cardBg()"
-             [style.border-color]="cardBorder()"
-             (click)="$event.stopPropagation()">
-          
-          <!-- Only Close Button: Sleek '✕' in Top-Right -->
-          <button type="button"
-                  (click)="closeProjectModal()"
-                  class="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center backdrop-blur-md border border-white/20 transition-transform hover:scale-110 cursor-pointer select-none text-base font-bold shadow-lg"
-                  title="Close (Esc)"
-                  aria-label="Close modal">
-            ✕
-          </button>
-
-          <!-- Left Column: Project Cover Art & Quick Highlights -->
-          <div class="w-full md:w-[42%] relative flex flex-col justify-between overflow-hidden bg-slate-950 p-6 shrink-0 min-h-[240px] md:min-h-auto select-none">
-            <img [src]="proj.image" 
-                 [alt]="proj.title" 
-                 class="absolute inset-0 w-full h-full object-cover opacity-90" />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/30"></div>
-
-            <!-- Top Badge in Image -->
-            <div class="relative z-10 flex items-center justify-between gap-2">
-              <span class="px-3 py-1 rounded-full text-[11px] font-bold font-mono tracking-wider text-white bg-black/60 backdrop-blur-md border border-white/25">
-                {{ proj.badge }}
-              </span>
-              <span class="px-2.5 py-1 rounded-full text-[11px] font-bold font-mono text-white bg-black/60 backdrop-blur-md border border-white/25">
-                {{ proj.metricBadge }}
-              </span>
-            </div>
-
-            <!-- Bottom Info in Image -->
-            <div class="relative z-10 space-y-1.5 mt-auto pt-16">
-              <p class="text-xs font-mono text-white/70">{{ proj.period }}</p>
-              <h3 class="font-anton text-2xl sm:text-3xl text-white tracking-wide uppercase leading-tight">
-                {{ proj.title }}
-              </h3>
-              <p class="text-xs text-white/90 font-medium leading-relaxed">
-                {{ proj.subtitle }}
-              </p>
-            </div>
-          </div>
-
-          <!-- Right Column: Full Technical Dossier with Pinned Sticky Footer -->
-          <div class="w-full md:w-[58%] p-6 sm:p-8 flex flex-col justify-between overflow-hidden max-h-[85vh]">
-            
-            <!-- Scrollable Content Body -->
-            <div class="flex-1 overflow-y-auto modal-scroll pr-2 space-y-5">
-              <!-- Header Identity -->
-              <div>
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="w-2.5 h-2.5 rounded-full" [style.background-color]="accentSinopia()"></span>
-                  <span class="text-xs font-mono font-bold uppercase tracking-widest" [style.color]="accentCaribbean()">
-                    {{ proj.badge }}
-                  </span>
-                </div>
-                <h3 class="font-anton text-2xl sm:text-3xl tracking-wide uppercase" [style.color]="textColor()">
-                  {{ proj.title }}
-                </h3>
-                <p class="text-xs sm:text-sm font-semibold mt-1" [style.color]="accentSinopia()">
-                  {{ proj.subtitle }}
-                </p>
-              </div>
-
-              <!-- Full Narrative Description -->
-              <div class="text-xs sm:text-sm leading-relaxed" [style.color]="mutedColor()">
-                <p class="font-medium" [style.color]="textColor()">
-                  {{ proj.summary }}
-                </p>
-                <p class="mt-2.5 font-normal">
-                  {{ proj.fullDescription }}
-                </p>
-              </div>
-
-              <!-- Key Architectural Achievements -->
-              <div class="space-y-2.5">
-                <h4 class="text-xs font-mono font-bold uppercase tracking-wider" [style.color]="textColor()">
-                  {{ t().projects.highlightsTitle }}
-                </h4>
-                <ul class="space-y-2 text-xs sm:text-[13px] leading-relaxed" [style.color]="mutedColor()">
-                  @for (detail of proj.details; track detail) {
-                    <li class="flex items-start gap-2.5">
-                      <span class="font-bold shrink-0 mt-0.5" [style.color]="accentSinopia()">▸</span>
-                      <span>{{ detail }}</span>
-                    </li>
-                  }
-                </ul>
-              </div>
-
-              <!-- Tech Stack with Official SVG Logos -->
-              <div class="space-y-2 pt-1">
-                <h4 class="text-xs font-mono font-bold uppercase tracking-wider" [style.color]="textColor()">
-                  {{ t().projects.techStackTitle }}
-                </h4>
-                <div class="flex flex-wrap items-center gap-2">
-                  @for (tech of proj.techStack; track tech.name) {
-                    <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-mono font-medium border shadow-xs"
-                          [style.border-color]="cardBorder()"
-                          [style.background-color]="tagBg()"
-                          [style.color]="textColor()"
-                          [title]="tech.name">
-                      <svg class="w-4 h-4 shrink-0"><use [attr.href]="'#icon-' + tech.icon"/></svg>
-                      <span>{{ tech.name }}</span>
-                    </span>
-                  }
-                </div>
-              </div>
-            </div>
-
-            <!-- Modal Pinned Action Footer (Always Visible - No Redundant Close Button) -->
-            <div class="shrink-0 pt-4 mt-3 border-t flex items-center justify-between"
-                 [style.border-color]="cardBorder()">
-              <a [href]="proj.link"
-                 target="_blank"
-                 rel="noopener noreferrer"
-                 class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs sm:text-sm font-bold text-white shadow-md transition-all hover:scale-105 cursor-pointer select-none"
-                 [style.background-color]="accentSinopia()">
-                <span>{{ proj.linkText }}</span>
-                <span>↗</span>
-              </a>
-
-              <span class="text-xs font-mono opacity-60 hidden sm:inline" [style.color]="mutedColor()">
-                Press Esc or ✕ to dismiss
-              </span>
-            </div>
-
-          </div>
-
-        </div>
-      </div>
-    }
-    <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <!-- 🎓 SECTION 3: EDUCATION & CERTIFICATIONS (Unified Section)          -->
-    <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <section id="education" class="section-anchor w-full min-h-[calc(100vh-5rem)] flex flex-col justify-center scroll-mt-28 py-6 border-t space-y-6"
+    <section id="education" class="section-anchor w-full scroll-mt-28 py-6 sm:py-8 border-t space-y-5"
              [style.border-color]="cardBorder()">
       
-      <!-- Section Header (Preserved Viewport Budgeting) -->
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 pb-1">
+      <!-- Section Header -->
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-1 border-b"
+           [style.border-color]="cardBorder()">
         <div class="space-y-0.5">
           <p class="text-[11px] font-bold uppercase tracking-widest font-mono" [style.color]="accentSinopia()">
-            03 // {{ lang() === 'en' ? 'ACADEMIC PROGRESSION & VALIDATED CREDENTIALS' : 'PROGRESIÓN ACADÉMICA Y CREDENCIALES VALIDADAS' }}
+            03 // {{ t().nav.educationAndCertifications }}
           </p>
           <h2 class="font-anton text-2xl sm:text-3xl tracking-wide uppercase leading-tight" [style.color]="textColor()">
-            {{ t().nav.educationAndCertifications }}
+            Real Engineering Journey (2024 – 2027)
           </h2>
         </div>
 
-        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-[11px] font-semibold shrink-0"
+        <!-- 2024 - 2027 Trajectory Badge -->
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-mono font-bold shrink-0 shadow-xs"
              [style.border-color]="cardBorder()"
              [style.background-color]="tagBg()"
-             [style.color]="accentCaribbean()">
-          <span class="font-bold">↑</span>
-          <span>{{ t().education.timelineBadge }}</span>
+             [style.color]="accentSinopia()">
+          <span class="w-2 h-2 rounded-full animate-pulse" [style.background-color]="accentSinopia()"></span>
+          <span>2024 ➔ 2027</span>
         </div>
       </div>
 
-      <!-- 🗺️ REAL UNIFIED 2024-2027 CHRONOLOGICAL ROADMAP (4 Continuous Stepper Milestones) -->
-      <div class="portfolio-card p-3.5 sm:p-4 rounded-2xl border shadow-md space-y-2.5 relative overflow-hidden"
+      <!-- 🗺️ HORIZONTAL INTERACTIVE TIMELINE (2024 – 2027) -->
+      <div class="portfolio-card p-4 sm:p-6 rounded-3xl border shadow-lg space-y-4 relative overflow-hidden"
            [style.background-color]="cardBg()"
            [style.border-color]="cardBorder()">
         
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pb-2 border-b"
+        <!-- Timeline Subheader / Interaction Cue -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 border-b text-xs"
              [style.border-color]="cardBorder()">
           <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full animate-pulse" [style.background-color]="accentSinopia()"></span>
-            <span class="text-[10px] font-mono font-bold uppercase tracking-wider" [style.color]="accentSinopia()">
-              {{ t().education.journeyTitle }}
+            <span class="text-sm">⚡</span>
+            <span class="font-mono text-[11px] font-semibold" [style.color]="textColor()">
+              {{ t().education.timelineHint }}
             </span>
           </div>
-          <span class="text-[10px] font-mono opacity-70" [style.color]="mutedColor()">
-            {{ t().education.journeySubtitle }}
+          <span class="text-[10px] font-mono opacity-70 hidden sm:inline" [style.color]="mutedColor()">
+            Interactive Roadmap · 2024 → 2027
           </span>
         </div>
 
-        <!-- 4 Milestone Cards Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 relative">
-          <!-- Horizontal Connecting Progress Track (Desktop) -->
-          <div class="hidden lg:block absolute top-4 inset-x-8 h-0.5 -z-0 pointer-events-none opacity-30">
-            <div class="w-full h-0.5 bg-gradient-to-r from-[#336467] via-[#D7340B] via-[#0A66C2] to-[#D7340B]"></div>
+        <!-- Continuous Horizontal Progress Axis (Always visible on all screen widths) -->
+        <div class="relative my-2 px-2 sm:px-4">
+          <div class="w-full h-1.5 rounded-full bg-black/10 dark:bg-white/10 relative overflow-hidden">
+            <div class="absolute inset-0 rounded-full bg-gradient-to-r from-[#336467] via-[#D7340B] via-[#4E898D] to-[#D7340B]"></div>
           </div>
+          <!-- Year Tick Marks (Directly anchored to 2024, 2025, 2026, 2027) -->
+          <div class="flex justify-between items-center text-[10px] font-mono font-bold mt-1.5 px-0.5"
+               [style.color]="mutedColor()">
+            <span class="flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full" [style.background-color]="accentCaribbean()"></span>
+              <span>2024</span>
+            </span>
+            <span class="flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#4285F4]"></span>
+              <span>2025</span>
+            </span>
+            <span class="flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#012169]"></span>
+              <span>2026</span>
+            </span>
+            <span class="flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full" [style.background-color]="accentSinopia()"></span>
+              <span>2027</span>
+            </span>
+          </div>
+        </div>
 
-          @for (m of t().education.journeyMilestones; track m.year; let mIdx = $index) {
-            <div class="p-2.5 rounded-xl border flex flex-col justify-between space-y-2 relative z-10 transition-shadow hover:shadow-md"
+        <!-- Horizontal Scrollable Timeline Track (Smooth snap-scroll on Mobile/Tablet, 5-column single row on Desktop) -->
+        <div class="flex lg:grid lg:grid-cols-5 gap-3.5 items-stretch overflow-x-auto snap-x snap-mandatory lg:overflow-visible pb-3 pt-1 scrollbar-none">
+          @for (m of t().education.milestones; track m.id; let idx = $index) {
+            <div class="portfolio-card w-[270px] sm:w-[290px] lg:w-auto shrink-0 snap-start p-3.5 rounded-2xl border shadow-xs flex flex-col justify-between space-y-3 relative group transition-all duration-300 hover:-translate-y-1 hover:shadow-md overflow-hidden"
                  [style.background-color]="tagBg()"
-                 [style.border-color]="mIdx === 3 ? accentSinopia() : cardBorder()">
-              <div class="space-y-1">
-                <div class="flex items-center justify-between gap-1">
-                  <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold"
-                        [style.background-color]="mIdx === 3 ? accentSinopia() : (mIdx === 0 ? accentCaribbean() : cardBorder())"
-                        style="color: #ffffff;">
-                    {{ m.year }}
-                  </span>
-                  <span class="text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded-md border truncate max-w-[65%]"
-                        [style.border-color]="cardBorder()"
-                        [style.background-color]="cardBg()"
-                        [style.color]="mIdx === 3 ? accentSinopia() : textColor()">
-                    {{ m.badge }}
-                  </span>
-                </div>
-
-                <h4 class="text-xs font-sans font-bold leading-snug line-clamp-1" [style.color]="textColor()">
-                  {{ m.title }}
-                </h4>
-                <p class="text-[10px] font-mono font-medium truncate" [style.color]="accentCaribbean()">
-                  {{ m.institution }}
-                </p>
-              </div>
-
-              <p class="text-[10px] leading-relaxed line-clamp-2" [style.color]="mutedColor()">
-                {{ m.description }}
-              </p>
-            </div>
-          }
-        </div>
-      </div>
-
-      <!-- 🎓 ASCENDING DEGREE TIMELINE (Exact 2 Primary Degree Articles: DAW Foundation at bottom, BSc Top-Up at top) -->
-      <div class="relative pl-6 sm:pl-8 space-y-4">
-        <!-- Connecting Vertical Gradient Spine -->
-        <div class="absolute left-2.5 sm:left-3 top-3 bottom-3 w-0.5 bg-gradient-to-t from-[#336467] via-[#D7340B] to-[#D7340B]"></div>
-
-        <!-- TOP CARD: BSc (Hons) Computer Science (Index 0: Newest Milestone) -->
-        <div class="relative">
-          <div class="absolute -left-6 sm:-left-8 top-4 w-4 h-4 rounded-full border-2 flex items-center justify-center timeline-node-pulse shadow-md"
-               [style.background-color]="cardBg()"
-               [style.border-color]="accentSinopia()">
-            <div class="w-1.5 h-1.5 rounded-full" [style.background-color]="accentSinopia()"></div>
-          </div>
-
-          <article class="portfolio-card p-4 sm:p-5 rounded-2xl border shadow-md relative overflow-hidden"
-                   [style.background-color]="cardBg()"
-                   [style.border-color]="cardBorder()">
-            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1.5 pb-2.5 border-b"
-                 [style.border-color]="cardBorder()">
-              <div class="space-y-0.5">
-                <div class="flex items-center gap-1.5">
-                  <span class="px-2 py-0.5 rounded-full text-[9px] font-bold font-mono uppercase tracking-wider text-white"
-                        [style.background-color]="accentSinopia()">
-                    02 // {{ t().education.items[0].status }}
-                  </span>
-                  <span class="px-2 py-0.5 rounded-full text-[9px] font-semibold tracking-wide border font-sans"
-                        [style.background-color]="tagBg()"
-                        [style.border-color]="cardBorder()"
-                        [style.color]="accentSinopia()">
-                    {{ t().education.items[0].badge }}
-                  </span>
-                </div>
-                <h3 class="text-base sm:text-lg font-bold font-sans tracking-tight" [style.color]="textColor()">
-                  {{ t().education.items[0].degree }}
-                </h3>
-                <p class="text-xs font-semibold font-sans" [style.color]="accentCaribbean()">
-                  {{ t().education.items[0].institution }}
-                </p>
-              </div>
-              <time class="text-[11px] font-mono font-bold shrink-0 px-2 py-0.5 rounded-lg border text-right"
-                    [style.border-color]="cardBorder()"
-                    [style.background-color]="tagBg()"
-                    [style.color]="textColor()">
-                {{ t().education.items[0].period }}
-              </time>
-            </div>
-
-            <ul class="pt-2.5 space-y-1.5 text-xs leading-relaxed" [style.color]="mutedColor()">
-              @for (h of t().education.items[0].highlights; track h) {
-                <li class="flex items-start gap-2">
-                  <span class="font-bold shrink-0 mt-0.5" [style.color]="accentSinopia()">▸</span>
-                  <span>{{ h }}</span>
-                </li>
-              }
-            </ul>
-          </article>
-        </div>
-
-        <!-- Ascending Journey Cue Divider -->
-        <div class="relative py-0.5 flex items-center gap-2">
-          <span class="text-[10px] font-mono tracking-widest uppercase font-bold flex items-center gap-1.5"
-                [style.color]="accentCaribbean()">
-            <span>▲</span>
-            <span>ASCENDING TIMELINE · 2024 FOUNDATION (BOTTOM) → 2027 HONOURS DEGREE (TOP)</span>
-          </span>
-        </div>
-
-        <!-- BOTTOM CARD: CFGS DAW (Index 1: Foundation Milestone) -->
-        <div class="relative">
-          <div class="absolute -left-6 sm:-left-8 top-4 w-4 h-4 rounded-full border-2 flex items-center justify-center shadow-xs"
-               [style.background-color]="cardBg()"
-               [style.border-color]="accentCaribbean()">
-            <div class="w-1.5 h-1.5 rounded-full" [style.background-color]="accentCaribbean()"></div>
-          </div>
-
-          <article class="portfolio-card p-4 sm:p-5 rounded-2xl border shadow-md relative overflow-hidden"
-                   [style.background-color]="cardBg()"
-                   [style.border-color]="cardBorder()">
-            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1.5 pb-2.5 border-b"
-                 [style.border-color]="cardBorder()">
-              <div class="space-y-0.5">
-                <div class="flex items-center gap-1.5">
-                  <span class="px-2 py-0.5 rounded-full text-[9px] font-bold font-mono uppercase tracking-wider text-white"
-                        [style.background-color]="accentCaribbean()">
-                    01 // {{ t().education.items[1].status }}
-                  </span>
-                  <span class="px-2 py-0.5 rounded-full text-[9px] font-semibold tracking-wide border font-sans"
-                        [style.background-color]="tagBg()"
-                        [style.border-color]="cardBorder()"
-                        [style.color]="accentCaribbean()">
-                    {{ t().education.items[1].badge }}
-                  </span>
-                </div>
-                <h3 class="text-base sm:text-lg font-bold font-sans tracking-tight" [style.color]="textColor()">
-                  {{ t().education.items[1].degree }}
-                </h3>
-                <p class="text-xs font-semibold font-sans" [style.color]="accentCaribbean()">
-                  {{ t().education.items[1].institution }}
-                </p>
-              </div>
-              <time class="text-[11px] font-mono font-bold shrink-0 px-2 py-0.5 rounded-lg border text-right"
-                    [style.border-color]="cardBorder()"
-                    [style.background-color]="tagBg()"
-                    [style.color]="textColor()">
-                {{ t().education.items[1].period }}
-              </time>
-            </div>
-
-            <ul class="pt-2.5 space-y-1.5 text-xs leading-relaxed" [style.color]="mutedColor()">
-              @for (h of t().education.items[1].highlights; track h) {
-                <li class="flex items-start gap-2">
-                  <span class="font-bold shrink-0 mt-0.5" [style.color]="accentCaribbean()">▸</span>
-                  <span>{{ h }}</span>
-                </li>
-              }
-            </ul>
-          </article>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <!-- 🏅 CERTIFICATIONS BLOCK (3 Verified Credentials with Preview PDF)    -->
-    <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <div id="certifications" class="section-anchor w-full scroll-mt-28 pt-2 pb-6 space-y-4">
-      
-      <!-- Sub-section Header -->
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-1.5 pb-1 border-b"
-           [style.border-color]="cardBorder()">
-        <div class="space-y-0.5">
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full" [style.background-color]="accentSinopia()"></span>
-            <span class="text-[11px] font-mono font-bold uppercase tracking-wider" [style.color]="accentSinopia()">
-              {{ lang() === 'en' ? 'VERIFIED CREDENTIALS & DIPLOMAS' : 'CREDENCIALES Y DIPLOMAS VERIFICADOS' }}
-            </span>
-          </div>
-          <h3 class="font-anton text-xl sm:text-2xl tracking-wide uppercase" [style.color]="textColor()">
-            {{ t().certifications.sectionTitle }}
-          </h3>
-        </div>
-        <p class="text-[11px] sm:text-xs max-w-md leading-relaxed sm:text-right" [style.color]="mutedColor()">
-          {{ t().certifications.sectionSubtitle }}
-        </p>
-      </div>
-
-      <!-- Certifications Cards Grid (3 Articles) -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
-        @for (cert of t().certifications.items; track cert.title) {
-          <article class="portfolio-card cert-card p-4 sm:p-5 rounded-3xl border shadow-md flex flex-col justify-between space-y-4 group transition-all duration-300 hover:shadow-xl hover:-translate-y-1 relative overflow-hidden"
-                   [style.background-color]="cardBg()"
-                   [style.border-color]="cardBorder()">
-            
-            <div class="space-y-3">
-              <!-- Top Row: Badge + Year -->
-              <div class="flex items-center justify-between gap-2">
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono tracking-wider border"
-                      [style.background-color]="tagBg()"
-                      [style.border-color]="cardBorder()"
-                      [style.color]="accentSinopia()">
-                  {{ cert.badge }}
+                 [style.border-color]="m.type === 'degree' ? (m.id === 'bsc' ? accentSinopia() : accentCaribbean()) : cardBorder()">
+              
+              <!-- Top Milestone Year & Category Badge -->
+              <div class="flex items-center justify-between gap-1.5">
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold text-white shadow-xs"
+                      [style.background-color]="m.id === 'bsc' ? accentSinopia() : (m.id === 'daw' ? accentCaribbean() : '#152426')">
+                  {{ m.year }}
                 </span>
-                <span class="text-[11px] font-mono font-bold px-2 py-0.5 rounded-lg border"
-                      [style.background-color]="tagBg()"
+                <span class="text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded border truncate max-w-[55%]"
                       [style.border-color]="cardBorder()"
-                      [style.color]="accentCaribbean()">
-                  {{ cert.year }}
+                      [style.background-color]="cardBg()"
+                      [style.color]="m.type === 'degree' ? (m.id === 'bsc' ? accentSinopia() : accentCaribbean()) : textColor()">
+                  {{ m.type === 'degree' ? (lang() === 'en' ? 'Degree' : 'Titulación') : (lang() === 'en' ? 'Verified Cert' : 'Certificado') }}
                 </span>
               </div>
 
-              <!-- Certificate Logo & Title -->
-              <div class="flex items-start gap-3">
-                <div class="w-10 h-10 rounded-2xl border flex items-center justify-center shrink-0 shadow-xs transition-transform duration-300 group-hover:scale-110"
-                     [style.background-color]="tagBg()"
-                     [style.border-color]="cardBorder()">
-                  <svg class="w-6 h-6 shrink-0">
-                    <use [attr.href]="'#icon-' + cert.icon"/>
-                  </svg>
-                </div>
+              <!-- Interactive Milestone Icon & Clickable Title -->
+              <div class="flex items-center gap-3 pt-1">
+                @if (m.type === 'certification' && m.pdfUrl) {
+                  <a [href]="m.pdfUrl"
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     class="w-12 h-12 rounded-2xl border flex items-center justify-center shrink-0 shadow-sm transition-all duration-300 group-hover:scale-110 cursor-pointer hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#D7340B]"
+                     [style.background-color]="cardBg()"
+                     [style.border-color]="cardBorder()"
+                     [title]="(lang() === 'en' ? 'Open official PDF certificate: ' : 'Abrir certificado PDF oficial: ') + m.title"
+                     [attr.aria-label]="m.title">
+                    <svg class="w-7 h-7 shrink-0 transition-transform duration-300 group-hover:scale-105">
+                      <use [attr.href]="'#icon-' + m.icon"/>
+                    </svg>
+                  </a>
+                } @else if (m.type === 'degree') {
+                  <button type="button"
+                          (click)="openEducationModal(m.educationId || 'daw')"
+                          class="w-12 h-12 rounded-2xl border flex items-center justify-center shrink-0 shadow-sm transition-all duration-300 group-hover:scale-110 cursor-pointer hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#D7340B]"
+                          [style.background-color]="cardBg()"
+                          [style.border-color]="m.id === 'bsc' ? accentSinopia() : accentCaribbean()"
+                          [title]="(lang() === 'en' ? 'View curriculum details: ' : 'Ver plan de estudios: ') + m.title"
+                          [attr.aria-label]="m.title">
+                    <svg class="w-7 h-7 shrink-0 transition-transform duration-300 group-hover:scale-105">
+                      <use [attr.href]="'#icon-' + m.icon"/>
+                    </svg>
+                  </button>
+                }
+
                 <div class="min-w-0 flex-1">
-                  <h4 class="text-sm sm:text-base font-bold font-sans leading-snug" [style.color]="textColor()">
-                    {{ cert.title }}
-                  </h4>
-                  <p class="text-xs font-semibold font-sans mt-0.5" [style.color]="accentCaribbean()">
-                    {{ cert.issuer }}
+                  @if (m.type === 'certification' && m.pdfUrl) {
+                    <a [href]="m.pdfUrl"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="text-xs sm:text-[13px] font-bold font-sans leading-snug line-clamp-2 hover:underline block cursor-pointer"
+                       [style.color]="textColor()">
+                      {{ m.title }}
+                    </a>
+                  } @else if (m.type === 'degree') {
+                    <button type="button"
+                            (click)="openEducationModal(m.educationId || 'daw')"
+                            class="text-xs sm:text-[13px] font-bold font-sans leading-snug line-clamp-2 hover:underline text-left block cursor-pointer"
+                            [style.color]="textColor()">
+                      {{ m.title }}
+                    </button>
+                  }
+                  <p class="text-[10px] font-mono font-medium truncate mt-0.5" [style.color]="m.type === 'degree' ? (m.id === 'bsc' ? accentSinopia() : accentCaribbean()) : mutedColor()">
+                    {{ m.institution }}
                   </p>
                 </div>
               </div>
 
-              <!-- Description -->
-              <p class="text-xs leading-relaxed" [style.color]="mutedColor()">
-                {{ cert.description }}
+              <!-- Compact Narrative Summary -->
+              <p class="text-[11px] leading-relaxed line-clamp-2" [style.color]="mutedColor()">
+                {{ m.description }}
               </p>
+
+              <!-- Card Action Button Footer -->
+              <div class="pt-2 border-t flex items-center justify-between gap-1 text-[10px] font-mono"
+                   [style.border-color]="cardBorder()">
+                @if (m.type === 'certification' && m.pdfUrl) {
+                  <a [href]="m.pdfUrl"
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     class="inline-flex items-center gap-1 font-bold transition-transform group-hover:translate-x-0.5 hover:underline cursor-pointer"
+                     [style.color]="accentSinopia()">
+                    <span>📄 {{ lang() === 'en' ? 'PDF Certificate' : 'Certificado PDF' }}</span>
+                    <span>↗</span>
+                  </a>
+                  <span class="text-[9px] text-[#10B981] font-bold">✓</span>
+                } @else if (m.type === 'degree') {
+                  <button type="button"
+                          (click)="openEducationModal(m.educationId || 'daw')"
+                          class="inline-flex items-center gap-1 font-bold transition-transform group-hover:translate-x-0.5 hover:underline cursor-pointer"
+                          [style.color]="m.id === 'bsc' ? accentSinopia() : accentCaribbean()">
+                    <span>🔍 {{ lang() === 'en' ? 'Curriculum & Info' : 'Plan de Estudios' }}</span>
+                    <span>→</span>
+                  </button>
+                  <span class="text-[9px] font-bold px-1 rounded" [style.color]="m.id === 'bsc' ? accentSinopia() : accentCaribbean()">
+                    {{ m.badge.includes('Completed') || m.badge.includes('Finalizado') ? '✓' : '●' }}
+                  </span>
+                }
+              </div>
+
             </div>
+          }
+        </div>
 
-            <!-- Footer: Verified Badge + Preview PDF Button -->
-            <div class="pt-3 border-t flex items-center justify-between gap-2"
-                 [style.border-color]="cardBorder()">
-              <span class="flex items-center gap-1.5 text-[11px] font-mono" [style.color]="accentCaribbean()">
-                <span class="w-1.5 h-1.5 rounded-full bg-[#10B981]"></span>
-                <span class="hidden sm:inline">Verified</span>
-                <span>✓</span>
-              </span>
+        <!-- Mobile/Tablet Horizontal Swipe Cue -->
+        <div class="flex lg:hidden items-center justify-center gap-2 pt-1 text-[10px] font-mono select-none"
+             [style.color]="mutedColor()">
+          <span>←</span>
+          <span>{{ lang() === 'en' ? 'Swipe to explore 2024 – 2027 milestones' : 'Desliza para explorar la trayectoria 2024 – 2027' }}</span>
+          <span>→</span>
+        </div>
 
-              <!-- Preview Certificate PDF Button -->
-              @if (cert.pdfUrl) {
-                <a [href]="cert.pdfUrl"
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-white shadow-xs transition-all duration-200 hover:scale-105 hover:shadow-md cursor-pointer select-none"
-                   [style.background-color]="accentSinopia()"
-                   title="Open certificate in new tab">
-                  <span>📄</span>
-                  <span>{{ lang() === 'en' ? 'Preview' : 'Previsualizar' }}</span>
-                  <span class="text-xs">↗</span>
-                </a>
-              }
-            </div>
-
-          </article>
-        }
       </div>
 
-    </div>
+    </section>
 
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!-- ⚡ SECTION 4: SKILLS (4 Clean Categories: Backend, Frontend, AI, DevOps) -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <section id="skills" class="section-anchor w-full min-h-[calc(100vh-5rem)] flex flex-col justify-center scroll-mt-28 py-6 border-t space-y-5"
+    <section id="skills" class="section-anchor w-full scroll-mt-28 py-6 sm:py-8 border-t space-y-6"
              [style.border-color]="cardBorder()">
       
       <!-- Section Header -->
@@ -1409,7 +1164,7 @@
             <div class="flex items-center justify-between gap-2 pb-2.5 border-b"
                  [style.border-color]="cardBorder()">
               <div class="flex items-center gap-2.5">
-                <div class="w-9 h-9 rounded-xl border flex items-center justify-center shrink-0 shadow-xs transition-transform duration-300 group-hover:scale-105"
+                <div class="w-10 h-10 rounded-xl border flex items-center justify-center shrink-0 shadow-xs transition-transform duration-300 group-hover:scale-105"
                      [style.background-color]="tagBg()"
                      [style.border-color]="cluster.accentColor">
                   @switch (cluster.id) {
@@ -1429,16 +1184,20 @@
                 </div>
                 <div>
                   <div class="flex items-center gap-2">
-                    <span class="text-[10px] font-mono font-bold uppercase tracking-wider" [style.color]="cluster.accentColor">
-                      {{ cluster.domainNumber }} // {{ lang() === 'en' ? cluster.nameEn : cluster.nameEs }}
+                    <span class="font-mono text-xs font-black px-2 py-0.5 rounded-md text-white shadow-xs"
+                          [style.background-color]="cluster.accentColor">
+                      {{ cluster.domainNumber }}
                     </span>
+                    <h3 class="font-anton text-lg sm:text-xl tracking-wide uppercase leading-tight" [style.color]="textColor()">
+                      {{ lang() === 'en' ? cluster.nameEn : cluster.nameEs }}
+                    </h3>
                   </div>
-                  <h3 class="text-sm sm:text-base font-bold font-sans tracking-tight" [style.color]="textColor()">
-                    {{ lang() === 'en' ? cluster.nameEn : cluster.nameEs }}
-                  </h3>
+                  <p class="text-[10px] font-mono tracking-wider uppercase opacity-75 mt-0.5" [style.color]="mutedColor()">
+                    {{ lang() === 'en' ? cluster.disciplineEn : cluster.disciplineEs }}
+                  </p>
                 </div>
               </div>
-              <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full border shrink-0"
+              <span class="text-[10px] font-mono font-semibold px-2.5 py-1 rounded-full border shrink-0"
                     [style.border-color]="cardBorder()"
                     [style.background-color]="tagBg()"
                     [style.color]="cluster.accentColor">
@@ -1483,41 +1242,12 @@
         }
       </div>
 
-      <!-- International Spoken Language & Mobility Ribbon -->
-      <div class="portfolio-card p-3 sm:p-4 rounded-2xl border shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-           [style.background-color]="cardBg()"
-           [style.border-color]="cardBorder()">
-        <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-full border flex items-center justify-center text-sm shrink-0"
-               [style.border-color]="accentCaribbean()"
-               [style.background-color]="tagBg()">
-            🌐
-          </div>
-          <div>
-            <span class="text-[10px] font-mono font-bold uppercase tracking-wider" [style.color]="accentCaribbean()">
-              {{ lang() === 'en' ? 'INTERNATIONAL MOBILITY & LANGUAGES' : 'MOVILIDAD INTERNACIONAL E IDIOMAS' }}
-            </span>
-            <p class="text-xs font-sans font-semibold" [style.color]="textColor()">
-              {{ lang() === 'en' ? 'English (C1 IELTS 8.0 Eq.) · Spanish (Native C2) · Valencian (Native C2)' : 'Inglés (C1 IELTS 8.0 Eq.) · Español (Nativo C2) · Valenciano (Nativo C2)' }}
-            </p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2 shrink-0">
-          <span class="text-[10px] font-mono px-2.5 py-1 rounded-full border font-bold flex items-center gap-1.5"
-                [style.border-color]="accentSinopia()"
-                [style.background-color]="tagBg()"
-                [style.color]="accentSinopia()">
-            <span class="w-1.5 h-1.5 rounded-full animate-ping" [style.background-color]="accentSinopia()"></span>
-            <span>Dublin, IE (Sep 2026)</span>
-          </span>
-        </div>
-      </div>
-
     </section>
+
     <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <!-- ✉️ SECTION 6: CONTACT (Redesigned Editorial Bento Grid)              -->
+    <!-- ✉️ SECTION 6: CONTACT (Mobile Fallback Bento Grid)                   -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <section id="contact" class="section-anchor w-full space-y-8 pt-6 border-t md:hidden"
+    <section id="contact" class="section-anchor w-full space-y-8 pt-6 border-t block md:hidden md:!mt-0"
              [style.border-color]="cardBorder()">
       
       <!-- Section Header -->
@@ -1720,5 +1450,303 @@
   </footer>
 
   </div> <!-- End Boxed Layout Shell -->
+
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+  <!-- 🔍 MODAL DIALOG: PROJECT TECHNICAL DOSSIER (Root-level z-[100])      -->
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+  @if (displayedProject(); as proj) {
+    <div class="modal-backdrop-layer fixed inset-0 !m-0 z-[100] flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md"
+         [class.animate-modal-backdrop]="!isClosingModal()"
+         [class.animate-modal-backdrop-leave]="isClosingModal()"
+         (click)="closeProjectModal()"
+         role="dialog"
+         aria-modal="true"
+         [attr.aria-label]="proj.title">
+      
+      <!-- Modal Card Container -->
+      <div class="modal-card-layer relative w-full max-w-4xl max-h-[92vh] flex flex-col md:flex-row overflow-hidden rounded-3xl border shadow-2xl text-left"
+           [class.animate-modal-content]="!isClosingModal()"
+           [class.animate-modal-content-leave]="isClosingModal()"
+           [style.background-color]="cardBg()"
+           [style.border-color]="cardBorder()"
+           (click)="$event.stopPropagation()">
+        
+        <!-- Close Button: Sleek '✕' in Top-Right -->
+        <button type="button"
+                (click)="closeProjectModal()"
+                class="absolute top-3.5 right-3.5 z-30 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/70 hover:bg-black/95 text-white flex items-center justify-center backdrop-blur-md border border-white/20 transition-transform hover:scale-110 cursor-pointer select-none text-base font-bold shadow-lg focus:outline-none focus:ring-2 focus:ring-white"
+                title="Close (Esc)"
+                aria-label="Close modal">
+          ✕
+        </button>
+
+        <!-- Left Column: Project Cover Art & Quick Highlights -->
+        <div class="w-full md:w-[42%] relative flex flex-col justify-between overflow-hidden bg-slate-950 p-5 sm:p-6 shrink-0 h-40 sm:h-48 md:h-auto select-none">
+          <img [src]="proj.image" 
+               [alt]="proj.title" 
+               class="absolute inset-0 w-full h-full object-cover opacity-90" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/30"></div>
+
+          <!-- Top Badge in Image -->
+          <div class="relative z-10 flex items-center justify-between gap-2 pr-12 md:pr-0">
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono tracking-wider text-white bg-black/60 backdrop-blur-md border border-white/25">
+              {{ proj.badge }}
+            </span>
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono text-white bg-black/60 backdrop-blur-md border border-white/25">
+              {{ proj.metricBadge }}
+            </span>
+          </div>
+
+          <!-- Bottom Info in Image -->
+          <div class="relative z-10 space-y-1 mt-auto pt-3">
+            <p class="text-[11px] font-mono text-white/70">{{ proj.period }}</p>
+            <h3 class="font-anton text-xl sm:text-2xl md:text-3xl text-white tracking-wide uppercase leading-tight">
+              {{ proj.title }}
+            </h3>
+            <p class="text-[11px] sm:text-xs text-white/90 font-medium leading-relaxed line-clamp-2 md:line-clamp-none">
+              {{ proj.subtitle }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Right Column: Full Technical Dossier with Pinned Sticky Footer -->
+        <div class="w-full md:w-[58%] p-4 sm:p-6 md:p-7 flex flex-col justify-between overflow-hidden max-h-[calc(92vh-10rem)] md:max-h-[85vh]">
+          
+          <!-- Scrollable Content Body -->
+          <div class="flex-1 overflow-y-auto modal-scroll pr-1 sm:pr-1.5 space-y-4">
+            <!-- Header Identity -->
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="w-2.5 h-2.5 rounded-full" [style.background-color]="accentSinopia()"></span>
+                <span class="text-xs font-mono font-bold uppercase tracking-widest" [style.color]="accentCaribbean()">
+                  {{ proj.badge }}
+                </span>
+              </div>
+              <h3 class="font-anton text-2xl sm:text-3xl tracking-wide uppercase" [style.color]="textColor()">
+                {{ proj.title }}
+              </h3>
+              <p class="text-xs sm:text-sm font-semibold mt-0.5" [style.color]="accentSinopia()">
+                {{ proj.subtitle }}
+              </p>
+            </div>
+
+            <!-- Full Narrative Description -->
+            <div class="text-xs sm:text-sm leading-relaxed" [style.color]="mutedColor()">
+              <p class="font-medium" [style.color]="textColor()">
+                {{ proj.summary }}
+              </p>
+              <p class="mt-2 font-normal">
+                {{ proj.fullDescription }}
+              </p>
+            </div>
+
+            <!-- Key Architectural Achievements -->
+            <div class="space-y-2">
+              <h4 class="text-xs font-mono font-bold uppercase tracking-wider" [style.color]="textColor()">
+                {{ t().projects.highlightsTitle }}
+              </h4>
+              <ul class="space-y-1.5 text-xs sm:text-[13px] leading-relaxed" [style.color]="mutedColor()">
+                @for (detail of proj.details; track detail) {
+                  <li class="flex items-start gap-2">
+                    <span class="font-bold shrink-0 mt-0.5" [style.color]="accentSinopia()">▸</span>
+                    <span>{{ detail }}</span>
+                  </li>
+                }
+              </ul>
+            </div>
+
+            <!-- Tech Stack with Official SVG Logos -->
+            <div class="space-y-2 pt-1">
+              <h4 class="text-xs font-mono font-bold uppercase tracking-wider" [style.color]="textColor()">
+                {{ t().projects.techStackTitle }}
+              </h4>
+              <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                @for (tech of proj.techStack; track tech.name) {
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-mono font-medium border shadow-xs"
+                        [style.border-color]="cardBorder()"
+                        [style.background-color]="tagBg()"
+                        [style.color]="textColor()"
+                        [title]="tech.name">
+                    <svg class="w-3.5 h-3.5 shrink-0"><use [attr.href]="'#icon-' + tech.icon"/></svg>
+                    <span>{{ tech.name }}</span>
+                  </span>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal Pinned Action Footer -->
+          <div class="shrink-0 pt-3 mt-3 border-t flex items-center justify-between gap-2"
+               [style.border-color]="cardBorder()">
+            <a [href]="proj.link"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs sm:text-sm font-bold text-white shadow-md transition-all hover:scale-105 cursor-pointer select-none"
+               [style.background-color]="accentSinopia()">
+              <span>{{ proj.linkText }}</span>
+              <span>↗</span>
+            </a>
+
+            <span class="text-[11px] font-mono opacity-60 hidden sm:inline" [style.color]="mutedColor()">
+              Press Esc or ✕ to dismiss
+            </span>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  }
+
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+  <!-- 🎓 MODAL DIALOG: DEGREE CURRICULUM & VERIFIED DETAILS (Root-level)   -->
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+  @if (displayedEducationItem(); as edu) {
+    <div class="modal-backdrop-layer fixed inset-0 !m-0 z-[100] flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md"
+         [class.animate-modal-backdrop]="!isClosingEducationModal()"
+         [class.animate-modal-backdrop-leave]="isClosingEducationModal()"
+         (click)="closeEducationModal()"
+         role="dialog"
+         aria-modal="true"
+         [attr.aria-label]="edu.degree">
+      
+      <!-- Modal Card Container -->
+      <div class="modal-card-layer relative w-full max-w-2xl max-h-[88vh] flex flex-col overflow-hidden rounded-3xl border shadow-2xl text-left"
+           [class.animate-modal-content]="!isClosingEducationModal()"
+           [class.animate-modal-content-leave]="isClosingEducationModal()"
+           [style.background-color]="cardBg()"
+           [style.border-color]="cardBorder()"
+           (click)="$event.stopPropagation()">
+        
+        <!-- Pinned Close Button: Sleek '✕' in Top-Right -->
+        <button type="button"
+                (click)="closeEducationModal()"
+                class="absolute top-4 right-4 z-30 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/70 hover:bg-black/95 text-white flex items-center justify-center backdrop-blur-md border border-white/20 transition-transform hover:scale-110 cursor-pointer select-none text-base font-bold shadow-lg focus:outline-none focus:ring-2 focus:ring-white"
+                title="Close (Esc)"
+                aria-label="Close modal">
+          ✕
+        </button>
+
+        <!-- Top Pinned Degree Header -->
+        <div class="p-5 sm:p-7 pb-4 border-b shrink-0 pr-14"
+             [style.border-color]="cardBorder()">
+          <div class="flex flex-wrap items-center gap-2 mb-2">
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono uppercase tracking-wider text-white"
+                  [style.background-color]="edu.id === 'bsc' ? accentSinopia() : accentCaribbean()">
+              {{ edu.status }}
+            </span>
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold border"
+                  [style.border-color]="cardBorder()"
+                  [style.background-color]="tagBg()"
+                  [style.color]="textColor()">
+              {{ edu.period }}
+            </span>
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold border"
+                  [style.border-color]="cardBorder()"
+                  [style.background-color]="tagBg()"
+                  [style.color]="edu.id === 'bsc' ? accentSinopia() : accentCaribbean()">
+              {{ edu.badge }}
+            </span>
+          </div>
+
+          <h3 class="font-anton text-xl sm:text-2xl md:text-3xl tracking-wide uppercase leading-tight" [style.color]="textColor()">
+            {{ edu.degree }}
+          </h3>
+          <p class="text-xs sm:text-sm font-semibold flex items-center gap-1.5 mt-1" [style.color]="accentCaribbean()">
+            <span>🏛️</span>
+            <span>{{ edu.institution }}</span>
+            <span class="opacity-60">· {{ edu.location }}</span>
+          </p>
+        </div>
+
+        <!-- Scrollable Modal Content Body -->
+        <div class="flex-1 overflow-y-auto modal-scroll p-5 sm:p-7 space-y-4">
+          <!-- Narrative Overview -->
+          <div class="text-xs sm:text-sm leading-relaxed space-y-2" [style.color]="mutedColor()">
+            <p class="font-medium text-[13px] sm:text-[14px]" [style.color]="textColor()">
+              {{ edu.summary }}
+            </p>
+            <p class="font-normal">
+              {{ edu.fullDescription }}
+            </p>
+          </div>
+
+          <!-- Key Highlights -->
+          @if (edu.highlights && edu.highlights.length > 0) {
+            <div class="space-y-2 pt-1">
+              <h4 class="text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-2" [style.color]="textColor()">
+                <span class="w-2 h-2 rounded-full" [style.background-color]="accentSinopia()"></span>
+                <span>{{ lang() === 'en' ? 'Key Highlights & Achievements' : 'Aspectos Clave y Logros' }}</span>
+              </h4>
+              <ul class="space-y-1.5 text-xs sm:text-[13px] leading-relaxed" [style.color]="mutedColor()">
+                @for (h of edu.highlights; track h) {
+                  <li class="flex items-start gap-2">
+                    <span class="font-bold shrink-0 mt-0.5" [style.color]="accentSinopia()">▸</span>
+                    <span>{{ h }}</span>
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+
+          <!-- Core Curriculum Syllabus -->
+          <div class="space-y-2 pt-1">
+            <h4 class="text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-2" [style.color]="textColor()">
+              <span class="w-2 h-2 rounded-full" [style.background-color]="accentSinopia()"></span>
+              <span>{{ lang() === 'en' ? 'Core Curriculum & Modules' : 'Módulos y Plan de Estudios Troncal' }}</span>
+            </h4>
+            <ul class="space-y-1.5 text-xs sm:text-[13px] leading-relaxed" [style.color]="mutedColor()">
+              @for (m of edu.syllabus; track m) {
+                <li class="flex items-start gap-2 p-2 rounded-xl border"
+                    [style.background-color]="tagBg()"
+                    [style.border-color]="cardBorder()">
+                  <span class="font-bold shrink-0 mt-0.5" [style.color]="edu.id === 'bsc' ? accentSinopia() : accentCaribbean()">▸</span>
+                  <span class="font-medium" [style.color]="textColor()">{{ m }}</span>
+                </li>
+              }
+            </ul>
+          </div>
+
+          <!-- Acquired Technologies & Competencies -->
+          <div class="space-y-2 pt-1">
+            <h4 class="text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-2" [style.color]="textColor()">
+              <span class="w-2 h-2 rounded-full" [style.background-color]="accentCaribbean()"></span>
+              <span>{{ lang() === 'en' ? 'Technologies & Key Competencies' : 'Tecnologías y Competencias Clave' }}</span>
+            </h4>
+            <div class="flex flex-wrap items-center gap-2">
+              @for (tech of edu.techStack; track tech.name) {
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-medium border shadow-xs"
+                      [style.border-color]="cardBorder()"
+                      [style.background-color]="tagBg()"
+                      [style.color]="textColor()">
+                  <svg class="w-3.5 h-3.5 shrink-0"><use [attr.href]="'#icon-' + tech.icon"/></svg>
+                  <span>{{ tech.name }}</span>
+                </span>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Pinned Modal Action Footer -->
+        @if (edu.officialUrl) {
+          <div class="shrink-0 p-4 sm:p-5 border-t flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+               [style.border-color]="cardBorder()">
+            <a [href]="edu.officialUrl"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold text-white shadow-md transition-all hover:scale-105 cursor-pointer select-none"
+               [style.background-color]="edu.id === 'bsc' ? accentSinopia() : accentCaribbean()">
+              <span>{{ edu.officialUrlText || (lang() === 'en' ? 'Visit Institution Page' : 'Visitar Web Oficial') }}</span>
+              <span>↗</span>
+            </a>
+            <span class="text-xs font-mono opacity-60" [style.color]="mutedColor()">
+              Press Esc or ✕ to dismiss
+            </span>
+          </div>
+        }
+
+      </div>
+    </div>
+  }
 
 </div>
