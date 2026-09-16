@@ -1,7 +1,7 @@
 {
   "framework": "angular",
   "buildCommand": "pnpm build",
-  "outputDirectory": "dist/my-web/browser",
+  "outputDirectory": "dist/portfolio/browser",
   "env": {
     "GEMINI_API_KEY": "@gemini-api-key"
   },
