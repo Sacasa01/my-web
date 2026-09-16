@@ -6,9 +6,9 @@ Este documento establece las **leyes inmutables** de desarrollo para el portfoli
 
 ## 🏛️ 1. Principio de Cero Alucinación (Zero-Hallucination Policy)
 
-- El Gemelo Digital de IA (`/api/chat` y `SpeechBubble`) debe responder **exclusivamente** con base en la información técnica, académica y laboral definida en `src/app/lib/cv-context.ts`.
+- Todos los contenidos del portfolio deben reflejar **exclusivamente** la información técnica, académica y laboral real definida en `src/app/lib/cv-context.ts`.
 - Queda terminantemente prohibido inventar métricas, tecnologías no dominadas, certificaciones no cursadas o falsas disponibilidades laborales.
-- Si una pregunta del usuario se aleja del ámbito profesional, el modelo debe reconducir educadamente la conversación hacia la experiencia técnica de Santiago.
+- La aplicación es 100% estática client-side en Angular 19, sin dependencias de API keys externas ni endpoints serverless.
 
 ---
 

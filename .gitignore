@@ -41,6 +41,9 @@ testem.log
 .DS_Store
 Thumbs.db
 
+# Environment variables and secrets
+.env*
+
 # Scratch and test audit files in root
 /*.png
 /*.jpg
@@ -48,3 +51,4 @@ Thumbs.db
 /*.py
 /*.js
 !/postcss.config.js
+

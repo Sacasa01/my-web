@@ -11,7 +11,7 @@ Cualquier agente de IA que opere en este repositorio **DEBE** leer, respetar y s
 - **Framework Frontend**: Angular 19 (Standalone Components, Signals, Control Flow `@if`/`@for`).
 - **Lenguaje**: TypeScript (Strict mode activado).
 - **Estilos y Diseño**: Tailwind CSS + CSS Moderno (Glassmorphism, Radial Gradient Masks).
-- **Backend Serverless / Edge**: Vercel Edge Functions (`api/chat.ts` con `@google/generative-ai`).
+- **Arquitectura**: 100% Client-Side Estático en Vercel (cero APIs externas o API keys requeridas).
 - **Gestor de Paquetes**: **`pnpm` (v11+)** exclusivamente. *(Prohibido usar `npm` o `yarn`)*.
 - **Entorno de Ejecución**: Node.js v20+ en Windows (PowerShell).
 
@@ -25,33 +25,19 @@ MY-WEB/
 ├── spec.md                       # Especificación técnica del portfolio y proyectos
 ├── prompts.md                    # Flujo estructurado de prompts por fases
 ├── constitution.md               # Reglas no negociables y límites de calidad
-├── api/                          # Serverless Edge Functions de Vercel
-│   └── chat.ts                   # Endpoint de streaming IA con Gemini 1.5 Flash
-├── lib/                          # Contexto raíz compartido
-│   └── cv-context.ts             # Export tipado de perfil y System Prompt
 ├── public/
 │   ├── assets/                   # Imágenes, avatares estáticos y logos
 │   └── videos/                   # Vídeos optimizados para la máquina de estados
-│       ├── avatar-typing-loop.mp4 / .webm   (TYPING)
-│       ├── avatar-greeting.mp4 / .webm      (GREETING)
-│       ├── avatar-chat-idle.mp4 / .webm     (CHAT_IDLE)
-│       ├── avatar-talking.mp4 / .webm       (TALKING)
-│       └── avatar-return.mp4 / .webm        (RETURNING)
+│       └── avatar-typing-loop.mp4 / .webm   (TYPING)
 ├── src/
 │   ├── app/
-│   │   ├── components/
-│   │   │   ├── avatar/           # Componentes del avatar pseudo-3D
-│   │   │   │   └── avatar-container.component.ts
-│   │   │   └── chat/             # Bocadillo de cómic flotante
-│   │   │       └── speech-bubble.component.ts
 │   │   ├── lib/
 │   │   │   └── cv-context.ts     # Fuente de verdad de datos técnicos y CV
-│   │   ├── services/
-│   │   │   └── ai-chat.service.ts # Servicio de streaming token a token
 │   │   ├── app.component.ts      # Controlador maestro del portfolio
-│   │   └── app.component.html    # Vistas editoriales y posters interactivos
+│   │   ├── app.component.html    # Vistas editoriales y posters interactivos
+│   │   └── app.component.css     # Estilos y micro-animaciones del layout
 │   └── styles.css                # Utilidades globales y tipografías
-└── vercel.json                   # Configuración de despliegue en Vercel
+└── vercel.json                   # Configuración de despliegue estático en Vercel
 ```
 
 ---
