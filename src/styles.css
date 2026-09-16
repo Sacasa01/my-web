@@ -3,126 +3,110 @@
 @source "./src/index.html";
 
 @theme {
-  --color-cream-bg: #faf6f0;         /* Crema cálido premium */
-  --color-cream-card: #ffffff;       /* Blanco puro para tarjetas */
-  --color-cream-border: #e3dfd5;     /* Tono gris papel de boceto */
-  --color-charcoal: #1a1a1a;         /* Carbón de alta legibilidad */
-  --color-muted: #706e68;            /* Gris medio para metadatos */
-  --color-accent: #2d4a43;           /* Verde bosque profundo alpino */
+  --color-sinopia: #D7340B;
+  --color-vanilla: #E0DDAE;
+  --color-caribbean: #336467;
 }
 
-/* Variables semánticas mutables por la clase .dark */
 :root {
-  --bg-main: var(--color-cream-bg);
-  --bg-card: var(--color-cream-card);
-  --border-subtle: var(--color-cream-border);
-  --text-main: var(--color-charcoal);
-  --text-muted: var(--color-muted);
-  --accent: var(--color-accent);
-  --accent-glow: rgba(45, 74, 67, 0.15);
+  --bg-light: #F5F3E7;
+  --bg-dark: #0D1718;
+  --text-light: #1A3537;
+  --text-dark: #E0DDAE;
+  --sinopia: #D7340B;
+  --caribbean: #336467;
+  --vanilla: #E0DDAE;
 }
 
-.dark {
-  --bg-main: #141312;         /* Carbón oscuro analógico */
-  --bg-card: #1c1a18;         /* Fondo de tarjetas con matiz cálido */
-  --border-subtle: #2d2a27;   /* Bordes oscuros ultra sutiles */
-  --text-main: #f4efe6;       /* Crema suave para textos */
-  --text-muted: #8c857b;      /* Muted analógico */
-  --accent: #8fb3a9;          /* Verde salvia claro premium */
-  --accent-glow: rgba(143, 179, 169, 0.15);
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background-color: var(--bg-main);
-  background-image: radial-gradient(var(--border-subtle) 1.5px, transparent 1.5px);
-  background-size: 24px 24px;
-  color: var(--text-main);
-  font-family: 'Inter', sans-serif;
-  transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
-              color 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
-              border-color 0.5s ease;
-  overflow: hidden;
-  user-select: none;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
+  user-select: auto;
+  margin: 0;
+  padding: 0;
 }
 
-.font-display {
-  font-family: 'Outfit', sans-serif;
+/* Typography styles */
+.font-anton {
+  font-family: 'Anton', -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
 }
 
-/* Sombras finas adaptables */
-.premium-shadow {
-  box-shadow: 0 4px 20px -2px rgba(112, 110, 104, 0.08), 
-              0 2px 8px -1px rgba(112, 110, 104, 0.04);
-  transition: box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+.font-body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-.dark .premium-shadow {
-  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.45), 
-              0 4px 12px -2px rgba(0, 0, 0, 0.3);
-}
-
-/* Animaciones fluidas para ventanas modales */
-@keyframes modalEntrance {
-  from {
-    opacity: 0;
-    scale: 0.95;
-  }
-  to {
-    opacity: 1;
-    scale: 1;
-  }
-}
-
-.modal-enter {
-  animation: modalEntrance 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Transición de redimensionado de ventana */
-.window-transition {
-  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              height 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              top 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              left 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              background-color 0.5s ease,
-              border-color 0.5s ease;
-}
-
-/* ==========================================
-   MINIMALIST CUSTOM SCROLLBARS (GLOBAL)
-   ========================================== */
-
-/* Estilo para navegadores Webkit (Chrome, Safari, Edge) */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px; /* Barra extremadamente fina */
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent; /* Fondo completamente invisible */
+  background: rgba(0, 0, 0, 0.04);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-subtle); /* Se camufla con la cuadrícula de puntos */
+  background: rgba(51, 100, 103, 0.25);
   border-radius: 10px;
-  transition: background 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted); /* Destaca levemente al hacer hover */
+  background: #D7340B;
 }
 
-/* Soporte para Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--border-subtle) transparent;
+  scrollbar-color: rgba(51, 100, 103, 0.25) transparent;
 }
 
-/* Clase de utilidad por si deseas ocultar el scroll por completo en zonas específicas */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+/* Green Status Dot Slow Breathing Glow */
+@keyframes slowBreathe {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 10px 3px rgba(16, 185, 129, 0.45);
+    transform: scale(1.08);
+  }
 }
-.no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+
+.animate-status-dot {
+  animation: slowBreathe 3.5s ease-in-out infinite;
+}
+
+/* Hanging Navbar Cord Interactive Sway */
+@keyframes cordSway {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(2deg);
+  }
+  75% {
+    transform: rotate(-1.5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.hanging-cord-group {
+  transform-origin: top center;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hanging-cord-group:hover {
+  animation: cordSway 3s ease-in-out infinite;
+}
+
+/* Language Cross-Fade Transition */
+.lang-fade {
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }

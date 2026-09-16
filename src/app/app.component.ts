@@ -1,618 +1,1513 @@
-import { Component, OnInit, AfterViewInit, ElementRef, NgZone, Renderer2, ViewChild, inject, signal } from '@angular/core';
+import { Component, signal, computed, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BoundFloatingDirective } from './shared/directives/bound-floating.directive';
+import gsap from 'gsap';
 
-interface WindowState {
+export type Lang = 'en' | 'es';
+export type Theme = 'light' | 'dark';
+
+export interface ProjectItem {
   id: string;
-  isOpen: boolean;
-  isMaximized: boolean;
-  zIndex: number;
+  title: string;
+  subtitle: string;
+  badge: string;
+  metricBadge: string;
+  period: string;
+  image: string;
+  accentColor: string;
+  glowColor: string;
+  summary: string;
+  fullDescription: string;
+  details: string[];
+  techStack: { name: string; icon: string }[];
+  link: string;
+  linkText: string;
+  bentoMetrics?: { value: string; label: string }[];
+}
+
+export interface SkillNode {
+  id: string;
+  name: string;
+  shortName?: string;
+  domain: 'frontend' | 'backend' | 'database' | 'devops' | 'ai';
+  domainLabelEn: string;
+  domainLabelEs: string;
+  badge: string;
+  color: string;
+  icon: string;
+  descEn: string;
+  descEs: string;
+  highlightsEn: string[];
+  highlightsEs: string[];
+}
+
+export interface SkillCluster {
+  id: string;
+  domainNumber: string;
+  nameEn: string;
+  nameEs: string;
+  disciplineEn: string;
+  disciplineEs: string;
+  accentColor: string;
+  skills: SkillNode[];
+}
+
+export interface EducationDetail {
+  id: string;
+  degree: string;
+  institution: string;
+  location: string;
+  period: string;
+  badge: string;
+  status: string;
+  grade?: string;
+  summary: string;
+  fullDescription: string;
+  highlights: string[];
+  syllabus: string[];
+  techStack: { name: string; icon: string }[];
+  officialUrl?: string;
+  officialUrlText?: string;
+}
+
+export interface TimelineMilestone {
+  id: string;
+  year: string;
+  title: string;
+  institution: string;
+  badge: string;
+  type: 'degree' | 'certification';
+  icon: string;
+  description: string;
+  pdfUrl?: string;
+  educationId?: 'daw' | 'bsc';
+}
+
+export interface SpokenLanguage {
+  id: string;
+  nameEn: string;
+  nameEs: string;
+  levelBadge: string;
+  statusBadgeEn: string;
+  statusBadgeEs: string;
+  descEn: string;
+  descEs: string;
+  cefr: string;
+  flag: string;
+  pdfUrl?: string;
+  pdfLabelEn?: string;
+  pdfLabelEs?: string;
 }
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, BoundFloatingDirective],
+  imports: [CommonModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, AfterViewInit {
-  private renderer = inject(Renderer2);
-  private ngZone = inject(NgZone);
+export class AppComponent {
+  lang = signal<Lang>('en');
+  theme = signal<Theme>('light');
+  copiedEmail = signal<boolean>(false);
+  selectedProject = signal<ProjectItem | null>(null);
+  displayedProject = signal<ProjectItem | null>(null);
+  isClosingModal = signal<boolean>(false);
+  selectedEducationItem = signal<EducationDetail | null>(null);
+  displayedEducationItem = signal<EducationDetail | null>(null);
+  isClosingEducationModal = signal<boolean>(false);
+  selectedSkillNode = signal<SkillNode | null>(null);
+  avatarState = signal<'TYPING' | 'IDLE'>('TYPING');
+  isCordExpanded = signal<boolean>(true);
 
-  isDarkMode = false;
-  currentLang: 'en' | 'es' = 'en';
-  private maxZIndex = 100;
+  // 3D Interactive Hero Card Signals
+  cardRotateX = signal<number>(0);
+  cardRotateY = signal<number>(0);
+  cardGlareX = signal<number>(50);
+  cardGlareY = signal<number>(50);
+  cardHovered = signal<boolean>(false);
 
-  // Estados del Simulador de Segmentación en Q1
-  isSegmenting = false;
-  segmentationProgress = 0;
-  diceScore = 0.00;
-  inferenceLatency = 0;
-  activeSlice = 12;
-  segmentationPoints = '';
+  onCardMouseMove(event: MouseEvent) {
+    const card = event.currentTarget as HTMLElement;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width;
+    const y = (event.clientY - rect.top) / rect.height;
+    const boundedX = Math.min(Math.max(x, 0), 1);
+    const boundedY = Math.min(Math.max(y, 0), 1);
+    const offsetX = boundedX - 0.5;
+    const offsetY = boundedY - 0.5;
 
-  // --- CONFIGURACIÓN DE CARRUSELES ---
-  // Índices activos para los carruseles de imágenes
-  fitForgeIndex = 0;
-  mapperIndex = 0;
-
-  // Listado de capturas de Fit Forge
-  fitForgeSlides = [
-    { title: 'Cover Page', desc: 'Main interface of the Fitness SPA application.' },
-    { title: 'Personalised Catalogue', desc: 'Interactive exercise & workout directory.' },
-    { title: 'Diet Planner', desc: 'Custom nutrition parameters generator.' },
-    { title: 'User Dashboard', desc: 'Progress tracking analytics.' },
-    { title: 'Admin Panel', desc: 'Content curation and database management tools.' }
-  ];
-
-  // Listado de capturas de Legacy Land Mapper
-  mapperSlides = [
-    { title: 'Cover Page', desc: 'Input screen for bulk cadastral reference upload.' },
-    { title: 'Interactive Map View', desc: 'Rendered parcels visualised with Leaflet.js.' },
-    { title: 'Real-time Stats', desc: 'Area calculation and property metadata cards.' },
-    { title: 'Search & Filtering', desc: 'Advanced search system with satellite toggles.' }
-  ];
-
-  // Referencias a los contenedores
-  @ViewChild('q1Container') q1Container!: ElementRef<HTMLElement>;
-  @ViewChild('q4Container') q4Container!: ElementRef<HTMLElement>;
-
-  // Referencias a elementos del timeline en Q4 (Educación)
-  @ViewChild('nodeBach') nodeBach!: ElementRef<HTMLElement>;
-  @ViewChild('nodeDaw') nodeDaw!: ElementRef<HTMLElement>;
-  @ViewChild('nodeCant') nodeCant!: ElementRef<HTMLElement>;
-  @ViewChild('nodeAws') nodeAws!: ElementRef<HTMLElement>;
-
-  @ViewChild('pathBachDaw') pathBachDaw!: ElementRef<SVGPathElement>;
-  @ViewChild('pathDawCant') pathDawCant!: ElementRef<SVGPathElement>;
-  @ViewChild('pathJunctionAws') pathJunctionAws!: ElementRef<SVGPathElement>;
-  @ViewChild('junctionNodeCircle') junctionNodeCircle!: ElementRef<SVGCircleElement>;
-
-  // Referencias a elementos de Q1 (Experiencia Laboral)
-  @ViewChild('nodeLafe') nodeLafe!: ElementRef<HTMLElement>;
-  @ViewChild('nodeHire') nodeHire!: ElementRef<HTMLElement>;
-  @ViewChild('pathLafeHire') pathLafeHire!: ElementRef<SVGPathElement>;
-
-  // Referencias a elementos de Q3 (Hobbies & Deportes - Pirámide)
-  @ViewChild('q3Container') q3Container!: ElementRef<HTMLElement>;
-  @ViewChild('nodeMe') nodeMe!: ElementRef<HTMLElement>;
-  @ViewChild('nodeTennis') nodeTennis!: ElementRef<HTMLElement>;
-  @ViewChild('nodeFutbol') nodeFutbol!: ElementRef<HTMLElement>;
-  @ViewChild('nodeClimbing') nodeClimbing!: ElementRef<HTMLElement>;
-  @ViewChild('nodeSub1') nodeSub1!: ElementRef<HTMLElement>;
-  @ViewChild('nodeSub2') nodeSub2!: ElementRef<HTMLElement>;
-  @ViewChild('nodeSub3') nodeSub3!: ElementRef<HTMLElement>;
-  @ViewChild('nodeSub4') nodeSub4!: ElementRef<HTMLElement>;
-  @ViewChild('nodeSub5') nodeSub5!: ElementRef<HTMLElement>;
-  @ViewChild('nodeSub6') nodeSub6!: ElementRef<HTMLElement>;
-
-  @ViewChild('pathMeTennis') pathMeTennis!: ElementRef<SVGPathElement>;
-  @ViewChild('pathMeFutbol') pathMeFutbol!: ElementRef<SVGPathElement>;
-  @ViewChild('pathMeClimbing') pathMeClimbing!: ElementRef<SVGPathElement>;
-  @ViewChild('pathTennisSub1') pathTennisSub1!: ElementRef<SVGPathElement>;
-  @ViewChild('pathTennisSub2') pathTennisSub2!: ElementRef<SVGPathElement>;
-  @ViewChild('pathFutbolSub3') pathFutbolSub3!: ElementRef<SVGPathElement>;
-  @ViewChild('pathFutbolSub4') pathFutbolSub4!: ElementRef<SVGPathElement>;
-  @ViewChild('pathClimbingSub5') pathClimbingSub5!: ElementRef<SVGPathElement>;
-  @ViewChild('pathClimbingSub6') pathClimbingSub6!: ElementRef<SVGPathElement>;
-
-  // Coordenadas físicas en escalera diagonal de Q4
-  private q4Nodes: Record<string, { x: number; y: number; ampX: number; ampY: number; speedX: number; speedY: number; phaseX: number; phaseY: number; targetScale: number; currentScale: number; basePctX: number; basePctY: number }> = {
-    bach: { x: 0, y: 0, ampX: 6, ampY: 6, speedX: 0.0010, speedY: 0.0012, phaseX: 1.2, phaseY: 3.4, targetScale: 1, currentScale: 1, basePctX: 0.88, basePctY: 0.68 },
-    daw:  { x: 0, y: 0, ampX: 7, ampY: 7, speedX: 0.0008, speedY: 0.0009, phaseX: 2.5, phaseY: 0.8, targetScale: 1, currentScale: 1, basePctX: 0.50, basePctY: 0.58 },
-    cant: { x: 0, y: 0, ampX: 8, ampY: 8, speedX: 0.0007, speedY: 0.0008, phaseX: 4.7, phaseY: 2.1, targetScale: 1, currentScale: 1, basePctX: 0.12, basePctY: 0.28 },
-    aws:  { x: 0, y: 0, ampX: 5, ampY: 5, speedX: 0.0014, speedY: 0.0011, phaseX: 0.3, phaseY: 4.1, targetScale: 1, currentScale: 1, basePctX: 0.45, basePctY: 0.22 }
-  };
-
-  // Coordenadas síncronas del cuadrante Q1 (Experiencia & Pitch)
-  private q1Nodes: Record<string, { x: number; y: number; ampX: number; ampY: number; speedX: number; speedY: number; phaseX: number; phaseY: number; targetScale: number; currentScale: number; basePctX: number; basePctY: number }> = {
-    lafe: { x: 0, y: 0, ampX: 7, ampY: 7, speedX: 0.0009, speedY: 0.0011, phaseX: 0.5, phaseY: 1.8, targetScale: 1, currentScale: 1, basePctX: 0.30, basePctY: 0.50 },
-    hire: { x: 0, y: 0, ampX: 6, ampY: 6, speedX: 0.0011, speedY: 0.0008, phaseX: 2.2, phaseY: 0.3, targetScale: 1, currentScale: 1, basePctX: 0.70, basePctY: 0.50 }
-  };
-
-  // Coordenadas físicas de la Pirámide de Q3 (ME -> DEPORTES -> EXPANSIONES)
-  private q3Nodes: Record<string, { x: number; y: number; ampX: number; ampY: number; speedX: number; speedY: number; phaseX: number; phaseY: number; targetScale: number; currentScale: number; basePctX: number; basePctY: number }> = {
-    me:       { x: 0, y: 0, ampX: 7, ampY: 7, speedX: 0.0009, speedY: 0.0008, phaseX: 0.3, phaseY: 1.5, targetScale: 1, currentScale: 1, basePctX: 0.50, basePctY: 0.22 },
-    tennis:   { x: 0, y: 0, ampX: 5, ampY: 5, speedX: 0.0012, speedY: 0.0010, phaseX: 1.1, phaseY: 3.4, targetScale: 1, currentScale: 1, basePctX: 0.22, basePctY: 0.50 },
-    futbol:   { x: 0, y: 0, ampX: 6, ampY: 6, speedX: 0.0010, speedY: 0.0013, phaseX: 2.5, phaseY: 0.7, targetScale: 1, currentScale: 1, basePctX: 0.50, basePctY: 0.50 },
-    climbing: { x: 0, y: 0, ampX: 5, ampY: 5, speedX: 0.0011, speedY: 0.0009, phaseX: 4.1, phaseY: 2.2, targetScale: 1, currentScale: 1, basePctX: 0.78, basePctY: 0.50 },
-    sub1:     { x: 0, y: 0, ampX: 3, ampY: 3, speedX: 0.0015, speedY: 0.0016, phaseX: 0.1, phaseY: 4.2, targetScale: 1, currentScale: 1, basePctX: 0.12, basePctY: 0.78 },
-    sub2:     { x: 0, y: 0, ampX: 3, ampY: 3, speedX: 0.0014, speedY: 0.0015, phaseX: 1.2, phaseY: 3.1, targetScale: 1, currentScale: 1, basePctX: 0.27, basePctY: 0.78 },
-    sub3:     { x: 0, y: 0, ampX: 3, ampY: 3, speedX: 0.0016, speedY: 0.0014, phaseX: 2.3, phaseY: 1.8, targetScale: 1, currentScale: 1, basePctX: 0.42, basePctY: 0.78 },
-    sub4:     { x: 0, y: 0, ampX: 3, ampY: 3, speedX: 0.0013, speedY: 0.0015, phaseX: 3.5, phaseY: 0.5, targetScale: 1, currentScale: 1, basePctX: 0.58, basePctY: 0.78 },
-    sub5:     { x: 0, y: 0, ampX: 3, ampY: 3, speedX: 0.0015, speedY: 0.0013, phaseX: 4.8, phaseY: 2.9, targetScale: 1, currentScale: 1, basePctX: 0.73, basePctY: 0.78 },
-    sub6:     { x: 0, y: 0, ampX: 3, ampY: 3, speedX: 0.0012, speedY: 0.0014, phaseX: 5.9, phaseY: 1.2, targetScale: 1, currentScale: 1, basePctX: 0.88, basePctY: 0.78 }
-  };
-
-  // Modales interactivos
-  windows = signal<WindowState[]>([
-    { id: 'lafe', isOpen: false, isMaximized: false, zIndex: 100 },
-    { id: 'fitforge', isOpen: false, isMaximized: false, zIndex: 100 },
-    { id: 'mapper', isOpen: false, isMaximized: false, zIndex: 100 },
-    { id: 'climbing', isOpen: false, isMaximized: false, zIndex: 100 },
-    { id: 'canterbury', isOpen: false, isMaximized: false, zIndex: 100 },
-    { id: 'whyhireme', isOpen: false, isMaximized: false, zIndex: 100 },
-    { id: 'me-bio', isOpen: false, isMaximized: false, zIndex: 100 },
-    { id: 'tennis-log', isOpen: false, isMaximized: false, zIndex: 100 },
-    { id: 'futbol-log', isOpen: false, isMaximized: false, zIndex: 100 },
-    { id: 'climbing-log', isOpen: false, isMaximized: false, zIndex: 100 }
-  ]);
-
-  translations = {
-    en: {
-      subtitle: 'Full-Stack Engineer & AI Developer',
-      q1: '01 // WORK EXPERIENCE',
-      q2: '02 // PROJECTS',
-      q3: '03 // ME & HOBBIES',
-      q4: '04 // EDUCATION AND CERTIFICATES',
-      edu_bach: 'Scientific Baccalaureate',
-      edu_daw: 'Web App Developer',
-      edu_aws: 'AWS Practitioner',
-      edu_cs: 'Canterbury',
-      lafe_title: 'Deep Learning for Gynaecological Imaging',
-      lafe_desc: 'Developed custom neural networks for medical dataset segmentation using PyTorch and MONAI. Optimised workflows for clinicians to detect anomalies automatically with high diagnostic parameters.',
-      fitforge_title: 'Fit Forge // Angular & Symfony 7',
-      mapper_title: 'Legacy Land Mapper',
-      mapper_desc: 'Multi-threaded tool fetching parcel geometry data directly from Spanish Cadastre WFS API. Formats data with Pandas into custom GeoJSON maps.',
-      sports_title: 'Rock Climbing & Sports',
-      sports_desc: 'Interactive track of boulder difficulty levels (V4 to V8). Tracks sessions, hold-types, and physical metrics over time.',
-      collabTitle: 'Collaborators',
-      soleAuthor: 'Sole Author / Academic Project',
-      whyMade: 'Why it was created',
-      techDepth: 'Technical Deep-Dive',
-      txt_hire_node: 'WHY HIRE ME?',
-      why_title: '01 // WHY HIRE SANTIAGO?',
-      why_heading: 'Why should you hire me?',
-      why_sub: 'Final-Year Computer Science Student & Full-Stack Architect',
-      pitch_text: 'I am a Full-Stack Engineer and AI developer who bridges the gap between complex Deep Learning architectures and robust, clean backend systems. My experience at Hospital La Fe implementing medical image segmentations demonstrates my ability to deliver secure, production-grade solutions in highly demanding environments.',
-      competency1: 'Production-grade deployment of deep learning models with PyTorch and MONAI (AWS integration, Docker containerisation).',
-      competency2: 'Designed secure API architectures using Symfony 7 (PHP 8.2) and FastAPI (Python), utilizing complex SQL relational designs.',
-      competency3: 'Building fluid SPA applications in Angular utilizing modern Reactive Forms, lazy-loaded routing, and optimized interceptors.',
-      txt_download_cv: 'Download CV',
-      tech_stack_label: 'Primary Technology Stack',
-      hobbiesTitle: 'Personal Log // Hobbies & Sports',
-      climbingTitle: 'Rock Climbing & Boulder',
-      climbingSub: 'Difficulty Levels V4 to V8',
-      favHolds: 'Favorite Hold Types',
-      crimps: 'Crimps',
-      slopers: 'Slopers',
-      pockets: 'Pockets',
-      climbingStats: 'Session Metrics',
-      avgGrade: 'Avg. Project Grade',
-      weeklySessions: 'Weekly Sessions',
-      otherSportsTitle: 'Club Sports & Teamplay',
-      tennisClub: 'Valencia Tennis Club',
-      tennisDesc: 'Singles amateur ladder player. Focus on strategy, fast footwork, and precise baseline execution.',
-      footballClub: 'Amateur Football League',
-      footballDesc: 'Midfielder / Winger. Emphasising fast transitions, team coordination, and physical stamina.',
-      eduModalTitle: 'Academic Path // Canterbury Christ Church University',
-      eduModalSub: 'BSc (Hons) in Computer Science • London, UK',
-      pillsTitle: 'Areas of Specialisation',
-      cyberTitle: 'Cybersecurity & Risk Audits',
-      cyberDesc: 'Conducted rigorous security and risk audits implementing the NIST framework. Active participant in defensive cybersecurity hackathons.',
-      aiTitle: 'Artificial Intelligence & ML',
-      aiDesc: 'Designed and deployed distributed Machine Learning models. Built predictive architectures using Python, PyTorch, and TensorFlow.',
-      cloudTitle: 'Cloud Native Systems',
-      cloudDesc: 'Deployed enterprise-level architectures on Amazon Web Services (AWS) using EC2, Lambda, S3, and containerised microservices with Docker.',
-      techBreadthTitle: 'Academic Technologies & Tools',
-      javaDesc: 'Object-Oriented Programming (OOP) architectures and clean software design patterns.',
-      sqlDesc: 'Relational database designs, complex queries, and PostgreSQL performance optimisation.'
-    },
-    es: {
-      subtitle: 'Ingeniero Full-Stack & Desarrollador de IA',
-      q1: '01 // EXPERIENCIA LABORAL',
-      q2: '02 // PROYECTOS',
-      q3: '03 // SOBRE MÍ Y HOBBIES',
-      q4: '04 // EDUCACIÓN Y CERTIFICACIONES',
-      edu_bach: 'Bachillerato Científico',
-      edu_daw: 'Desarrollador Web (DAW)',
-      edu_aws: 'Certificación AWS',
-      edu_cs: 'Canterbury',
-      lafe_title: 'Deep Learning para Imágenes Ginecológicas',
-      lafe_desc: 'Desarrollo de modelos neuronales de segmentación en datasets médicos utilizando PyTorch y MONAI. Optimización de workflows clínicos para la detección automatizada de anomalías anatómicas.',
-      fitforge_title: 'Fit Forge // Angular y Symfony 7',
-      mapper_title: 'Mapeador de Parcelas',
-      mapper_desc: 'Herramienta multi-hilo para la extracción y renderizado de geometrías catastrales directamente desde las APIs oficiales del Catastro de España.',
-      sports_title: 'Escalada en Roca y Deportes',
-      sports_desc: 'Registro interactivo de ascensiones y grados de dificultad en bloque. Monitorización de tipos de presas y métricas de rendimiento.',
-      collabTitle: 'Colaboradores',
-      soleAuthor: 'Autor Único / Proyecto Académico',
-      whyMade: 'Propósito del proyecto',
-      techDepth: 'Detalle Técnico',
-      txt_hire_node: '¿POR QUÉ YO?',
-      why_title: '01 // ¿POR QUÉ CONTRATAR A SANTIAGO?',
-      why_heading: '¿Por qué contratarme?',
-      why_sub: 'Estudiante de Último Año de Ingeniería Informática & Arquitecto Full-Stack',
-      pitch_text: 'Soy un ingeniero de software Full-Stack y desarrollador de IA capaz de conectar arquitecturas complejas de Deep Learning con sistemas backend robustos y limpios. Mi trayectoria en el Hospital La Fe implementando segmentaciones de imagen demuestra mi madurez para desplegar software seguro y de alta fidelidad en entornos demandantes.',
-      competency1: 'Despliegue y optimización de modelos de Deep Learning con PyTorch y MONAI (integración en AWS, contenedores Docker).',
-      competency2: 'Diseño de APIs seguras y escalables en Symfony 7 (PHP 8.2) y FastAPI (Python) con complejas bases de datos relacionales SQL.',
-      competency3: 'Construcción de aplicaciones SPA fluidas en Angular haciendo uso de componentes standalone, interceptores y enrutamiento perezoso.',
-      txt_download_cv: 'Descargar CV',
-      tech_stack_label: 'Stack Tecnológico Principal',
-      hobbiesTitle: 'Registro Personal // Hobbies y Deporte',
-      climbingTitle: 'Escalada en Roca y Bloque',
-      climbingSub: 'Niveles de dificultad V4 a V8',
-      favHolds: 'Tipos de Presas Favoritas',
-      crimps: 'Regletas',
-      slopers: 'Romos',
-      pockets: 'Bidedos/Monodedos',
-      climbingStats: 'Métricas de Sesión',
-      avgGrade: 'Grado Medio de Proyecto',
-      weeklySessions: 'Sesiones Semanales',
-      otherSportsTitle: 'Deportes de Club y Equipo',
-      tennisClub: 'Club de Tenis Valencia',
-      tennisDesc: 'Jugador de liga social individual. Enfoque en estrategia de fondo, juego de pies y precisión en golpes paralelos.',
-      footballClub: 'Liga de Fútbol Amateur',
-      footballDesc: 'Mediocampista / Extremo. Enfocado en transiciones rápidas, coordinación táctica y resistencia aeróbica.',
-      eduModalTitle: 'Trayectoria Académica // Canterbury Christ Church University',
-      eduModalSub: 'Grado Universitario en Ingeniería Informática (BSc Hons) • Londres, Reino Unido',
-      pillsTitle: 'Áreas de Especialización',
-      cyberTitle: 'Ciberseguridad y Auditorías de Riesgo',
-      cyberDesc: 'Análisis y auditorías de vulnerabilidades estructuradas bajo el marco de trabajo de ciberseguridad de la NIST. Participación activa en hackathons defensivos.',
-      aiTitle: 'Inteligencia Artificial y ML',
-      aiDesc: 'Diseño e integración de modelos de Machine Learning distribuidos. Creación de arquitecturas inteligentes optimizadas con Python, PyTorch y TensorFlow.',
-      cloudTitle: 'Sistemas Nativos en la Nube',
-      cloudDesc: 'Despliegue y orquestación de aplicaciones en Amazon Web Services (AWS) haciendo uso de servicios clave (EC2, Lambda, S3, RDS) y contenedores Docker.',
-      techBreadthTitle: 'Tecnologías Académicas Clave',
-      javaDesc: 'Programación orientada a objetos (POO), patrones de diseño de software limpios y estructuras de datos.',
-      sqlDesc: 'Diseño relacional de bases de datos, consultas SQL complejas y optimización de rendimiento en PostgreSQL.'
-    }
-  };
-
-  ngOnInit() {
-    const preferredTheme = localStorage.getItem('theme');
-    if (preferredTheme === 'dark' || (!preferredTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      this.enableDarkMode();
-    }
-    const preferredLang = localStorage.getItem('lang') as 'en' | 'es';
-    if (preferredLang) this.currentLang = preferredLang;
+    this.cardGlareX.set(Math.round(boundedX * 100));
+    this.cardGlareY.set(Math.round(boundedY * 100));
+    this.cardRotateX.set(Math.round(offsetY * -12));
+    this.cardRotateY.set(Math.round(offsetX * 12));
+    this.cardHovered.set(true);
   }
 
-  ngAfterViewInit() {
-    this.ngZone.runOutsideAngular(() => {
-      const updateLoop = (time: number) => {
-        this.renderSynchronizedTimeline(time);
-        this.renderWorkTrajectory(time);
-        this.renderHobbiesPyramid(time);
-        requestAnimationFrame(updateLoop);
-      };
-      requestAnimationFrame(updateLoop);
-    });
+  onCardMouseLeave() {
+    this.cardRotateX.set(0);
+    this.cardRotateY.set(0);
+    this.cardGlareX.set(50);
+    this.cardGlareY.set(50);
+    this.cardHovered.set(false);
+  }
+
+  toggleCord() {
+    this.isCordExpanded.update(v => !v);
+  }
+
+  get currentLang(): Lang {
+    return this.lang();
+  }
+
+  // 4-Color Palette Reactive Signals (Vanilla, Dark Slate, Auburn, Hunyadi)
+  colorVanilla = computed(() => '#FFF3B0');
+  colorSlate = computed(() => '#335C67');
+  colorAuburn = computed(() => '#9E2A2B');
+  colorHunyadi = computed(() => '#E09F3E');
+
+  outerBg = computed(() => this.theme() === 'light' ? '#FAF2BF' : '#1F373E');
+  bgColor = computed(() => this.theme() === 'light' ? '#FFF3B0' : '#27474F');
+  cardBg = computed(() => this.theme() === 'light' ? '#FFFBE5' : '#335C67');
+  cardBorder = computed(() => this.theme() === 'light' ? 'rgba(51, 92, 103, 0.22)' : 'rgba(255, 243, 176, 0.22)');
+  textColor = computed(() => this.theme() === 'light' ? '#335C67' : '#FFF3B0');
+  mutedColor = computed(() => this.theme() === 'light' ? 'rgba(51, 92, 103, 0.78)' : 'rgba(255, 243, 176, 0.75)');
+  tagBg = computed(() => this.theme() === 'light' ? 'rgba(51, 92, 103, 0.09)' : 'rgba(255, 243, 176, 0.11)');
+  accentSinopia = computed(() => this.theme() === 'light' ? '#9E2A2B' : '#E09F3E');
+  accentCaribbean = computed(() => this.theme() === 'light' ? '#335C67' : '#E09F3E');
+  accentAuburn = computed(() => '#9E2A2B');
+  accentHunyadi = computed(() => '#E09F3E');
+  navBg = computed(() => this.theme() === 'light' ? 'rgba(255, 243, 176, 0.94)' : 'rgba(39, 71, 79, 0.94)');
+
+  content = {
+    en: {
+      nav: {
+        experience: 'Experience',
+        projects: 'Projects',
+        skills: 'Skills',
+        education: 'Education',
+        certifications: 'Certifications',
+        educationAndCertifications: 'Education & Certifications',
+        contact: 'Contact'
+      },
+      hero: {
+        greeting: "Hi, I'm",
+        name: 'Santiago',
+        surname: 'Castro Salt',
+        title: 'Backend & AI Systems Integration Engineer',
+        location: 'Dublin, Ireland',
+        summary: 'Specialized in building robust backend architectures (Python, PHP/Symfony 7, TypeScript, Docker) and integrating autonomous AI architectures, MCP agents, and clinical Human-in-the-Loop pipelines.',
+        status: 'Available for On-Site in Dublin or International Remote'
+      },
+      experience: {
+        sectionTitle: 'Work Experience',
+        sectionSubtitle: 'Production & Clinical Engineering',
+        items: [
+          {
+            role: 'AI & Software Integration Developer',
+            company: 'Fertoolity — Hospital Universitari i Politècnic La Fe',
+            type: 'Clinical Internship (FCT)',
+            period: 'Mar 2026 – Jun 2026',
+            location: 'Hospital La Fe, Valencia',
+            description: 'Participated in a high-reliability clinical AI engineering workflow focused on assisted medical imaging and diagnostic pipelines.',
+            highlights: [
+              'Implemented Human-in-the-Loop supervised AI pipelines for medical image segmentation, normalisation, and dataset annotation for model fine-tuning.',
+              'Engineered auxiliary preprocessing microservices and FastAPI REST endpoints using Python, OpenCV, PyTorch, and MONAI to deliver real-time model inference.',
+              'Collaborated closely with clinical specialists at Hospital La Fe to translate complex diagnostic imaging requirements into production-ready software components.'
+            ],
+            techStack: [
+              { name: 'Python', icon: 'python' },
+              { name: 'FastAPI', icon: 'fastapi' },
+              { name: 'PyTorch', icon: 'pytorch' },
+              { name: 'MONAI', icon: 'monai' },
+              { name: 'Docker', icon: 'docker' },
+              { name: 'REST API', icon: 'fastapi' }
+            ]
+          }
+        ]
+      },
+      projects: {
+        sectionTitle: 'Featured Projects',
+        sectionSubtitle: 'System Architecture & Technical Execution',
+        sectionDescription: 'Flagship engineering implementations built with architectural rigor, modular decoupling, and verified benchmarks. Click any card to inspect full technical dossiers.',
+        inspectPrompt: 'Inspect Dossier',
+        highlightsTitle: 'Key Technical Achievements',
+        techStackTitle: 'Technologies & Architecture',
+        upcomingBadge: '✦ R&D Lab // In Pipeline',
+        upcomingTitle: 'Autonomous MCP Agents Orchestrator',
+        upcomingSubtitle: 'Multi-Agent Autonomous Execution & Deterministic Tool Runtime',
+        upcomingDesc: 'Next-generation orchestration runtime integrating model context protocols, strict tool sandboxing, and Human-in-the-Loop approval gates.',
+        upcomingStatus: 'Architecture in Design Phase · 2026 Q4',
+        items: [
+          {
+            id: 'fitforge',
+            title: 'FitForge',
+            subtitle: 'Full-Stack Fitness & Recommendation Platform',
+            badge: 'TFG Flagship · Sole Architect',
+            metricBadge: '★ 5.0 · 33 APIs',
+            period: '2025 – 2026',
+            image: '/assets/projects/fitforge.jpg',
+            accentColor: '#D7340B',
+            glowColor: 'rgba(215, 52, 11, 0.40)',
+            summary: 'A decoupled fitness SPA powered by a custom workout and nutrition recommendation algorithm with Symfony 7, Angular 19, and MySQL.',
+            fullDescription: 'Developed as a final degree project (TFG) with top honors. Engineered a completely decoupled architecture featuring a Symfony 7 REST API with 33 secured endpoints, stateless JWT authentication, and role-based access control (RBAC). A normalized 14-table MySQL relational database powers algorithmic training and diet recommendations. The frontend is built with Angular 19 standalone components and reactive signals for instantaneous state propagation, fully containerized with Docker Compose.',
+            details: [
+              'Architected a 14-table normalized MySQL schema and a Symfony 7 REST API featuring 33 secured endpoints, JWT authentication, and fine-grained RBAC.',
+              'Developed dynamic recommendation algorithms tailoring workout routines and macronutrient targets to user progression.',
+              'Designed a clean, standalone Angular 19 frontend with reactive signals and modular clean architecture.',
+              'Containerized the complete deployment with Docker Compose (PHP-FPM, Nginx, MySQL) maintaining a feature-branch Git workflow.'
+            ],
+            techStack: [
+              { name: 'PHP', icon: 'php' },
+              { name: 'Symfony', icon: 'symfony' },
+              { name: 'Angular', icon: 'angular' },
+              { name: 'TypeScript', icon: 'typescript' },
+              { name: 'MySQL', icon: 'mysql' },
+              { name: 'Docker', icon: 'docker' }
+            ],
+            bentoMetrics: [
+              { value: '33', label: 'REST APIs' },
+              { value: '14', label: 'DB Tables' },
+              { value: '<50ms', label: 'Latency' }
+            ],
+            link: 'https://github.com/Sacasa01/FitForge',
+            linkText: 'View Repository ↗'
+          },
+          {
+            id: 'visionrest',
+            title: 'VisionRest',
+            subtitle: 'Clinical AI & Medical Imaging Diagnostic REST API',
+            badge: 'Hospital La Fe · Clinical FCT',
+            metricBadge: '★ 4.9 · MONAI',
+            period: 'Mar 2026 – Jun 2026',
+            image: '/assets/projects/visionrest.jpg',
+            accentColor: '#336467',
+            glowColor: 'rgba(51, 100, 103, 0.45)',
+            summary: 'Human-in-the-Loop supervised AI workflow for clinical medical image segmentation, DICOM scans, and real-time FastAPI inference microservices.',
+            fullDescription: 'Engineered at Hospital Universitari i Politècnic La Fe (Valencia) within a clinical medical AI environment. Built supervised Human-in-the-Loop deep learning pipelines for medical imaging segmentation, normalization, and specialist dataset annotation for model fine-tuning. Developed asynchronous FastAPI microservices delivering low-latency real-time inference powered by PyTorch and MONAI biomedical models, translating complex clinical imaging protocols into reliable production software.',
+            details: [
+              'Implemented Human-in-the-Loop supervised AI pipelines for medical image segmentation, normalisation, and dataset annotation for model fine-tuning.',
+              'Engineered auxiliary preprocessing microservices and FastAPI REST endpoints using Python, OpenCV, PyTorch, and MONAI to deliver real-time model inference.',
+              'Delivered low-latency real-time inference workflows for clinical imaging scans with strict reliability metrics.',
+              'Collaborated closely with clinical specialists at Hospital La Fe to translate complex diagnostic imaging requirements into production-ready software components.'
+            ],
+            techStack: [
+              { name: 'Python', icon: 'python' },
+              { name: 'FastAPI', icon: 'fastapi' },
+              { name: 'PyTorch', icon: 'pytorch' },
+              { name: 'MONAI', icon: 'monai' },
+              { name: 'Docker', icon: 'docker' }
+            ],
+            bentoMetrics: [
+              { value: 'PyTorch + MONAI', label: 'Biomedical AI' },
+              { value: 'HITL', label: 'Supervised' },
+              { value: 'Hospital La Fe', label: 'Clinical Site' }
+            ],
+            link: 'https://github.com/Sacasa01/Fertoolity',
+            linkText: 'View Clinical Project ↗'
+          },
+          {
+            id: 'land-mapper',
+            title: 'Legacy Land Mapper',
+            subtitle: 'High-Throughput Geospatial Cadastre Engine',
+            badge: 'Geospatial GIS · 20 Workers',
+            metricBadge: '★ 4.8 · >90% Opt',
+            period: '2025',
+            image: '/assets/projects/land-mapper.jpg',
+            accentColor: '#2B585B',
+            glowColor: 'rgba(43, 88, 91, 0.45)',
+            summary: 'Multithreaded geospatial data pipeline cutting cadastral parcel batch queries by over 90% with dynamic interactive map rendering.',
+            fullDescription: 'Created to solve real-world agricultural land management and cadastral validation challenges in Galicia. Transforms raw tabular cadastral records (Excel/CSV) into interactive, multi-layered geospatial HTML maps. Designed a high-throughput Python backend utilizing a 20-worker thread pool that queries the Spanish Directorate General of Cadastre WFS API concurrently, cutting batch query execution time by over 90%. Outputs enriched GeoJSON spatial polygons with real-time layer toggles and area calculations.',
+            details: [
+              'Engineered a multi-threaded Python backend with 20 concurrent workers querying the Spanish Cadastre WFS API, cutting bulk query times by over 90%.',
+              'Processed raw tabular cadastral records with Pandas into enriched GeoJSON spatial polygons with customizable layer toggles and real-time filtering.',
+              'Rendered responsive, interactive web map interfaces using Leaflet.js with dynamic filtering and surface area calculators.',
+              'Integrated OGC compliant WFS standards for automated spatial boundaries and administrative parcel attributes.'
+            ],
+            techStack: [
+              { name: 'Python', icon: 'python' },
+              { name: 'Pandas', icon: 'pandas' },
+              { name: 'Leaflet', icon: 'leaflet' },
+              { name: 'GeoJSON', icon: 'geojson' }
+            ],
+            bentoMetrics: [
+              { value: '>90%', label: 'Query Optimization' },
+              { value: '20', label: 'Workers' },
+              { value: 'WFS API', label: 'Cadastre Geospatial' }
+            ],
+            link: 'https://github.com/Sacasa01/legacy-land-mapper',
+            linkText: 'View Repository ↗'
+          }
+        ]
+      },
+      skills: {
+        sectionTitle: 'Skills Architecture',
+        sectionSubtitle: 'Vector System Graph & Tech Constellation',
+        sectionDescription: 'Interactive interconnected network mapping core full-stack backbones to autonomous AI agents, databases, and containerized cloud pipelines. Hover or tap any node to inspect capabilities.',
+        selectPrompt: 'Tap any technology node in the vector system to inspect technical specifications and practical experience.',
+        domainsTitle: 'Architecture Clusters',
+        spokenSectionTitle: 'Global Mobility & Spoken Communication',
+        spokenSectionSubtitle: 'Language Proficiency for International Relocation & Leadership',
+        spokenNotice: 'Ready for immediate On-Site integration in Dublin from September 30, 2026.',
+        items: [
+          { id: 'html-css', name: 'HTML5 & CSS3', category: 'core', categoryLabel: 'Web Standards', subtitle: 'Semantic HTML · Tailwind CSS · Responsive', badge: 'Expert' },
+          { id: 'python', name: 'Python 3', category: 'core', categoryLabel: 'Core Backend & AI', subtitle: 'FastAPI · PyTorch · Pandas · MONAI', badge: 'Advanced' },
+          { id: 'php', name: 'PHP 8', category: 'core', categoryLabel: 'Core Backend', subtitle: 'Symfony 7 · Clean Architecture · RBAC', badge: 'Advanced' },
+          { id: 'typescript', name: 'TypeScript', category: 'core', categoryLabel: 'Frontend & Node', subtitle: 'Angular 19 · Strict Typings · Node.js', badge: 'Advanced' },
+          { id: 'angular', name: 'Angular 19', category: 'frameworks', categoryLabel: 'Frontend Architecture', subtitle: 'Standalone Components · Signals · RxJS', badge: 'v19 Standalone' },
+          { id: 'docker', name: 'Docker & Compose', category: 'devops', categoryLabel: 'Containerization', subtitle: 'Multi-stage Builds · Alpine · Networks', badge: 'DevOps' },
+          { id: 'aws', name: 'AWS Cloud', category: 'devops', categoryLabel: 'Cloud Services', subtitle: 'EC2 · S3 · RDS · Lambda · IAM', badge: 'Practitioner' },
+          { id: 'sql', name: 'MySQL & PostgreSQL', category: 'database', categoryLabel: 'Databases', subtitle: '3NF Normalization · Indexing · pgvector', badge: 'Database' },
+          { id: 'git', name: 'Git & GitHub Actions', category: 'devops', categoryLabel: 'Automation', subtitle: 'GitOps · Conventional Commits · CI/CD', badge: 'CI/CD' },
+          { id: 'mcp', name: 'Model Context Protocol', category: 'ai', categoryLabel: 'AI Systems', subtitle: 'MCP Servers · Tool Execution · LLM Guardrails', badge: 'Anthropic' },
+          { id: 'pytorch', name: 'PyTorch & MONAI', category: 'ai', categoryLabel: 'Deep Learning', subtitle: 'Medical Imaging · Neural Segmentation · GPU', badge: 'Clinical AI' },
+          { id: 'agentic', name: 'ReAct Agentic Workflows', category: 'ai', categoryLabel: 'Autonomous AI', subtitle: 'Multi-step Reasoning · Tool Selection · HITL', badge: 'Agents' },
+          { id: 'lang-en', name: 'English (C1)', category: 'language', categoryLabel: 'Spoken Languages', subtitle: 'C1 Certified · Full Professional Working Proficiency', badge: 'C1 Fluent' },
+          { id: 'lang-es', name: 'Spanish (C2)', category: 'language', categoryLabel: 'Spoken Languages', subtitle: 'Native Speaker · Full Bilingual Fluency', badge: 'Native' },
+          { id: 'lang-va', name: 'Valencian (C2)', category: 'language', categoryLabel: 'Spoken Languages', subtitle: 'Co-official Regional Native Language', badge: 'Native' }
+        ]
+      },
+      education: {
+        sectionTitle: 'Education & Certifications',
+        sectionSubtitle: 'Real Engineering Journey (2024 – 2027)',
+        timelineBadge: 'Chronological Roadmap (2024 ➔ 2027)',
+        journeyTitle: 'Real Engineering Journey (2024 – 2027)',
+        journeySubtitle: 'Interactive Horizontal Roadmap: Academic Foundation → AWS & Google AI Certs → Clinical Practice → BSc Degree',
+        timelineHint: 'Click icons to inspect verified certificate PDFs or full degree curriculum',
+        milestones: [
+          {
+            id: 'daw',
+            year: '2024 – 2026',
+            title: 'CFGS DAW — Web Application Development',
+            institution: 'La Florida Universitària',
+            badge: 'Grade: 7.00 / 10 · Completed',
+            type: 'degree',
+            icon: 'degree-daw',
+            description: 'Enterprise backend architecture (PHP 8/Symfony 7, MySQL/PostgreSQL) and modern reactive frontend with Angular 19 & TypeScript.',
+            educationId: 'daw'
+          },
+          {
+            id: 'google-ai',
+            year: 'Jan 2025',
+            title: 'Google AI & Productivity',
+            institution: 'Santander Open Academy & Google',
+            badge: 'Google AI · Certified',
+            type: 'certification',
+            icon: 'cert-google',
+            description: 'Generative AI integration, prompt engineering architectures, and automated developer productivity pipelines.',
+            pdfUrl: '/certificates/google-santander-ai-certificate.pdf'
+          },
+          {
+            id: 'aws-cloud',
+            year: '2025',
+            title: 'AWS Cloud Workshop',
+            institution: 'Amazon Web Services (AWS)',
+            badge: 'Cloud Practitioner Fundamentals',
+            type: 'certification',
+            icon: 'cert-aws',
+            description: 'Hands-on cloud architecture workshop covering AWS core services (EC2, S3, RDS, Lambda), security compliance, and deployments.',
+            pdfUrl: '/certificates/aws-workshop-certificate.pdf'
+          },
+          {
+            id: 'english-c1',
+            year: '2026',
+            title: 'English C1 Certified',
+            institution: 'Official IELTS Examination / CATE',
+            badge: 'CEFR C1 Fluent · IELTS 8.0 Eq.',
+            type: 'certification',
+            icon: 'cert-english',
+            description: 'Advanced academic and professional fluency for international engineering collaboration, architecture debates, and code reviews.',
+            pdfUrl: '/certificates/english-cate-certificate.pdf'
+          },
+          {
+            id: 'bsc',
+            year: '2026 – 2027',
+            title: 'BSc (Hons) in Computer Science (Top-Up)',
+            institution: 'Canterbury Christ Church University / MSMK',
+            badge: 'Taught 100% in English · Enrolled',
+            type: 'degree',
+            icon: 'degree-bsc',
+            description: 'British Honours degree: Advanced Software Engineering, Cloud Systems, Distributed Architecture, Cybersecurity & AI Systems Integration.',
+            educationId: 'bsc'
+          }
+        ],
+        degrees: {
+          daw: {
+            id: 'daw',
+            degree: 'CFGS DAW — Web Application Development',
+            institution: 'La Florida Universitària',
+            location: 'Valencia, Spain',
+            period: '2024 – 2026',
+            badge: 'Grade Average: 7.00 / 10 · Completed',
+            status: 'Higher Vocational Degree',
+            summary: 'Comprehensive software development degree emphasizing enterprise backend systems, relational databases, clean architecture, and modern reactive frontends.',
+            fullDescription: 'Two-year intensive engineering curriculum covering modern software development methodologies. Designed and implemented enterprise applications using Symfony 7, PHP 8, and MySQL/PostgreSQL databases with strict 3NF normalization. Developed decoupled single-page applications using Angular and TypeScript, containerizing deployments with Docker Compose and maintaining rigorous Git workflows.',
+            highlights: [
+              'Rigorous enterprise backend architecture (PHP 8/Symfony 7, MySQL/PostgreSQL relational schema modeling).',
+              'Modern frontend engineering with TypeScript/Angular 19, reactive state management, and Clean Code practices.',
+              'Multi-service containerization with Docker Compose and automated testing practices.',
+              'FitForge Capstone Project: 33 secured REST endpoints, JWT authentication, and recommendation algorithms.'
+            ],
+            syllabus: [
+              'Backend Systems: PHP 8.2+, Symfony 7, RESTful APIs, JWT Authentication, RBAC, Doctrine ORM',
+              'Database Architecture: MySQL 8, PostgreSQL, 3NF Normalization, Indexing, ACID Transactions',
+              'Frontend Engineering: TypeScript, Angular 19 Standalone Components, Reactive Signals, Tailwind CSS',
+              'DevOps & Infrastructure: Docker, Docker Compose, Git feature-branch workflows, Nginx',
+              'Software Engineering: Clean Code, SOLID principles, automated unit testing, security validation'
+            ],
+            techStack: [
+              { name: 'PHP', icon: 'php' },
+              { name: 'Symfony', icon: 'symfony' },
+              { name: 'MySQL', icon: 'mysql' },
+              { name: 'PostgreSQL', icon: 'postgresql' },
+              { name: 'Angular', icon: 'angular' },
+              { name: 'TypeScript', icon: 'typescript' },
+              { name: 'Docker', icon: 'docker' },
+              { name: 'Git', icon: 'git' }
+            ],
+            officialUrl: 'https://www.floridauniversitaria.es/es-es/titulaciones/ciclos-formativos/daw-desarrollo-de-aplicaciones-web',
+            officialUrlText: 'La Florida Universitària'
+          },
+          bsc: {
+            id: 'bsc',
+            degree: 'BSc (Hons) in Computer Science (Top-Up)',
+            institution: 'Canterbury Christ Church University (MSMK Madrid Campus)',
+            location: 'Madrid, Spain (British Curriculum)',
+            period: 'Sep 2026 – Jun 2027',
+            badge: 'Taught 100% in English · Enrolled',
+            status: 'British Honours Bachelor Degree',
+            summary: 'British University Honours degree delivering advanced computer science education, distributed systems, cybersecurity, and applied artificial intelligence engineering.',
+            fullDescription: 'Pursuing a British Bachelor of Science with Honours in Computer Science accredited by Canterbury Christ Church University at MSMK University Madrid campus. Delivered 100% in English, the programme builds directly upon enterprise development to master distributed systems, cloud computing infrastructure, cybersecurity principles, and AI system agent integration.',
+            highlights: [
+              'Dual British and Spanish university training focused on high-impact software engineering roles.',
+              'Specializations: Advanced Software Engineering, Cloud Systems, Cybersecurity and AI Systems Integration.',
+              'International academic setting taught 100% in English with focus on research and systems architecture.',
+              'Honours Capstone Project focusing on autonomous agentic systems and deterministic runtime tooling.'
+            ],
+            syllabus: [
+              'Advanced Software Engineering & Enterprise Architecture Patterns',
+              'Distributed Systems, Cloud Architecture & Scalable Microservices',
+              'Cybersecurity, Threat Modeling & Secure Application Design',
+              'Artificial Intelligence Systems, Autonomous Agents & Machine Learning Integration',
+              'Research Methodologies & Honours Capstone Project'
+            ],
+            techStack: [
+              { name: 'Python', icon: 'python' },
+              { name: 'FastAPI', icon: 'fastapi' },
+              { name: 'AWS', icon: 'aws' },
+              { name: 'Docker', icon: 'docker' },
+              { name: 'PyTorch', icon: 'pytorch' },
+              { name: 'TypeScript', icon: 'typescript' },
+              { name: 'Git', icon: 'git' }
+            ],
+            officialUrl: 'https://www.canterbury.ac.uk/study-here/courses/undergraduate/computer-science',
+            officialUrlText: 'Canterbury Christ Church University'
+          }
+        },
+        items: [
+          {
+            degree: 'BSc (Hons) in Computer Science (Top-Up)',
+            institution: 'Canterbury Christ Church University (Madrid Campus at MSMK University)',
+            period: 'Sep 2026 – Jun 2027',
+            badge: 'Taught 100% in English · Enrolled',
+            status: 'University Degree',
+            step: '02',
+            position: 'top',
+            highlights: [
+              'Specializations: Advanced Software Engineering, Cloud Systems, Cybersecurity and AI Systems Integration.',
+              'Dual British and Spanish university training focused on high-impact software engineering roles.'
+            ]
+          },
+          {
+            degree: 'CFGS DAW – Web Application Development',
+            institution: 'La Florida Universitaria, Valencia',
+            period: '2024 – 2026',
+            badge: 'Grade Average: 7.00 / 10 · Completed',
+            status: 'Foundational Milestone',
+            step: '01',
+            position: 'bottom',
+            highlights: [
+              'Rigorous enterprise backend architecture (PHP 8/Symfony 7, MySQL/PostgreSQL relational schema modeling).',
+              'Modern frontend engineering with TypeScript/Angular, Clean Code practices, and containerized Docker environments.'
+            ]
+          }
+        ]
+      },
+      certifications: {
+        sectionTitle: 'Certifications & Credentials',
+        sectionSubtitle: 'Validated Competencies & Continuous Learning',
+        items: [
+          {
+            title: 'English: C1 Certified (IELTS 8.0 Equivalent)',
+            issuer: 'Official IELTS Examination / CATE',
+            year: '2026',
+            badge: 'C1 Fluent · CEFR',
+            icon: 'cert-english',
+            pdfUrl: '/certificates/english-cate-certificate.pdf',
+            description: 'Advanced academic and professional English fluency for international engineering collaboration, technical interviews, and systems architecture.'
+          },
+          {
+            title: 'Google: Artificial Intelligence & Productivity',
+            issuer: 'Santander Open Academy & Google',
+            year: 'Jan 2025',
+            badge: 'Google AI · Certified',
+            icon: 'cert-google',
+            pdfUrl: '/certificates/google-santander-ai-certificate.pdf',
+            description: 'Modern generative AI integration, prompt engineering architectures, and automated developer productivity pipelines.'
+          },
+          {
+            title: 'AWS: Cloud Workshop & Practitioner Fundamentals',
+            issuer: 'Amazon Web Services (AWS)',
+            year: '2025',
+            badge: 'AWS Cloud · Workshop',
+            icon: 'cert-aws',
+            pdfUrl: '/certificates/aws-workshop-certificate.pdf',
+            description: 'Hands-on cloud architecture workshop covering AWS core services (EC2, S3, RDS, Lambda), security compliance, and deployment strategies.'
+          }
+        ]
+      },
+      contact: {
+        sectionTitle: 'Contact',
+        sectionSubtitle: 'Direct Channel & Inquiries',
+        heading: "Let's Build Something Exceptional",
+        subheading: 'Open for Software Engineering and AI Systems Integration opportunities in Dublin, Ireland or International Remote.',
+        text: 'Whether you are hiring for an engineering role, building an AI pipeline, or looking to discuss decoupled software architectures, feel free to reach out directly.',
+        email: 'santiagocsdev@gmail.com',
+        phone: '+34 654 763 788',
+        location: 'Dublin, Ireland',
+        locationBadge: 'Available On-Site (Sept 30, 2026) / International Remote',
+        emailLabel: 'Direct Email',
+        phoneLabel: 'Direct Phone / WhatsApp',
+        locationLabel: 'Target Location',
+        copyEmail: 'Copy Email',
+        emailCopied: 'Copied to Clipboard!',
+        sendEmail: 'Send Direct Email',
+        callWhatsapp: 'Call / WhatsApp',
+        socialsTitle: 'Engineering Profiles',
+        downloadCv: 'Curriculum Vitae (PDF)'
+      },
+      footer: {
+        rights: 'All rights reserved.',
+        builtWith: 'Engineered with Angular 19, Tailwind CSS & Clean Architecture.'
+      }
+    },
+    es: {
+      nav: {
+        experience: 'Experiencia',
+        projects: 'Proyectos',
+        skills: 'Habilidades',
+        education: 'Educación',
+        certifications: 'Certificaciones',
+        educationAndCertifications: 'Educación & Certificaciones',
+        contact: 'Contacto'
+      },
+      hero: {
+        greeting: 'Hola, soy',
+        name: 'Santiago',
+        surname: 'Castro Salt',
+        title: 'Backend & AI Systems Integration Engineer',
+        location: 'Dublín, Irlanda',
+        summary: 'Especializado en ingeniería de sistemas backend de alto rendimiento (Python, PHP/Symfony 7, TypeScript, Docker) e integración de arquitecturas de IA autónomas, agentes MCP y pipelines de inferencia con Human-in-the-Loop.',
+        status: 'Disponible para On-Site en Dublín o Remoto Internacional'
+      },
+      experience: {
+        sectionTitle: 'Experiencia Laboral',
+        sectionSubtitle: 'Ingeniería en Producción y Entornos Clínicos',
+        items: [
+          {
+            role: 'Desarrollador de Integración de Software e IA',
+            company: 'Fertoolity — Hospital Universitari i Politècnic La Fe',
+            type: 'Prácticas Curriculares (FCT)',
+            period: 'Mar 2026 – Jun 2026',
+            location: 'Hospital La Fe, Valencia',
+            description: 'Participación en el flujo de ingeniería de IA clínica asistida para segmentación y diagnóstico por imagen médica.',
+            highlights: [
+              'Implementación de flujos de trabajo supervisados Human-in-the-Loop para segmentación de imagen médica, normalización y anotación de datasets para fine-tuning de modelos.',
+              'Desarrollo de microservicios de preprocesamiento y endpoints REST con FastAPI utilizando Python, OpenCV, PyTorch y MONAI para inferencia en tiempo real.',
+              'Colaboración directa con especialistas clínicos del Hospital La Fe para traducir requerimientos de datos diagnósticos en componentes de software robustos.'
+            ],
+            techStack: [
+              { name: 'Python', icon: 'python' },
+              { name: 'FastAPI', icon: 'fastapi' },
+              { name: 'PyTorch', icon: 'pytorch' },
+              { name: 'MONAI', icon: 'monai' },
+              { name: 'Docker', icon: 'docker' },
+              { name: 'APIs REST', icon: 'fastapi' }
+            ]
+          }
+        ]
+      },
+      projects: {
+        sectionTitle: 'Proyectos Destacados',
+        sectionSubtitle: 'Arquitectura de Sistemas y Ejecución Técnica',
+        sectionDescription: 'Implementaciones de ingeniería desarrolladas con rigor arquitectónico, desacoplamiento modular y métricas verificadas. Pulsa en cualquier tarjeta para abrir la ficha técnica.',
+        inspectPrompt: 'Ver Ficha',
+        highlightsTitle: 'Hitos de Ingeniería y Arquitectura',
+        techStackTitle: 'Tecnologías y Arquitectura',
+        upcomingBadge: '✦ R&D Lab // En Pipeline',
+        upcomingTitle: 'Orquestador Autónomo de Agentes MCP',
+        upcomingSubtitle: 'Arquitectura de Ejecución Multi-Agente y Runtime Determinista',
+        upcomingDesc: 'Runtime de orquestación de próxima generación integrando protocolos de contexto de modelo, sandboxing estricto de herramientas y compuertas Human-in-the-Loop.',
+        upcomingStatus: 'Fase de Diseño de Arquitectura · 2026 Q4',
+        items: [
+          {
+            id: 'fitforge',
+            title: 'FitForge',
+            subtitle: 'Plataforma Full-Stack de Fitness y Motor de Recomendación',
+            badge: 'Proyecto TFG · Único Arquitecto',
+            metricBadge: '★ 5.0 · 33 APIs',
+            period: '2025 – 2026',
+            image: '/assets/projects/fitforge.jpg',
+            accentColor: '#D7340B',
+            glowColor: 'rgba(215, 52, 11, 0.40)',
+            summary: 'Una SPA desacoplada impulsada por algoritmos propios de recomendación de entrenamientos y nutrición con Symfony 7, Angular 19 y MySQL.',
+            fullDescription: 'Desarrollado como Trabajo de Fin de Grado (TFG) obteniendo Matrícula de Honor. Arquitectura totalmente desacoplada compuesta por una API REST construida en Symfony 7 con 33 endpoints asegurados mediante JWT y control de acceso basado en roles (RBAC). Una base de datos MySQL relacional normalizada de 14 tablas alimenta el motor de recomendaciones. Frontend moderno en Angular 19 con Signals reactivos y contenerización modular en Docker Compose.',
+            details: [
+              'Diseño y normalización de un esquema MySQL de 14 tablas y desarrollo de una API REST con Symfony 7 y 33 endpoints seguros con JWT.',
+              'Algoritmo propio de recomendación dinámico que adapta rutinas de entrenamiento y objetivos calóricos según la evolución del usuario.',
+              'Frontend desacoplado en Angular 19 con componentes Standalone y Signals para reactividad instantánea.',
+              'Despliegue multi-contenedor con Docker Compose (PHP-FPM, Nginx, MySQL) manteniendo flujo Git con feature-branches.'
+            ],
+            techStack: [
+              { name: 'PHP', icon: 'php' },
+              { name: 'Symfony', icon: 'symfony' },
+              { name: 'Angular', icon: 'angular' },
+              { name: 'TypeScript', icon: 'typescript' },
+              { name: 'MySQL', icon: 'mysql' },
+              { name: 'Docker', icon: 'docker' }
+            ],
+            bentoMetrics: [
+              { value: '33', label: 'APIs REST' },
+              { value: '14', label: 'Tablas MySQL' },
+              { value: '<50ms', label: 'Latencia' }
+            ],
+            link: 'https://github.com/Sacasa01/FitForge',
+            linkText: 'Ver Repositorio ↗'
+          },
+          {
+            id: 'visionrest',
+            title: 'VisionRest',
+            subtitle: 'API REST de IA Clínica y Diagnóstico por Imagen Médica',
+            badge: 'Hospital La Fe · Prácticas FCT',
+            metricBadge: '★ 4.9 · MONAI',
+            period: 'Mar 2026 – Jun 2026',
+            image: '/assets/projects/visionrest.jpg',
+            accentColor: '#336467',
+            glowColor: 'rgba(51, 100, 103, 0.45)',
+            summary: 'Pipeline de visión por computador e inferencia de IA en tiempo real para segmentación diagnóstica con PyTorch, MONAI y FastAPI.',
+            fullDescription: 'Desarrollado durante las prácticas curriculares en el Hospital Universitari i Politècnic La Fe de Valencia. El sistema implementa un flujo asistido por IA supervisado (Human-in-the-Loop) para el procesamiento, normalización y segmentación de imágenes médicas. Integra microservicios de inferencia asíncronos de baja latencia con FastAPI respaldados por PyTorch y la librería biomédica MONAI, permitiendo a especialistas clínicos validar anotaciones y acelerar diagnósticos con fiabilidad.',
+            details: [
+              'Implementación de flujos de trabajo supervisados Human-in-the-Loop para segmentación de imagen médica, normalización y anotación de datasets para fine-tuning de modelos.',
+              'Desarrollo de microservicios de preprocesamiento y endpoints REST con FastAPI utilizando Python, OpenCV, PyTorch y MONAI para inferencia en tiempo real.',
+              'Inferencia en tiempo real de baja latencia optimizada para cortes tomográficos y de ultrasonido de alta resolución.',
+              'Colaboración directa con especialistas clínicos del Hospital La Fe para traducir requerimientos de datos diagnósticos en componentes de software robustos.'
+            ],
+            techStack: [
+              { name: 'Python', icon: 'python' },
+              { name: 'FastAPI', icon: 'fastapi' },
+              { name: 'PyTorch', icon: 'pytorch' },
+              { name: 'MONAI', icon: 'monai' },
+              { name: 'Docker', icon: 'docker' }
+            ],
+            bentoMetrics: [
+              { value: 'PyTorch + MONAI', label: 'IA Biomédica' },
+              { value: 'HITL', label: 'Supervisión Clínica' },
+              { value: 'Hospital La Fe', label: 'Entorno Real' }
+            ],
+            link: 'https://github.com/Sacasa01/Fertoolity',
+            linkText: 'Ver Proyecto Clínico ↗'
+          },
+          {
+            id: 'land-mapper',
+            title: 'Legacy Land Mapper',
+            subtitle: 'Motor Geoespacial Concurrente para el Catastro',
+            badge: 'GIS Geoespacial · 20 Workers',
+            metricBadge: '★ 4.8 · >90% Opt',
+            period: '2025',
+            image: '/assets/projects/land-mapper.jpg',
+            accentColor: '#2B585B',
+            glowColor: 'rgba(43, 88, 91, 0.45)',
+            summary: 'Pipeline de datos geoespaciales multihilo que reduce el tiempo de consulta de parcelas catastrales en más de un 90%.',
+            fullDescription: 'Creado para resolver problemas reales de validación catastral y concentración parcelaria en Galicia. Transforma registros catastrales tabulares en mapas HTML geoespaciales interactivos. El backend en Python implementa concurrencia mediante un pool de 20 workers para consultar la API WFS de la Dirección General del Catastro de España, reduciendo el tiempo de procesamiento masivo en más de un 90%. Genera capas GeoJSON interactivas con cálculo de superficies en tiempo real.',
+            details: [
+              'Backend multihilo en Python con 20 workers concurrentes que consultan la API WFS del Catastro, reduciendo el tiempo de consulta en más de un 90%.',
+              'Tratamiento de datos tabulares mediante Pandas hacia polígonos espaciales GeoJSON enriquecidos con filtros dinámicos.',
+              'Mapas interactivos responsivos desarrollados con Leaflet.js con cálculo en tiempo real de perímetros y áreas.',
+              'Integración de especificaciones OGC WFS para delimitación parcelaria oficial.'
+            ],
+            techStack: [
+              { name: 'Python', icon: 'python' },
+              { name: 'Pandas', icon: 'pandas' },
+              { name: 'Leaflet', icon: 'leaflet' },
+              { name: 'GeoJSON', icon: 'geojson' }
+            ],
+            bentoMetrics: [
+              { value: '>90%', label: 'Optimización' },
+              { value: '20', label: 'Workers Multihilo' },
+              { value: 'API WFS', label: 'Catastro Oficial' }
+            ],
+            link: 'https://github.com/Sacasa01/legacy-land-mapper',
+            linkText: 'Ver Repositorio ↗'
+          }
+        ]
+      },
+      skills: {
+        sectionTitle: 'Arquitectura de Habilidades',
+        sectionSubtitle: 'Grafo de Nodos Vectoriales y Ecosistema Tecnológico',
+        sectionDescription: 'Red interactiva e interconectada que mapea desde el núcleo Full-Stack hasta sistemas de IA autónomos, bases de datos y DevOps contenerizado. Pasa el cursor o pulsa en cualquier nodo para ver detalles.',
+        selectPrompt: 'Pulsa o pasa el cursor por los nodos vectoriales para inspeccionar especificaciones técnicas y experiencia práctica.',
+        domainsTitle: 'Clusters de Arquitectura',
+        spokenSectionTitle: 'Movilidad Internacional y Competencia Comunicativa',
+        spokenSectionSubtitle: 'Fluidez y Capacidades Idiomáticas para Reubicación y Equipos Globales',
+        spokenNotice: 'Totalmente preparado para incorporación presencial inmediata en Dublín desde el 30 de Septiembre de 2026.',
+        items: [
+          { id: 'html-css', name: 'HTML5 y CSS3', category: 'core', categoryLabel: 'Estándares Web', subtitle: 'HTML Semántico · Tailwind CSS · Responsive', badge: 'Experto' },
+          { id: 'python', name: 'Python 3', category: 'core', categoryLabel: 'Backend Troncal e IA', subtitle: 'FastAPI · PyTorch · Pandas · MONAI', badge: 'Avanzado' },
+          { id: 'php', name: 'PHP 8', category: 'core', categoryLabel: 'Backend Troncal', subtitle: 'Symfony 7 · Arquitectura Limpia · RBAC', badge: 'Avanzado' },
+          { id: 'typescript', name: 'TypeScript', category: 'core', categoryLabel: 'Frontend y Node', subtitle: 'Angular 19 · Tipado Estricto · Node.js', badge: 'Avanzado' },
+          { id: 'angular', name: 'Angular 19', category: 'frameworks', categoryLabel: 'Arquitectura Frontend', subtitle: 'Componentes Standalone · Signals · RxJS', badge: 'v19 Standalone' },
+          { id: 'docker', name: 'Docker y Compose', category: 'devops', categoryLabel: 'Contenedores', subtitle: 'Builds Multi-etapa · Alpine · Redes', badge: 'DevOps' },
+          { id: 'aws', name: 'Servicios Cloud AWS', category: 'devops', categoryLabel: 'Servicios Cloud', subtitle: 'EC2 · S3 · RDS · Lambda · IAM', badge: 'Practitioner' },
+          { id: 'sql', name: 'MySQL y PostgreSQL', category: 'database', categoryLabel: 'Bases de Datos', subtitle: 'Normalización 3FN · Indexación · pgvector', badge: 'Bases de Datos' },
+          { id: 'git', name: 'Git y GitHub Actions', category: 'devops', categoryLabel: 'Automatización', subtitle: 'GitOps · Conventional Commits · CI/CD', badge: 'CI/CD' },
+          { id: 'mcp', name: 'Model Context Protocol', category: 'ai', categoryLabel: 'Sistemas de IA', subtitle: 'Servidores MCP · Ejecución de Herramientas · Seguridad LLM', badge: 'Anthropic' },
+          { id: 'pytorch', name: 'PyTorch y MONAI', category: 'ai', categoryLabel: 'Deep Learning', subtitle: 'Imagen Médica · Segmentación Neuronal · GPU', badge: 'IA Clínica' },
+          { id: 'agentic', name: 'Flujos Agénticos ReAct', category: 'ai', categoryLabel: 'IA Autónoma', subtitle: 'Razonamiento en Pasos · Selección de Herramientas · HITL', badge: 'Agentes' },
+          { id: 'lang-en', name: 'Inglés (C1)', category: 'language', categoryLabel: 'Idiomas', subtitle: 'Certificado C1 · Fluidez Profesional Completa', badge: 'Nivel C1' },
+          { id: 'lang-es', name: 'Español (C2)', category: 'language', categoryLabel: 'Idiomas', subtitle: 'Hablante Nativo · Fluidez Bilingüe Plena', badge: 'Nativo' },
+          { id: 'lang-va', name: 'Valenciano (C2)', category: 'language', categoryLabel: 'Idiomas', subtitle: 'Lengua Cooficial Regional Nativa', badge: 'Nativo' }
+        ]
+      },
+      education: {
+        sectionTitle: 'Educación & Certificaciones',
+        sectionSubtitle: 'Trayectoria Real de Ingeniería (2024 – 2027)',
+        timelineBadge: 'Cronología Continua (2024 ➔ 2027)',
+        journeyTitle: 'Trayectoria Real de Ingeniería (2024 – 2027)',
+        journeySubtitle: 'Línea del Tiempo Horizontal e Interactiva: Formación Base → Certificaciones AWS y Google IA → Práctica Clínica → Grado BSc',
+        timelineHint: 'Pulsa en los iconos para ver los certificados PDF oficiales o el plan de estudios completo',
+        milestones: [
+          {
+            id: 'daw',
+            year: '2024 – 2026',
+            title: 'CFGS DAW — Desarrollo de Aplicaciones Web',
+            institution: 'La Florida Universitària',
+            badge: 'Nota Media: 7.00 / 10 · Finalizado',
+            type: 'degree',
+            icon: 'degree-daw',
+            description: 'Arquitectura empresarial backend (PHP 8/Symfony 7, MySQL/PostgreSQL) e ingeniería frontend reactiva con Angular 19 y TypeScript.',
+            educationId: 'daw'
+          },
+          {
+            id: 'google-ai',
+            year: 'Ene 2025',
+            title: 'Google IA y Productividad',
+            institution: 'Santander Open Academy y Google',
+            badge: 'Google IA · Certificado',
+            type: 'certification',
+            icon: 'cert-google',
+            description: 'Integración de IA generativa, diseño de arquitecturas de prompts y automatización de pipelines de productividad.',
+            pdfUrl: '/certificates/google-santander-ai-certificate.pdf'
+          },
+          {
+            id: 'aws-cloud',
+            year: '2025',
+            title: 'Taller Cloud AWS',
+            institution: 'Amazon Web Services (AWS)',
+            badge: 'Fundamentos Cloud Practitioner',
+            type: 'certification',
+            icon: 'cert-aws',
+            description: 'Taller práctico de arquitectura en AWS (EC2, S3, RDS, Lambda serverless), políticas IAM y seguridad cloud.',
+            pdfUrl: '/certificates/aws-workshop-certificate.pdf'
+          },
+          {
+            id: 'english-c1',
+            year: '2026',
+            title: 'Certificación Inglés C1',
+            institution: 'Examen Oficial IELTS / CATE',
+            badge: 'C1 Fluido · IELTS 8.0 Eq.',
+            type: 'certification',
+            icon: 'cert-english',
+            description: 'Competencia académica y profesional completa en inglés técnico para entornos internacionales, debates de arquitectura y code reviews.',
+            pdfUrl: '/certificates/english-cate-certificate.pdf'
+          },
+          {
+            id: 'bsc',
+            year: '2026 – 2027',
+            title: 'BSc (Hons) in Computer Science (Top-Up)',
+            institution: 'Canterbury Christ Church University / MSMK',
+            badge: '100% en Inglés · En Curso',
+            type: 'degree',
+            icon: 'degree-bsc',
+            description: 'Grado británico oficial: Ingeniería Avanzada de Software, Sistemas Distribuidos, Ciberseguridad e Integración de Sistemas de IA.',
+            educationId: 'bsc'
+          }
+        ],
+        degrees: {
+          daw: {
+            id: 'daw',
+            degree: 'CFGS DAW — Desarrollo de Aplicaciones Web',
+            institution: 'La Florida Universitària',
+            location: 'Valencia, España',
+            period: '2024 – 2026',
+            badge: 'Nota Media: 7.00 / 10 · Finalizado',
+            status: 'Ciclo Formativo de Grado Superior',
+            summary: 'Formación técnica superior integral focalizada en sistemas backend empresariales, bases de datos relacionales normalizadas, arquitectura limpia y frontend moderno.',
+            fullDescription: 'Programa oficial intensivo de dos años enfocado en ingeniería de software robusta. Diseño e implementación de APIs desacopladas con Symfony 7 y PHP 8, esquemas MySQL y PostgreSQL con normalización estricta en 3FN y control de transacciones ACID. Desarrollo de SPAs con Angular 19 y TypeScript con Signal reactivity, y contenerización multi-servicio con Docker Compose siguiendo flujos Git con ramas temáticas.',
+            highlights: [
+              'Enfoque riguroso en arquitecturas empresariales de backend (PHP 8/Symfony 7, esquemas relacionales MySQL/PostgreSQL).',
+              'Ingeniería frontend moderna con TypeScript/Angular 19, reactividad por Signals y principios Clean Code.',
+              'Contenerización de entornos con Docker Compose y testing automatizado.',
+              'Proyecto TFG FitForge: 33 endpoints REST asegurados con JWT y algoritmos de recomendación dinámica.'
+            ],
+            syllabus: [
+              'Sistemas Backend: PHP 8.2+, Symfony 7, APIs RESTful, JWT, RBAC granular, Doctrine ORM',
+              'Arquitectura de Bases de Datos: MySQL 8, PostgreSQL, 3FN, Índices, Transacciones ACID, Migraciones',
+              'Ingeniería Frontend: TypeScript, Componentes Standalone de Angular 19, Signals, Tailwind CSS',
+              'DevOps e Infraestructura: Docker, Docker Compose, Flujos Git con feature-branches, Nginx',
+              'Ingeniería de Software: Clean Code, Principios SOLID, Testing automatizado y Validación de seguridad'
+            ],
+            techStack: [
+              { name: 'PHP', icon: 'php' },
+              { name: 'Symfony', icon: 'symfony' },
+              { name: 'MySQL', icon: 'mysql' },
+              { name: 'PostgreSQL', icon: 'postgresql' },
+              { name: 'Angular', icon: 'angular' },
+              { name: 'TypeScript', icon: 'typescript' },
+              { name: 'Docker', icon: 'docker' },
+              { name: 'Git', icon: 'git' }
+            ],
+            officialUrl: 'https://www.floridauniversitaria.es/es-es/titulaciones/ciclos-formativos/daw-desarrollo-de-aplicaciones-web',
+            officialUrlText: 'Página Oficial La Florida Universitària'
+          },
+          bsc: {
+            id: 'bsc',
+            degree: 'BSc (Hons) in Computer Science (Top-Up)',
+            institution: 'Canterbury Christ Church University (Campus Madrid en MSMK)',
+            location: 'Madrid, España (Currículo Británico)',
+            period: 'Sep 2026 – Jun 2027',
+            badge: 'Impartido 100% en Inglés · En Curso',
+            status: 'Grado Universitario Oficial Británico',
+            summary: 'Grado británico Bachelor of Science con honores enfocado en ciencias de la computación avanzadas, sistemas distribuidos, ciberseguridad e integración de agentes de IA.',
+            fullDescription: 'Cursando el Grado Británico Oficial Bachelor of Science with Honours in Computer Science por Canterbury Christ Church University en la sede de MSMK University Madrid. Impartido íntegramente en inglés, este programa de alto rendimiento profundiza en ingeniería avanzada de software empresarial, sistemas distribuidos en la nube, ciberseguridad e integración de sistemas agénticos de inteligencia artificial.',
+            highlights: [
+              'Formación universitaria británica y española orientada a roles de ingeniería de software de alto impacto.',
+              'Especializaciones: Advanced Software Engineering, Cloud Systems, Cybersecurity y AI System Integration.',
+              'Entorno académico internacional 100% en inglés con foco en investigación y arquitectura técnica.',
+              'Proyecto Final Honours orientado a orquestación de agentes autónomos y herramientas en sandboxes deterministas.'
+            ],
+            syllabus: [
+              'Ingeniería de Software Avanzada y Patrones de Arquitectura Empresarial',
+              'Sistemas Distribuidos, Arquitectura Cloud y Microservicios Escalables',
+              'Ciberseguridad, Modelado de Amenazas y Diseño de Software Seguro',
+              'Sistemas de Inteligencia Artificial, Agentes Autónomos e Integración Machine Learning',
+              'Metodologías de Investigación y Proyecto Fin de Grado Honours'
+            ],
+            techStack: [
+              { name: 'Python', icon: 'python' },
+              { name: 'FastAPI', icon: 'fastapi' },
+              { name: 'AWS', icon: 'aws' },
+              { name: 'Docker', icon: 'docker' },
+              { name: 'PyTorch', icon: 'pytorch' },
+              { name: 'TypeScript', icon: 'typescript' },
+              { name: 'Git', icon: 'git' }
+            ],
+            officialUrl: 'https://www.canterbury.ac.uk/study-here/courses/undergraduate/computer-science',
+            officialUrlText: 'Página Oficial Canterbury Christ Church University'
+          }
+        },
+        items: [
+          {
+            degree: 'BSc (Hons) in Computer Science (Top-Up)',
+            institution: 'Canterbury Christ Church University (sede Madrid en MSMK University)',
+            period: 'Sep 2026 – Jun 2027',
+            badge: 'Impartido 100% en Inglés · En Curso',
+            status: 'Titulación Universitaria',
+            step: '02',
+            position: 'top',
+            highlights: [
+              'Especializaciones: Advanced Software Engineering, Cloud Systems, Cybersecurity y AI System Integration.',
+              'Formación universitaria británica y española orientada a roles de ingeniería de software de alto impacto.'
+            ]
+          },
+          {
+            degree: 'CFGS DAW – Desarrollo de Aplicaciones Web',
+            institution: 'La Florida Universitària, Valencia',
+            period: '2024 – 2026',
+            badge: 'Nota Media: 7.00 / 10 · Finalizado',
+            status: 'Hito Fundacional',
+            step: '01',
+            position: 'bottom',
+            highlights: [
+              'Enfoque riguroso en arquitecturas empresariales de backend (PHP 8/Symfony 7, esquemas relacionales MySQL/PostgreSQL).',
+              'Ingeniería frontend moderna con TypeScript/Angular, principios Clean Code y entornos contenerizados con Docker.'
+            ]
+          }
+        ]
+      },
+      certifications: {
+        sectionTitle: 'Certificaciones y Credenciales',
+        sectionSubtitle: 'Competencias Validadas y Formación Continua',
+        items: [
+          {
+            title: 'Inglés: Certificación C1 (IELTS 8.0 Equivalente)',
+            issuer: 'Official IELTS Examination / CATE',
+            year: '2026',
+            badge: 'C1 Fluido · MCER',
+            icon: 'cert-english',
+            pdfUrl: '/certificates/english-cate-certificate.pdf',
+            description: 'Fluidez académica y profesional avanzada en inglés técnico para liderazgo y comunicación en equipos internacionales.'
+          },
+          {
+            title: 'Google: Inteligencia Artificial y Productividad',
+            issuer: 'Santander Open Academy y Google',
+            year: 'Ene 2025',
+            badge: 'Google AI · Certificado',
+            icon: 'cert-google',
+            pdfUrl: '/certificates/google-santander-ai-certificate.pdf',
+            description: 'Integración de IA generativa, diseño de prompts y automatización de flujos de productividad de desarrollo.'
+          },
+          {
+            title: 'AWS: Taller Cloud y Fundamentos Practitioner',
+            issuer: 'Amazon Web Services (AWS)',
+            year: '2025',
+            badge: 'AWS Cloud · Taller',
+            icon: 'cert-aws',
+            pdfUrl: '/certificates/aws-workshop-certificate.pdf',
+            description: 'Taller práctico de arquitectura cloud en AWS (EC2, S3, RDS, Lambda), seguridad en la nube y estrategias de despliegue en producción.'
+          }
+        ]
+      },
+      contact: {
+        sectionTitle: 'Contacto',
+        sectionSubtitle: 'Canal Directo y Oportunidades',
+        heading: 'Construyamos Algo Excepcional',
+        subheading: 'Disponible para roles de ingeniería de software e integración de sistemas de IA en Dublín, Irlanda o remoto internacional.',
+        text: 'Si buscas incorporar talento técnico en backend, construir pipelines de IA o conversar sobre arquitectura de sistemas desacoplados, mis vías de contacto están abiertas. Escríbeme directamente.',
+        email: 'santiagocsdev@gmail.com',
+        phone: '+34 654 763 788',
+        location: 'Dublín, Irlanda',
+        locationBadge: 'Disponible On-Site (30 Sep 2026) / Remoto Internacional',
+        emailLabel: 'Correo Electrónico',
+        phoneLabel: 'Teléfono / WhatsApp',
+        locationLabel: 'Ubicación Objetivo',
+        copyEmail: 'Copiar Correo',
+        emailCopied: '¡Copiado al portapapeles!',
+        sendEmail: 'Enviar Mensaje Directo',
+        callWhatsapp: 'Llamar o WhatsApp',
+        socialsTitle: 'Perfiles Profesionales',
+        downloadCv: 'Curriculum Vitae (PDF)'
+      },
+      footer: {
+        rights: 'Todos los derechos reservados.',
+        builtWith: 'Desarrollado con Angular 19, Tailwind CSS y principios Clean Architecture.'
+      }
+    }
+  };
+  skillNodes: SkillNode[] = [
+    // 01 BACKEND
+    {
+      id: 'python',
+      name: 'Python 3',
+      shortName: 'Python',
+      domain: 'backend',
+      domainLabelEn: 'Backend Architecture',
+      domainLabelEs: 'Arquitectura Backend',
+      badge: 'AsyncIO · 3.11+',
+      color: '#3776AB',
+      icon: 'python',
+      descEn: 'AsyncIO programming, multithreading, concurrent task execution, data pipelines, and numerical algorithms.',
+      descEs: 'Programación asíncrona AsyncIO, multihilo, ejecución de tareas concurrentes, pipelines de datos y algoritmos numéricos.',
+      highlightsEn: ['20-worker Cadastre pipeline', 'Pandas spatial GeoJSON parsing', 'Clinical inference microservices'],
+      highlightsEs: ['Pipeline catastral con 20 workers', 'Parseo GeoJSON espacial con Pandas', 'Microservicios de inferencia clínica']
+    },
+    {
+      id: 'fastapi',
+      name: 'FastAPI',
+      shortName: 'FastAPI',
+      domain: 'backend',
+      domainLabelEn: 'Backend Architecture',
+      domainLabelEs: 'Arquitectura Backend',
+      badge: 'REST · OpenAPI',
+      color: '#009688',
+      icon: 'fastapi',
+      descEn: 'High-speed asynchronous RESTful APIs with Pydantic data validation, OpenAPI specs, and dependency injection.',
+      descEs: 'APIs RESTful asíncronas de alta velocidad con validación de datos por Pydantic, OpenAPI e inyección de dependencias.',
+      highlightsEn: ['Low-latency GPU endpoints', 'Automated Swagger documentation', 'Asynchronous streaming payloads'],
+      highlightsEs: ['Endpoints GPU de baja latencia', 'Documentación Swagger automática', 'Streaming de datos asíncrono']
+    },
+    {
+      id: 'php',
+      name: 'PHP 8 / Symfony 7',
+      shortName: 'Symfony / PHP',
+      domain: 'backend',
+      domainLabelEn: 'Backend Architecture',
+      domainLabelEs: 'Arquitectura Backend',
+      badge: 'Symfony 7 · DDD',
+      color: '#777BB4',
+      icon: 'symfony',
+      descEn: 'Decoupled REST API engineering, Domain-Driven Design principles, JWT stateless authentication, and fine-grained RBAC.',
+      descEs: 'Ingeniería de APIs REST desacopladas, principios DDD, autenticación sin estado con JWT y control de acceso RBAC granular.',
+      highlightsEn: ['33 secured FitForge endpoints', 'Doctrine ORM & migrations', 'Clean Architecture separation'],
+      highlightsEs: ['33 endpoints seguros en FitForge', 'Doctrine ORM y migraciones', 'Separación Clean Architecture']
+    },
+    {
+      id: 'mysql',
+      name: 'MySQL 8',
+      shortName: 'MySQL',
+      domain: 'backend',
+      domainLabelEn: 'Backend Architecture',
+      domainLabelEs: 'Arquitectura Backend',
+      badge: '3NF Relational',
+      color: '#00758F',
+      icon: 'mysql',
+      descEn: 'Relational data modeling, 3NF schema normalization, ACID transaction integrity, and index optimization.',
+      descEs: 'Modelado de datos relacional, normalización en 3NF, integridad transaccional ACID y optimización de índices.',
+      highlightsEn: ['14-table FitForge schema', 'Foreign key cascades & constraints', 'Query execution plan analysis'],
+      highlightsEs: ['Esquema de 14 tablas en FitForge', 'Claves foráneas y restricciones', 'Análisis de planes de ejecución']
+    },
+    {
+      id: 'postgresql',
+      name: 'PostgreSQL & pgvector',
+      shortName: 'PostgreSQL',
+      domain: 'backend',
+      domainLabelEn: 'Backend Architecture',
+      domainLabelEs: 'Arquitectura Backend',
+      badge: 'Vector Search',
+      color: '#336791',
+      icon: 'postgresql',
+      descEn: 'Advanced relational modeling with vector search extensions for semantic document retrieval and embedding stores.',
+      descEs: 'Modelado relacional avanzado con extensiones de búsqueda vectorial para recuperación semántica de documentos y embeddings.',
+      highlightsEn: ['Cosine distance indexing', 'Vector embeddings integration', 'PostGIS spatial queries'],
+      highlightsEs: ['Indexación por distancia coseno', 'Integración de embeddings vectoriales', 'Consultas espaciales PostGIS']
+    },
+    // 02 FRONTEND
+    {
+      id: 'angular',
+      name: 'Angular 19',
+      shortName: 'Angular',
+      domain: 'frontend',
+      domainLabelEn: 'Frontend Architecture',
+      domainLabelEs: 'Arquitectura Frontend',
+      badge: 'v19 Standalone',
+      color: '#DD0031',
+      icon: 'angular',
+      descEn: 'Component architecture with reactive Signals, control flow, Standalone APIs, and performance optimizations.',
+      descEs: 'Arquitectura de componentes con Signals reactivos, nuevo flujo de control, APIs Standalone y optimización de rendimiento.',
+      highlightsEn: ['FitForge SPA architecture', 'Reactive state with Signals', 'Strict TypeScript typings'],
+      highlightsEs: ['Arquitectura SPA en FitForge', 'Estado reactivo con Signals', 'Tipado estricto con TypeScript']
+    },
+    {
+      id: 'typescript',
+      name: 'TypeScript',
+      shortName: 'TypeScript',
+      domain: 'frontend',
+      domainLabelEn: 'Frontend Architecture',
+      domainLabelEs: 'Arquitectura Frontend',
+      badge: 'Strict Typings',
+      color: '#3178C6',
+      icon: 'typescript',
+      descEn: 'Enterprise software development using advanced generics, interfaces, strict null checks, and modern ECMAScript standards.',
+      descEs: 'Desarrollo corporativo con genéricos avanzados, interfaces, comprobación estricta de nulos y estándares ECMAScript modernos.',
+      highlightsEn: ['Type-safe API integrations', 'Clean code & OOP patterns', 'Angular & Node.js codebases'],
+      highlightsEs: ['Integraciones de API seguras', 'Patrones Clean Code y POO', 'Bases de código Angular y Node.js']
+    },
+    {
+      id: 'tailwind',
+      name: 'Tailwind CSS',
+      shortName: 'Tailwind',
+      domain: 'frontend',
+      domainLabelEn: 'Frontend Architecture',
+      domainLabelEs: 'Arquitectura Frontend',
+      badge: 'Design Systems',
+      color: '#06B6D4',
+      icon: 'tailwind',
+      descEn: 'Design token systems, responsive layouts, CSS grid, fluid typography, and dark/light theme switching.',
+      descEs: 'Sistemas de design tokens, maquetación responsiva, CSS Grid, tipografía fluida y alternancia de temas claro/oscuro.',
+      highlightsEn: ['Editorial boxed layouts', 'Micro-interactions & transitions', 'Accessible color contrast'],
+      highlightsEs: ['Layouts boxed editoriales', 'Micro-interacciones y transiciones', 'Contraste accesible de color']
+    },
+    {
+      id: 'html-css',
+      name: 'HTML5 & CSS3',
+      shortName: 'HTML5 / CSS3',
+      domain: 'frontend',
+      domainLabelEn: 'Frontend Architecture',
+      domainLabelEs: 'Arquitectura Frontend',
+      badge: 'Web Standards',
+      color: '#E34F26',
+      icon: 'html5',
+      descEn: 'Semantic markup, accessibility (a11y), modern flexbox/grid architectures, and cross-browser responsiveness.',
+      descEs: 'Marcado semántico, accesibilidad (a11y), arquitecturas modernas con flexbox/grid y responsividad multiplataforma.',
+      highlightsEn: ['Semantic HTML semantics', 'Accessible contrast ratios', 'Mobile-first responsive design'],
+      highlightsEs: ['Semántica HTML estándar', 'Ratios de contraste accesibles', 'Diseño responsive mobile-first']
+    },
+    // 03 AI SYSTEM AGENTS
+    {
+      id: 'mcp',
+      name: 'Model Context Protocol (MCP)',
+      shortName: 'MCP Protocol',
+      domain: 'ai',
+      domainLabelEn: 'AI System Agents',
+      domainLabelEs: 'Agentes de Sistemas de IA',
+      badge: 'Anthropic Protocol',
+      color: '#D7340B',
+      icon: 'mcp',
+      descEn: 'Engineering custom MCP servers exposing tools, resources, and database queries to LLMs with strict safety boundaries.',
+      descEs: 'Creación de servidores MCP personalizados que exponen herramientas, recursos y consultas a LLMs con validación estricta.',
+      highlightsEn: ['Local & remote tool execution', 'Human-in-the-Loop guardrails', 'Deterministic JSON-RPC schema'],
+      highlightsEs: ['Ejecución de herramientas local y remota', 'Barreras de seguridad Human-in-the-Loop', 'Esquema determinista JSON-RPC']
+    },
+    {
+      id: 'agentic',
+      name: 'ReAct Agentic Workflows',
+      shortName: 'AI Agents',
+      domain: 'ai',
+      domainLabelEn: 'AI System Agents',
+      domainLabelEs: 'Agentes de Sistemas de IA',
+      badge: 'Autonomous Systems',
+      color: '#336467',
+      icon: 'agentic',
+      descEn: 'Autonomous multi-step reasoning, dynamic tool selection, memory retention, and Human-in-the-Loop approval patterns.',
+      descEs: 'Razonamiento autónomo en múltiples pasos, selección dinámica de herramientas, retención de memoria y patrones Human-in-the-Loop.',
+      highlightsEn: ['Structured function calling', 'Self-correcting code execution', 'Enterprise approval gates'],
+      highlightsEs: ['Llamada estructurada a funciones', 'Ejecución auto-correctiva de código', 'Compuertas de aprobación corporativas']
+    },
+    {
+      id: 'pytorch',
+      name: 'PyTorch & MONAI',
+      shortName: 'PyTorch / MONAI',
+      domain: 'ai',
+      domainLabelEn: 'AI System Agents',
+      domainLabelEs: 'Agentes de Sistemas de IA',
+      badge: 'Clinical Deep Learning',
+      color: '#EE4C2C',
+      icon: 'pytorch',
+      descEn: 'Medical image preprocessing, organ segmentation pipelines, tensor transformations, and GPU-accelerated inference.',
+      descEs: 'Preprocesamiento de imagen médica, pipelines de segmentación de órganos, transformaciones de tensores e inferencia por GPU.',
+      highlightsEn: ['Hospital La Fe clinical pipeline', 'MONAI neural segmentation models', 'Real-time inference microservice'],
+      highlightsEs: ['Pipeline clínico en el Hospital La Fe', 'Modelos neuronales MONAI de segmentación', 'Microservicio de inferencia en tiempo real']
+    },
+    // 04 DEVOPS & CLOUD
+    {
+      id: 'docker',
+      name: 'Docker & Compose v2',
+      shortName: 'Docker',
+      domain: 'devops',
+      domainLabelEn: 'DevOps & Cloud',
+      domainLabelEs: 'DevOps & Cloud',
+      badge: 'Multi-Stage',
+      color: '#2496ED',
+      icon: 'docker',
+      descEn: 'Containerizing multi-service stacks (Nginx, PHP-FPM, MySQL, FastAPI), multi-stage builds, and volume persistence.',
+      descEs: 'Contenerización de stacks multiservicio (Nginx, PHP-FPM, MySQL, FastAPI), builds multi-stage y persistencia de volúmenes.',
+      highlightsEn: ['Reproducible local & prod environments', 'Minimal Alpine base images', 'Network isolation & security'],
+      highlightsEs: ['Entornos reproducibles locales y prod', 'Imágenes base mínimas con Alpine', 'Aislamiento de redes y seguridad']
+    },
+    {
+      id: 'aws',
+      name: 'AWS Cloud',
+      shortName: 'AWS Cloud',
+      domain: 'devops',
+      domainLabelEn: 'DevOps & Cloud',
+      domainLabelEs: 'DevOps & Cloud',
+      badge: 'Cloud Architecture',
+      color: '#FF9900',
+      icon: 'aws',
+      descEn: 'Hands-on foundational architecture across EC2, S3 bucket storage, RDS managed databases, and serverless Lambda functions.',
+      descEs: 'Arquitectura fundamental práctica en EC2, almacenamiento S3, bases de datos gestionadas en RDS y funciones Lambda.',
+      highlightsEn: ['Certified AWS Cloud Workshop', 'IAM access policies & security', 'S3 asset distribution'],
+      highlightsEs: ['Taller oficial certificado de AWS', 'Políticas IAM y seguridad', 'Distribución de assets en S3']
+    },
+    {
+      id: 'git',
+      name: 'GitOps & CI/CD',
+      shortName: 'GitOps',
+      domain: 'devops',
+      domainLabelEn: 'DevOps & Cloud',
+      domainLabelEs: 'DevOps & Cloud',
+      badge: 'Automated Pipelines',
+      color: '#F05032',
+      icon: 'git',
+      descEn: 'Feature-branch workflow, conventional commits, and automated continuous deployment with GitHub Actions.',
+      descEs: 'Flujo de trabajo con ramas temáticas, conventional commits y despliegue continuo automatizado con GitHub Actions.',
+      highlightsEn: ['GitOps pipeline on self-hosted server', 'Automated test suites on PR', 'Linting & bundle verification'],
+      highlightsEs: ['Pipeline GitOps en servidor propio', 'Suites de tests automatizados en PR', 'Linters y comprobación de bundles']
+    },
+    {
+      id: 'linux',
+      name: 'Linux & Self-Hosted',
+      shortName: 'Linux Server',
+      domain: 'devops',
+      domainLabelEn: 'DevOps & Cloud',
+      domainLabelEs: 'DevOps & Cloud',
+      badge: 'Server Admin',
+      color: '#FCC624',
+      icon: 'linux',
+      descEn: 'Debian/Ubuntu server administration, systemd service management, reverse proxies, and hardened networking.',
+      descEs: 'Administración de servidores Debian/Ubuntu, gestión con systemd, proxies inversos y redes seguras.',
+      highlightsEn: ['Hardened production VPS', 'Systemd daemon services', 'SSL/TLS certificate automation'],
+      highlightsEs: ['VPS en producción securizado', 'Servicios demonio systemd', 'Automatización de certificados SSL/TLS']
+    }
+  ];
+
+  skillClusters = computed<SkillCluster[]>(() => [
+    {
+      id: 'backend',
+      domainNumber: '01',
+      nameEn: 'Backend',
+      nameEs: 'Backend',
+      disciplineEn: 'Core Systems, REST APIs & Databases',
+      disciplineEs: 'Sistemas Troncales, APIs REST y Bases de Datos',
+      accentColor: '#336467',
+      skills: this.skillNodes.filter(s => s.domain === 'backend')
+    },
+    {
+      id: 'frontend',
+      domainNumber: '02',
+      nameEn: 'Frontend',
+      nameEs: 'Frontend',
+      disciplineEn: 'Reactive Architectures & Web Standards',
+      disciplineEs: 'Arquitecturas Reactivas y Estándares Web',
+      accentColor: '#3178C6',
+      skills: this.skillNodes.filter(s => s.domain === 'frontend')
+    },
+    {
+      id: 'ai',
+      domainNumber: '03',
+      nameEn: 'AI System Agents',
+      nameEs: 'AI System Agents',
+      disciplineEn: 'Autonomous Agents, Protocols & Deep Learning',
+      disciplineEs: 'Agentes Autónomos, Protocolos y Deep Learning',
+      accentColor: '#D7340B',
+      skills: this.skillNodes.filter(s => s.domain === 'ai')
+    },
+    {
+      id: 'devops',
+      domainNumber: '04',
+      nameEn: 'DevOps & Cloud',
+      nameEs: 'DevOps & Cloud',
+      disciplineEn: 'Containerization, Cloud Services & Linux CI/CD',
+      disciplineEs: 'Contenedores, Servicios Cloud y CI/CD en Linux',
+      accentColor: '#2496ED',
+      skills: this.skillNodes.filter(s => s.domain === 'devops')
+    }
+  ]);
+
+  backendCluster = computed(() => this.skillClusters().find(c => c.id === 'backend')!);
+  frontendCluster = computed(() => this.skillClusters().find(c => c.id === 'frontend')!);
+  aiCluster = computed(() => this.skillClusters().find(c => c.id === 'ai')!);
+  devopsCluster = computed(() => this.skillClusters().find(c => c.id === 'devops')!);
+  databaseCluster = computed(() => this.backendCluster());
+
+
+  spokenLanguages: SpokenLanguage[] = [
+    {
+      id: 'en',
+      nameEn: 'English',
+      nameEs: 'Inglés',
+      cefr: 'C1 Advanced',
+      levelBadge: 'Full Professional Proficiency (IELTS 8.0 Eq.)',
+      statusBadgeEn: 'Target: Dublin On-Site (Sep 2026)',
+      statusBadgeEs: 'Objetivo: Presencial en Dublín (Sep 2026)',
+      descEn: 'Official IELTS 8.0 standard. Completely fluent in technical architecture debates, daily async communication, code reviews, and international team leadership.',
+      descEs: 'Nivel equivalente a IELTS 8.0 / C1 Oficial. Totalmente fluido en debates de arquitectura técnica, revisiones de código, reuniones diarias y liderazgo técnico internacional.',
+      flag: '🇬🇧',
+      pdfUrl: '/assets/santiago-castro-cate-c1.pdf',
+      pdfLabelEn: 'View Official CATE C1 Statement (PDF) ↗',
+      pdfLabelEs: 'Ver Certificado Oficial CATE C1 (PDF) ↗'
+    },
+    {
+      id: 'es',
+      nameEn: 'Spanish',
+      nameEs: 'Español',
+      cefr: 'C2 Native',
+      levelBadge: 'Native Bilingual',
+      statusBadgeEn: 'Mother Tongue',
+      statusBadgeEs: 'Lengua Materna',
+      descEn: 'Native speaker with full academic, literary, and technical proficiency.',
+      descEs: 'Hablante nativo con dominio académico, técnico y profesional completo.',
+      flag: '🇪🇸'
+    },
+    {
+      id: 'va',
+      nameEn: 'Valencian / Catalan',
+      nameEs: 'Valenciano / Catalán',
+      cefr: 'C2 Native',
+      levelBadge: 'Co-official Native',
+      statusBadgeEn: 'Regional Native',
+      statusBadgeEs: 'Nativo Regional',
+      descEn: 'Co-official regional mother tongue in the Valencian Community with full bilingual fluency.',
+      descEs: 'Lengua cooficial en la Comunidad Valenciana con competencia bilingüe nativa completa.',
+      flag: '🦇'
+    }
+  ];
+
+  t = computed(() => this.content[this.lang()]);
+
+  scrollToTop(event?: Event) {
+    if (event) {
+      event.preventDefault();
+    }
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 
   toggleLang() {
-    this.currentLang = this.currentLang === 'en' ? 'es' : 'en';
-    localStorage.setItem('lang', this.currentLang);
+    if (typeof document !== 'undefined') {
+      const elements = document.querySelectorAll('.lang-fade');
+      if (elements.length > 0) {
+        gsap.to(elements, {
+          opacity: 0,
+          duration: 0.16,
+          ease: 'power1.in',
+          onComplete: () => {
+            this.lang.update(current => current === 'en' ? 'es' : 'en');
+            this.syncOpenModalLanguage();
+            gsap.to(elements, {
+              opacity: 1,
+              duration: 0.26,
+              ease: 'power1.out'
+            });
+          }
+        });
+        return;
+      }
+    }
+    this.lang.update(current => current === 'en' ? 'es' : 'en');
+    this.syncOpenModalLanguage();
+  }
+
+  private syncOpenModalLanguage() {
+    const currEdu = this.selectedEducationItem();
+    if (currEdu) {
+      const degrees = this.t().education.degrees as Record<string, EducationDetail> | undefined;
+      const newEdu = degrees?.[currEdu.id];
+      if (newEdu) {
+        this.selectedEducationItem.set(newEdu);
+        this.displayedEducationItem.set(newEdu);
+      }
+    }
+    const currProj = this.selectedProject();
+    if (currProj) {
+      const newProj = this.t().projects.items.find(p => p.id === currProj.id);
+      if (newProj) {
+        this.selectedProject.set(newProj);
+        this.displayedProject.set(newProj);
+      }
+    }
   }
 
   toggleTheme() {
-    if (this.isDarkMode) {
-      this.disableDarkMode();
-    } else {
-      this.enableDarkMode();
-    }
-  }
-
-  private enableDarkMode() {
-    this.isDarkMode = true;
-    this.renderer.addClass(document.documentElement, 'dark');
-    localStorage.setItem('theme', 'dark');
-  }
-
-  private disableDarkMode() {
-    this.isDarkMode = false;
-    this.renderer.removeClass(document.documentElement, 'dark');
-    localStorage.setItem('theme', 'light');
-  }
-
-  openModal(id: string) {
-    this.maxZIndex++;
-    this.windows.update(list => 
-      list.map(w => w.id === id ? { ...w, isOpen: true, zIndex: this.maxZIndex } : w)
-    );
-  }
-
-  closeModal(id: string) {
-    this.windows.update(list => 
-      list.map(w => w.id === id ? { ...w, isOpen: false } : w)
-    );
-  }
-
-  toggleMaximize(id: string) {
-    this.windows.update(list => 
-      list.map(w => w.id === id ? { ...w, isMaximized: !w.isMaximized } : w)
-    );
-  }
-
-  focusModal(id: string) {
-    this.maxZIndex++;
-    this.windows.update(list => 
-      list.map(w => w.id === id ? { ...w, zIndex: this.maxZIndex } : w)
-    );
-  }
-
-  private renderSynchronizedTimeline(time: number) {
-    const container = this.q4Container?.nativeElement;
-    if (!container) return;
-    const w = container.clientWidth;
-    const h = container.clientHeight;
-
-    const coords: Record<string, { x: number; y: number }> = {};
-
-    const refs: Record<string, HTMLElement | undefined> = {
-      bach: this.nodeBach?.nativeElement,
-      daw:  this.nodeDaw?.nativeElement,
-      cant: this.nodeCant?.nativeElement,
-      aws:  this.nodeAws?.nativeElement
-    };
-
-    if (!refs['bach'] || !refs['daw'] || !refs['cant'] || !refs['aws']) return;
-
-    // 1. Calcular oscilaciones de cada nodo y aplicar traslación GPU
-    Object.keys(this.q4Nodes).forEach(key => {
-      const node = this.q4Nodes[key];
-      const el = refs[key];
-      if (!el) return;
-
-      node.currentScale += (node.targetScale - node.currentScale) * 0.1;
-
-      node.x = Math.sin(time * node.speedX + node.phaseX) * node.ampX * node.currentScale;
-      node.y = Math.cos(time * node.speedY + node.phaseY) * node.ampY * node.currentScale;
-
-      const basePxX = w * node.basePctX;
-      const basePxY = h * node.basePctY;
-
-      // Centrado absoluto fluido
-      el.style.left = `calc(${node.basePctX * 100}% - ${el.clientWidth / 2}px)`;
-      el.style.top = `calc(${node.basePctY * 100}% - ${el.clientHeight / 2}px)`;
-      el.style.transform = `translate3d(${node.x}px, ${node.y}px, 0)`;
-
-      coords[key] = {
-        x: basePxX + node.x,
-        y: basePxY + node.y
-      };
+    this.theme.update(current => {
+      const next = current === 'light' ? 'dark' : 'light';
+      document.documentElement.classList.toggle('dark', next === 'dark');
+      document.documentElement.classList.toggle('light', next === 'light');
+      return next;
     });
+  }
 
-    // 2. Redibujar curvas de conexión y calcular nodo físico de bifurcación
-    if (coords['bach'] && coords['daw'] && coords['cant'] && coords['aws']) {
-      const pBach = coords['bach'];
-      const pDaw = coords['daw'];
-      const pCant = coords['cant'];
-      const pAws = coords['aws'];
+  copyEmailToClipboard() {
+    navigator.clipboard.writeText('santiagocsdev@gmail.com');
+    this.copiedEmail.set(true);
+    setTimeout(() => {
+      this.copiedEmail.set(false);
+    }, 2500);
+  }
 
-      // Curva 1: Bachillerato (abajo-derecha) -> Web App Developer (centro)
-      const d1 = `M ${pBach.x} ${pBach.y} C ${pBach.x - w * 0.08} ${pBach.y}, ${pDaw.x + w * 0.08} ${pDaw.y}, ${pDaw.x} ${pDaw.y}`;
-      this.pathBachDaw?.nativeElement?.setAttribute('d', d1);
-
-      // Curva 2: Web App Developer (centro) -> Canterbury (arriba-izq)
-      const d2 = `M ${pDaw.x} ${pDaw.y} C ${pDaw.x - w * 0.12} ${pDaw.y}, ${pCant.x + w * 0.12} ${pCant.y}, ${pCant.x} ${pCant.y}`;
-      this.pathDawCant?.nativeElement?.setAttribute('d', d2);
-
-      // 📐 CÁLCULO DEL NODO DE DERIVACIÓN DINÁMICO (At t = 0.45 en la Curva Bezier 2)
-      const p0x = pDaw.x, p0y = pDaw.y;
-      const p1x = pDaw.x - w * 0.12, p1y = pDaw.y;
-      const p2x = pCant.x + w * 0.12, p2y = pCant.y;
-      const p3x = pCant.x, p3y = pCant.y;
-
-      const t = 0.45; // Posicionamiento equilibrado del nodo sobre el cable
-      const mt = 1 - t;
-
-      const jX = mt*mt*mt*p0x + 3*mt*mt*t*p1x + 3*mt*t*t*p2x + t*t*t*p3x;
-      const jY = mt*mt*mt*p0y + 3*mt*mt*t*p1y + 3*mt*t*t*p2y + t*t*t*p3y;
-
-      // Colocar círculo de unión física del cable
-      this.junctionNodeCircle?.nativeElement?.setAttribute('cx', jX.toString());
-      this.junctionNodeCircle?.nativeElement?.setAttribute('cy', jY.toString());
-
-      // Curva 3: Derivación desde el nodo calculated (jX, jY) -> AWS Practitioner (pAws)
-      const d3 = `M ${jX} ${jY} C ${jX + w * 0.02} ${jY - h * 0.08}, ${pAws.x - w * 0.04} ${pAws.y + h * 0.08}, ${pAws.x} ${pAws.y}`;
-      this.pathJunctionAws?.nativeElement?.setAttribute('d', d3);
+  @HostListener('window:keydown.escape')
+  handleEscape() {
+    if (this.selectedProject()) {
+      this.closeProjectModal();
+    }
+    if (this.selectedEducationItem()) {
+      this.closeEducationModal();
+    }
+    if (this.selectedSkillNode()) {
+      this.selectedSkillNode.set(null);
     }
   }
 
-  // 📐 NUEVO RENDERIZADOR SÍNCRONO EN Q1 (Trayectoria Laboral + Pitch)
-  private renderWorkTrajectory(time: number) {
-    const container = this.q1Container?.nativeElement;
-    if (!container) return;
-    const w = container.clientWidth;
-    const h = container.clientHeight;
+  activeInquiryTopic = signal<'dublin-hiring' | 'clinical-ai' | 'backend-arch'>('dublin-hiring');
 
-    const coords: Record<string, { x: number; y: number }> = {};
-    const refs: Record<string, HTMLElement | undefined> = {
-      lafe: this.nodeLafe?.nativeElement,
-      hire: this.nodeHire?.nativeElement
-    };
-
-    if (!refs['lafe'] || !refs['hire']) return;
-
-    Object.keys(this.q1Nodes).forEach(key => {
-      const node = this.q1Nodes[key];
-      const el = refs[key];
-      if (!el) return;
-
-      node.currentScale += (node.targetScale - node.currentScale) * 0.1;
-      node.x = Math.sin(time * node.speedX + node.phaseX) * node.ampX * node.currentScale;
-      node.y = Math.cos(time * node.speedY + node.phaseY) * node.ampY * node.currentScale;
-
-      const basePxX = w * node.basePctX;
-      const basePxY = h * node.basePctY;
-
-      el.style.left = `calc(${node.basePctX * 100}% - ${el.clientWidth / 2}px)`;
-      el.style.top = `calc(${node.basePctY * 100}% - ${el.clientHeight / 2}px)`;
-      el.style.transform = `translate3d(${node.x}px, ${node.y}px, 0)`;
-
-      coords[key] = { x: basePxX + node.x, y: basePxY + node.y };
-    });
-
-    if (coords['lafe'] && coords['hire']) {
-      const pLafe = coords['lafe'];
-      const pHire = coords['hire'];
-
-      // Dibujar la curva Bezier elástica uniendo Fertoolity con Why Hire Me
-      const dQ1 = `M ${pLafe.x} ${pLafe.y} C ${pLafe.x + w * 0.10} ${pLafe.y}, ${pHire.x - w * 0.10} ${pHire.y}, ${pHire.x} ${pHire.y}`;
-      this.pathLafeHire?.nativeElement?.setAttribute('d', dQ1);
-    }
-  }
-
-  openWindow(id: string) {
-    if (id === 'me-bio') {
-      this.openModal('whyhireme');
-    } else if (id === 'climbing-log' || id === 'tennis-log' || id === 'futbol-log') {
-      this.openModal('climbing');
-    } else {
-      this.openModal(id);
-    }
-  }
-
-  onNodeHover(key: string, isHovering: boolean, quadrant: 'q1' | 'q3' | 'q4' = 'q4') {
-    const collection = quadrant === 'q1' ? this.q1Nodes : (quadrant === 'q3' ? this.q3Nodes : this.q4Nodes);
-    if (collection[key]) {
-      collection[key].targetScale = isHovering ? 0.05 : 1;
-    }
-  }
-
-  runMedicalInference() {
-    if (this.isSegmenting) return;
-    
-    this.isSegmenting = true;
-    this.segmentationProgress = 0;
-    this.diceScore = 0.00;
-    this.inferenceLatency = 0;
-    this.segmentationPoints = '';
-
-    const duration = 2000; // 2 segundos de simulación de inferencia GPU
-    const start = performance.now();
-
-    const step = (now: number) => {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-      
-      this.segmentationProgress = Math.round(progress * 100);
-
-      // Simular el trazado progresivo de la máscara de segmentación (SVG Polygon)
-      if (progress > 0.2) {
-        const points: string[] = [];
-        const numPoints = 12;
-        const centerX = 150;
-        const centerY = 100;
-        const baseRadius = 45;
-
-        for (let i = 0; i < numPoints; i++) {
-          const angle = (i / numPoints) * Math.PI * 2;
-          // Generar ruido orgánico para simular formas anatómicas reales
-          const noise = Math.sin(angle * 3 + progress * 10) * 8 * (progress);
-          const r = baseRadius + noise;
-          const x = centerX + Math.cos(angle) * r;
-          const y = centerY + Math.sin(angle) * r;
-          points.push(`${x.toFixed(1)},${y.toFixed(1)}`);
-        }
-        this.segmentationPoints = points.join(' ');
-      }
-
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      } else {
-        // Inferencia completada: fijar métricas realistas basadas en tu modelo
-        this.isSegmenting = false;
-        this.diceScore = parseFloat((0.89 + Math.random() * 0.06).toFixed(3)); // Dice score real (89% - 95%)
-        this.inferenceLatency = Math.round(18 + Math.random() * 6); // ~20ms latency
+  get mailtoSubject(): string {
+    const subjects = {
+      en: {
+        'dublin-hiring': 'Software Engineering Opportunity in Dublin — Santiago Castro Salt',
+        'clinical-ai': 'Clinical AI & Medical Imaging Diagnostics Inquiry — Santiago Castro Salt',
+        'backend-arch': 'Backend Microservices & MCP Integration — Santiago Castro Salt'
+      },
+      es: {
+        'dublin-hiring': 'Oportunidad de Ingeniería de Software en Dublín — Santiago Castro Salt',
+        'clinical-ai': 'Consulta de IA Clínica e Imagen Médica — Santiago Castro Salt',
+        'backend-arch': 'Consulta de Arquitectura Backend y MCP — Santiago Castro Salt'
       }
     };
-
-    requestAnimationFrame(step);
+    return encodeURIComponent(subjects[this.lang()][this.activeInquiryTopic()]);
   }
 
-  changeSlice(direction: 'next' | 'prev') {
-    if (direction === 'next' && this.activeSlice < 48) this.activeSlice++;
-    if (direction === 'prev' && this.activeSlice > 1) this.activeSlice--;
-    // Reiniciar segmentación al cambiar de slide para dar feedback interactivo
-    this.segmentationPoints = '';
-    this.diceScore = 0;
+  setInquiryTopic(topic: 'dublin-hiring' | 'clinical-ai' | 'backend-arch') {
+    this.activeInquiryTopic.set(topic);
   }
 
-  // Métodos del Carrusel de Fit Forge
-  prevFitForge() {
-    this.fitForgeIndex = (this.fitForgeIndex === 0) ? this.fitForgeSlides.length - 1 : this.fitForgeIndex - 1;
+  openProjectModal(project: ProjectItem) {
+    this.isClosingModal.set(false);
+    this.selectedProject.set(project);
+    this.displayedProject.set(project);
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = 'hidden';
+    }
   }
 
-  nextFitForge() {
-    this.fitForgeIndex = (this.fitForgeIndex === this.fitForgeSlides.length - 1) ? 0 : this.fitForgeIndex + 1;
+  closeProjectModal() {
+    if (this.isClosingModal()) return;
+    this.selectedProject.set(null);
+    this.isClosingModal.set(true);
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        this.displayedProject.set(null);
+        this.isClosingModal.set(false);
+      }, 230);
+    } else {
+      this.displayedProject.set(null);
+      this.isClosingModal.set(false);
+    }
   }
 
-  setFitForgeSlide(index: number) {
-    this.fitForgeIndex = index;
+  openEducationModal(id: string) {
+    const degrees = this.t().education.degrees as Record<string, EducationDetail> | undefined;
+    const item = degrees?.[id];
+    if (!item) return;
+    this.isClosingEducationModal.set(false);
+    this.selectedEducationItem.set(item);
+    this.displayedEducationItem.set(item);
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = 'hidden';
+    }
   }
 
-  // Métodos del Carrusel de Legacy Land Mapper
-  prevMapper() {
-    this.mapperIndex = (this.mapperIndex === 0) ? this.mapperSlides.length - 1 : this.mapperIndex - 1;
+  closeEducationModal() {
+    if (this.isClosingEducationModal()) return;
+    this.selectedEducationItem.set(null);
+    this.isClosingEducationModal.set(true);
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        this.displayedEducationItem.set(null);
+        this.isClosingEducationModal.set(false);
+      }, 230);
+    } else {
+      this.displayedEducationItem.set(null);
+      this.isClosingEducationModal.set(false);
+    }
   }
 
-  nextMapper() {
-    this.mapperIndex = (this.mapperIndex === this.mapperSlides.length - 1) ? 0 : this.mapperIndex + 1;
-  }
-
-  setMapperSlide(index: number) {
-    this.mapperIndex = index;
-  }
-
-  private renderHobbiesPyramid(time: number) {
-    const container = this.q3Container?.nativeElement;
-    if (!container) return;
-    const w = container.clientWidth;
-    const h = container.clientHeight;
-
-    const coords: Record<string, { x: number; y: number }> = {};
-    const refs: Record<string, HTMLElement | undefined> = {
-      me: this.nodeMe?.nativeElement,
-      tennis: this.nodeTennis?.nativeElement,
-      futbol: this.nodeFutbol?.nativeElement,
-      climbing: this.nodeClimbing?.nativeElement,
-      sub1: this.nodeSub1?.nativeElement,
-      sub2: this.nodeSub2?.nativeElement,
-      sub3: this.nodeSub3?.nativeElement,
-      sub4: this.nodeSub4?.nativeElement,
-      sub5: this.nodeSub5?.nativeElement,
-      sub6: this.nodeSub6?.nativeElement
-    };
-
-    if (!refs['me'] || !refs['tennis'] || !refs['futbol'] || !refs['climbing'] ||
-        !refs['sub1'] || !refs['sub2'] || !refs['sub3'] || !refs['sub4'] || !refs['sub5'] || !refs['sub6']) return;
-
-    // Calcular oscilación individual y desplazar por GPU
-    Object.keys(this.q3Nodes).forEach(key => {
-      const node = this.q3Nodes[key];
-      const el = refs[key];
-      if (!el) return;
-
-      node.currentScale += (node.targetScale - node.currentScale) * 0.1;
-      node.x = Math.sin(time * node.speedX + node.phaseX) * node.ampX * node.currentScale;
-      node.y = Math.cos(time * node.speedY + node.phaseY) * node.ampY * node.currentScale;
-
-      el.style.left = `calc(${node.basePctX * 100}% - ${el.clientWidth / 2}px)`;
-      el.style.top = `calc(${node.basePctY * 100}% - ${el.clientHeight / 2}px)`;
-      el.style.transform = `translate3d(${node.x}px, ${node.y}px, 0)`;
-
-      coords[key] = { x: (w * node.basePctX) + node.x, y: (h * node.basePctY) + node.y };
-    });
-
-    // Redibujar las cuerdas elásticas de la pirámide
-    if (coords['me'] && coords['tennis'] && coords['futbol'] && coords['climbing']) {
-      const pMe = coords['me'], pTen = coords['tennis'], pFut = coords['futbol'], pCli = coords['climbing'];
-
-      // Conexiones nivel 1 -> nivel 2
-      this.pathMeTennis?.nativeElement?.setAttribute('d', `M ${pMe.x} ${pMe.y} C ${pMe.x - w*0.1} ${pMe.y}, ${pTen.x} ${pTen.y - h*0.05}, ${pTen.x} ${pTen.y}`);
-      this.pathMeFutbol?.nativeElement?.setAttribute('d', `M ${pMe.x} ${pMe.y} L ${pFut.x} ${pFut.y}`);
-      this.pathMeClimbing?.nativeElement?.setAttribute('d', `M ${pMe.x} ${pMe.y} C ${pMe.x + w*0.1} ${pMe.y}, ${pCli.x} ${pCli.y - h*0.05}, ${pCli.x} ${pCli.y}`);
-
-      // Conexiones nivel 2 -> nivel 3 (Sub-nodos de expansión)
-      this.pathTennisSub1?.nativeElement?.setAttribute('d', `M ${pTen.x} ${pTen.y} L ${coords['sub1'].x} ${coords['sub1'].y}`);
-      this.pathTennisSub2?.nativeElement?.setAttribute('d', `M ${pTen.x} ${pTen.y} L ${coords['sub2'].x} ${coords['sub2'].y}`);
-      this.pathFutbolSub3?.nativeElement?.setAttribute('d', `M ${pFut.x} ${pFut.y} L ${coords['sub3'].x} ${coords['sub3'].y}`);
-      this.pathFutbolSub4?.nativeElement?.setAttribute('d', `M ${pFut.x} ${pFut.y} L ${coords['sub4'].x} ${coords['sub4'].y}`);
-      this.pathClimbingSub5?.nativeElement?.setAttribute('d', `M ${pCli.x} ${pCli.y} L ${coords['sub5'].x} ${coords['sub5'].y}`);
-      this.pathClimbingSub6?.nativeElement?.setAttribute('d', `M ${pCli.x} ${pCli.y} L ${coords['sub6'].x} ${coords['sub6'].y}`);
+  selectSkillNode(node: SkillNode) {
+    if (this.selectedSkillNode()?.id === node.id) {
+      this.selectedSkillNode.set(null);
+    } else {
+      this.selectedSkillNode.set(node);
     }
   }
 }
