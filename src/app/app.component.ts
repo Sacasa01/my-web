@@ -160,24 +160,19 @@ export class AppComponent {
     return this.lang();
   }
 
-  // 4-Color Palette Reactive Signals (Vanilla, Dark Slate, Auburn, Hunyadi)
-  colorVanilla = computed(() => '#FFF3B0');
-  colorSlate = computed(() => '#335C67');
-  colorAuburn = computed(() => '#9E2A2B');
-  colorHunyadi = computed(() => '#E09F3E');
-
-  outerBg = computed(() => this.theme() === 'light' ? '#FAF2BF' : '#1F373E');
-  bgColor = computed(() => this.theme() === 'light' ? '#FFF3B0' : '#27474F');
-  cardBg = computed(() => this.theme() === 'light' ? '#FFFBE5' : '#335C67');
-  cardBorder = computed(() => this.theme() === 'light' ? 'rgba(51, 92, 103, 0.22)' : 'rgba(255, 243, 176, 0.22)');
-  textColor = computed(() => this.theme() === 'light' ? '#335C67' : '#FFF3B0');
-  mutedColor = computed(() => this.theme() === 'light' ? 'rgba(51, 92, 103, 0.78)' : 'rgba(255, 243, 176, 0.75)');
-  tagBg = computed(() => this.theme() === 'light' ? 'rgba(51, 92, 103, 0.09)' : 'rgba(255, 243, 176, 0.11)');
-  accentSinopia = computed(() => this.theme() === 'light' ? '#9E2A2B' : '#E09F3E');
-  accentCaribbean = computed(() => this.theme() === 'light' ? '#335C67' : '#E09F3E');
+  // Color Palette Reactive Signals (Warm Cream / Off-White Light, Neutral Charcoal / Slate Dark)
+  outerBg = computed(() => this.theme() === 'light' ? '#EBE8E1' : '#0F0F12');
+  bgColor = computed(() => this.theme() === 'light' ? '#FAF8F5' : '#18181B');
+  cardBg = computed(() => this.theme() === 'light' ? '#FFFFFF' : '#232327');
+  cardBorder = computed(() => this.theme() === 'light' ? 'rgba(24, 24, 27, 0.08)' : 'rgba(255, 255, 255, 0.09)');
+  textColor = computed(() => this.theme() === 'light' ? '#18181B' : '#F4F4F5');
+  mutedColor = computed(() => this.theme() === 'light' ? '#71717A' : '#A1A1AA');
+  tagBg = computed(() => this.theme() === 'light' ? 'rgba(24, 24, 27, 0.04)' : 'rgba(255, 255, 255, 0.06)');
+  accentSinopia = computed(() => this.theme() === 'light' ? '#D7340B' : '#FF5722');
+  accentCaribbean = computed(() => this.theme() === 'light' ? '#3F3F46' : '#E4E4E7');
   accentAuburn = computed(() => '#9E2A2B');
-  accentHunyadi = computed(() => '#E09F3E');
-  navBg = computed(() => this.theme() === 'light' ? 'rgba(255, 243, 176, 0.94)' : 'rgba(39, 71, 79, 0.94)');
+  accentHunyadi = computed(() => '#D97706');
+  navBg = computed(() => this.theme() === 'light' ? 'rgba(250, 248, 245, 0.90)' : 'rgba(24, 24, 27, 0.90)');
 
   content = {
     en: {

@@ -9,13 +9,13 @@
 }
 
 :root {
-  --bg-light: #F5F3E7;
-  --bg-dark: #0D1718;
-  --text-light: #1A3537;
-  --text-dark: #E0DDAE;
+  --bg-light: #FAF8F5;
+  --bg-dark: #18181B;
+  --text-light: #18181B;
+  --text-dark: #F4F4F5;
   --sinopia: #D7340B;
-  --caribbean: #336467;
-  --vanilla: #E0DDAE;
+  --caribbean: #3F3F46;
+  --vanilla: #FAF8F5;
 }
 
 html {
