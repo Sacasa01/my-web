@@ -13,8 +13,7 @@ Construir un portfolio web interactivo de alto impacto técnico y visual para **
 1. **Slide 00: Hero Studio Poster ("PORT [Avatar] FOLIO")**
    - Monumental titular tipográfico editorial (*Bebas Neue* / *Big Shoulders*).
    - Avatar pseudo-3D interactivo en el centro con máscara de suavizado radial.
-   - Píldora de disponibilidad: *"Available for Dublin On-Site from Sept 30, 2026"*.
-   - Botón de cambio de idioma (`EN` / `ES`) y acceso directo al AI Twin.
+   - Botón de cambio de idioma (`EN` / `ES`) y selector de tema (`Light` / `Dark`).
 
 2. **Slide 01: Introducción y Perfil Ejecutivo**
    - Tarjeta de identidad con foto de perfil, edad (23 años, Valencia), idiomas (Inglés C1 Goal, Español/Valenciano nativos).
@@ -48,26 +47,17 @@ Construir un portfolio web interactivo de alto impacto técnico y visual para **
    - CFGS DAW (Nota: 7.00).
    - Certificaciones AWS Cloud Practitioner (2025), AWS AI Practitioner (2026), GitHub Copilot.
 
-10. **Slide 09: 07 // Conectar y Gemelo Digital**
-    - Llamadas directas a la acción para contacto y entrevistas técnicas.
+10. **Slide 09: 07 // Conectar y Canales Directos**
+    - Llamadas directas a la acción para contacto y entrevistas técnicas (email interactivo con copia en un clic, LinkedIn y GitHub).
 
 ---
 
-## 🎬 3. Especificación del Avatar Interactivo y Bocadillo de Cómic
+## 🎨 3. Especificación de Componentes Interactivos y Modales
 
-### Estados del Avatar (`AvatarContainer`):
-| Estado | Clip de Vídeo | Comportamiento |
-| :--- | :--- | :--- |
-| `TYPING` | `avatar-typing-loop.mp4` | Bucle infinito programando en su portátil. |
-| `GREETING` | `avatar-greeting.mp4` | Transición al hacer clic: saluda y abre el bocadillo. |
-| `CHAT_IDLE` | `avatar-chat-idle.mp4` | Bucle receptivo mirando al frente mientras el chat está abierto. |
-| `TALKING` | `avatar-talking.mp4` | Bucle gesticulando mientras el streaming de IA genera texto. |
-| `RETURNING` | `avatar-return.mp4` | Transición al cerrar el chat: baja la vista y retoma el teclado. |
-
-### Bocadillo Flotante (`SpeechBubble`):
-- **Posición**: Flotando a la derecha de la cabeza del avatar (`top-[-45px] sm:-right-4 md:-right-24 lg:-right-36`).
-- **Diseño**: Fondo `bg-white/95 backdrop-blur-md`, bordes redondeados `rounded-3xl`, sombra profunda y flecha triangular apuntando hacia el avatar.
-- **Funcionalidad**: Input de texto, soporte para tecla `Enter`, chips de preguntas rápidas, botón de cierre `✕`, y renderizado de texto en streaming carácter a carácter / token a token.
+### Modales de Proyectos y Educación:
+- **Proyectos Flagship**: Bento grid interactivo con apertura de modal modal accesible vía clic y cierre con tecla `Escape` o backdrop.
+- **Detalle de Educación**: Visualización modal con métricas académicas detalladas y enlaces oficiales a certificaciones en PDF.
+- **Cordón de Contacto**: Botón colgante retraíble con animación elástica e indicador de estado interactivo.
 
 ---
 

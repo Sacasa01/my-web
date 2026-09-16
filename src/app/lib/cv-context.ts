@@ -27,7 +27,6 @@ export interface CandidateProfile {
     metrics: string[];
   }[];
   dailyRoutine: { category: string; description: string }[];
-  systemPrompt: string;
 }
 
 export const SANTIAGO_CV_CONTEXT: CandidateProfile = {
@@ -140,16 +139,7 @@ export const SANTIAGO_CV_CONTEXT: CandidateProfile = {
     { category: "English C1 Mastery", description: "2h daily test prep, grammar and technical oral mock interviews" },
     { category: "Certifications & Architecture", description: "2h daily AWS AI Practitioner + Bedrock + MCP agent tool development" },
     { category: "Career & Tech Prospecting", description: "Targeting tech scale-ups and multinationals in Dublin & EU Remote" }
-  ],
-  systemPrompt: `Eres el gemelo digital interactivo de Santiago Castro Salt en su portfolio web.
-Responde siempre en primera persona ("Yo he trabajado...", "Mi stack principal es...", "Para mi proyecto FitForge implementé..."), con un tono profesional, claro, conciso, cercano y seguro.
-
-Directrices de respuesta:
-1. Basa tus respuestas exclusivamente en los datos de mi CV, proyectos, certificaciones y objetivos de carrera contenidos en este contexto.
-2. Si te preguntan sobre disponibilidad laboral, destaca que tengo disponibilidad física inmediata para incorporarme On-Site / Híbrido en Dublín a partir del 30 de Septiembre de 2026, así como en Remoto Internacional.
-3. Si te preguntan por mis proyectos estrella, destaca Fertoolity (IA médica con PyTorch/MONAI en Hospital La Fe), FitForge (Symfony 7 + Angular + Docker) y Legacy Land Mapper (WFS Catastro multihilo).
-4. Si te preguntan algo ajeno a mi perfil profesional (política, temas no técnicos o irrelevantes), reconduce amablemente la conversación hacia mi experiencia de ingeniería de software e IA.
-5. Mantén las respuestas estructuradas, usando negritas o viñetas cuando aporte claridad.`
+  ]
 };
 
 export const SANTIAGO_MARKDOWN_CV = `

@@ -68,7 +68,7 @@ Quiero añadir un nuevo proyecto destacado a mi portfolio:
 - Métricas o logros: [Métricas clave]
 - Descripción técnica: [1 o 2 párrafos técnicos]
 
-Actualiza `src/app/lib/cv-context.ts`, el System Prompt del Gemelo Digital y la tarjeta visual en el slide correspondiente.
+Actualiza `src/app/lib/cv-context.ts` y la tarjeta visual en el bento grid de proyectos (`src/app/app.component.ts`).
 ```
 
 ### 2. Actualizar disponibilidad o hitos académicos
@@ -76,10 +76,13 @@ Actualiza `src/app/lib/cv-context.ts`, el System Prompt del Gemelo Digital y la 
 Quiero actualizar mi disponibilidad laboral / hito académico en `cv-context.ts`:
 - Nuevo dato: [Ej. Certificación AWS AI Practitioner obtenida / Nivel de inglés C1 certificado].
 
-Propaga el cambio al badge del Hero, la tarjeta de perfil en Slide 01 y la base de conocimiento del chat IA.
+Propaga el cambio al Hero, la sección de educación y el listado de certificaciones oficiales.
 ```
 
-### 3. Ajustar transiciones del Avatar o afinado de vídeo
+### 3. Modificar o añadir una habilidad en el mapa de Skills
 ```markdown
-Revisa el componente `AvatarContainerComponent`. Necesito afinar la transición del estado [ESTADO A] a [ESTADO B] para que [comportamiento deseado]. Asegúrate de mantener la máscara de suavizado radial y cero parpadeos negros.
+Quiero añadir una nueva tecnología al mapa de competencias en `src/app/app.component.ts`:
+- Tecnología: [Nombre]
+- Categoría: [Backend / Cloud / Datos / Core]
+- Nivel y descripción: [Descripción concisa]
 ```
