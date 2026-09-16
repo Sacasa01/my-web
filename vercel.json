@@ -2,9 +2,6 @@
   "framework": "angular",
   "buildCommand": "pnpm build",
   "outputDirectory": "dist/portfolio/browser",
-  "env": {
-    "GEMINI_API_KEY": "@gemini-api-key"
-  },
   "routes": [
     {
       "src": "/api/(.*)",
